@@ -1,0 +1,2 @@
+<!-- footer -->
+<p class="footer">Page rendered in <strong>{elapsed_time}</strong> seconds. Memory usage: <b>{memory_usage}</b> <?php echo  (ENVIRONMENT === 'development') ?  'CodeIgniter Version <strong>' . CI_VERSION . '</strong>' : '' ?></p>

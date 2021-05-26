@@ -1,0 +1,205 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: test\n"
+"POT-Creation-Date: 2018-03-26 10:49+0800\n"
+"PO-Revision-Date: 2018-05-31 16:40+0800\n"
+"Last-Translator: \n"
+"Language-Team: test\n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.7\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Poedit-SearchPath-0: 404.php\n"
+"X-Poedit-SearchPath-1: access_denied.php\n"
+"X-Poedit-SearchPath-2: blank.php\n"
+"X-Poedit-SearchPath-3: footer.php\n"
+"X-Poedit-SearchPath-4: head.php\n"
+"X-Poedit-SearchPath-5: header.php\n"
+"X-Poedit-SearchPath-6: index.php\n"
+"X-Poedit-SearchPath-7: init.php\n"
+"X-Poedit-SearchPath-8: login.php\n"
+"X-Poedit-SearchPath-9: menu.php\n"
+"X-Poedit-SearchPath-10: news_form.php\n"
+"X-Poedit-SearchPath-11: news_index.php\n"
+"X-Poedit-SearchPath-12: profile_form.php\n"
+"X-Poedit-SearchPath-13: script.php\n"
+"X-Poedit-SearchPath-14: sys_user_form.php\n"
+"X-Poedit-SearchPath-15: sys_user_index.php\n"
+"X-Poedit-SearchPath-16: test.php\n"
+"X-Poedit-SearchPath-17: version.php\n"
+
+#: access_denied.php:8
+msgid "Access Denied!"
+msgstr ""
+
+#: access_denied.php:8
+msgid "You do not allow the access this resource."
+msgstr ""
+
+#: header.php:52
+msgid "Profile"
+msgstr ""
+
+#: header.php:55
+msgid "Sign Out"
+msgstr ""
+
+#: login.php:33 profile_form.php:77 sys_user_form.php:113 sys_user_index.php:68
+msgid "Login ID"
+msgstr ""
+
+#: login.php:37 profile_form.php:101 sys_user_form.php:129
+msgid "Login Password"
+msgstr ""
+
+#: login.php:43
+msgid "Sign In"
+msgstr ""
+
+#: menu.php:13
+msgid "Online"
+msgstr ""
+
+#: menu.php:18
+msgid "MAIN NAVIGATION"
+msgstr ""
+
+#: menu.php:23
+msgid "News"
+msgstr "News"
+
+#: menu.php:31
+msgid "System User"
+msgstr "System User"
+
+#: news_form.php:51 news_index.php:36 profile_form.php:36 sys_user_form.php:64
+#: sys_user_index.php:36
+msgid "Home"
+msgstr ""
+
+#: news_form.php:72 profile_form.php:57 script.php:359 sys_user_form.php:85
+msgid "Cancel"
+msgstr ""
+
+#: news_form.php:77 profile_form.php:62 sys_user_form.php:90
+msgid "Save"
+msgstr ""
+
+#: news_form.php:92
+msgid "Cover Image"
+msgstr ""
+
+#: news_form.php:98
+msgid "Please click here to upload file."
+msgstr ""
+
+#: news_form.php:101
+msgid "Delete File?"
+msgstr ""
+
+#: news_form.php:108 news_index.php:78
+msgid "Title"
+msgstr "Title"
+
+#: news_form.php:116
+msgid "Short Content"
+msgstr "Short Content"
+
+#: news_form.php:124
+msgid "Content"
+msgstr ""
+
+#: news_form.php:132
+msgid "News Date"
+msgstr ""
+
+#: news_form.php:140
+msgid "Start Date"
+msgstr ""
+
+#: news_form.php:148
+msgid "End Date"
+msgstr ""
+
+#: news_index.php:60 sys_user_index.php:58
+msgid "Create"
+msgstr ""
+
+#: news_index.php:67
+msgid "Update Sort"
+msgstr ""
+
+#: news_index.php:76
+msgid "Sort"
+msgstr ""
+
+#: news_index.php:77
+msgid "Date"
+msgstr ""
+
+#: news_index.php:79 sys_user_index.php:71
+msgid "Action"
+msgstr ""
+
+#: news_index.php:102 sys_user_index.php:94
+msgid "Active"
+msgstr ""
+
+#: news_index.php:107 sys_user_index.php:99
+msgid "Inactive"
+msgstr ""
+
+#: news_index.php:113 sys_user_index.php:105
+msgid "Nodify"
+msgstr ""
+
+#: news_index.php:119 sys_user_index.php:111
+msgid "Delete"
+msgstr ""
+
+#: profile_form.php:33
+msgid "Update"
+msgstr ""
+
+#: profile_form.php:85 sys_user_form.php:105 sys_user_index.php:69
+msgid "Login Role"
+msgstr ""
+
+#: profile_form.php:93 sys_user_form.php:121 sys_user_index.php:70
+msgid "Login Name"
+msgstr ""
+
+#: profile_form.php:109 sys_user_form.php:137
+msgid "Confirm Password"
+msgstr ""
+
+#: script.php:52 script.php:95
+msgid "所有"
+msgstr ""
+
+#: script.php:319
+msgid "Confirm to delete?"
+msgstr ""
+
+#: script.php:329
+msgid "Confirm to save?"
+msgstr ""
+
+#: script.php:358
+msgid "Confirm"
+msgstr ""
+
+#: script.php:386
+msgid "Resolution of uploaded images should be lower than 2000px."
+msgstr ""
+
+#: script.php:396
+msgid "Uploaded file size should be smaller than 2MB."
+msgstr ""
+
+#: script.php:407
+msgid "Total uploaded file size should be smaller than 10MB."
+msgstr ""

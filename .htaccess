@@ -1,0 +1,43 @@
+### ip restriction sample
+#order deny,allow
+#deny from all
+#allow from 223.255.164.254
+#allow from 103.232.90.254
+
+RewriteEngine On
+
+## Begin - Security
+# Block all direct access for these folders
+#RedirectMatch 403 (.git|tests|.AbiSuite|nbproject|.idea)
+# Block access to specific file types for these system folders
+#RedirectMatch 403 (vendor)/(.*)\.(txt|xml|md|html|yaml|php|pl|py|cgi|twig|sh|bat|dist|json|exe)
+# Block all direct access to .md files:
+#RedirectMatch 403 \.md
+# Block access to specific files in the root folder
+#RedirectMatch 403 (composer.lock|composer.json|\.htaccess|LICENSE)
+## End - Security
+
+#forbiden extension with ed
+RewriteRule \.(ed)$ - [F]
+#forbidden dir
+RedirectMatch 403 (assets/files/news/base64_img/)
+
+RewriteBase /hcmlsyl
+#request to index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+RewriteCond $1 !^(index\.php|assets|images|robots\.txt|css)
+RewriteRule ^(.*)$ index.php?/$1 [L]
+
+# One year for image files
+<filesMatch ".(jpg|jpeg|png|gif|ico)$">
+Header set Cache-Control "max-age=31536000, public"
+</filesMatch>
+# One month for css and js
+<filesMatch ".(css|js)$">
+Header set Cache-Control "max-age=2628000, public"
+</filesMatch>
+
+# CodeIgniter environment (development / testing / production)
+SetEnv CI_ENV development

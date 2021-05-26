@@ -1,0 +1,37 @@
+.dataTables_paginate.paging_input {
+    text-align: right;
+    margin-top: 10px;
+}
+
+.paginate_button {
+    padding: 6px 12px;
+    line-height: 1.5;
+    /* color: #337ab7;*/
+    text-decoration: none;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    color: #000;
+    margin-left: -1px;
+    cursor: pointer;
+}
+
+.paginate_page {
+    padding: 0 5px;
+}
+
+.paginate_input {
+    width: 50px;
+    padding-left: 5px;
+    padding-right: 5px;
+    text-align: center;
+}
+
+.paginate_of {
+    padding: 0 5px;
+}
+
+.paginate_button.disabled {
+    cursor: not-allowed;
+    background-color: #ccc;
+    color: #fff;
+}
