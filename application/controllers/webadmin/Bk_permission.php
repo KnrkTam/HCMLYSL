@@ -52,6 +52,25 @@ class Bk_permission extends CI_Controller
                 'desc' => 'Can view sys_user',
                 'role' => array('super_admin', 'admin')
             ),
+
+            // master_modules
+            'create_master_modules' => array(
+                'desc' => 'Can create master_modules',
+                'role' => array('super_admin', 'admin')
+            ),
+            'update_master_modules' => array(
+                'desc' => 'Can update master_modules',
+                'role' => array('super_admin', 'admin')
+            ),
+            'delete_master_modules' => array(
+                'desc' => 'Can delete master_modules',
+                'role' => array('super_admin', 'admin')
+            ),
+            'view_master_modules' => array(
+                'desc' => 'Can view master_modules',
+                'role' => array('super_admin', 'admin')
+            ),
+            
             //news_ajax
             'create_news_ajax' => array(
                 'desc' => 'Can create news_ajax',

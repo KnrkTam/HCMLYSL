@@ -32,8 +32,7 @@
                 <div class="row">
                     <!-- column -->
                     <div class="col-md-12">
-                        <!-- form start -->
-                        <?= form_open_multipart($form_action, 'class="form-horizontal"'); ?>
+                     
                         <!-- general form elements 
                     <input type="hidden" name="id" value="<?= $id ?>"/>-->
                         <div class="box box-primary">
@@ -72,36 +71,22 @@
                                     </thead>
 
                                     <tbody>
-                                        <tr>
-                                            <td><a class="editLinkBtn" href="#" data-toggle="modal" data-target="#editDetail"><i class="fa fa-edit"></i> 1.1 我的學校</a></td>
-                                            <td><a class="editLinkBtn" href="#" data-toggle="modal" data-target="#editDetail"><i class="fa fa-edit"></i></a> 2.1 認識自己</td>
-                                            <td><a class="editLinkBtn" href="#" data-toggle="modal" data-target="#editDetail"><i class="fa fa-edit"></i></a> 3.1 我的家</td>
-                                            <td><a class="editLinkBtn" href="#" data-toggle="modal" data-target="#editDetail"><i class="fa fa-edit"></i></a> 4.1 可愛的小動物</td>
-                                            <td><a class="editLinkBtn" href="#" data-toggle="modal" data-target="#editDetail"><i class="fa fa-edit"></i></a> 5.1 我的學校</td>
-                                        </tr>
-                                        <tr>
-                                            <td><a class="editLinkBtn" href="#" data-toggle="modal" data-target="#editDetail"><i class="fa fa-edit"></i></a> 1.2 常用的電器</td>
-                                            <td><a class="editLinkBtn" href="#" data-toggle="modal" data-target="#editDetail"><i class="fa fa-edit"></i></a> 2.2 交通工具</td>
-                                            <td><a class="editLinkBtn" href="#" data-toggle="modal" data-target="#editDetail"><i class="fa fa-edit"></i></a> 3.2 常見的衣服</td>
-                                            <td><a class="editLinkBtn" href="#" data-toggle="modal" data-target="#editDetail"><i class="fa fa-edit"></i></a> 4.2 常吃的食物</td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td><a class="editLinkBtn" href="#" data-toggle="modal" data-target="#editDetail"><i class="fa fa-edit"></i></a> 1.4 幫助我們的人</td>
-                                            <td><a class="editLinkBtn" href="#" data-toggle="modal" data-target="#editDetail"><i class="fa fa-edit"></i></a> 2.3 我們的社區</td>
-                                            <td><a class="editLinkBtn" href="#" data-toggle="modal" data-target="#editDetail"><i class="fa fa-edit"></i></a> 3.3 喜愛的活動</td>
-                                            <td><a class="editLinkBtn" href="#" data-toggle="modal" data-target="#editDetail"><i class="fa fa-edit"></i></a> 4.3 奇妙的天氣</td>
-                                            <td></td>
-                                        </tr>
-
+                                    <?php  for ($i = 0; $i < $module_count; $i++){?>
+                                            <tr>
+                                                <td><?= $module_row1[$i] ? '<a class="editLinkBtn" data-id="'.$module_row1[$i]->id.'" data-code="'.$module_row1[$i]->code.'" data-name="'.$module_row1[$i]->name.'" data-level="'.$module_row1[$i]->level_id.'" href="#" data-toggle="modal" data-target="#editDetail"><i class="fa fa-edit"></i>'. $module_row1[$i]->code.' '.$module_row1[$i]->name.'</a>' : '' ?></td>
+                                                <td><?= $module_row2[$i] ? '<a class="editLinkBtn" data-id="'.$module_row2[$i]->id.'" data-code="'.$module_row2[$i]->code.'" data-name="'.$module_row2[$i]->name.'" data-level="'.$module_row2[$i]->level_id.'" href="#" data-toggle="modal" data-target="#editDetail"><i class="fa fa-edit"></i>'. $module_row2[$i]->code.' '.$module_row2[$i]->name.'</a>' : '' ?></td>
+                                                <td><?= $module_row3[$i] ? '<a class="editLinkBtn" data-id="'.$module_row3[$i]->id.'" data-code="'.$module_row3[$i]->code.'" data-name="'.$module_row3[$i]->name.'" data-level="'.$module_row3[$i]->level_id.'" href="#" data-toggle="modal" data-target="#editDetail"><i class="fa fa-edit"></i>'. $module_row3[$i]->code.' '.$module_row3[$i]->name.'</a>' : '' ?></td>
+                                                <td><?= $module_row4[$i] ? '<a class="editLinkBtn" data-id="'.$module_row4[$i]->id.'" data-code="'.$module_row4[$i]->code.'" data-name="'.$module_row4[$i]->name.'" data-level="'.$module_row4[$i]->level_id.'" href="#" data-toggle="modal" data-target="#editDetail"><i class="fa fa-edit"></i>'. $module_row4[$i]->code.' '.$module_row4[$i]->name.'</a>' : '' ?></td>
+                                                <td><?= $module_row5[$i] ? '<a class="editLinkBtn" data-id="'.$module_row5[$i]->id.'" data-code="'.$module_row5[$i]->code.'" data-name="'.$module_row5[$i]->name.'" data-level="'.$module_row5[$i]->level_id.'" href="#" data-toggle="modal" data-target="#editDetail"><i class="fa fa-edit"></i>'. $module_row5[$i]->code.' '.$module_row5[$i]->name.'</a>' : '' ?></td>
+                                            </tr>
+                                            <?} ?>
                                     </tbody>
                                 </table>
 
                             </div>
                             <!-- /.box-body -->
                         </div>
-                        <!-- /.box -->
-                        <?= form_close() ?>
+                 
 
                     </div>
                     <!--/.col -->
@@ -116,7 +101,8 @@
         <?php include_once("footer.php"); ?>
 
 
-
+   <!-- form start -->
+   <!-- <?= form_open_multipart($form_action, 'class="form-horizontal"'); ?> -->
     <!-- Edit modal box -->
         <div class="modal fade in" tabindex="-1" role="dialog" id="editDetail">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
@@ -134,28 +120,22 @@
                                 <div class="form-group">
                                     <label class="text-nowrap">學階： </label>
                                     <div style="flex: 1"><?php form_list_type('level_id', ['type' => 'select', 'class'=> 'form-control' , 'value' =>'',  'enable_value' => $level_list, 'form_validation_rules' => 'trim|required', 'disable_please_select' => 1]) ?></div>
-                                    <!-- <select class="form-control">
-                                        <option value="" hidden>請選擇</option>
-                                        <option value="學階一" selected>學階一</option>
-                                        <option value="學階二">學階二</option>
-                                        <option value="學階三">學階三</option>
-                                        <option value="學階四">學階四</option>
-                                        <option value="所有學階">所有學階</option>
-                                    </select> -->
+                                    <input type="text" class="form-control hidden"  id="modalId" value="">
+
                                 </div>
                             </div>
 
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="text-nowrap">單元編號： </label>
-                                    <input type="text" class="form-control" placeholder="1.1" name="module_code">
+                                    <input type="text" class="form-control" placeholder="e.g. 1.1" name="module_code" id="modalCode" value="" readonly>
                                 </div>
                             </div>
 
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="text-nowrap">單元名稱： </label>
-                                    <input type="text" class="form-control" placeholder="我的學校" name="module_name">
+                                    <input type="text" class="form-control" placeholder="e.g. 我的學校" name="module_name" id="modalName" value="">
                                 </div>
                             </div>
 
@@ -163,14 +143,13 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary">確 定</button>
+                        <button type="button" id="edit-btn" class="btn btn-primary">確 定</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">關 閉</button>
                     </div>
                 </div>
             </div>
         </div>
-<!-- Edit modal box end -->
-
+        <!-- Edit modal box end -->
         <div class="modal fade in" tabindex="-1" role="dialog" id="newDetail">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -185,28 +164,21 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="text-nowrap">學階： </label>
-                                    <select class="form-control">
-                                        <option value="" hidden>請選擇</option>
-                                        <option value="學階一">學階一</option>
-                                        <option value="學階二">學階二</option>
-                                        <option value="學階三">學階三</option>
-                                        <option value="學階四">學階四</option>
-                                        <option value="所有學階">所有學階</option>
-                                    </select>
+                                    <div style="flex: 1"><?php form_list_type('level_id', ['type' => 'select', 'class'=> 'form-control' , 'value' =>'',  'enable_value' => $level_list, 'form_validation_rules' => 'trim|required', 'disable_please_select' => 1]) ?></div>
                                 </div>
                             </div>
 
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="text-nowrap">單元編號： </label>
-                                    <input type="text" class="form-control" placeholder="請輸入...">
+                                    <input type="text" class="form-control" placeholder="e.g. 1.1" name="module_code" id="newCode">
                                 </div>
                             </div>
 
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="text-nowrap">單元名稱： </label>
-                                    <input type="text" class="form-control" placeholder="請輸入...">
+                                    <input type="text" class="form-control" placeholder="e.g. 我的學校" name="module_name" id="newName">
                                 </div>
                             </div>
 
@@ -215,30 +187,96 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn bg-orange ">新 增</button>
+                        <button type="button" id="create-btn" class="btn bg-orange ">新 增</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">關 閉</button>
                     </div>
                 </div>
             </div>
         </div>
-
+       <!-- /.box -->
+       <!-- <?= form_close() ?> -->
 
 
     </div>
     <!-- ./wrapper -->
     <?php include_once("script.php"); ?>
     <script>
-        function submit_form(_this) {
-            //form checking
-            var valid_data = true;
-            //.form checking
-            if (!valid_data) {
-                //alert('Invalid Data.');
-            } else {
-                ajax_submit_form(_this);
-            }
-        }
 
+        // function submit_form(_this) {
+        //     //form checking
+        //     var valid_data = true;
+        //     //.form checking
+        //     if (!valid_data) {
+        //         //alert('Invalid Data.');
+        //     } else {
+        //         ajax_submit_form(_this);
+        //     }
+        // }
+
+        $(document).on("click", ".editLinkBtn", function () {
+            let myId = $(this).data('id');
+            let myCode = $(this).data('code');
+            let myName = $(this).data('name');
+            let myLevel = $(this).data('level');
+            $(".modal-body #modalCode").val( myCode );
+            $(".modal-body #modalName").val( myName );
+            $(".modal-body #level_id").val( myLevel );
+            $(".modal-body #modalId").val( myId );
+
+
+        });
+
+
+        let createBtn = document.querySelector('#create-btn');
+        createBtn.addEventListener("click",function(){
+            createModule(level_id.level_id.value, newCode.value, newName.value);
+            function createModule(level_id, code, name){
+                $.ajax({
+                url: '<?= (admin_url($page_setting['controller'])) . '/create' ?>',
+                method:'POST',
+                data:{level_id:level_id,code: code, name: name},
+                dataType:'json',     
+                success:function(data){
+                    if (data.status == 'success') {
+                        window.location.reload();
+                    } else {
+                        alertify.error(data.status)
+                    }
+                },
+                error: function(error){
+                    alert('error');
+                    // alert('duplicated');
+                    // console.log(error);
+                }
+                });
+            } 
+        })
+
+        let editBtn = document.querySelector('#edit-btn');
+        editBtn.addEventListener("click",function(){
+            // let confirmCreate = confirm(`Are you sure edit ${level_id.level_id.value}, ${modalCode.value}, ${modalName.value}, ${modalId.value}`);
+            editModule(level_id.level_id.value, modalCode.value, modalName.value, modalId.value);
+            function editModule(level_id, code, name, id){
+                $.ajax({
+                url: `<?= (admin_url($page_setting['controller'])) . '/edit/'?>${id}`,
+                method:'POST',
+                data:{level_id:level_id,code: code, name: name, id: id},
+                dataType:'json',     
+                success:function(data){
+                    if (data.status == 'success') {
+                        window.location.reload();
+                    } else if (data.status == 'no_change') {
+                        $('#editDetail').modal('hide');
+                    }else {
+                        alertify.error(data.status)
+                    }
+                },
+                error: function(error){
+                    alert('error');
+                }
+                });
+            } 
+        })
         <?php /*
     //multiple image upload
     $("input.multiple_upload").fileinput({

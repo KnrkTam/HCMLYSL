@@ -5,5 +5,15 @@
 	{
 		protected $table = "levels";
 
+        public static function drop_list()
+		{
 
+            $level_result = Levels_model::all();
+
+            foreach($level_result as $row){
+                $drop_list[$row['id']] = $row["level"];
+            }
+            
+            return $drop_list;
+        }
 	}

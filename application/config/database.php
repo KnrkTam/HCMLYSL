@@ -76,15 +76,10 @@ use Illuminate\Database\Capsule\Manager as Capsule;
 $active_group = 'default';
 $query_builder = true;
 
-$hostname = 'localhost';
-$username = 'admin';
-$password = 'PHac7dru';
-$database = 'hcmlsyldb';
-
-// $hostname = $_ENV['DB_HOST'];
-// $username = $_ENV['DB_USERNAME'];
-// $password = $_ENV['DB_PASSWORD'];
-// $database = $_ENV['DB_NAME'];
+$hostname = $_ENV['DB_HOST'];
+$username = $_ENV['DB_USERNAME'];
+$password = $_ENV['DB_PASSWORD'];
+$database = $_ENV['DB_NAME'];
 
 
 $db['default'] = array(

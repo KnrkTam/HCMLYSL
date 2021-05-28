@@ -143,7 +143,7 @@ class Bk_admin extends CI_Controller
         //decryption
         $password = $this->input->post('password') ? cryptoJsAesDecrypt($this->input->post('password')) : '';
         $password2 = $this->input->post('password2') ? cryptoJsAesDecrypt($this->input->post('password2')) : '';
-
+        // dump($this->input->post());
         //set form data
         $this->form_validation->set_data(array(
             'login_name' => $this->input->post('login_name', 1),
@@ -163,7 +163,10 @@ class Bk_admin extends CI_Controller
         ));
 
         if ($this->form_validation->run() == false) {
+            $_SESSION['error_msg'] = __('Update failed, please try again.');
+
             $this->profile();
+
         } else {
             //form data
             $data = array(

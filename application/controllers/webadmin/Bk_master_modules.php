@@ -325,78 +325,130 @@ class Bk_master_modules extends CI_Controller //change this
                 break;
         }
     }
-    /*
+
     public function create()
     {
-        $data['page_setting'] = $this->page_setting(array(
-            'view_news'
-        ), FALSE, TRUE);
+        // POST
+        $postData = $this->input->post();
 
-        $data['form_action'] = admin_url($data['page_setting']['controller'] . '/submit_form');
-        $data['action'] = __('新 增');
+        $dup_code = Modules_model::where('code',$postData['code'])->first()->name;
 
-        $GLOBALS['datetimepicker'] = 1;
-        $GLOBALS['tinymce'] = 1;
-        $GLOBALS["elfinder"] = 1;
-        $GLOBALS["fileinput"] = 1;
+        switch (true) {
+            case (empty($postData['code'])):
+                $data = array(
+                    'status' => '請輸入單元編號',
+                );
+                break;
+            case (!empty($dup_code)):
+                $data = array(
+                    'status' => '單元編號重複',
+                );
+                break;
+            case (empty($postData['name'])):
+                $data = array(
+                    'status' => '請輸入單元名稱',
+                );
+                break;
+            default:
+            $module_data = array(
+                'code' => $postData['code'],
+                'name' => $postData['name'],
+                'level_id' => $postData['level_id'],
+            );
+            $module_id = Modules_model::create($module_data)->id;
+            $_SESSION['success_msg'] = __('新增單元成功');
+            $data = array(
+                'status' => 'success',
+            );
+        }
+    
+
+        echo json_encode($data);
+
+    }
+
+    
+    public function edit($id)
+    {
+        // POST
+        $postData = $this->input->post();
+
+        $module = Modules_model::find($id);
+        $module_arr = array(
+            'level_id' => strval($module->level_id),
+            'code' => $module->code,
+            'name' => $module->name,
+            'id' => strval($module->id),
+        );
+        $new_arr = array(
+            'level_id' => $postData['level_id'],
+            // 'code' => $postData['code'],
+            'name' => $postData['name'],
+        );
 
 
-        $this->load->view('webadmin/' . $this->scope . '_form',  $data);
-    }*/
+        switch (true) {
+            case ($module_arr === $postData):
+                $data = array(
+                    'status' => 'no_change',
+                );
+                break;
+            case (empty($postData['code'])):
+                $data = array(
+                    'status' => '請輸入單元編號',
+                );
+                break;
+            case (!empty($dup_code)):
+                $data = array(
+                    'status' => '單元編號重複',
+                );
+                break;
+            case (empty($postData['name'])):
+                $data = array(
+                    'status' => '請輸入單元名稱',
+                );
+                break;
+            default:
+                $_SESSION['success_msg'] = __('修改單元成功');
+                Modules_model::where('id', $id)->update($new_arr);
+                $data = array(
+                    'status' => 'success',
+                );
+        }
+
+
+        echo json_encode($data);
+
+    }
+
 
     public function index($filter_type = NULL, $filter_para = NULL, $filter_para2 = NULL)
     {
 
         $data['page_setting'] = $this->page_setting(array(
-            //'view_' . $this->scope
-            'view_news'
+            'view_' . $this->scope
         ), FALSE, TRUE);
 
-                
+
         $GLOBALS["select2"] = 1;
         $GLOBALS["datatable"] = 1;
         
         //level drop down
-        $level_result = Levels_model::all();
+        $data['level_list'] = Levels_model::drop_list();
 
-        foreach($level_result as $row){
-            $level[$row['id']] = $row["level"];
-        }
 
-        $data['level_list'] = $level;
+        //modules
+        $modules = Modules_model::all();
+        $data['modules'] = $modules;
+        $data['module_count'] = Modules_model::select('level_id', DB::raw('count(*) as count'))->groupBy('level_id')->orderBy('count','desc')->first()->count;
 
-        // $data['filter_type'] = $filter_type;
-        // $data['filter_para'] = $filter_para;
-        // if ($filter_type == 6 && $filter_para == 'null') {
-        //     $data['filter_para'] = '';
-        // }
-        // $data['filter_para2'] = $filter_para2;
-
-        // $data['filter_type_list'] = '';
-
-        // $option_array = array(1 => __('All'), 2 => __('Title'));
-
-        // foreach ($option_array as $key => $row) {
-        //     $selected = '';
-        //     if ($filter_type == $key) {
-        //         $selected = 'selected';
-        //     }
-        //     $data['filter_type_list'] .= '<option value="' . $key . '" ' . $selected . '>' . $row . '</option>';
-        // }
-
-        // $data['filter_2_para_list'] = '';
-        // //$result = News_ajax_model::orderBy('title', 'asc')->get();
-        // $result = [];
-        // if (!empty($result)) {
-        //     foreach ($result as $row) {
-        //         $selected = '';
-        //         if ($filter_type == 2 && $filter_para == $row['id']) {
-        //             $selected = 'selected';
-        //         }
-        //         $data['filter_2_para_list'] .= '<option value="' . $row['id'] . '" ' . $selected . '>' . $row['title'] . '</option>';
-        //     }
-        // }
+        $data['module_row1'] = Modules_model::module_row(1);
+        $data['module_row2'] = Modules_model::module_row(2);
+        $data['module_row3'] = Modules_model::module_row(3);
+        $data['module_row4'] = Modules_model::module_row(4);
+        $data['module_row5'] = Modules_model::module_row(5);
 
         $this->load->view('webadmin/' . $this->scope . '', $data);
     }
+
 }

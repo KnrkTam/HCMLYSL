@@ -502,6 +502,9 @@ $config['csrf_regenerate'] = false;
 $config['csrf_exclude_uris'] = array(
     'webadmin/bk_news/delete_multiple_upload',
     'webadmin/bk_(\w+)/ajax/(\w)+',
+    'webadmin/bk_(\w+)/(\w)+/(\w)+',
+    'webadmin/bk_(\w+)/(\w)+',
+
 );
 
 /*
