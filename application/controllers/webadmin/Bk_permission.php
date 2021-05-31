@@ -70,7 +70,43 @@ class Bk_permission extends CI_Controller
                 'desc' => 'Can view master_modules',
                 'role' => array('super_admin', 'admin')
             ),
-            
+
+             // create list option
+             'create_options' => array(
+                'desc' => 'Can create options',
+                'role' => array('super_admin', 'admin')
+            ),
+            'update_options' => array(
+                'desc' => 'Can update options',
+                'role' => array('super_admin', 'admin')
+            ),
+            'delete_options' => array(
+                'desc' => 'Can delete options',
+                'role' => array('super_admin', 'admin')
+            ),
+            'view_options' => array(
+                'desc' => 'Can view options',
+                'role' => array('super_admin', 'admin')
+            ),
+
+              // school base course outline
+              'create_master_course_outline' => array(
+                'desc' => 'Can create master_course_outline',
+                'role' => array('super_admin', 'admin')
+            ),
+            'update_master_course_outline' => array(
+                'desc' => 'Can update master_course_outline',
+                'role' => array('super_admin', 'admin')
+            ),
+            'delete_master_course_outline' => array(
+                'desc' => 'Can delete master_course_outline',
+                'role' => array('super_admin', 'admin')
+            ),
+            'view_master_course_outline' => array(
+                'desc' => 'Can view master_course_outline',
+                'role' => array('super_admin', 'admin')
+            ),
+
             //news_ajax
             'create_news_ajax' => array(
                 'desc' => 'Can create news_ajax',

@@ -1,19 +1,16 @@
 <?php
 	defined('BASEPATH') OR exit('No direct script access allowed');
 
-	class Levels_model extends BaseModel
+	class Courses_model extends BaseModel
 	{
-		protected $table = "levels";
+		protected $table = "courses";
 
         public static function list()
 		{
-
-            $result = Levels_model::all();
-
+            $result = Courses_model::all();
             foreach($result as $row){
-                $list[$row['id']] = $row["level"];
+                $list[$row['id']] = $row["name"];
             }
-            
             return $list;
         }
 	}

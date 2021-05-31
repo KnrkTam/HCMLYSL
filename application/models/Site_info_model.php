@@ -96,7 +96,7 @@
 	
 			} else {
 				self::where('id', $id)->update($data);
-				$result['msg'] = __('Changes Saved');
+				$result['msg'] = __('修改成功');
 	
 			}
 			return $result;

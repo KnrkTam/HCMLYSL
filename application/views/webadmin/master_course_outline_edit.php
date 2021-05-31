@@ -2,6 +2,14 @@
 <html lang="en">
 
 <head>
+    <style>
+        .required:after, .required_field:after {
+            content: ' * ';
+            color: red;
+            left: 10px;
+            position: absolute;
+        }
+    </style>
     <?php include_once("head.php"); ?>
 </head>
 
@@ -61,60 +69,46 @@
                                 <div class="row">
                                     <div class="col-lg-4">
                                         <div class="form-group">
-                                            <label class="text-nowrap"><span class="text-red">*</span>課程： </label>
-                                            <select class="form-control">
-                                                <option value="" hidden>請選擇</option>
-                                                <option value="語文" selected>語文</option>
-                                                <option value="音">音</option>
-                                                <option value="科技">科技</option>
-                                                <option value="STEM">STEM</option>
-                                            </select>
+                                            <label class="text-nowrap required"><span>課程：</span> </label>
+                                            <div style="flex: 1"><?php form_list_type('courses_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'enable_value' => $courses_list, 'form_validation_rules' => 'trim|required', 'disable_please_select' => 1]) ?></div>
+
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="form-group">
-                                            <label class="text-nowrap"><span class="text-red">*</span>範疇：
+                                            <label class="text-nowrap required">範疇：
                                             </label>
-                                            <select class="form-control">
-                                                <option value="" hidden>請選擇</option>
-                                                <option value="聆聽" selected>聆聽</option>
-                                            </select>
+                                            <div style="flex: 1"><?php form_list_type('categories_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'enable_value' => $categories_list, 'form_validation_rules' => 'trim|required', 'disable_please_select' => 1]) ?></div>
+
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="form-group">
-                                            <label class="text-nowrap"><span class="text-red">*</span>課程編號： <span class="text-red small">*課程編號不能重覆, 警告提示及不能儲存</span></label>
+                                            <label class="text-nowrap required">課程編號： <span class="text-red small">*課程編號不能重覆, 警告提示及不能儲存</span></label>
                                             <input type="text" class="form-control" value="MN0155">
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="form-group">
-                                            <label class="text-nowrap"><span class="text-red">*</span>中央課程學習重點： </label>
-                                            <select class="form-control">
-                                                <option value="" hidden>請選擇</option>
-                                                <option value="聽力訓練" selected>聽力訓練</option>
-
-                                            </select>
+                                            <label class="text-nowrap required">中央課程學習重點： </label>
+                                            <div style="flex: 1"><?php form_list_type('central_obj_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'enable_value' => $central_obj_list, 'form_validation_rules' => 'trim|required', 'disable_please_select' => 1]) ?></div>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="form-group">
-                                            <label class="text-nowrap"><span class="text-red">*</span>校本課程學習重點：
+                                            <label class="text-nowrap required">校本課程學習重點：
                                             </label>
-                                            <select class="form-control">
-                                                <option value="" hidden>請選擇</option>
-                                                <option value="聆聽" selected>聽力訓練</option>
-                                            </select>
+                                            <div style="flex: 1"><?php form_list_type('central_obj_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'enable_value' => $sb_obj_list, 'form_validation_rules' => 'trim|required', 'disable_please_select' => 1]) ?></div>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="form-group">
-                                            <label class="text-nowrap"><span class="text-red">*</span>相關課程編號： <a class="link small" href="#" data-toggle="modal" data-target="#classNumber">搜尋編號</a></label>
+                                            <label class="required text-nowrap">相關課程編號： <a class="link small" href="#" data-toggle="modal" data-target="#classNumber">搜尋編號</a></label>
                                             <input type="text" class="form-control inputCourseNumber" placeholder="e.g.: #SC557, #BD003" Disabled>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
-                                        <p class="mb-4"> <span class="text-red">*</span>學習元素：</p>
+                                        <p class="mb-4 required">學習元素：</p>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="radio" name="study" checked value="知識" id="knowledge">
                                             <label class="form-check-label" for="knowledge">知識</label>
@@ -130,7 +124,7 @@
 
                                     </div>
                                     <div class="col-lg-4">
-                                        <p class="mb-4"> <span class="text-red">*</span>組別：</p>
+                                        <p class="mb-4 required"> 組別：</p>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="checkbox" checked value="初組" id="lowLevel">
                                             <label class="form-check-label" for="lowLevel">初組</label>
@@ -204,13 +198,13 @@
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="form-group">
-                                            <label><span class="text-red">*</span>預期學習成果：</label>
+                                            <label class="required">預期學習成果：</label>
                                             <textarea class="form-control" rows="3" placeholder="" value="MN0449,MS0002	"></textarea>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="mt-4 d-flex justify-content-end">
-                                    <button type="button" class="btn btn-primary mw-100 mb-4 mr-4" onclick="location.href='../Bk_course_outline/preview';">確 定</button>
+                                    <button type="button" class="btn btn-primary mw-100 mb-4 mr-4" onclick="location.href='<?= (admin_url($page_setting['controller'])) . '/preview'?>';">確 定</button>
 
                                     <button type="button" class="btn btn-default mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller']) ?>';">返 回</button>
 
@@ -398,6 +392,7 @@
 
     <script>
         $(document).ready(function() {
+            $('select.select2').select2();
             $('[data-toggle="tooltip"]').tooltip();
 
             $('#searchCourseNumberTable').DataTable({

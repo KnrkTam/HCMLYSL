@@ -60,8 +60,8 @@
                                 ?>
                                 <div class="form-group">
                                     <label
-                                            class="col-sm-2 control-label nowarp <?= strpos($row['attr'], "required") !== FALSE || strpos($row['label_class'], "required") !== FALSE ? "required" : "" ?>"
-                                            for=""><?= $row["label"] ?>: </label>
+                                        class="col-sm-2 control-label nowarp <?= strpos($row['attr'], "required") !== FALSE || strpos($row['label_class'], "required") !== FALSE ? "required" : "" ?>"
+                                        for=""><?= $row["label"] ?>: </label>
 
                                     <div class="col-sm-8"
                                         style="<?= $row['type'] == 'radio' ? 'margin-top: 7px;' : ($row['type'] == 'checkbox' ? 'margin-top: 3px;' : '') ?>">

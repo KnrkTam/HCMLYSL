@@ -3,9 +3,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 use Illuminate\Database\Capsule\Manager as DB;
 
-class Bk_course_outline extends CI_Controller //change this
+class Bk_master_course_outline extends CI_Controller //change this
 {
-    private $scope = 'course_outline'; //change this
+    private $scope = 'master_course_outline'; //change this
 
     public function __construct()
     {
@@ -329,15 +329,19 @@ class Bk_course_outline extends CI_Controller //change this
     public function create()
     {
         $data['page_setting'] = $this->page_setting(array(
-            'view_news'
+            'view_'. $this->scope,
         ), FALSE, TRUE);
 
         $data['form_action'] = admin_url($data['page_setting']['controller'] . '/submit_form');
         $data['action'] = __('新 增');
+        $data['courses_list'] = Courses_model::list();
+        $data['categories_list'] = Categories_model::list();
+        $data['central_obj_list'] = Central_obj_model::list();
+        $data['sb_obj_list'] = Sb_obj_model::list();
 
-
+        $GLOBALS["select2"] = 1;
         $GLOBALS["datatable"] = 1;
-
+        dump($data);
         $this->load->view('webadmin/' . $this->scope . '_form',  $data);
     }
 
@@ -345,13 +349,17 @@ class Bk_course_outline extends CI_Controller //change this
     public function edit()
     {
         $data['page_setting'] = $this->page_setting(array(
-            'view_news'
+            'view_'. $this->scope,
         ), FALSE, TRUE);
 
         $data['form_action'] = admin_url($data['page_setting']['controller'] . '/submit_form');
         $data['action'] = __('修 改');
+        $data['courses_list'] = Courses_model::list();
+        $data['categories_list'] = Categories_model::list();
+        $data['central_obj_list'] = Central_obj_model::list();
+        $data['sb_obj_list'] = Sb_obj_model::list();
 
-
+        $GLOBALS["select2"] = 1;        $GLOBALS["select2"] = 1;
         $GLOBALS["datatable"] = 1;
 
         $this->load->view('webadmin/' . $this->scope . '_edit',  $data);
@@ -361,7 +369,7 @@ class Bk_course_outline extends CI_Controller //change this
     public function preview()
     {
         $data['page_setting'] = $this->page_setting(array(
-            'view_news'
+            'view_'. $this->scope,
         ), FALSE, TRUE);
 
         $data['form_action'] = admin_url($data['page_setting']['controller'] . '/submit_form');
@@ -415,6 +423,12 @@ class Bk_course_outline extends CI_Controller //change this
 
         $GLOBALS["select2"] = 1;
         $GLOBALS["datatable"] = 1;
+
+        $data['courses_list'] = Courses_model::list();
+        $data['categories_list'] = Categories_model::list();
+        $data['central_obj_list'] = Central_obj_model::list();
+        $data['sb_obj_list'] = Sb_obj_model::list();
+
         $this->load->view('webadmin/' . $this->scope . '', $data);
     }
 }

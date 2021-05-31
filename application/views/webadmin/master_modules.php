@@ -71,7 +71,7 @@
                                     </thead>
 
                                     <tbody>
-                                    <?php  for ($i = 0; $i < $module_count; $i++){?>
+                                    <?php  for ($i = 0; $i < $module_count; $i++){ ?>
                                             <tr>
                                                 <td><?= $module_row1[$i] ? '<a class="editLinkBtn" data-id="'.$module_row1[$i]->id.'" data-code="'.$module_row1[$i]->code.'" data-name="'.$module_row1[$i]->name.'" data-level="'.$module_row1[$i]->level_id.'" href="#" data-toggle="modal" data-target="#editDetail"><i class="fa fa-edit"></i>'. $module_row1[$i]->code.' '.$module_row1[$i]->name.'</a>' : '' ?></td>
                                                 <td><?= $module_row2[$i] ? '<a class="editLinkBtn" data-id="'.$module_row2[$i]->id.'" data-code="'.$module_row2[$i]->code.'" data-name="'.$module_row2[$i]->name.'" data-level="'.$module_row2[$i]->level_id.'" href="#" data-toggle="modal" data-target="#editDetail"><i class="fa fa-edit"></i>'. $module_row2[$i]->code.' '.$module_row2[$i]->name.'</a>' : '' ?></td>
@@ -79,7 +79,7 @@
                                                 <td><?= $module_row4[$i] ? '<a class="editLinkBtn" data-id="'.$module_row4[$i]->id.'" data-code="'.$module_row4[$i]->code.'" data-name="'.$module_row4[$i]->name.'" data-level="'.$module_row4[$i]->level_id.'" href="#" data-toggle="modal" data-target="#editDetail"><i class="fa fa-edit"></i>'. $module_row4[$i]->code.' '.$module_row4[$i]->name.'</a>' : '' ?></td>
                                                 <td><?= $module_row5[$i] ? '<a class="editLinkBtn" data-id="'.$module_row5[$i]->id.'" data-code="'.$module_row5[$i]->code.'" data-name="'.$module_row5[$i]->name.'" data-level="'.$module_row5[$i]->level_id.'" href="#" data-toggle="modal" data-target="#editDetail"><i class="fa fa-edit"></i>'. $module_row5[$i]->code.' '.$module_row5[$i]->name.'</a>' : '' ?></td>
                                             </tr>
-                                            <?} ?>
+                                    <? } ?>
                                     </tbody>
                                 </table>
 
@@ -128,7 +128,7 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label class="text-nowrap">單元編號： </label>
-                                    <input type="text" class="form-control" placeholder="e.g. 1.1" name="module_code" id="modalCode" value="" readonly>
+                                    <input type="text" class="form-control" placeholder="e.g. 1.1" name="module_code" id="modalCode" value="">
                                 </div>
                             </div>
 

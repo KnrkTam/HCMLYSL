@@ -1,17 +1,16 @@
 <?php
 	defined('BASEPATH') OR exit('No direct script access allowed');
 
-	class Levels_model extends BaseModel
+	class Sb_obj_model extends BaseModel
 	{
-		protected $table = "levels";
+		protected $table = "sb_obj";
 
         public static function list()
 		{
-
-            $result = Levels_model::all();
+            $result = Sb_obj_model::all();
 
             foreach($result as $row){
-                $list[$row['id']] = $row["level"];
+                $list[$row['id']] = $row["name"];
             }
             
             return $list;

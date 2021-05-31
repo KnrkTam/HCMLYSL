@@ -158,7 +158,7 @@
                                 <div class="mt-4 d-flex justify-content-end">
                                     <button type="button" class="btn bg-maroon mw-100 mb-4 mr-4" onclick="location.href='<?= admin_url($page_setting['controller']) ?>';">確 定</button>
 
-                                    <button type="button" class="btn btn-default mw-100 mb-4" onclick="location.href='../Bk_course_outline/create';">返 回</button>
+                                    <button type="button" class="btn btn-default mw-100 mb-4" onclick="location.href='<?= (admin_url($page_setting['controller'])) . '/create'?>';">返 回</button>
 
                                 </div>
 

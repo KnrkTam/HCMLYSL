@@ -18,16 +18,21 @@
 
             <?php
             $menu_list = array(
-
+                array(
+                    'main_menu' => __('增加選項'),
+                    'url' => 'bk_options',
+                    'access' => 'view_master_modules',
+                    'icon' => 'fa-sliders',
+                ),
                 array(
                     'main_menu' => __('各學階單元設定(master)'),
                     'url' => 'bk_master_modules',
-                    'access' => 'view_news',
+                    'access' => 'view_master_modules',
                     'icon' => 'fa-file-text',
                 ),
                 array(
                     'main_menu' => __('校本課程大綱 - 檢視'),
-                    'url' => 'Bk_course_outline',
+                    'url' => 'Bk_master_course_outline',
                     'access' => 'view_news',
                     'icon' => 'fa-file-text-o',
                 ),

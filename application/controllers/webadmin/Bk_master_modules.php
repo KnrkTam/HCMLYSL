@@ -328,6 +328,10 @@ class Bk_master_modules extends CI_Controller //change this
 
     public function create()
     {
+        $data['page_setting'] = $this->page_setting(array(
+            'create_' . $this->scope
+        ), FALSE, TRUE);
+
         // POST
         $postData = $this->input->post();
 
@@ -370,8 +374,13 @@ class Bk_master_modules extends CI_Controller //change this
     
     public function edit($id)
     {
+        $data['page_setting'] = $this->page_setting(array(
+            'update_' . $this->scope
+        ), FALSE, TRUE);
+
         // POST
         $postData = $this->input->post();
+        $dup_code = Modules_model::where('id', '!=', $id)->where('code',$postData['code'])->first()->name;
 
         $module = Modules_model::find($id);
         $module_arr = array(
@@ -382,7 +391,7 @@ class Bk_master_modules extends CI_Controller //change this
         );
         $new_arr = array(
             'level_id' => $postData['level_id'],
-            // 'code' => $postData['code'],
+            'code' => $postData['code'],
             'name' => $postData['name'],
         );
 
@@ -398,10 +407,12 @@ class Bk_master_modules extends CI_Controller //change this
                     'status' => '請輸入單元編號',
                 );
                 break;
-            case (!empty($dup_code)):
-                $data = array(
-                    'status' => '單元編號重複',
-                );
+            case ($dup_code):
+                if ($dup_code !== $module->code) {
+                    $data = array(
+                        'status' => '單元編號重複',
+                    );
+                } 
                 break;
             case (empty($postData['name'])):
                 $data = array(
@@ -434,14 +445,13 @@ class Bk_master_modules extends CI_Controller //change this
         $GLOBALS["datatable"] = 1;
         
         //level drop down
-        $data['level_list'] = Levels_model::drop_list();
+        $data['level_list'] = Levels_model::list();
 
 
         //modules
         $modules = Modules_model::all();
         $data['modules'] = $modules;
         $data['module_count'] = Modules_model::select('level_id', DB::raw('count(*) as count'))->groupBy('level_id')->orderBy('count','desc')->first()->count;
-
         $data['module_row1'] = Modules_model::module_row(1);
         $data['module_row2'] = Modules_model::module_row(2);
         $data['module_row3'] = Modules_model::module_row(3);

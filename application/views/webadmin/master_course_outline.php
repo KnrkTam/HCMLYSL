@@ -63,27 +63,15 @@
                                     <div class="col-lg-3">
                                         <div class="form-group ">
                                             <label class="text-nowrap">課程 : </label>
-                                            <select class="form-control">
-                                                <option hidden>請選擇...</option>
-                                                <option value="語文">語文</option>
-                                                <option value="音">音</option>
-                                                <option value="科技">科技</option>
-                                                <option value="STEM">STEM</option>
+                                            <div style="flex: 1"><?php form_list_type('courses_id', ['type' => 'select', 'class'=> 'form-control' , 'value' =>'',  'enable_value' => $courses_list, 'form_validation_rules' => 'trim|required']) ?></div>
 
-                                            </select>
                                         </div>
                                     </div>
                                     <div class="col-lg-2">
                                         <div class="form-group">
                                             <label class="text-nowrap">範疇 : </label>
-                                            <select class="form-control">
-                                                <option hidden>請選擇...</option>
-                                                <option value="聆聽">聆聽</option>
-                                                <option value="聆聽">聆聽</option>
-                                                <option value="聆聽">聆聽</option>
-                                                <option value="聆聽">聆聽</option>
+                                            <div style="flex: 1"><?php form_list_type('categories_id', ['type' => 'select', 'class'=> 'form-control' , 'value' =>'',  'enable_value' => $categories_list, 'form_validation_rules' => 'trim|required']) ?></div>
 
-                                            </select>
                                         </div>
                                     </div>
                                     <div class="col-lg-6 d-flex align-items-center">
@@ -91,12 +79,8 @@
 
                                         <div class="form-group w-100">
                                             <label class="text-nowrap">校本課程學習重點 : (多項選擇) </label>
-                                            <select class="form-control select2" multiple="" data-placeholder="請選擇...">
-                                                <option value="聽力訓練">聽力訓練</option>
-                                                <option value="理解語意:把握重心">理解語意:把握重心</option>
-                                                <option value="聽力訓練">聽力訓練</option>
-                                                <option value="理解語意:把握重心">理解語意:把握重心</option>
-                                            </select>
+                                            <div style="flex: 1"><?php form_list_type('sb_obj_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'data-placeholder' => '請選擇...', 'enable_value' => $sb_obj_list, 'form_validation_rules' => 'trim|required', 'multiple' => 1]) ?></div>
+
                                         </div>
                                         <span class="ml-2 mr-2 mt-2">或</span>
                                         <div class="form-group w-100">
@@ -120,7 +104,7 @@
 
 
 
-                                <button type="button" class="btn bg-orange mw-100 mb-4" onclick="location.href='../webadmin/Bk_course_outline/create';">新 增</button>
+                                <button type="button" class="btn bg-orange mw-100 mb-4" onclick="location.href='<?= (admin_url($page_setting['controller'])) . '/create'?>';">新 增</button>
 
 
                                 <div class="tableWrap hidenWrap">
@@ -148,7 +132,7 @@
 
                                         <tbody>
                                             <tr>
-                                                <td><a class="editLinkBtn" href="../webadmin/Bk_course_outline/edit"><i class="fa fa-edit"></i></a></td>
+                                                <td><a class="editLinkBtn" href="<?= (admin_url($page_setting['controller'])) . '/edit'?>"><i class="fa fa-edit"></i></a></td>
                                                 <td>語文</td>
                                                 <td>聆聽</td>
                                                 <td>聽力訓練</td>
