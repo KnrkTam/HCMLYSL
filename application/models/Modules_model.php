@@ -15,4 +15,10 @@
             
             return $module_row;
         }
+
+        public static function name($id){
+            $result = Modules_model::where('id', $id)->first()->name;
+
+            return $result;
+        }
 	}

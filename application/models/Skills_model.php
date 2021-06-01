@@ -1,23 +1,21 @@
 <?php
 	defined('BASEPATH') OR exit('No direct script access allowed');
 
-	class Central_obj_model extends BaseModel
+	class Skills_model extends BaseModel
 	{
-		protected $table = "central_obj";
+		protected $table = "skills";
 
         public static function list()
 		{
-            $result = Central_obj_model::all();
-
+            $result = Skills_model::all();
             foreach($result as $row){
-                $list[$row['id']] = $row["name"];
+                $list[$row['id']] =  $row["name"];
             }
-            
             return $list;
         }
 
         public static function name($id){
-            $result = Central_obj_model::where('id', $id)->first()->name;
+            $result = Skills_model::where('id', $id)->first()->name;
 
             return $result;
         }

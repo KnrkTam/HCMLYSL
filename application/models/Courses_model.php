@@ -13,4 +13,10 @@
             }
             return $list;
         }
+
+        public static function name($id){
+            $result = Courses_model::where('id', $id)->first()->name;
+
+            return $result;
+        }
 	}

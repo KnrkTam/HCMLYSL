@@ -15,4 +15,10 @@
             
             return $list;
         }
+
+        public static function name($id){
+            $result = Sb_obj_model::where('id', $id)->first()->name;
+
+            return $result;
+        }
 	}

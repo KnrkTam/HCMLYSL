@@ -2,6 +2,14 @@
 <html lang="en">
 
 <head>
+    <style>
+        .required:after, .required_field:after {
+            content: ' * ';
+            color: red;
+            left: 8px;
+            position: absolute;
+        }
+    </style>
     <?php include_once("head.php"); ?>
 </head>
 
@@ -61,55 +69,53 @@
                                 <div class="row">
                                     <div class="col-lg-4">
                                         <div class="form-group">
-                                            <label class="text-nowrap"><span class="text-red">*</span>課程： </label>
-                                            <p>語文</p>
+                                            <label class="text-nowrap required">課程： </label>
+                                            <p><?= $pv_course_id?></p>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="form-group">
-                                            <label class="text-nowrap"><span class="text-red">*</span>範疇：
+                                            <label class="text-nowrap required">範疇：
                                             </label>
-                                            <p>聆聽</p>
+                                            <p><?= $pv_categories_id?></p>
 
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="form-group">
-                                            <label class="text-nowrap"><span class="text-red">*</span>課程編號： </label>
-                                            <p>MS0002</p>
+                                            <label class="text-nowrap required">課程編號： </label>
+                                            <p><?= $pv_lesson_code?></p>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="form-group">
-                                            <label class="text-nowrap"><span class="text-red">*</span>中央課程學習重點： </label>
-                                            <p>技能</p>
+                                            <label class="text-nowrap required">中央課程學習重點： </label>
+                                            <p><?= $pv_central_obj_id?></p>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="form-group">
-                                            <label class="text-nowrap"><span class="text-red">*</span>校本課程學習重點：
+                                            <label class="text-nowrap required">校本課程學習重點：
                                             </label>
-                                            <p>聽力訓練</p>
+                                            <p><?= $pv_sb_obj_id?></p>
 
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="form-group">
-                                            <label class="text-nowrap"><span class="text-red">*</span>相關課程編號： </label>
-                                            <p>MN0155</p>
+                                            <label class="text-nowrap required">相關課程編號： </label>
+                                            <p><?= $pv_rel_code?>&nbsp </p>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
-                                        <p class="mb-2 bold"> <span class="text-red">*</span>學習元素：</p>
-                                        <p>知識</p>
+                                        <p class="mb-2 bold" required> 學習元素：</p>
+                                        <p><?= $pv_element_id?></p>
 
 
                                     </div>
                                     <div class="col-lg-4">
-                                        <p class="mb-2 bold"> <span class="text-red">*</span>組別：</p>
-                                        <p>初組</p>
-
-
+                                        <p class="mb-2 bold" required> 組別：</p>
+                                        <p> <?= $pv_group_id ?></p>
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="form-group">
@@ -120,44 +126,60 @@
                                     <div class="col-lg-4">
                                         <div class="form-group">
                                             <label>LPF(基礎) <small>(2 層分類, 單項選擇)</small></label>
-                                            <p> I2</p>
+                                            <p> <?= $pv_lpf_basic_id?></p>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="form-group">
                                             <label>LPF(高中) <small>(2 層分類, 單項選擇)</small></label>
-                                            <p> I3</p>
+                                            <p><?= $pv_lpf_advanced_id?></p>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="form-group">
                                             <label>POAS： <small>(2 層分類, 單項選擇)</small></label>
-                                            <p> I.B.3 - 學習及運用實用.</p>
+                                            <p> <?= $pv_poas_id?></p>
                                         </div>
                                     </div>
                                     <div class="col-lg-4 d-flex">
                                         <div class="form-group w-100">
                                             <label class="text-nowrap">Key Skills (2 層分類,可多項選擇)</label>
-                                            <p>能注意聲音的來源，對聲音作出反應</p>
+                                            <p><?= $pv_skills_id?></p>
                                         </div>
 
                                     </div>
                                     <div class="col-lg-4">
 
                                         <p class="mb-2 bold">前備技能</p>
-                                        <p><span class="text-green"><i class="fa fa-check"></i></span></p>
+                                        <? if ($pv_preliminary_skills == "1") { ?>
+                                            <p><span class="text-green"><i class="fa fa-check"></i></span></p>
+                                        <? } else {?>
+                                            <p><span class="text-red"><i class="fa fa-close"></i></span></p>
+                                        <? }?>
 
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="form-group">
-                                            <label><span class="text-red">*</span>預期學習成果：</label>
-                                            <p>MN0449,MS0002</p>
+                                            <label class="required">預期學習成果：</label>
+                                            <p><?= $pv_expected_outcome?></p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="mt-4 d-flex justify-content-end">
-                                    <button type="button" class="btn bg-maroon mw-100 mb-4 mr-4" onclick="location.href='<?= admin_url($page_setting['controller']) ?>';">確 定</button>
+                                <? foreach ($postData as $i => $row) { ?>
+                                        <input type="hidden" name="post_data[<?=$i?>]" value="<?= $row?>"></input>
+                                <? } ?>
+                                <? foreach ($postData['group_id'] as $i => $row) { ?>
+                                    <input type="hidden" name="group_id[<?= $i ?>]" value="<?= $row ?>"></input>
+                                <? } ?>
 
+                                <? foreach ($postData['skills_id'] as $i => $row) { ?>
+                                    <input type="hidden" name="skills_id[<?= $i ?>]" value="<?= $row ?>"></input>
+                                <? } ?>
+
+
+
+                                    <button type="submit" class="btn bg-maroon mw-100 mb-4 mr-4">確 定</button>
                                     <button type="button" class="btn btn-default mw-100 mb-4" onclick="location.href='<?= (admin_url($page_setting['controller'])) . '/create'?>';">返 回</button>
 
                                 </div>

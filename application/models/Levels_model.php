@@ -16,4 +16,10 @@
             
             return $list;
         }
+
+        public static function name($id){
+            $result = Levels_model::where('id', $id)->first()->name;
+
+            return $result;
+        }
 	}

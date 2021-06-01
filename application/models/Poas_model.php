@@ -1,23 +1,21 @@
 <?php
 	defined('BASEPATH') OR exit('No direct script access allowed');
 
-	class Central_obj_model extends BaseModel
+	class Poas_model extends BaseModel
 	{
-		protected $table = "central_obj";
+		protected $table = "poas";
 
         public static function list()
 		{
-            $result = Central_obj_model::all();
-
+            $result = Poas_model::all();
             foreach($result as $row){
                 $list[$row['id']] = $row["name"];
             }
-            
             return $list;
         }
 
         public static function name($id){
-            $result = Central_obj_model::where('id', $id)->first()->name;
+            $result = Poas_model::where('id', $id)->first()->name;
 
             return $result;
         }
