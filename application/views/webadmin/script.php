@@ -13,6 +13,13 @@
 <script src="<?= assets_url('webadmin/admin_lte/dist/js/adminlte.min.js') ?>"></script>
 <!-- js-cookie -->
 <script src="<?= assets_url('webadmin/js/js.cookie.min.js') ?>"></script>
+<!-- InputMask -->
+<script src="<?= assets_url('webadmin/admin_lte/plugins/input-mask/jquery.inputmask.js') ?>"></script>
+<script src="<?= assets_url('webadmin/admin_lte/plugins/input-mask/jquery.inputmask.date.extensions.js') ?>"></script>
+<script src="<?= assets_url('webadmin/admin_lte/plugins/input-mask/jquery.inputmask.extensions.js')?>"></script>
+<script type="text/javascript">
+    $(":input").inputmask(); 
+</script>
 
 <?php if ($GLOBALS["jquery19"] == 1) { ?>
 
@@ -21,6 +28,8 @@
 
 
 <?php } ?>
+
+
 <?php if ($GLOBALS["datatable"] == 1) { ?>
     <!-- DataTables 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
@@ -55,6 +64,7 @@
                 "bSort": false,
                 "pageLength": 100,
                 "pagingType": "input",
+                "autoWidth": true,
                 "fnInitComplete": function(oSettings) { //all old method may need add fn
                     this.api().columns().every(function() {
                         var column = this;
@@ -79,7 +89,8 @@
                         }
 
                     });
-                }
+                },
+         
             });
 
             $('.datatable-with-filter thead th:not(.no-filter)').each(function() {

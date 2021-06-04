@@ -9,6 +9,18 @@
             left: 10px;
             position: absolute;
         }
+
+        .modal-dialog,
+        .modal-content {
+            /* 80% of window height */
+            height: 90%;
+        }
+
+        .modal-body {
+            /* 100% = dialog height, 120px = header + footer */
+            max-height: calc(100% - 120px);
+            overflow-y: scroll;
+        }
     </style>
     <?php include_once("head.php"); ?>
 </head>
@@ -62,7 +74,7 @@
                             </div>
                         </div> -->
                             <!-- /.box-header -->
-
+                            <input type="hidden" value=<?= $function?> name="action"> </input>
                             <div class="box-body">
                                 <div id="signupalert" class="alert alert-danger margin_bottom_20"></div>
 
@@ -70,7 +82,7 @@
                                     <div class="col-lg-4">
                                         <div class="form-group">
                                             <label class="text-nowrap required"><span>課程：</span> </label>
-                                            <div style="flex: 1"><?php form_list_type('courses_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'enable_value' => $courses_list, 'form_validation_rules' => 'trim|required', 'disable_please_select' => 1]) ?></div>
+                                            <div style="flex: 1"><?php form_list_type('course_id', ['type' => 'select', 'class'=> 'select2 form-control' , 'value' =>$course_id, 'data-placeholder' => '請選擇', 'enable_value' => $courses_list, 'form_validation_rules' => 'trim|required']) ?></div>
 
                                         </div>
                                     </div>
@@ -78,27 +90,27 @@
                                         <div class="form-group">
                                             <label class="text-nowrap required">範疇：
                                             </label>
-                                            <div style="flex: 1"><?php form_list_type('categories_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'enable_value' => $categories_list, 'form_validation_rules' => 'trim|required', 'disable_please_select' => 1]) ?></div>
+                                            <div style="flex: 1"><?php form_list_type('categories_id', ['type' => 'select', 'class'=> 'select2 form-control' , 'value' =>$categories_id, 'data-placeholder' => '請選擇', 'enable_value' => $categories_list, 'form_validation_rules' => 'trim|required']) ?></div>
 
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="form-group">
                                             <label class="text-nowrap required">課程編號： <span class="text-red small">*課程編號不能重覆, 警告提示及不能儲存</span></label>
-                                            <input type="text" class="form-control" value="MN0155">
+                                            <input type="text" class="form-control" id="lesson_code" name="lesson_code" value="<?=$lesson_code?>" placeholder="請輸入..." data-inputmask="'mask': ['*******']" data-mask>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="form-group">
                                             <label class="text-nowrap required">中央課程學習重點： </label>
-                                            <div style="flex: 1"><?php form_list_type('central_obj_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'enable_value' => $central_obj_list, 'form_validation_rules' => 'trim|required', 'disable_please_select' => 1]) ?></div>
+                                            <div style="flex: 1"><?php form_list_type('central_obj_id', ['type' => 'select', 'class'=> 'select2 form-control' , 'value' =>$central_obj_id, 'data-placeholder' => '請選擇',  'enable_value' => $central_obj_list, 'form_validation_rules' => 'trim|required']) ?></div>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="form-group">
                                             <label class="text-nowrap required">校本課程學習重點：
                                             </label>
-                                            <div style="flex: 1"><?php form_list_type('central_obj_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'enable_value' => $sb_obj_list, 'form_validation_rules' => 'trim|required', 'disable_please_select' => 1]) ?></div>
+                                            <div style="flex: 1"><?php form_list_type('sb_obj_id', ['type' => 'select', 'class'=> 'select2 form-control' , 'value' =>$sb_obj_id, 'data-placeholder' => '請選擇',  'enable_value' => $sb_obj_list, 'form_validation_rules' => 'trim|required']) ?></div>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
@@ -109,35 +121,21 @@
                                     </div>
                                     <div class="col-lg-4">
                                         <p class="mb-4 required">學習元素：</p>
+                                        <?php foreach ($elements_list as $i => $row) { ?>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="study" checked value="知識" id="knowledge">
-                                            <label class="form-check-label" for="knowledge">知識</label>
+                                            <input class="form-check-input" type="radio" name="element_id" value="<?= $i?>" id="<?= $row['nickname']?>">
+                                            <label class="form-check-label" for="<?= $row['nickname']?>"><?= $row['name']?></label>
                                         </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="study" value="技能" id="skill">
-                                            <label class="form-check-label" for="skill">技能</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="study" value="態度" id="attitude">
-                                            <label class="form-check-label" for="attitude">態度</label>
-                                        </div>
-
+                                        <? } ?>
                                     </div>
                                     <div class="col-lg-4">
                                         <p class="mb-4 required"> 組別：</p>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" checked value="初組" id="lowLevel">
-                                            <label class="form-check-label" for="lowLevel">初組</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" value="中組" id="middleLevel">
-                                            <label class="form-check-label" for="middleLevel">中組</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" value="高組" id="heightLevel">
-                                            <label class="form-check-label" for="heightLevel">高組</label>
-                                        </div>
-
+                                        <?php foreach ($groups_list as $i => $row) { ?>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox" name="group_id[<?=$i?>]" value="<?= $row['name']?>" id=<?= $row['nickname']?>>
+                                                <label class="form-check-label" for="<?= $row['nickname']?>"><?= $row['name']?></label>
+                                            </div>
+                                        <? } ?>
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="form-group">
@@ -148,64 +146,41 @@
                                     <div class="col-lg-4">
                                         <div class="form-group">
                                             <label>LPF(基礎) <small>(2 層分類, 單項選擇)</small></label>
-                                            <select class="form-control">
-                                                <option value="" hidden>請選擇</option>
-                                                <option value="I2" selected>I2</option>
-                                                <option value="I3">I3</option>
-                                                <option value="I4">I4</option>
-
-                                            </select>
+                                            <div style="flex: 1"><?php form_list_type('lpf_basic_id', ['type' => 'select', 'class'=> 'select2 form-control' , 'value' =>$lpf_basic_id, 'data-placeholder' => '請選擇', 'enable_value' => $lpf_basic_list, 'form_validation_rules' => 'trim|required']) ?></div>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="form-group">
-                                            <label>LPF(基礎) <small>(2 層分類, 單項選擇)</small></label>
-                                            <select class="form-control">
-                                                <option value="" hidden>請選擇</option>
-                                                <option value="I2" selected>I2</option>
-                                                <option value="I3">I3</option>
-                                                <option value="I4">I4</option>
-                                            </select>
+                                            <label>LPF(高中) <small>(2 層分類, 單項選擇)</small></label>
+                                            <div style="flex: 1"><?php form_list_type('lpf_advanced_id', ['type' => 'select', 'class'=> 'select2 form-control' , 'value' =>$lpf_advanced_id, 'data-placeholder' => '請選擇', 'enable_value' => $lpf_advanced_list, 'form_validation_rules' => 'trim|required']) ?></div>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="form-group">
                                             <label>POAS： <small>(2 層分類, 單項選擇)</small></label>
-                                            <select class="form-control">
-                                                <option value="" hidden>請選擇</option>
-                                                <option value="IC.3" selected>IC.3</option>
-                                                <option value="IC.3">IC.3</option>
-                                                <option value="IC.3">IC.3</option>
-                                                <option value="IC.3">IC.3</option>
-                                            </select>
+                                            <div style="flex: 1"><?php form_list_type('poas_id', ['type' => 'select', 'class'=> 'select2 form-control' , 'value' =>$poas_id, 'data-placeholder' => '請選擇', 'enable_value' => $poas_list, 'form_validation_rules' => 'trim|required']) ?></div>
                                         </div>
                                     </div>
                                     <div class="col-lg-4 d-flex">
                                         <div class="form-group w-100">
                                             <label class="text-nowrap">Key Skills <small>(2 層分類,可多項選擇)</small> </label>
-                                            <select class="form-control">
-                                                <option value="" hidden>請選擇</option>
-                                                <option value="IC.3" selected>IC.3</option>
-                                                <option value="IC.3">IC.3</option>
-                                                <option value="IC.3">IC.3</option>
-                                                <option value="IC.3">IC.3</option>
-                                            </select>
+                                            <div style="flex: 1"><?php form_list_type('skills_id[]', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'data-placeholder' => '請選擇...', 'enable_value' => $skills_list, 'form_validation_rules' => 'trim|required', 'multiple' => 1, 'disable_please_select' => 1]) ?></div>
                                         </div>
                                         <div class="form-check form-check-inline mt-3">
-                                            <input class="form-check-input" type="checkbox" checked value="前備技能" id="frontSkill">
+                                            <input class="form-check-input" type="checkbox" value="<?=$preliminary_skills?>" id="preliminary_skills">
+                                            <input type='hidden' value="0" id ="skillhidden" name='preliminary_skills'>             
                                             <label class="form-check-label text-nowrap" for="frontSkill">前備技能</label>
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="form-group">
                                             <label class="required">預期學習成果：</label>
-                                            <textarea class="form-control" rows="3" placeholder="" value="MN0449,MS0002	"></textarea>
+                                            <textarea class="form-control" name="expected_outcome" rows="3" placeholder="" ><?= $expected_outcome?></textarea>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="mt-4 d-flex justify-content-end">
-                                    <button type="button" class="btn btn-primary mw-100 mb-4 mr-4" onclick="location.href='<?= (admin_url($page_setting['controller'])) . '/preview'?>';">確 定</button>
-
+                                    <button type="submit" class="btn bg-orange mw-100 mb-4 mr-4">儲存</button>
                                     <button type="button" class="btn btn-default mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller']) ?>';">返 回</button>
 
                                 </div>
@@ -248,14 +223,14 @@
 
                         <div class="col-lg-3">
                             <div class="form-group">
+                                <div style="flex: 1"><?php form_list_type('course_search', ['type' => 'select', 'class'=> 'select2 form-control' , 'value' =>"", 'data-placeholder' => '選擇課程', 'enable_value' => $courses_list, 'form_validation_rules' => 'trim|required']) ?></div>
+                            </div>
 
-                                <select class="form-control">
-                                    <option value="" hidden>選擇課程</option>
-                                    <option value="語文">語文</option>
-                                    <option value="音">音</option>
-                                    <option value="科技">科技</option>
-                                    <option value="STEM">STEM</option>
-                                </select>
+
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <div style="flex: 1"><?php form_list_type('category_search', ['type' => 'select', 'class'=> 'select2 form-control' , 'value' =>"", 'data-placeholder' => '選擇範疇', 'enable_value' => $categories_list, 'form_validation_rules' => 'trim|required']) ?></div>
                             </div>
 
 
@@ -263,27 +238,8 @@
                         <div class="col-lg-3">
                             <div class="form-group">
 
-                                <select class="form-control">
-                                    <option value="" hidden>選擇範疇</option>
-                                    <option value="語文">語文</option>
-                                    <option value="音">音</option>
-                                    <option value="科技">科技</option>
-                                    <option value="STEM">STEM</option>
-                                </select>
-                            </div>
+                            <div style="flex: 1"><?php form_list_type('sb_obj_search', ['type' => 'select', 'class'=> 'select2 form-control' , 'value' =>"", 'data-placeholder' => '選擇校本課程學習重點', 'enable_value' => $sb_obj_list, 'form_validation_rules' => 'trim|required']) ?></div>
 
-
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="form-group">
-
-                                <select class="form-control">
-                                    <option value="" hidden>校本課程學習重點</option>
-                                    <option value="語文">語文</option>
-                                    <option value="音">音</option>
-                                    <option value="科技">科技</option>
-                                    <option value="STEM">STEM</option>
-                                </select>
                             </div>
 
 
@@ -315,64 +271,26 @@
                             </thead>
 
                             <tbody>
+                                <?php foreach ($lessons as $row){ ?>
                                 <tr>
                                     <td><input type="checkbox" name="searchCourseNumberCheck" class="searchCourseNumberCheck" /></td>
-                                    <td>語文</td>
-                                    <td>聆聽</td>
-                                    <td>聽力訓練</td>
-                                    <td>聽力訓練</td>
-                                    <td>技能</td>
-                                    <td>初組、中組</td>
-                                    <td>I2</td>
-                                    <td>I2</td>
-                                    <td class="nowrap">IB.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-                                    <td class="nowrap">IC.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-
-                                    <td>能注意聲音的來源，對聲音作出反應</td>
-                                    <td class="courseNum">MN0155</td>
+                                    <td><?= $row['course']?></td>
+                                    <td><?= $row['category']?></td>
+                                    <td><?= $row['central_obj']?></td>
+                                    <td><?= $row['sb_obj']?></td>
+                                    <td><?= $row['element']?></td>
+                                    <td><?= $row['groups']?></td>
+                                    <td><?= $row['lpf_basic']?></td>
+                                    <td><?= $row['lpf_advanced']?></td>
+                                    <td class="nowrap"><?= $row['poas']?><span data-toggle="tooltip" title="顥示提示內容"><i class="fa fa-info-circle"></i></span></td>
+                                    <td class="nowrap"><?= $row['skills']?><span data-toggle="tooltip" title="顥示提示內容"><i class="fa fa-info-circle"></i></span></td>
+                                    <td><?= $row['expected_outcome']?></td>
+                                    <td><?= $row['code']?></td>
                                     <td>MN0449,MS0002</td>
-
                                     <td></td>
                                 </tr>
-                                <tr>
+                                <? } ?>
 
-                                    <td><input type="checkbox" name="searchCourseNumberCheck" class="searchCourseNumberCheck" /></td>
-                                    <td>語文</td>
-                                    <td>聆聽</td>
-                                    <td>聽力訓練</td>
-                                    <td>聽力訓練</td>
-                                    <td>技能</td>
-                                    <td>初組、中組</td>
-                                    <td>I2</td>
-                                    <td>I2</td>
-                                    <td class="nowrap">IB.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-                                    <td class="nowrap">IC.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-                                    <td>能注意聲音的來源，對聲音作出反應</td>
-                                    <td class="courseNum">MN0157</td>
-                                    <td>MN0449,MS0002</td>
-
-                                    <td></td>
-                                </tr>
-                                <tr>
-
-                                    <td><input type="checkbox" name="searchCourseNumberCheck" class="searchCourseNumberCheck" /></td>
-                                    <td>語文</td>
-                                    <td>聆聽</td>
-                                    <td>聽力訓練</td>
-                                    <td>聽力訓練</td>
-                                    <td>技能</td>
-                                    <td>初組、中組</td>
-                                    <td>I2</td>
-                                    <td>I2</td>
-                                    <td class="nowrap">IB.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-                                    <td class="nowrap">IC.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-
-                                    <td>能注意聲音的來源，對聲音作出反應</td>
-                                    <td class="courseNum">MN0156</td>
-                                    <td>MN0449,MS0002</td>
-
-                                    <td></td>
-                                </tr>
 
                             </tbody>
                         </table>
@@ -394,9 +312,11 @@
         $(document).ready(function() {
             $('select.select2').select2();
             $('[data-toggle="tooltip"]').tooltip();
+            
 
             $('#searchCourseNumberTable').DataTable({
                 scrollX: true,
+                // scrollY: "30vw",
                 scrollCollapse: true,
                 bFilter: false,
                 bInfo: true,
@@ -405,9 +325,12 @@
                     targets: 'no-sort',
                     orderable: false,
                     width: 100
-                }]
-
+                }],
+                
             });
+
+
+            $('#lesson_code').inputmask("********",{"placeholder":""}); 
 
 
 
@@ -422,7 +345,25 @@
                 $('#classNumber').modal('hide');
             });
 
+            $('#preliminary_skills').on('change', function () {
+                $("#skillhidden").val(this.checked ? 1 : 0);
+            });
 
+            <? foreach ($group_ids as $i => $row) {?>
+            $("input[type='checkbox'][name='group_id[<?= $i?>]'").attr('checked', 'checked');
+            <? } ?>
+
+            $("input:radio[name=element_id][value="+ <?= $element_id?> + "]").attr('checked', 'checked');
+
+            $('#skills_id').val(<?= json_encode($skills_ids)?>).select2();  
+
+            $("input[type='checkbox'][id=preliminary_skills][value='1']").attr('checked', 'checked');
+            <? if($preliminary_skills == 1) {?>
+                $('#skillhidden').val(1);
+                $('#preliminary_skills').on('change', function () {
+                    $("#skillhidden").val(this.checked ? 1 : 0);
+                });
+            <? } ?>
 
 
 

@@ -940,6 +940,10 @@ table.dataTable tr.selected td.select-checkbox:after, table.dataTable tr.selecte
 .aqua-tooltip.show , .green-tooltip.show{
   display: inline-block!important;
 }
+
+.tooltip{
+  width: fit-content;
+}
   .ml-auto,
   .mx-auto {
     margin-left: auto !important;

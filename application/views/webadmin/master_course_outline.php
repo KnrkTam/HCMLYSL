@@ -85,14 +85,7 @@
                                         <span class="ml-2 mr-2 mt-2">或</span>
                                         <div class="form-group w-100">
                                             <label class="text-nowrap">課程編號 : (多項選擇) </label>
-                                            <select class="form-control select2" multiple="" data-placeholder="請選擇...">
-
-                                                <option value="MN0155">MN0155</option>
-                                                <option value="MN0158">MN0158</option>
-                                                <option value="MN0160">MN0160</option>
-                                                <option value="MN0162">MN0162</option>
-
-                                            </select>
+                                            <div style="flex: 1"><?php form_list_type('lesson_id[]', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'data-placeholder' => '請選擇...', 'enable_value' => $lessons_list, 'form_validation_rules' => 'trim|required', 'multiple' => 1]) ?></div>
                                         </div>
                                     </div>
                                     <div class="col-lg-1">
@@ -110,7 +103,7 @@
                                 <div class="tableWrap hidenWrap">
                                     <table class="table table-bordered table-striped dataTable" id="courseOutlineTable">
                                         <thead>
-                                            <tr class="bg-light-blue color-palette">
+                                            <tr class="bg-light-blue color-palette" style="z-index: -1000;">
                                                 <th class="no-sort" style="min-width: 4px;"></th>
                                                 <th class="nowrap">課程</th>
                                                 <th class="nowrap">範疇</th>
@@ -123,7 +116,6 @@
                                                 <th class="nowrap">POAS</th>
                                                 <th class="nowrap">Key Skill</th>
                                                 <th class="nowrap">前備技能</th>
-                                                <th class="nowrap">預期學習成果</th>
                                                 <th class="nowrap">課程編號</th>
                                                 <th class="nowrap">預期學習成果</th>
                                                 <th class="nowrap">相關項目編號</th>
@@ -131,65 +123,30 @@
                                         </thead>
 
                                         <tbody>
-                                            <tr>
-                                                <td><a class="editLinkBtn" href="<?= (admin_url($page_setting['controller'])) . '/edit'?>"><i class="fa fa-edit"></i></a></td>
-                                                <td>語文</td>
-                                                <td>聆聽</td>
-                                                <td>聽力訓練</td>
-                                                <td>聽力訓練</td>
-                                                <td>技能</td>
-                                                <td>初組、中組</td>
-                                                <td>I2</td>
-                                                <td>I2</td>
-                                                <td class="nowrap">IB.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-                                                <td class="nowrap">IC.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-                                                <td><span class="text-green"><i class="fa fa-check"></i></span></td>
-                                                <td>能注意聲音的來源，對聲音作出反應</td>
-                                                <td>MN0155</td>
-                                                <td>MN0449,MS0002</td>
-
-                                                <td></td>
-                                            </tr>
-                                            <tr>
-
-                                                <td><a class="editLinkBtn" href="../webadmin/Bk_course_outline/edit"><i class="fa fa-edit"></i></a></td>
-                                                <td>語文</td>
-                                                <td>聆聽</td>
-                                                <td>聽力訓練</td>
-                                                <td>聽力訓練</td>
-                                                <td>技能</td>
-                                                <td>初組、中組</td>
-                                                <td>I2</td>
-                                                <td>I2</td>
-                                                <td class="nowrap">IB.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-                                                <td class="nowrap">IC.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-                                                <td><span class="text-red"><i class="fa fa-remove"></i></span></td>
-                                                <td>能注意聲音的來源，對聲音作出反應</td>
-                                                <td>MN0155</td>
-                                                <td>MN0449,MS0002</td>
-
-                                                <td></td>
-                                            </tr>
-                                            <tr>
-
-                                                <td><a class="editLinkBtn" href="../webadmin/Bk_course_outline/edit"><i class="fa fa-edit"></i></a></td>
-                                                <td>語文</td>
-                                                <td>聆聽</td>
-                                                <td>聽力訓練</td>
-                                                <td>聽力訓練</td>
-                                                <td>技能</td>
-                                                <td>初組、中組</td>
-                                                <td>I2</td>
-                                                <td>I2</td>
-                                                <td class="nowrap">IB.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-                                                <td class="nowrap">IC.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-                                                <td><span class="text-red"><i class="fa fa-remove"></i></span></td>
-                                                <td>能注意聲音的來源，對聲音作出反應</td>
-                                                <td>MN0155</td>
-                                                <td>MN0449,MS0002</td>
-
-                                                <td></td>
-                                            </tr>
+                                            <?php foreach ($lessons as $row) {?>
+                                                <tr>
+                                                    <td><a class="editLinkBtn" href="<?= (admin_url($page_setting['controller'])) . '/edit/'. $row['id']?>"><i class="fa fa-edit"></i></a></td>
+                                                    <td><?= $row['course']?></td>
+                                                    <td><?= $row['category']?></td>
+                                                    <td><?= $row['central_obj']?></td>
+                                                    <td><?= $row['sb_obj']?></td>
+                                                    <td><?= $row['element']?></td>
+                                                    <td><?= $row['groups']?></td>
+                                                    <td><?= $row['lpf_basic']?></td>
+                                                    <td><?= $row['lpf_advanced']?></td>
+                                                    <td class="nowrap"><?= $row['poas']?><span data-toggle="tooltip" title="顥示提示內容"><i class="fa fa-info-circle"></i></span></td>
+                                                    <td class="nowrap"><?= $row['skills']?><span data-toggle="tooltip" title="顥示提示內容"><i class="fa fa-info-circle"></i></span></td>
+                                                    <td><? if ($row['preliminary_skill'] == 1) { ?>
+                                                        <span class="text-green"><i class="fa fa-check"></i></span>
+                                                    <?} else {?>
+                                                        <span class="text-red"><i class="fa fa-close"></i></span>
+                                                    <?}?>
+                                                    </td>
+                                                    <td><?= $row['code']?></td>
+                                                    <td><?= $row['expected_outcome']?></td>
+                                                    <td>MN0449,MS0002</td>
+                                                </tr>
+                                            <?}?>
 
                                         </tbody>
                                     </table>
@@ -223,19 +180,25 @@
     <script>
         $(document).ready(function() {
 
-            $('[data-toggle="tooltip"]').tooltip();
+            $('[data-toggle="tooltip"]').tooltip({
+                container: 'body'
+            });
             $('#courseOutlineTable').DataTable({
-
                 scrollX: true,
                 scrollCollapse: true,
+                function(){ 
+                    $(".dataTable").show() 
+                    $($.fn.dataTable.tables(true)).DataTable()
+                    // .tables( { visible: true, api: true } )
+                    .columns.adjust()
+                    // .fixedColumns().relayout()
+
+                }
             });
 
 
-
             $(".searchBtn").click(function() {
-
                 $(".tableWrap").fadeIn();
-
             });
 
 

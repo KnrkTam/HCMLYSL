@@ -108,13 +108,13 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
-                                        <p class="mb-2 bold" required> 學習元素：</p>
+                                        <p class="mb-2 bold required"> 學習元素：</p>
                                         <p><?= $pv_element_id?></p>
 
 
                                     </div>
                                     <div class="col-lg-4">
-                                        <p class="mb-2 bold" required> 組別：</p>
+                                        <p class="mb-2 bold required" > 組別：</p>
                                         <p> <?= $pv_group_id ?></p>
                                     </div>
                                     <div class="col-lg-4">
@@ -180,7 +180,7 @@
 
 
                                     <button type="submit" class="btn bg-maroon mw-100 mb-4 mr-4">確 定</button>
-                                    <button type="button" class="btn btn-default mw-100 mb-4" onclick="location.href='<?= (admin_url($page_setting['controller'])) . '/create'?>';">返 回</button>
+                                    <button type="button" class="btn btn-default mw-100 mb-4" onclick="location.href='<?= (admin_url($page_setting['controller'])) . '/'. $previous. '/'. $id?>';">返 回</button>
 
                                 </div>
 
