@@ -6,7 +6,8 @@ class Lessons_model extends BaseModel
     protected $table = "lessons";
 
     public static function table_list($id)
-    {
+    {   
+        //export data as in table list format
         $lesson= Lessons_model::find($id);
 
         $table_list = array(
@@ -21,6 +22,7 @@ class Lessons_model extends BaseModel
             'lpf_advanced' => Lpf_advanced_model::name($lesson['lpf_advanced_id']),
             'poas' => Poas_model::name($lesson['poas_id']),
             'skills' => Lessons_skill_model::list($id),
+            'rel_lessons' => Lessons_relevant_model::list($id),
             'preliminary_skill' => $lesson['preliminary_skills'],
             'expected_outcome' => $lesson['expected_outcome'],
             'code' => $lesson['code'],
@@ -30,10 +32,22 @@ class Lessons_model extends BaseModel
         return $table_list;
     }
 
-    public static function list()
+    public static function list($course_id = null, $category_id = null, $sb_obj_id = array(), $id = array())
     {
-
-        $result = Lessons_model::all();
+        if ($id) {
+            $result = array();
+            foreach ($id as $i => $row) {
+                $result[$i] = Lessons_model::where('id', $row)->first();
+            }
+        } else if (!$course_id && !$category_id) {
+            $result = Lessons_model::all();
+        } else if ($course_id && !$category_id) {
+            $result = Lessons_model::where('course_id', $course_id)->get();
+        } else if ($category_id && !$course_id) {
+            $result = Lessons_model::where('category_id', $category_id)->get();
+        } else if ($course_id && $category_id) {
+            $result = Lessons_model::where('course_id', $course_id)->where('category_id', $category_id)->get();
+        }
 
         foreach($result as $row){
             $list[$row['id']] = $row["code"];
@@ -41,5 +55,11 @@ class Lessons_model extends BaseModel
         
         return $list;
     }
+
+    public static function code($id){
+        $result = Lessons_model::where('id', $id)->first()->code;
+        return $result;
+    }
+
 
 };

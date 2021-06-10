@@ -9,6 +9,18 @@
             left: 10px;
             position: absolute;
         }
+
+        .modal-dialog,
+        .modal-content {
+            /* 80% of window height */
+            height: 90%;
+        }
+
+        .modal-body {
+            /* 100% = dialog height, 120px = header + footer */
+            max-height: calc(100% - 120px);
+            overflow-y: scroll;
+        }
     </style>
     <?php include_once("head.php"); ?>
 </head>
@@ -86,6 +98,9 @@
                                             <input type="text" class="form-control" id="lesson_code" name="lesson_code" value="<?=$lesson_code?>" placeholder="請輸入..." data-inputmask="'mask': ['*******']" data-mask>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="row">
+
                                     <div class="col-lg-4">
                                         <div class="form-group">
                                             <label class="text-nowrap required">中央課程學習重點： </label>
@@ -102,14 +117,17 @@
                                     <div class="col-lg-4">
                                         <div class="form-group">
                                             <label class="text-nowrap required">相關課程編號： <a class="link small" href="#" data-toggle="modal" data-target="#classNumber">搜尋編號</a></label>
-                                            <input type="text" class="form-control inputCourseNumber" placeholder="e.g.: #SC557, #BD003" Disabled>
+                                            <div style="width:100%"><?php form_list_type('rel_lessons[]', ['type' => 'select', 'class'=> 'inputCourseNumber select2 form-control' , 'value' =>$rel_lessons, 'data-placeholder' => 'e.g.: #SC557, #BD003',  'enable_value' => $lessons_list, 'form_validation_rules' => 'trim|required', 'multiple' => 1]) ?></div>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="row">
+
                                     <div class="col-lg-4">
                                         <p><label class="form-label required">學習元素：</label></p>
                                         <?php foreach ($elements_list as $i => $row) { ?>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="element_id" value="<?= $i?>" id="<?= $row['nickname']?>">
+                                            <input class="form-check-input" type="radio" name="element_id" value="<?php echo $i?>" id="<?= $row['nickname']?>">
                                             <label class="form-check-label" for="<?= $row['nickname']?>"><?= $row['name']?></label>
                                         </div>
                                         <? } ?>
@@ -129,27 +147,28 @@
                                             <input type="text" class="form-control" name="rel_code" placeholder="自訂輸入">
                                         </div>
                                     </div>
+                                </div>
+                                <div class="row">
                                     <div class="col-lg-4">
                                         <div class="form-group">
                                             <label>LPF(基礎) <small>(2 層分類, 單項選擇)</small></label>
                                             <div style="flex: 1"><?php form_list_type('lpf_basic_id', ['type' => 'select', 'class'=> 'select2 form-control' , 'value' =>$lpf_basic_id, 'data-placeholder' => '請選擇', 'enable_value' => $lpf_basic_list, 'form_validation_rules' => 'trim|required']) ?></div>
-
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="form-group">
                                             <label>LPF(高中) <small>(2 層分類, 單項選擇)</small></label>
                                             <div style="flex: 1"><?php form_list_type('lpf_advanced_id', ['type' => 'select', 'class'=> 'select2 form-control' , 'value' =>$lpf_advanced_id, 'data-placeholder' => '請選擇', 'enable_value' => $lpf_advanced_list, 'form_validation_rules' => 'trim|required']) ?></div>
-
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="form-group">
                                             <label>POAS： <small>(2 層分類, 單項選擇)</small></label>
                                             <div style="flex: 1"><?php form_list_type('poas_id', ['type' => 'select', 'class'=> 'select2 form-control' , 'value' =>$poas_id, 'data-placeholder' => '請選擇', 'enable_value' => $poas_list, 'form_validation_rules' => 'trim|required']) ?></div>
-
                                         </div>
                                     </div>
+                                </div>
+                                <div class="row">
                                     <div class="col-lg-4 d-flex">
                                         <div class="form-group w-100">
                                             <label class="text-nowrap">Key Skills <small>(2 層分類,可多項選擇)</small> </label>
@@ -162,6 +181,8 @@
                                             <label class="form-check-label text-nowrap" for="preliminary_skills">前備技能</label>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="row">
                                     <div class="col-lg-12">
                                         <div class="form-group">
                                             <label class="bold required">預期學習成果：</label>
@@ -237,7 +258,7 @@
 
                         </div>
                         <div class="col-lg-3">
-                            <button type="submit" class="btn btn-success  mb-4">搜 尋</button>
+                        <button type="button" id="searchBtn" class="btn btn-success mt-25 w-100 mb-4">搜 尋</button>
                         </div>
                     </div>
                     <div class="">
@@ -263,65 +284,6 @@
                             </thead>
 
                             <tbody>
-                                <tr>
-                                    <td><input type="checkbox" name="searchCourseNumberCheck" class="searchCourseNumberCheck" /></td>
-                                    <td>語文</td>
-                                    <td>聆聽</td>
-                                    <td>聽力訓練</td>
-                                    <td>聽力訓練</td>
-                                    <td>技能</td>
-                                    <td>初組、中組</td>
-                                    <td>I2</td>
-                                    <td>I2</td>
-                                    <td class="nowrap">IB.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-                                    <td class="nowrap">IC.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-
-                                    <td>能注意聲音的來源，對聲音作出反應</td>
-                                    <td class="courseNum">MN0155</td>
-                                    <td>MN0449,MS0002</td>
-
-                                    <td></td>
-                                </tr>
-                                <tr>
-
-                                    <td><input type="checkbox" name="searchCourseNumberCheck" class="searchCourseNumberCheck" /></td>
-                                    <td>語文</td>
-                                    <td>聆聽</td>
-                                    <td>聽力訓練</td>
-                                    <td>聽力訓練</td>
-                                    <td>技能</td>
-                                    <td>初組、中組</td>
-                                    <td>I2</td>
-                                    <td>I2</td>
-                                    <td class="nowrap">IB.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-                                    <td class="nowrap">IC.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-                                    <td>能注意聲音的來源，對聲音作出反應</td>
-                                    <td class="courseNum">MN0157</td>
-                                    <td>MN0449,MS0002</td>
-
-                                    <td></td>
-                                </tr>
-                                <tr>
-
-                                    <td><input type="checkbox" name="searchCourseNumberCheck" class="searchCourseNumberCheck" /></td>
-                                    <td>語文</td>
-                                    <td>聆聽</td>
-                                    <td>聽力訓練</td>
-                                    <td>聽力訓練</td>
-                                    <td>技能</td>
-                                    <td>初組、中組</td>
-                                    <td>I2</td>
-                                    <td>I2</td>
-                                    <td class="nowrap">IB.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-                                    <td class="nowrap">IC.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-
-                                    <td>能注意聲音的來源，對聲音作出反應</td>
-                                    <td class="courseNum">MN0156</td>
-                                    <td>MN0449,MS0002</td>
-
-                                    <td></td>
-                                </tr>
-
                             </tbody>
                         </table>
                     </div>
@@ -340,21 +302,75 @@
 
     <script>
         $(document).ready(function() {
-
+            $('select.select2').select2();
             $('[data-toggle="tooltip"]').tooltip();
 
-            $('#searchCourseNumberTable').DataTable({
-                scrollX: true,
-                scrollCollapse: true,
-                bFilter: false,
-                bInfo: true,
-                bLengthChange: false,
-                columnDefs: [{
-                    targets: 'no-sort',
-                    orderable: false,
-                    width: 100
-                }]
+            $("#rel_lessons").change(function() {
+                let old_arr = $('#rel_lessons').val();
+                for (let i = 0; i < old_arr.length; i++) {
+                    $(`input[type=checkbox][name=rel_lesson_check][value=${old_arr[i]}]`).prop('checked', true)
+                }
+                $('#rel_lessons').trigger('change');
+                $('#searchCourseNumberTable').DataTable().draw();
+            })
 
+            $('#searchBtn').click(function(){
+                $('#searchCourseNumberTable').DataTable().draw();
+            })
+
+            var Ajax_datatable = $('#searchCourseNumberTable').DataTable({
+                scrollX: true,
+                "language": {
+                    "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/' . get_wlocale() . '.json') ?>"
+                },
+                "order": [],
+                "bSort": false,
+                "pageLength": 50,
+                "pagingType": "input",
+                "processing": true,
+                "serverSide": true,
+                "ordering": false,
+                "searching": true,
+                "searchDelay": 0,
+                "ajax": {
+                    "url": "<?= admin_url($page_setting['controller'] . '/search_ajax') ?>",
+                    "method": "get",
+                    "timeout": "30000",
+                    "data": function(d) {
+                        let course_id = $('#course_search').val();
+                        let category_id = $('#category_search').val();
+                        let sb_obj_id = $('#sb_obj_search').val();
+                        let lesson_id = $('#lesson_search').val();
+                        d.course_search = course_id;
+                        d.category_search = category_id;
+                        d.sb_obj_search = sb_obj_id;
+                        d.lesson_search = lesson_id;
+                    },
+                    "error": function(e) {
+                        console.log(e);
+                    },
+                    "complete": function(e) {
+                        function submit_filter() {
+                            filter_data();
+                        }
+
+                        function filter_data() {
+                            $('#searchCourseNumberTable').DataTable().draw();
+                        }
+
+                        let old_arr = $('#rel_lessons').val();
+                        for (let i = 0; i < old_arr.length; i++) {
+                            $(`input[type=checkbox][name=rel_lesson_check][value=${old_arr[i]}]`).prop('checked', true)
+                        }
+                        $("input[type=checkbox][name=rel_lesson_check]").change(function() {
+                            let old_arr = $('#rel_lessons').val();
+                            old_arr.push(this.value);
+                            $('#rel_lessons').val(old_arr);
+                            $('#rel_lessons').trigger('change');
+                        })
+                    },
+
+                },
             });
 
             $('#lesson_code').inputmask("********",{"placeholder":""}); 
@@ -363,11 +379,11 @@
 
             $(".comfirmSelectCourseNumber").click(function() {
                 var courseNumberCount = new Array();
-                $("input[name='searchCourseNumberCheck']:checked").each(function() {
-                    courseNumberCount.push($(this).closest("tr").find(".courseNum").text());
-                });
+                // $("input[name='searchCourseNumberCheck']:checked").each(function() {
+                //     courseNumberCount.push($(this).closest("tr").find(".courseNum").text());
+                // });
 
-                $('.inputCourseNumber').val(courseNumberCount);
+                // $('.inputCourseNumber').val(courseNumberCount);
                 $('#classNumber').modal('hide');
             });
 
@@ -378,9 +394,10 @@
             <? foreach ($group_ids as $i => $row) {?>
             $("input[type='checkbox'][name='group_id[<?= $i?>]'").attr('checked', 'checked');
             <? } ?>
-
-            $("input:radio[name=element_id][value="+ <?= $element_id?> + "]").attr('checked', 'checked');
-
+            
+            <? if ($element_id){?>
+                $("input:radio[name=element_id][value="+ <?= $element_id?> + "]").attr('checked', 'checked');
+            <?}?>
             $('#skills_id').val(<?= json_encode($skills_ids)?>).select2();  
 
             $("input[type='checkbox'][id=preliminary_skills][value='1']").attr('checked', 'checked');
@@ -408,31 +425,6 @@
                         });
             */
 
-
-            // let saveBtn = document.querySelector('#save-btn');
-            //     saveBtn.addEventListener("click",function(){
-            //     createLesson(course_id.value, categories_id.value, lesson_code.value, central_obj_id.value, sb_obj_id.value, newCode.value, newName.value);
-            //     function createLesson(course_id, cat_id, code, ctr_id, sb_id, element, group, outcome){
-            //         $.ajax({
-            //         url: '<?= (admin_url($page_setting['controller'])) . '/check' ?>',
-            //         method:'POST',
-            //         data:{course_id:course_id, category_id:cat_id,code: code, ctr_id: ctr_id, sb_id:sb_id, element_id:element, group_id:group, outcome:outcome},
-            //         dataType:'json',     
-            //         success:function(data){
-            //             if (data.status == 'success') {
-            //                 window.location.reload();
-            //             } else {
-            //                 alertify.error(data.status)
-            //             }
-            //         },
-            //         error: function(error){
-            //             alert('error');
-            //             // alert('duplicated');
-            //             // console.log(error);
-            //         }
-            //         });
-            //     } 
-            // })
 
 
 

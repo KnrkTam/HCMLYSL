@@ -127,40 +127,40 @@
         }
     }*/
 
-    function select_filter_type(filter_type) {
-        $('#filter_para_container').show();
+    // function select_filter_type(filter_type) {
+    //     $('#filter_para_container').show();
 
-        $('.filter_para').prop('disabled', true).hide();
-        $(document).find('.filter_para').parent().find('.select2-container').hide();
-        $('#filter_' + filter_type + '_para').prop('disabled', false).show();
-        if(filter_type == 6){
-            $('#filter_6_container').show();
-            $('#filter_' + filter_type + '_para2').prop('disabled', false).show();
-        }else{
-            $('#filter_6_container').hide();
-        }
-        $(document).find('#filter_' + filter_type + '_para').parent('div').find('.select2-container').show();
-    }
+    //     $('.filter_para').prop('disabled', true).hide();
+    //     $(document).find('.filter_para').parent().find('.select2-container').hide();
+    //     $('#filter_' + filter_type + '_para').prop('disabled', false).show();
+    //     if(filter_type == 6){
+    //         $('#filter_6_container').show();
+    //         $('#filter_' + filter_type + '_para2').prop('disabled', false).show();
+    //     }else{
+    //         $('#filter_6_container').hide();
+    //     }
+    //     $(document).find('#filter_' + filter_type + '_para').parent('div').find('.select2-container').show();
+    // }
 
-    function submit_filter() {
-        var filter_type = $('#filter_type').val();
-        if (!filter_type) {
-            alert('<?=__('Please select filter type.')?>');
-        } else {
-            var filter_para = $('#filter_' + filter_type + '_para').val();
-            var filter_para2 = $('#filter_' + filter_type + '_para2').val();
+    // function submit_filter() {
+    //     var filter_type = $('#filter_type').val();
+    //     if (!filter_type) {
+    //         alert('<?=__('Please select filter type.')?>');
+    //     } else {
+    //         var filter_para = $('#filter_' + filter_type + '_para').val();
+    //         var filter_para2 = $('#filter_' + filter_type + '_para2').val();
 
-            if (filter_type == 1) {
-                filter_para = '';
-                location.href = '<?= admin_url($page_setting['controller'] . '/index/'); ?>' + filter_type + '/' + filter_para;
-            } else if ((filter_type == 2) && !filter_para) {
-                alert('<?=__('Please fill filter parameters.')?>');
-            }else{
-                /*location.href = '<//?= admin_url($page_setting['controller'] . '/index/'); ?>' + filter_type + '/' + filter_para + '/' + filter_para2; */
-                filter_data();
-            }
-        }
-    }
+    //         if (filter_type == 1) {
+    //             filter_para = '';
+    //             location.href = '<?= admin_url($page_setting['controller'] . '/index/'); ?>' + filter_type + '/' + filter_para;
+    //         } else if ((filter_type == 2) && !filter_para) {
+    //             alert('<?=__('Please fill filter parameters.')?>');
+    //         }else{
+    //             /*location.href = '<//?= admin_url($page_setting['controller'] . '/index/'); ?>' + filter_type + '/' + filter_para + '/' + filter_para2; */
+    //             filter_data();
+    //         }
+    //     }
+    // }
 
     function filter_data() {
         $('#Ajax_datatable').DataTable().draw();

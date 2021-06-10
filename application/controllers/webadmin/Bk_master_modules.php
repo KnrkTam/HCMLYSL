@@ -45,7 +45,7 @@ class Bk_master_modules extends CI_Controller //change this
             'view_' . $this->scope
         ), FALSE, TRUE);
 
-
+        $data['scope_code'] = $this->scope;
         $GLOBALS["select2"] = 1;
         $GLOBALS["datatable"] = 1;
         
@@ -57,11 +57,9 @@ class Bk_master_modules extends CI_Controller //change this
         $modules = Modules_model::all();
         $data['modules'] = $modules;
         $data['module_count'] = Modules_model::select('level_id', DB::raw('count(*) as count'))->groupBy('level_id')->orderBy('count','desc')->first()->count;
-        $data['module_row1'] = Modules_model::module_row(1);
-        $data['module_row2'] = Modules_model::module_row(2);
-        $data['module_row3'] = Modules_model::module_row(3);
-        $data['module_row4'] = Modules_model::module_row(4);
-        $data['module_row5'] = Modules_model::module_row(5);
+        for ($i=1; $i < 6; $i++){
+            $data['module_row'.$i] = Modules_model::module_row($i);
+        };
 
         $this->load->view('webadmin/' . $this->scope . '', $data);
     }

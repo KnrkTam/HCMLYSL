@@ -56,8 +56,9 @@
 
                             <div class="box-body">
                                 <div id="signupalert" class="alert alert-danger margin_bottom_20"></div>
-
-                                <button type="button" class="btn mw-100 bg-orange mb-4" data-toggle="modal" data-target="#newDetail">新 增</button>
+                                <?php if (validate_user_access(['create_'.$scope_code])) { ?>
+                                    <button type="button" class="btn mw-100 bg-orange mb-4" data-toggle="modal" data-target="#newDetail">新 增</button>
+                                <?php } ?>
 
 
 

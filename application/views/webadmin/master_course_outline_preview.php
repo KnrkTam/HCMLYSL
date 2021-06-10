@@ -104,7 +104,7 @@
                                     <div class="col-lg-4">
                                         <div class="form-group">
                                             <label class="text-nowrap required">相關課程編號： </label>
-                                            <p><?= $pv_rel_code?>&nbsp </p>
+                                            <p><?= $pv_rel_lessons?>&nbsp </p>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
@@ -167,7 +167,7 @@
                                 </div>
                                 <div class="mt-4 d-flex justify-content-end">
                                 <? foreach ($postData as $i => $row) { ?>
-                                        <input type="hidden" name="post_data[<?=$i?>]" value="<?= $row?>"></input>
+                                    <input type="hidden" name="post_data[<?=$i?>]" value="<?= $row?>"></input>
                                 <? } ?>
                                 <? foreach ($postData['group_id'] as $i => $row) { ?>
                                     <input type="hidden" name="group_id[<?= $i ?>]" value="<?= $row ?>"></input>
@@ -177,6 +177,9 @@
                                     <input type="hidden" name="skills_id[<?= $i ?>]" value="<?= $row ?>"></input>
                                 <? } ?>
 
+                                <? foreach ($postData['rel_lessons'] as $i => $row) { ?>
+                                    <input type="hidden" name="rel_lessons[<?= $i ?>]" value="<?= $row ?>"></input>
+                                <? } ?>
 
 
                                     <button type="submit" class="btn bg-maroon mw-100 mb-4 mr-4">確 定</button>

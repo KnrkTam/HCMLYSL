@@ -155,6 +155,7 @@
             }
 
             var Ajax_datatable = $('#Ajax_datatable').DataTable({
+                scrollX: true,
                 "language": {
                     "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/' . get_wlocale() . '.json') ?>"
                 },
@@ -173,7 +174,7 @@
                     "method": "get",
                     "timeout": "30000",
                     "data": function(d) {
-                        console.log('Ajax_datatable');
+                        console.log('Ajax_datatable', d);
                         d.csrf_token = csrf_token;
                         var filter_type = $('#filter_type').val();
                         d.search_filter_type = filter_type;

@@ -89,7 +89,7 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-1">
-                                        <button type="button" class="btn btn-success mt-25 w-100 mb-4 searchBtn">搜 尋</button>
+                                        <button type="button" class="btn btn-success mt-25 w-100 mb-4 searchBtn" onclick="submit_filter();">搜 尋</button>
                                     </div>
 
                                 </div>
@@ -101,7 +101,7 @@
 
 
                                 <div class="tableWrap hidenWrap">
-                                    <table class="table table-bordered table-striped dataTable" id="courseOutlineTable">
+                                    <table class="table table-bordered table-striped" id="Course_datatable">
                                         <thead>
                                             <tr class="bg-light-blue color-palette" style="z-index: -1000;">
                                                 <th class="no-sort" style="min-width: 4px;"></th>
@@ -112,7 +112,7 @@
                                                 <th class="nowrap">學習元素</th>
                                                 <th class="nowrap">組別</th>
                                                 <th class="nowrap">LPF(基礎)</th>
-                                                <th class="nowrap">LPF(高中) P</th>
+                                                <th class="nowrap">LPF(高中)</th>
                                                 <th class="nowrap">POAS</th>
                                                 <th class="nowrap">Key Skill</th>
                                                 <th class="nowrap">前備技能</th>
@@ -121,33 +121,8 @@
                                                 <th class="nowrap">相關項目編號</th>
                                             </tr>
                                         </thead>
-
                                         <tbody>
-                                            <?php foreach ($lessons as $row) {?>
-                                                <tr>
-                                                    <td><a class="editLinkBtn" href="<?= (admin_url($page_setting['controller'])) . '/edit/'. $row['id']?>"><i class="fa fa-edit"></i></a></td>
-                                                    <td><?= $row['course']?></td>
-                                                    <td><?= $row['category']?></td>
-                                                    <td><?= $row['central_obj']?></td>
-                                                    <td><?= $row['sb_obj']?></td>
-                                                    <td><?= $row['element']?></td>
-                                                    <td><?= $row['groups']?></td>
-                                                    <td><?= $row['lpf_basic']?></td>
-                                                    <td><?= $row['lpf_advanced']?></td>
-                                                    <td class="nowrap"><?= $row['poas']?><span data-toggle="tooltip" title="顥示提示內容"><i class="fa fa-info-circle"></i></span></td>
-                                                    <td class="nowrap"><?= $row['skills']?><span data-toggle="tooltip" title="顥示提示內容"><i class="fa fa-info-circle"></i></span></td>
-                                                    <td><? if ($row['preliminary_skill'] == 1) { ?>
-                                                        <span class="text-green"><i class="fa fa-check"></i></span>
-                                                    <?} else {?>
-                                                        <span class="text-red"><i class="fa fa-close"></i></span>
-                                                    <?}?>
-                                                    </td>
-                                                    <td><?= $row['code']?></td>
-                                                    <td><?= $row['expected_outcome']?></td>
-                                                    <td>MN0449,MS0002</td>
-                                                </tr>
-                                            <?}?>
-
+                                       
                                         </tbody>
                                     </table>
                                 </div>
@@ -178,23 +153,77 @@
 
 
     <script>
-        $(document).ready(function() {
-
+        // $(document).ready(function() {
             $('[data-toggle="tooltip"]').tooltip({
                 container: 'body'
             });
-            $('#courseOutlineTable').DataTable({
-                scrollX: true,
-                scrollCollapse: true,
-                function(){ 
-                    $(".dataTable").show() 
-                    $($.fn.dataTable.tables(true)).DataTable()
-                    // .tables( { visible: true, api: true } )
-                    .columns.adjust()
-                    // .fixedColumns().relayout()
 
-                }
+            function submit_filter() {
+                // let course_id = $('#courses_id').val();
+                // if (!course_id) {
+                //     alert('<?=__('請先選擇課程.')?>');
+                // } else {
+            //     //     var filter_para = $('#filter_' + filter_type + '_para').val();
+            //     //     var filter_para2 = $('#filter_' + filter_type + '_para2').val();
+
+            //     //     if (filter_type == 1) {
+            //     //         filter_para = '';
+            //     //         location.href = '<?= admin_url($page_setting['controller'] . '/index/'); ?>' + filter_type + '/' + filter_para;
+            //     //     } else if ((filter_type == 2) && !filter_para) {
+            //     //         alert('<?=__('Please fill filter parameters.')?>');
+            //     //     }else{
+            //             /*location.href = '<//?= admin_url($page_setting['controller'] . '/index/'); ?>' + filter_type + '/' + filter_para + '/' + filter_para2; */
+                        filter_data();
+            //     //     }
+            //     // }
+                // }
+            }
+
+            function filter_data() {
+                $('#Course_datatable').DataTable().draw();
+            }
+
+
+
+            var Ajax_datatable = $('#Course_datatable').DataTable({
+                scrollX: true,
+                "language": {
+                    "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/' . get_wlocale() . '.json') ?>"
+                },
+                "order": [],
+                "bSort": false,
+                "pageLength": 50,
+                "pagingType": "input",
+                //"sDom": '<"wrapper"lfptip>',
+                "processing": true,
+                "serverSide": true,
+                "ordering": false,
+                "searching": true,
+                "searchDelay": 0,
+                "ajax": {
+                    "url": "<?= admin_url($page_setting['controller'] . '/ajax') ?>",
+                    "method": "get",
+                    "timeout": "30000",
+                    "data": function(d) {
+                        let course_id = $('#courses_id').val();
+                        let category_id = $('#categories_id').val();
+                        let sb_obj_id = $('#sb_obj_id').val();
+                        let lesson_id = $('#lesson_id').val();
+                        d.course_search = course_id;
+                        d.category_search = category_id;
+                        d.sb_obj_search = sb_obj_id;
+                        d.lesson_search = lesson_id;
+                        console.log('data',d);
+                        // var filter_type = $('#filter_type').val();
+                        // d.search_filter_type = filter_type;
+                        // d.search_filter_para = $('#filter_' + filter_type + '_para').val();
+                    },
+                    "error": function(e) {
+                        console.log(e);
+                    }
+                },
             });
+
 
 
             $(".searchBtn").click(function() {
@@ -203,41 +232,9 @@
 
 
 
-            function submit_form(_this) {
-                //form checking
-                var valid_data = true;
-                //.form checking
-                if (!valid_data) {
-                    //alert('Invalid Data.');
-                } else {
-                    ajax_submit_form(_this);
-                }
-            }
-        });
-        <?php /*
-    //multiple image upload
-    $("input.multiple_upload").fileinput({
-        language: '<?=get_wlocale()?>',
-        previewFileType: "image",
-        showCaption: false,
-        showUpload: false,
-        maxFileSize: 2048,
-        maxFileCount: 30,
-        maxImageHeight: 2000,
-        maxImageWidth: 2000,
-        overwriteInitial: false,
-        allowedFileExtensions: ['jpg','jpeg','png'],
-        initialPreview: <?=isset($photos_preview) ? $photos_preview : "{}"?>,
-        initialPreviewAsData: true,
-        initialPreviewConfig: <?=isset($photos_json) ? $photos_json : "{}"?>,
-        deleteUrl: "<?=admin_url('bk_news/delete_multiple_upload')?>",
-        // hiddenThumbnailContent: true,
-        // initialPreviewShowDelete: true,
-        // removeFromPreviewOnError: true,
-    }).on('filedeleted', function(event, key, jqXHR, data) {
-        alertify.success("<?=__('Deleted successfully!')?>");
-    });
- */ ?>
+     
+        // });
+
     </script>
 
 </body>
