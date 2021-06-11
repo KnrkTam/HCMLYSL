@@ -328,8 +328,8 @@ class Bk_master_course_outline extends CI_Controller //change this
     public function index($filter_type = NULL, $filter_para = NULL, $filter_para2 = NULL)
     {
         $data['page_setting'] = $this->page_setting(array(
-            //'view_' . $this->scope
-            'view_news'
+            'view_' . $this->scope
+            // 'view_news'
         ), FALSE, TRUE);
 
         $GLOBALS["select2"] = 1;
@@ -392,7 +392,12 @@ class Bk_master_course_outline extends CI_Controller //change this
                 $data[$num][] = $row['preliminary_skill'];
                 $data[$num][] = $row['code'];
                 $data[$num][] = $row['expected_outcome'];
-                $data[$num][] = $row['rel_lessons'] ? '<button type="button" class="btn-xs btn btn-primary">' .$row['rel_lessons'].'</button>': '';
+                $rel_les = '';
+                foreach ($row['rel_lessons'] as $key) {
+                    $rel_les .= '<button type="button" class="btn-xs btn btn-primary badge">' .Lessons_model::code($key).'</button> &nbsp';
+                }
+                $data[$num][] = $rel_les;
+
                 // $action = '<div class="nowrap">';
                 // if (validate_user_access(['update_' . $this->scope])) {
                 //     $action .= '<button type="button" class="btn btn-' . ($row["status"] == 1 ? 'success' : 'warning') . '" onclick="ajax_update_status(' . $row['id'] . ', ' . ($row["status"] == 1 ? 0 : 1) . ');" style="margin-right: 5px;">' . ($row["status"] == 1 ? __('Enable') : __('Disable')) . '</button>';
@@ -454,8 +459,11 @@ class Bk_master_course_outline extends CI_Controller //change this
                         $data[$num][] = $row['preliminary_skill'];
                         $data[$num][] = $row['code'];
                         $data[$num][] = $row['expected_outcome'];
-                        $data[$num][] = 'MN0449,MS0002';
-                        // $action = '<div class="nowrap">';
+                        $rel_les = '';
+                        foreach ($row['rel_lessons'] as $key) {
+                            $rel_les .= '<button type="button" class="btn-xs btn btn-primary badge">' .Lessons_model::code($key).'</button> &nbsp';
+                        }
+                        $data[$num][] = $rel_les;                        // $action = '<div class="nowrap">';
                         // if (validate_user_access(['update_' . $this->scope])) {
                         //     $action .= '<button type="button" class="btn btn-' . ($row["status"] == 1 ? 'success' : 'warning') . '" onclick="ajax_update_status(' . $row['id'] . ', ' . ($row["status"] == 1 ? 0 : 1) . ');" style="margin-right: 5px;">' . ($row["status"] == 1 ? __('Enable') : __('Disable')) . '</button>';
                         //     $action .= '<a href="' . admin_url($page_setting['controller'] . '/modify/' . $row['id']) . '" style="margin-right: 5px;"><button type="button" class="btn btn-warning">' . __('Modify') . '</button></a>';

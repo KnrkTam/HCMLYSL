@@ -45,7 +45,7 @@
                                         <?= __('Cancel') ?>
                                     </a>
 
-                                    <?php if (validate_user_access(['create_news', 'update_news'])) { ?>
+                                    <?php if (validate_user_access(['create_'.$page_setting['scope_code'], 'update_'.$page_setting['scope_code']])) { ?>
                                         <button type="button" class="btn btn-primary" onclick="submit_form(this);">
                                             <i class="fa fa-floppy-o" aria-hidden="true"></i> <?= __('Save') ?>
                                         </button>
@@ -89,7 +89,7 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-1">
-                                        <button type="button" class="btn btn-success mt-25 w-100 mb-4 searchBtn" onclick="submit_filter();">搜 尋</button>
+                                        <button type="button" class="btn btn-success mt-25 w-100 mb-4 searchBtn" >搜 尋</button>
                                     </div>
 
                                 </div>
@@ -158,34 +158,34 @@
                 container: 'body'
             });
 
-            function submit_filter() {
-                // let course_id = $('#courses_id').val();
-                // if (!course_id) {
-                //     alert('<?=__('請先選擇課程.')?>');
-                // } else {
-            //     //     var filter_para = $('#filter_' + filter_type + '_para').val();
-            //     //     var filter_para2 = $('#filter_' + filter_type + '_para2').val();
+            // function submit_filter() {
+            //     // let course_id = $('#courses_id').val();
+            //     // if (!course_id) {
+            //     //     alert('<?=__('請先選擇課程.')?>');
+            //     // } else {
+            // //     //     var filter_para = $('#filter_' + filter_type + '_para').val();
+            // //     //     var filter_para2 = $('#filter_' + filter_type + '_para2').val();
 
-            //     //     if (filter_type == 1) {
-            //     //         filter_para = '';
-            //     //         location.href = '<?= admin_url($page_setting['controller'] . '/index/'); ?>' + filter_type + '/' + filter_para;
-            //     //     } else if ((filter_type == 2) && !filter_para) {
-            //     //         alert('<?=__('Please fill filter parameters.')?>');
-            //     //     }else{
-            //             /*location.href = '<//?= admin_url($page_setting['controller'] . '/index/'); ?>' + filter_type + '/' + filter_para + '/' + filter_para2; */
-                        filter_data();
-            //     //     }
+            // //     //     if (filter_type == 1) {
+            // //     //         filter_para = '';
+            // //     //         location.href = '<?= admin_url($page_setting['controller'] . '/index/'); ?>' + filter_type + '/' + filter_para;
+            // //     //     } else if ((filter_type == 2) && !filter_para) {
+            // //     //         alert('<?=__('Please fill filter parameters.')?>');
+            // //     //     }else{
+            // //             /*location.href = '<//?= admin_url($page_setting['controller'] . '/index/'); ?>' + filter_type + '/' + filter_para + '/' + filter_para2; */
+            //             filter_data();
+            // //     //     }
+            // //     // }
             //     // }
-                // }
-            }
+            // }
 
-            function filter_data() {
-                $('#Course_datatable').DataTable().draw();
-            }
-
+            // function filter_data() {
+            //     $('#Course_datatable').DataTable().draw();
+            // }
 
 
-            var Ajax_datatable = $('#Course_datatable').DataTable({
+
+            var Course_datatable = $('#Course_datatable').DataTable({
                 scrollX: true,
                 "language": {
                     "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/' . get_wlocale() . '.json') ?>"
@@ -228,6 +228,8 @@
 
             $(".searchBtn").click(function() {
                 $(".tableWrap").fadeIn();
+                $('#Course_datatable').DataTable().draw();
+
             });
 
 

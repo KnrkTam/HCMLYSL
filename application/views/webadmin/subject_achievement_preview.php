@@ -84,131 +84,11 @@
                                                         <th class="nowrap">前備技能</th>
                                                         <th class="nowrap">預期學習成果</th>
                                                         <th class="nowrap">課程編號</th>
-                                                        <th class="nowrap">預期學習成果</th>
                                                         <th class="nowrap">相關項目編號</th>
                                                     </tr>
                                                 </thead>
 
                                                 <tbody>
-                                                    <tr>
-
-                                                        <td>語文</td>
-                                                        <td>聆聽</td>
-                                                        <td>聽力訓練</td>
-                                                        <td>聽力訓練</td>
-                                                        <td>技能</td>
-                                                        <td>初組、中組</td>
-                                                        <td>I2</td>
-                                                        <td>I2</td>
-                                                        <td class="nowrap">IB.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-                                                        <td class="nowrap">IC.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-                                                        <td><span class="text-green"><i class="fa fa-check"></i></span></td>
-                                                        <td>能注意聲音的來源，對聲音作出反應</td>
-                                                        <td>MN0155</td>
-                                                        <td>MN0449,MS0002</td>
-
-                                                        <td></td>
-                                                    </tr>
-                                                    <tr>
-
-
-                                                        <td>語文</td>
-                                                        <td>聆聽</td>
-                                                        <td>聽力訓練</td>
-                                                        <td>聽力訓練</td>
-                                                        <td>技能</td>
-                                                        <td>初組、中組</td>
-                                                        <td>I2</td>
-                                                        <td>I2</td>
-                                                        <td class="nowrap">IB.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-                                                        <td class="nowrap">IC.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-                                                        <td><span class="text-red"><i class="fa fa-remove"></i></span></td>
-                                                        <td>能注意聲音的來源，對聲音作出反應</td>
-                                                        <td>MN0155</td>
-                                                        <td>MN0449,MS0002</td>
-
-                                                        <td></td>
-                                                    </tr>
-                                                    <tr>
-
-
-                                                        <td>語文</td>
-                                                        <td>聆聽</td>
-                                                        <td>聽力訓練</td>
-                                                        <td>聽力訓練</td>
-                                                        <td>技能</td>
-                                                        <td>初組、中組</td>
-                                                        <td>I2</td>
-                                                        <td>I2</td>
-                                                        <td class="nowrap">IB.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-                                                        <td class="nowrap">IC.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-                                                        <td><span class="text-red"><i class="fa fa-remove"></i></span></td>
-                                                        <td>能注意聲音的來源，對聲音作出反應</td>
-                                                        <td>MN0155</td>
-                                                        <td>MN0449,MS0002</td>
-
-                                                        <td></td>
-                                                    </tr>
-                                                    <tr>
-
-
-                                                        <td>語文</td>
-                                                        <td>聆聽</td>
-                                                        <td>聽力訓練</td>
-                                                        <td>聽力訓練</td>
-                                                        <td>技能</td>
-                                                        <td>初組、中組</td>
-                                                        <td>I2</td>
-                                                        <td>I2</td>
-                                                        <td class="nowrap">IB.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-                                                        <td class="nowrap">IC.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-                                                        <td><span class="text-red"><i class="fa fa-remove"></i></span></td>
-                                                        <td>能注意聲音的來源，對聲音作出反應</td>
-                                                        <td>MN0155</td>
-                                                        <td>MN0449,MS0002</td>
-
-                                                        <td></td>
-                                                    </tr>
-                                                    <tr>
-
-
-                                                        <td>語文</td>
-                                                        <td>聆聽</td>
-                                                        <td>聽力訓練</td>
-                                                        <td>聽力訓練</td>
-                                                        <td>技能</td>
-                                                        <td>初組、中組</td>
-                                                        <td>I2</td>
-                                                        <td>I2</td>
-                                                        <td class="nowrap">IB.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-                                                        <td class="nowrap">IC.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-                                                        <td><span class="text-red"><i class="fa fa-remove"></i></span></td>
-                                                        <td>能注意聲音的來源，對聲音作出反應</td>
-                                                        <td>MN0155</td>
-                                                        <td>MN0449,MS0002</td>
-
-                                                        <td></td>
-                                                    </tr>
-                                                    <tr>
-
-
-                                                        <td>語文</td>
-                                                        <td>聆聽</td>
-                                                        <td>聽力訓練</td>
-                                                        <td>聽力訓練</td>
-                                                        <td>技能</td>
-                                                        <td>初組、中組</td>
-                                                        <td>I2</td>
-                                                        <td>I2</td>
-                                                        <td class="nowrap">IB.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-                                                        <td class="nowrap">IC.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-                                                        <td><span class="text-red"><i class="fa fa-remove"></i></span></td>
-                                                        <td>能注意聲音的來源，對聲音作出反應</td>
-                                                        <td>MN0155</td>
-                                                        <td>MN0449,MS0002</td>
-
-                                                        <td></td>
-                                                    </tr>
                                                 </tbody>
                                             </table>
 
@@ -253,12 +133,39 @@
         $(document).ready(function() {
             $('[data-toggle="tooltip"]').tooltip();
             var subjectTable = $('#subjectTable').DataTable({
-
+                // data: <?php echo $table?>, 
+                // scrollX: true,
+                // scrollCollapse: true,
+                // bFilter: false,
+                // bInfo: true,
+                // bLengthChange: false,
                 scrollX: true,
-                scrollCollapse: true,
-                bFilter: false,
-                bInfo: true,
-                bLengthChange: false,
+                "language": {
+                    "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/' . get_wlocale() . '.json') ?>"
+                },
+                "order": [],
+                "bSort": false,
+                "pageLength": 50,
+                "pagingType": "input",
+                //"sDom": '<"wrapper"lfptip>',
+                "processing": false,
+                "serverSide": true,
+                "ordering": false,
+                "searching": false,
+                "searchDelay": 0,
+                "ajax": {
+                    "url": "<?= admin_url($page_setting['controller'] . '/preview_ajax') ?>",
+                    "method": "get",
+                    "timeout": "30000",
+                    "data": function(d) {
+                        let added_arr = <?= json_encode($added_ids)?>;
+                        // console.log(typeof(added_arr))
+                        d.added_ids = added_arr;
+                    },
+                    "error": function(e) {
+                        console.log(e);
+                    }
+                },
             });
 
 

@@ -19,8 +19,14 @@ class Lessons_relevant_model extends BaseModel
     public static function id_list($lesson_id)
     {        
         $result = Lessons_relevant_model::where('lesson_id', $lesson_id)->orWhere('rel_lesson_id', $lesson_id)->get();
+
+
             foreach ($result as $i => $row){
-                $lesson_arr[$i] = $row['rel_lesson_id'];
+                if ($row['lesson_id'] == $lesson_id) {
+                    $lesson_arr[$i] = $row['rel_lesson_id'];
+                } else if ($row['rel_lesson_id'] == $lesson_id) {
+                    $lesson_arr[$i] = $row['lesson_id'];
+                }
             }; 
         
         

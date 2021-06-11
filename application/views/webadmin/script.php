@@ -1,6 +1,6 @@
-<!-- jQuery 3
-<script src="<?= assets_url('webadmin/admin_lte/bower_components/jquery/dist/jquery.min.js') ?>"></script> -->
-<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<!-- jQuery 3 -->
+<script src="<?= assets_url('webadmin/admin_lte/bower_components/jquery/dist/jquery.min.js') ?>"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script> -->
 <!-- jquery UI -->
 <script src="<?= assets_url('libraries/jquery-ui-1.12.1/jquery-ui.min.js') ?>"></script>
 <!-- Bootstrap 3.3.7 -->
@@ -45,8 +45,11 @@
     <script type="text/javascript">
         function stopPropagation(evt) {
             if (evt.stopPropagation !== undefined) {
+                console.log('test1')
                 evt.stopPropagation();
             } else {
+                console.log('test2')
+
                 evt.cancelBubble = true;
             }
         }
@@ -138,6 +141,8 @@
             });
 
             $("input.search_init, textarea.search_init").keyup(function(e) {
+                console.log('test3')
+
                 e.stopPropagation();
                 // e.preventDefault();
             });

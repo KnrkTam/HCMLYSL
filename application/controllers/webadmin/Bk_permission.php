@@ -107,6 +107,24 @@ class Bk_permission extends CI_Controller
                 'role' => array('super_admin', 'admin')
             ),
 
+            // subject course outline
+            'create_subject_achievement' => array(
+                'desc' => 'Can create subject_achievement',
+                'role' => array('super_admin', 'admin')
+            ),
+            'update_subject_achievement' => array(
+                'desc' => 'Can update subject_achievement',
+                'role' => array('super_admin', 'admin')
+            ),
+            'delete_subject_achievement' => array(
+                'desc' => 'Can delete subject_achievement',
+                'role' => array('super_admin', 'admin')
+            ),
+            'view_subject_achievement' => array(
+                'desc' => 'Can view subject_achievement',
+                'role' => array('super_admin', 'admin')
+            ),
+
             //news_ajax
             'create_news_ajax' => array(
                 'desc' => 'Can create news_ajax',

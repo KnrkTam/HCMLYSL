@@ -118,7 +118,7 @@
                                         </div>
                                         <div class="col-lg-4">
                                             <div class="form-group">
-                                                <label class="required text-nowrap">相關課程編號： <a class="link small" href="#" data-toggle="modal" data-target="#classNumber" >搜尋編號 </a></label>
+                                                <label class="required text-nowrap">相關課程編號： <a class="link small" id="searchTag*" data-toggle="modal" data-target="#classNumber" >搜尋編號 </a></label>
                                                 <div style="width:100%"><?php form_list_type('rel_lessons[]', ['type' => 'select', 'class'=> 'inputCourseNumber select2 form-control' , 'value' =>$rel_lessons, 'data-placeholder' => 'e.g.: #SC557, #BD003',  'enable_value' => $lessons_list, 'form_validation_rules' => 'trim|required', 'multiple' => 1]) ?></div>
                                             </div>
                                         </div>
@@ -304,17 +304,22 @@
             //     }],
                 
             // });
-            $("#rel_lessons").change(function() {
-                let old_arr = $('#rel_lessons').val();
-                for (let i = 0; i < old_arr.length; i++) {
-                    $(`input[type=checkbox][name=rel_lesson_check][value=${old_arr[i]}]`).prop('checked', true)
-                }
-                $('#searchCourseNumberTable').DataTable().draw();
-            })
+            // $("#rel_lessons").change(function() {
+            //     let old_arr = $('#rel_lessons').val();
+            //     for (let i = 0; i < old_arr.length; i++) {
+            //         $(`input[type=checkbox][name=rel_lesson_check][value=${old_arr[i]}]`).prop('checked', true)
+            //     }
+            //     $('#searchCourseNumberTable').DataTable().draw();
+            // })
 
             $('#searchBtn').click(function(){
                 $('#searchCourseNumberTable').DataTable().draw();
             })
+
+            $('#searchTag').click(function(){
+                $('#searchCourseNumberTable').DataTable().draw();
+            })
+
 
             var Ajax_datatable = $('#searchCourseNumberTable').DataTable({
                 scrollX: true,

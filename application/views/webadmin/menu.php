@@ -14,16 +14,12 @@
         </div>
 
         <ul class="sidebar-menu" data-widget="tree">
-            <li class="header"><?= __('MAIN NAVIGATION') ?></li>
+            <!-- <li class="header"><?= __('MAIN NAVIGATION') ?></li> -->
 
             <?php
-            $menu_list = array(
-                array(
-                    'main_menu' => __('增加選項'),
-                    'url' => 'bk_options',
-                    'access' => 'view_master_modules',
-                    'icon' => 'fa-sliders',
-                ),
+            $menu_header = array(
+                __('主目錄') => array(          
+
                 array(
                     'main_menu' => __('各學階單元設定(master)'),
                     'url' => 'bk_master_modules',
@@ -104,6 +100,7 @@
                         )
                     )
                 ),
+       
 
 
                 /*
@@ -280,40 +277,34 @@
                         ),
                     )
                 ),
-
+*/              ),   
+                __('設定選項') => array(          
                 //no submenu
-  
-
-                array(
-                    'main_menu' => __('News2'),
-                    'url' => 'bk_news2',
-                    'access' => 'view_news',
-                    'icon' => 'fa-newspaper-o',
+                    array(
+                        'main_menu' => __('增加選項'),
+                        'url' => 'bk_options',
+                        'access' => 'view_master_modules',
+                        'icon' => 'fa-sliders',
+                    ),
+                    array(
+                        'main_menu' => __('System User'),
+                        'url' => 'bk_sys_user',
+                        'access' => 'create_sys_user',
+                        'icon' => 'fa-gear',
+                    ),
+                    array(
+                        'main_menu' => __('Site Info'),
+                        'url' => 'bk_site_info/modify/1',
+                        'access' => 'update_site_info',
+                        'icon' => 'fa-gears',
+                    ),
                 ),
-
-                array(
-                    'main_menu' => __('News (Ajax)'),
-                    'url' => 'bk_news_ajax',
-                    'access' => 'view_news',
-                    'icon' => 'fa-newspaper-o',
-                ),*/
-
-                array(
-                    'main_menu' => __('System User'),
-                    'url' => 'bk_sys_user',
-                    'access' => 'create_sys_user',
-                    'icon' => 'fa-gear',
-                ),
-                array(
-                    'main_menu' => __('Site Info'),
-                    'url' => 'bk_site_info/modify/1',
-                    'access' => 'update_site_info',
-                    'icon' => 'fa-gears',
-                ),
-                
             );
 
             $url_uri = current_controller();
+            foreach ($menu_header as $header => $menu_list) {
+            
+            $count_enabled = 0;
 
             foreach ($menu_list as $key => $main_menu) {
                 $menu_list[$key]['enable_main_menu'] = false;
@@ -323,6 +314,9 @@
                     if (validate_user_access([$main_menu['access']])) {
                         $menu_list[$key]['enable_main_menu'] = true;
                         $menu_list[$key]['active'] = ($main_menu['url'] == $url_uri ? true : false);
+
+                        $count_enabled++;
+
                     }
                 } else {
                     foreach ($main_menu['sub_menu'] as $key2 => $sub_menu) {
@@ -332,6 +326,8 @@
 
                         if (validate_user_access([$sub_menu['access']])) {
                             $menu_list[$key]['enable_main_menu'] = true;
+                            $count_enabled++;
+
                             $menu_list[$key]['sub_menu'][$key2]['enable_sub_menu'] = true;
                         }
 
@@ -342,22 +338,25 @@
                     }
                 }
             }
-
-            foreach ($menu_list as $key => $main_menu) {
-                if (empty($main_menu['sub_menu']) && $main_menu['enable_main_menu']) {
-                    echo '<li class=" ' . ($main_menu['active'] ? 'active' : '') . '"><a href="' . admin_url($main_menu['url']) . '"> <i class="fa fa-fw ' . $main_menu['icon'] . '"></i><span> ' . __($main_menu['main_menu']) . '</span> </a></li>';
-                } else {
-                    if ($main_menu['enable_main_menu']) {
-                        echo '<li class="' . ($main_menu['active'] ? 'active menu-open' : '') . ' treeview"><a href="#"><i class="fa fa-fw ' . $main_menu['icon'] . '"></i> <span> ' . $main_menu['main_menu'] . '</span><span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a> <ul class="treeview-menu ">';
-                        foreach ($main_menu['sub_menu'] as $sub_menu) {
-                            if ($sub_menu['enable_sub_menu']) {
-                                echo '<li class="' . ($sub_menu['active'] ? 'active' : '') . '"><a href="' . admin_url($sub_menu['url']) . '"><i class="fa fa-fw ' . $sub_menu['icon'] . '"></i>' . $sub_menu['title'] . '</a></li>';
+            if ($count_enabled > 0) {
+                echo '<li class="header">' . $header . '</li>';
+                foreach ($menu_list as $key => $main_menu) {
+                    if (empty($main_menu['sub_menu']) && $main_menu['enable_main_menu']) {
+                        echo '<li class=" ' . ($main_menu['active'] ? 'active' : '') . '"><a href="' . admin_url($main_menu['url']) . '"> <i class="fa fa-fw ' . $main_menu['icon'] . '"></i><span> ' . __($main_menu['main_menu']) . '</span> </a></li>';
+                    } else {
+                        if ($main_menu['enable_main_menu']) {
+                            echo '<li class="' . ($main_menu['active'] ? 'active menu-open' : '') . ' treeview"><a href="#"><i class="fa fa-fw ' . $main_menu['icon'] . '"></i> <span> ' . $main_menu['main_menu'] . '</span><span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a> <ul class="treeview-menu ">';
+                            foreach ($main_menu['sub_menu'] as $sub_menu) {
+                                if ($sub_menu['enable_sub_menu']) {
+                                    echo '<li class="' . ($sub_menu['active'] ? 'active' : '') . '"><a href="' . admin_url($sub_menu['url']) . '"><i class="fa fa-fw ' . $sub_menu['icon'] . '"></i>' . $sub_menu['title'] . '</a></li>';
+                                }
                             }
+                            echo '</ul></li>';
                         }
-                        echo '</ul></li>';
                     }
                 }
             }
+        }
             ?>
         </ul>
     </section>

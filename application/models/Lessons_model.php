@@ -22,7 +22,7 @@ class Lessons_model extends BaseModel
             'lpf_advanced' => Lpf_advanced_model::name($lesson['lpf_advanced_id']),
             'poas' => Poas_model::name($lesson['poas_id']),
             'skills' => Lessons_skill_model::list($id),
-            'rel_lessons' => Lessons_relevant_model::list($id),
+            'rel_lessons' => Lessons_relevant_model::id_list($id),
             'preliminary_skill' => $lesson['preliminary_skills'],
             'expected_outcome' => $lesson['expected_outcome'],
             'code' => $lesson['code'],
