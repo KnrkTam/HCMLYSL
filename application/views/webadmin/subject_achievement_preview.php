@@ -63,7 +63,9 @@
 
                                 <div class="tableWrap">
                                     <div class="row">
-
+                                    <div class="col-lg-12">
+                                            <h3 class="text-blue"><b><?= $subject?></b></h5>
+                                    </div>
                                         <div class="col-lg-12">
                                             <h5 class="text-purple"><b>已選項目：</b></h5>
 
@@ -78,7 +80,7 @@
                                                         <th class="nowrap">學習元素</th>
                                                         <th class="nowrap">組別</th>
                                                         <th class="nowrap">LPF(基礎)</th>
-                                                        <th class="nowrap">LPF(高中) P</th>
+                                                        <th class="nowrap">LPF(高中)</th>
                                                         <th class="nowrap">POAS</th>
                                                         <th class="nowrap">Key Skill</th>
                                                         <th class="nowrap">前備技能</th>
@@ -93,8 +95,11 @@
                                             </table>
 
                                             <div class="mt-4 d-flex justify-content-end">
-                                                <button type="button" class="btn bg-maroon mr-4 mw-100">確 定</button>
-                                                <button type="button" class="btn btn-default mw-100" onclick="location.href='../Bk_subject_achievement/create';">返 回</button>
+                                                <input type="hidden" name="subject_id" value="<?= $subject_id?>"></input>
+                                                <input type="hidden" name="lessons_id[]" value=<?= json_encode($added_ids, true)?>></input>
+
+                                                <button type="submit" class="btn bg-maroon mr-4 mw-100">確 定</button>
+                                                <button type="button" class="btn btn-default mw-100" onclick="location.href='<?= (admin_url($page_setting['controller'])) . '/'. $previous. '/'. $id?>';">返 回</button>
                                             </div>
                                             <hr>
                                         </div>

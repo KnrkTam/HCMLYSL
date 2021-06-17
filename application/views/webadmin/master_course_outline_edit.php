@@ -358,10 +358,16 @@
                             $(`input[type=checkbox][name=rel_lesson_check][value=${old_arr[i]}]`).prop('checked', true)
                         }
                         $("input[type=checkbox][name=rel_lesson_check]").change(function() {
+                            if ($(this).is(':checked')) {
                             let old_arr = $('#rel_lessons').val();
                             old_arr.push(this.value);
                             $('#rel_lessons').val(old_arr);
                             $('#rel_lessons').trigger('change');
+                            } else {
+                                old_arr.shift(this.value);
+                            $('#rel_lessons').val(old_arr);
+                            $('#rel_lessons').trigger('change');
+                            }
                         })
                     },
 
@@ -369,6 +375,11 @@
             });
 
             $('#lesson_code').inputmask("********",{"placeholder":""}); 
+            
+            $('#rel_lessons').change(function(){
+                $('#searchCourseNumberTable').DataTable().draw();
+
+            })
 
 
 

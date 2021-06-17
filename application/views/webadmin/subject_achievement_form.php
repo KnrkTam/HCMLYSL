@@ -16,10 +16,14 @@
         cursor: pointer;
     }
 </style>
+    <script>
+        console.log('test')
+    </script>
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini">
     <div class="wrapper">
+        
 
     <?php include_once("header.php"); ?>
 
@@ -144,8 +148,10 @@
 
                                             <div class="mt-4 d-flex justify-content-end">
                                                 <input type="hidden" id="subject_lessons" name="subject_lessons[]" value=""></input>
+                                                <input type="hidden" value=<?= $function?> name="action"> </input>
+
                                                 <button type="submit" class="btn bg-maroon mw-100 mr-4">下一步</button>
-                                                <button type="button" class="btn btn-default mw-100">返 回</button>
+                                                <button type="button" class="btn btn-default mw-100" onclick="location.href='<?= (admin_url($page_setting['controller'])) ?>';">返 回</button>
                                             </div>
                                             <hr>
                                         </div>
@@ -212,42 +218,16 @@
             });
 
             let added_ids = new Set();
+
+            <?php if ($_SESSION['post_data']){ ?>
+                let session_data = <?= json_encode($_SESSION['post_data'])?>;
+                $('#subject_id').val(session_data['subject_id']).select2();
+                for (i = 0; i < session_data['added_ids'].length; i++) {
+                    added_ids.add(session_data['added_ids'][i]);
+                };
+            <?}?>
             
             $('input[id=subject_lessons]').val(Array.from(added_ids));
-
-            // $(".removeRow").click(function() {
-
-
-            //     added_ids.delete(this.value);
-            //     $('#subjectSelectedTable').DataTable().draw();
-            // });
-
-            // function removeRow(){
-            //     console.log('clicked')
-            //     added_ids.delete(this.value);
-            //     $('#subjectSelectedTable').DataTable().draw();
-            // }
-
-
-            // var subjectTable = $('#subjectTable').DataTable({
-            //     scrollY: "300px",
-            //     scrollX: true,
-            //     scrollCollapse: true,
-            //     bFilter: false,
-            //     bInfo: true,
-            //     bLengthChange: false,
-            //     columnDefs: [{
-            //         targets: 0,
-            //         orderable: false,
-
-            //     }]
-            // });
-
-            // $("#subjectTable").on('change', function(e) {
-            //     e.stopPropagation();
-            //     console.log('tablechanged')
-            //     // e.preventDefault();
-            // });
 
             var  Course_datatable = $('#subjectTable').DataTable({
                 // scrollY: '300px',
@@ -264,7 +244,7 @@
                 "processing": true,
                 "serverSide": true,
                 "ordering": false,
-                "searching": true,
+                "searching": false,
                 "searchDelay": 0,
                 "ajax": {
                     "url": "<?= admin_url($page_setting['controller'] . '/search_ajax') ?>",
@@ -288,6 +268,8 @@
                         // d.search_filter_para = $('#filter_' + filter_type + '_para').val();
                     },
                     "complete": function(e){
+                                                $('[data-toggle="tooltip"]').tooltip();
+
                         $(".addLesson").change(function(e) {
                             if ($(this).is(':checked')) {
                                 added_ids.add(this.value)
@@ -390,65 +372,10 @@
                 },
             });
             
-            
-
-            // $(".controlSearchBtn").click(function() {
-
-
-            //     // $(".subject_achievementNew").slideToggle("active");
-
-            //     // Animation complete.
-
-            //     $(".subject_achievementNew").slideToggle('slow', function() {
-            //         $('.controlSearchBtn').toggleClass('active', $(this).is(':visible'));
-            //         if ($('.controlSearchBtn').hasClass("active")) {
-            //             $(".controlSearchBtn").text("隱藏搜尋");
-            //         } else {
-            //             $(".controlSearchBtn").text("顯示搜尋");
-            //         }
-            //     });
-
-
-            // });
-
-            // $(".subject_achievementNew").click(function() {
-
-            //     $(".subject_achievementNew").fadeIn();
-
-
-            // });
-
-            // $(".subjectSelect").change(function() {
-            //     if ($(this).val() != "") {
-            //         $(".subject_achievementNew").fadeIn();
-            //         $(".controlSearchBtn").fadeIn();
-            //         $(".controlSearchBtn").text("隱藏搜尋");
-            //     } else {
-            //         $(".subject_achievementNew").hide();
-            //     }
-
-            // });
-
-
-
-            // $(".searchBtn").click(function() {
-
-            //     $(".tableWrap").fadeIn();
-
-            // });
         });
 
 
-        // function submit_form(_this) {
-        //     //form checking
-        //     var valid_data = true;
-        //     //.form checking
-        //     if (!valid_data) {
-        //         //alert('Invalid Data.');
-        //     } else {
-        //         ajax_submit_form(_this);
-        //     }
-        // }
+
 
     </script>
 

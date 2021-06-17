@@ -14,6 +14,16 @@
             return $list;
         }
 
+        public static function newList()
+		{   
+            $existing_subject = Subject_lessons_model::distinct()->pluck('subject_id'); // Extract ids that has created subject
+            $result = Subjects_model::whereNotIn('id', $existing_subject)->get();
+            foreach($result as $row){
+                $list[$row['id']] = $row["name"];
+            }
+            return $list;
+        }
+
         public static function name($id){
             $result = Subjects_model::where('id', $id)->first()->name;
 

@@ -131,7 +131,7 @@
                                                 <th class="nowrap">組別</th>
                                                 <th class="nowrap">LPF(基礎)</th>
                                                 <th class="nowrap">LPF(高中)</th>
-                                                <th class="nowrap">POAS</th>
+                                                <th class="nowrap">POAS <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></th>
                                                 <th class="nowrap">Key Skill</th>
                                                 <th class="nowrap">前備技能</th>
                                                 <th class="nowrap">預期學習成果</th>
@@ -230,6 +230,10 @@
                         d.sb_obj_search = sb_obj_id;
                         d.lesson_search = lesson_id;
                         console.log(d);
+                    },
+                    "complete" : function(){
+                        $('[data-toggle="tooltip"]').tooltip();
+
                     },
                     "error": function(e) {
                         console.log(e);

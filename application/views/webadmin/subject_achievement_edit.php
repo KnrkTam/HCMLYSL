@@ -2,15 +2,28 @@
 <html lang="en">
 
 <head>
-    <?php include_once "head.php"; ?>
+<?php include_once("head.php"); ?>
+<style>
+    .removeRow {
+        z-index: 5;
+        opacity: 1;
+        cursor: pointer;
+    }
+
+    .removeRow i {
+        z-index: -1;
+        opacity: 1;
+        cursor: pointer;
+    }
+</style>
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini">
     <div class="wrapper">
 
-        <?php include_once "header.php"; ?>
+    <?php include_once("header.php"); ?>
 
-        <?php include_once "menu.php"; ?>
+    <?php include_once("menu.php"); ?>
 
         <!-- Content Wrapper. Contains page content -->
 
@@ -64,14 +77,7 @@
                                     <div class="col-lg-5 d-flex">
 
                                         <div class="form-group w-100">
-                                            <label class="text-nowrap">科目 : </label>
-                                            <select class="form-control subjectSelect">
-                                                <option hidden>請選擇...</option>
-                                                <option value="語文1234" selected>語文1234</option>
-                                                <option value="自理">自理</option>
-                                                <option value="生活常規">生活常規</option>
-                                                <option value="音1234">音1234</option>
-                                            </select>
+                                            <h3 class="text-blue"><b><?= $subject ?></b></h5>
                                         </div>
                                         <a href="#" class="link nowrap mt-30 ml-2 controlSearchBtn">隱藏搜尋</a>
 
@@ -79,33 +85,20 @@
 
                                 </div>
                                 <hr>
-                                <div class="subject_achievementNew">
+                                <!-- <div class="subject_achievementNew"> -->
 
                                     <div class="row">
                                         <div class="col-lg-2">
                                             <div class="form-group ">
                                                 <label class="text-nowrap">課程 : </label>
-                                                <select class="form-control">
-                                                    <option hidden>請選擇...</option>
-                                                    <option value="語文">語文</option>
-                                                    <option value="音">音</option>
-                                                    <option value="科技">科技</option>
-                                                    <option value="STEM">STEM</option>
-
-                                                </select>
+                                                <div style="flex: 1"><?php form_list_type('courses_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'data-placeholder' => '請選擇...', 'enable_value' => $courses_list, 'form_validation_rules' => 'trim|required']) ?></div>
                                             </div>
                                         </div>
                                         <div class="col-lg-3">
                                             <div class="form-group">
                                                 <label class="text-nowrap">範疇 : </label>
-                                                <select class="form-control">
-                                                    <option hidden>請選擇...</option>
-                                                    <option value="聆聽">聆聽</option>
-                                                    <option value="聆聽">聆聽</option>
-                                                    <option value="聆聽">聆聽</option>
-                                                    <option value="聆聽">聆聽</option>
+                                                <div style="flex: 1"><?php form_list_type('categories_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'data-placeholder' => '請選擇...', 'enable_value' => $categories_list, 'form_validation_rules' => 'trim|required']) ?></div>                                               
 
-                                                </select>
                                             </div>
                                         </div>
                                         <div class="col-lg-6 d-flex align-items-start">
@@ -113,24 +106,13 @@
 
                                             <div class="form-group w-100">
                                                 <label class="text-nowrap">校本課程學習重點 : (多項選擇) </label>
-                                                <select class="form-control select2" multiple="" data-placeholder="請選擇...">
-                                                    <option value="聽力訓練">聽力訓練</option>
-                                                    <option value="理解語意:把握重心">理解語意:把握重心</option>
-                                                    <option value="聽力訓練">聽力訓練</option>
-                                                    <option value="理解語意:把握重心">理解語意:把握重心</option>
-                                                </select>
+                                                <div style="flex: 1"><?php form_list_type('sb_obj_id[]', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'data-placeholder' => '請選擇...', 'enable_value' => $sb_obj_list, 'form_validation_rules' => 'trim|required', 'multiple' => 1]) ?></div>
+
                                             </div>
                                             <span class="ml-2 mr-2 mt-30">或</span>
                                             <div class="form-group w-100">
                                                 <label class="text-nowrap">課程編號 : (多項選擇) </label>
-                                                <select class="form-control select2" multiple="" data-placeholder="請選擇...">
-
-                                                    <option value="MN0155">MN0155</option>
-                                                    <option value="MN0158">MN0158</option>
-                                                    <option value="MN0160">MN0160</option>
-                                                    <option value="MN0162">MN0162</option>
-
-                                                </select>
+                                                <div style="flex: 1"><?php form_list_type('lesson_id[]', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'data-placeholder' => '請選擇...', 'enable_value' => $lessons_list, 'form_validation_rules' => 'trim|required', 'multiple' => 1]) ?></div>
                                             </div>
                                         </div>
                                         <div class="col-lg-1">
@@ -138,9 +120,9 @@
                                         </div>
 
                                     </div>
-                                </div>
+                                <!-- </div> -->
 
-                                <div class="tableWrap hidenWrap">
+                                <div class="tableWrap">
                                     <div class="row">
 
                                         <div class="col-lg-12">
@@ -163,147 +145,27 @@
                                                         <th class="nowrap">前備技能</th>
                                                         <th class="nowrap">預期學習成果</th>
                                                         <th class="nowrap">課程編號</th>
-                                                        <th class="nowrap">預期學習成果</th>
                                                         <th class="nowrap">相關項目編號</th>
                                                     </tr>
                                                 </thead>
-
                                                 <tbody>
-                                                    <tr>
-                                                        <td><input type="checkbox" name="subjectCheck" class="subjectCheck" /></td>
-                                                        <td>語文</td>
-                                                        <td>聆聽</td>
-                                                        <td>聽力訓練</td>
-                                                        <td>聽力訓練</td>
-                                                        <td>技能</td>
-                                                        <td>初組、中組</td>
-                                                        <td>I2</td>
-                                                        <td>I2</td>
-                                                        <td class="nowrap">IB.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-                                                        <td class="nowrap">IC.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-                                                        <td><span class="text-green"><i class="fa fa-check"></i></span></td>
-                                                        <td>能注意聲音的來源，對聲音作出反應</td>
-                                                        <td>MN0155</td>
-                                                        <td>MN0449,MS0002</td>
-
-                                                        <td></td>
-                                                    </tr>
-                                                    <tr>
-
-                                                        <td><input type="checkbox" name="subjectCheck" class="subjectCheck" /></td>
-                                                        <td>語文</td>
-                                                        <td>聆聽</td>
-                                                        <td>聽力訓練</td>
-                                                        <td>聽力訓練</td>
-                                                        <td>技能</td>
-                                                        <td>初組、中組</td>
-                                                        <td>I2</td>
-                                                        <td>I2</td>
-                                                        <td class="nowrap">IB.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-                                                        <td class="nowrap">IC.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-                                                        <td><span class="text-red"><i class="fa fa-remove"></i></span></td>
-                                                        <td>能注意聲音的來源，對聲音作出反應</td>
-                                                        <td>MN0155</td>
-                                                        <td>MN0449,MS0002</td>
-
-                                                        <td></td>
-                                                    </tr>
-                                                    <tr>
-
-                                                        <td><input type="checkbox" name="subjectCheck" class="subjectCheck" /></td>
-                                                        <td>語文</td>
-                                                        <td>聆聽</td>
-                                                        <td>聽力訓練</td>
-                                                        <td>聽力訓練</td>
-                                                        <td>技能</td>
-                                                        <td>初組、中組</td>
-                                                        <td>I2</td>
-                                                        <td>I2</td>
-                                                        <td class="nowrap">IB.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-                                                        <td class="nowrap">IC.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-                                                        <td><span class="text-red"><i class="fa fa-remove"></i></span></td>
-                                                        <td>能注意聲音的來源，對聲音作出反應</td>
-                                                        <td>MN0155</td>
-                                                        <td>MN0449,MS0002</td>
-
-                                                        <td></td>
-                                                    </tr>
-                                                    <tr>
-
-                                                        <td><input type="checkbox" name="subjectCheck" class="subjectCheck" /></td>
-                                                        <td>語文</td>
-                                                        <td>聆聽</td>
-                                                        <td>聽力訓練</td>
-                                                        <td>聽力訓練</td>
-                                                        <td>技能</td>
-                                                        <td>初組、中組</td>
-                                                        <td>I2</td>
-                                                        <td>I2</td>
-                                                        <td class="nowrap">IB.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-                                                        <td class="nowrap">IC.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-                                                        <td><span class="text-red"><i class="fa fa-remove"></i></span></td>
-                                                        <td>能注意聲音的來源，對聲音作出反應</td>
-                                                        <td>MN0155</td>
-                                                        <td>MN0449,MS0002</td>
-
-                                                        <td></td>
-                                                    </tr>
-                                                    <tr>
-
-                                                        <td><input type="checkbox" name="subjectCheck" class="subjectCheck" /></td>
-                                                        <td>語文</td>
-                                                        <td>聆聽</td>
-                                                        <td>聽力訓練</td>
-                                                        <td>聽力訓練</td>
-                                                        <td>技能</td>
-                                                        <td>初組、中組</td>
-                                                        <td>I2</td>
-                                                        <td>I2</td>
-                                                        <td class="nowrap">IB.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-                                                        <td class="nowrap">IC.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-                                                        <td><span class="text-red"><i class="fa fa-remove"></i></span></td>
-                                                        <td>能注意聲音的來源，對聲音作出反應</td>
-                                                        <td>MN0155</td>
-                                                        <td>MN0449,MS0002</td>
-
-                                                        <td></td>
-                                                    </tr>
-                                                    <tr>
-
-                                                        <td><input type="checkbox" name="subjectCheck" class="subjectCheck" /></td>
-                                                        <td>語文</td>
-                                                        <td>聆聽</td>
-                                                        <td>聽力訓練</td>
-                                                        <td>聽力訓練</td>
-                                                        <td>技能</td>
-                                                        <td>初組、中組</td>
-                                                        <td>I2</td>
-                                                        <td>I2</td>
-                                                        <td class="nowrap">IB.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-                                                        <td class="nowrap">IC.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-                                                        <td><span class="text-red"><i class="fa fa-remove"></i></span></td>
-                                                        <td>能注意聲音的來源，對聲音作出反應</td>
-                                                        <td>MN0155</td>
-                                                        <td>MN0449,MS0002</td>
-
-                                                        <td></td>
-                                                    </tr>
                                                 </tbody>
                                             </table>
-
                                             <div class="mt-4 d-flex justify-content-end">
-                                                <button type="button" class="btn bg-maroon mw-100 mr-4" onclick="location.href='../Bk_subject_achievement/preview';">下一步</button>
-                                                <button type="button" class="btn btn-default mw-100">返 回</button>
+                                                <input type="hidden" id="subject_lessons" name="subject_lessons[]" value=""></input>
+                                                <input type="hidden" value=<?= $function?> name="action"> </input>
+
+                                                <button type="submit" class="btn bg-maroon mw-100 mr-4">下一步</button>
+                                                <button type="button" class="btn btn-default mw-100" onclick="location.href='<?= (admin_url($page_setting['controller'])) ?>';">返 回</button>
                                             </div>
                                             <hr>
                                         </div>
                                         <div class="col-lg-12">
                                             <h5 class="text-yellow"><b>已選項目：</b></h5>
-
                                             <table class="table table-bordered table-striped" id="subjectSelectedTable">
                                                 <thead>
                                                     <tr class="bg-light-blue color-palette">
-                                                        <th class="no-sort" style="min-width: 4px;"></th>
+                                                        <th class="no-sort" style="min-width: 10px;"></th>
                                                         <th class="nowrap">課程</th>
                                                         <th class="nowrap">範疇</th>
                                                         <th class="nowrap">中央課程學習重點</th>
@@ -311,85 +173,20 @@
                                                         <th class="nowrap">學習元素</th>
                                                         <th class="nowrap">組別</th>
                                                         <th class="nowrap">LPF(基礎)</th>
-                                                        <th class="nowrap">LPF(高中) P</th>
+                                                        <th class="nowrap">LPF(高中) </th>
                                                         <th class="nowrap">POAS</th>
                                                         <th class="nowrap">Key Skill</th>
                                                         <th class="nowrap">前備技能</th>
                                                         <th class="nowrap">預期學習成果</th>
                                                         <th class="nowrap">課程編號</th>
-                                                        <th class="nowrap">預期學習成果</th>
                                                         <th class="nowrap">相關項目編號</th>
                                                     </tr>
                                                 </thead>
-
                                                 <tbody>
-                                                    <tr>
-                                                        <td><a class="editLinkBtn text-red" href="#"><i class="fa fa-fw fa-trash-o"></i></a></td>
-                                                        <td>語文</td>
-                                                        <td>聆聽</td>
-                                                        <td>聽力訓練</td>
-                                                        <td>聽力訓練</td>
-                                                        <td>技能</td>
-                                                        <td>初組、中組</td>
-                                                        <td>I2</td>
-                                                        <td>I2</td>
-                                                        <td class="nowrap">IB.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-                                                        <td class="nowrap">IC.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-                                                        <td><span class="text-green"><i class="fa fa-check"></i></span></td>
-                                                        <td>能注意聲音的來源，對聲音作出反應</td>
-                                                        <td>MN0155</td>
-                                                        <td>MN0449,MS0002</td>
-
-                                                        <td></td>
-                                                    </tr>
-                                                    <tr>
-
-                                                        <td><a class="editLinkBtn text-red" href="#"><i class="fa fa-fw fa-trash-o"></i></a></td>
-                                                        <td>語文</td>
-                                                        <td>聆聽</td>
-                                                        <td>聽力訓練</td>
-                                                        <td>聽力訓練</td>
-                                                        <td>技能</td>
-                                                        <td>初組、中組</td>
-                                                        <td>I2</td>
-                                                        <td>I2</td>
-                                                        <td class="nowrap">IB.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-                                                        <td class="nowrap">IC.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-                                                        <td><span class="text-red"><i class="fa fa-remove"></i></span></td>
-                                                        <td>能注意聲音的來源，對聲音作出反應</td>
-                                                        <td>MN0155</td>
-                                                        <td>MN0449,MS0002</td>
-
-                                                        <td></td>
-                                                    </tr>
-                                                    <tr>
-
-                                                        <td><a class="editLinkBtn text-red" href="#"><i class="fa fa-fw fa-trash-o"></i></a></td>
-                                                        <td>語文</td>
-                                                        <td>聆聽</td>
-                                                        <td>聽力訓練</td>
-                                                        <td>聽力訓練</td>
-                                                        <td>技能</td>
-                                                        <td>初組、中組</td>
-                                                        <td>I2</td>
-                                                        <td>I2</td>
-                                                        <td class="nowrap">IB.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-                                                        <td class="nowrap">IC.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-                                                        <td><span class="text-red"><i class="fa fa-remove"></i></span></td>
-                                                        <td>能注意聲音的來源，對聲音作出反應</td>
-                                                        <td>MN0155</td>
-                                                        <td>MN0449,MS0002</td>
-
-                                                        <td></td>
-                                                    </tr>
-
                                                 </tbody>
-                                            </table>
-
+                                            </table> 
                                         </div>
                                     </div>
-
-
                                 </div>
                             </div>
                             <!-- /.box-body -->
@@ -407,11 +204,11 @@
 
         <!-- /.content-wrapper -->
 
-        <?php include_once "footer.php"; ?>
+        <?php include_once("footer.php"); ?>
 
     </div>
     <!-- ./wrapper -->
-    <?php include_once "script.php"; ?>
+    <?php include_once("script.php"); ?>
 
 
 
@@ -420,84 +217,223 @@
     <script>
         $(document).ready(function() {
             $('[data-toggle="tooltip"]').tooltip();
-            var subjectTable = $('#subjectTable').DataTable({
-                scrollY: "300px",
-                scrollX: true,
-                scrollCollapse: true,
-                bFilter: false,
-                bInfo: true,
-                bLengthChange: false,
-                columnDefs: [{
-                    targets: 0,
-                    orderable: false,
-
-                }]
-            });
-
-            var subjectSelectedTable = $('#subjectSelectedTable').DataTable({
-                scrollY: "300px",
-                scrollX: true,
-                scrollCollapse: true,
-                bFilter: false,
-                bInfo: true,
-                bLengthChange: false,
-                columnDefs: [{
-                    targets: 0,
-                    orderable: false,
-
-                }]
-            });
-
-            $(".controlSearchBtn").click(function() {
-
-
-                // $(".subject_achievementNew").slideToggle("active");
-
-                // Animation complete.
-
-                $(".subject_achievementNew").slideToggle('slow', function() {
-                    $('.controlSearchBtn').toggleClass('active', $(this).is(':visible'));
-                    if ($('.controlSearchBtn').hasClass("active")) {
-                        $(".controlSearchBtn").text("隱藏搜尋");
-                    } else {
-                        $(".controlSearchBtn").text("顯示搜尋");
-                    }
-                });
-
-
-            });
-
-
-
-
-
-
-            $(".subject_achievementNew").click(function() {
-
-                $(".subject_achievementNew").fadeIn();
-
-
-            });
-            $(".subject_achievementNew").fadeIn();
-            $(".subjectSelect").change(function() {
-                if ($(this).val() != "") {
-                    $(".subject_achievementNew").fadeIn();
-                    $(".controlSearchBtn").fadeIn();
-                    $(".controlSearchBtn").text("隱藏搜尋");
-                } else {
-                    $(".subject_achievementNew").hide();
-                }
-
-            });
-
-
 
 
             $(".searchBtn").click(function() {
-
-                $(".tableWrap").fadeIn();
-
+                console.log('clicked')
+                $('#subjectTable').DataTable().draw();
             });
+
+            let added_ids = new Set();
+
+            <?php if ($_SESSION['post_data']){ ?>
+                let session_data = <?= json_encode($_SESSION['post_data'])?>;
+                // $('#subject_id').val(session_data['subject_id']).select2();
+                for (i = 0; i < session_data['added_ids'].length; i++) {
+                    added_ids.add(session_data['added_ids'][i]);
+                };
+            // <?} else {?>   
+            //     let added_arr = <?= json_encoded($added_ids);?>;
+            //     for (i = 0; i < added_arr.length; i++) {
+            //         added_ids.add(added_arr[i]);
+            //     };
+            <? } ?>
+
+            $('input[id=subject_lessons]').val(Array.from(added_ids));
+
+
+            var  Course_datatable = $('#subjectTable').DataTable({
+                // scrollY: '300px',
+                scrollX: true,
+                "language": {
+                    "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/' . get_wlocale() . '.json') ?>"
+                },
+                "order": [],
+                "bSort": false,
+                "bPaginate": false,
+                "pageLength": 50,
+                "pagingType": "input",
+                //"sDom": '<"wrapper"lfptip>',
+                "processing": true,
+                "serverSide": true,
+                "ordering": false,
+                "searching": false,
+                "searchDelay": 0,
+                "ajax": {
+                    "url": "<?= admin_url($page_setting['controller'] . '/search_ajax') ?>",
+                    "method": "get",
+                    "timeout": "30000",
+                    "data": function(d) {
+                        let course_id = $('#courses_id').val();
+                        let category_id = $('#categories_id').val();
+                        let sb_obj_id = $('#sb_obj_id').val();
+                        let lesson_id = $('#lesson_id').val();
+                        let subject_id = $('#subject_id').val();
+
+                        d.course_search = course_id;
+                        d.category_search = category_id;
+                        d.sb_obj_search = sb_obj_id;
+                        d.lesson_search = lesson_id;
+                        d.subject_search = subject_id;
+                        console.log('data',d);
+                        // var filter_type = $('#filter_type').val();
+                        // d.search_filter_type = filter_type;
+                        // d.search_filter_para = $('#filter_' + filter_type + '_para').val();
+                    },
+                    "complete": function(e){
+                        $('[data-toggle="tooltip"]').tooltip();
+
+                        $(".addLesson").change(function(e) {
+                            if ($(this).is(':checked')) {
+                                added_ids.add(this.value)
+                                console.log(Array.from(added_ids));
+                                e.stopPropagation();
+                                $(".tableWrap").fadeIn();
+
+                                $('#subjectSelectedTable').DataTable().draw();
+                            } else {
+                                added_ids.delete(this.value)
+                                console.log(Array.from(added_ids));
+                                $(".tableWrap").fadeIn();
+
+                                $('#subjectSelectedTable').DataTable().draw();
+
+                            }
+                        });
+                        let old_arr = Array.from(added_ids)
+                        for (let i = 0; i < old_arr.length; i++) {
+                            $(`input[type=checkbox][class=addLesson][value=${old_arr[i]}]`).prop('checked', true)
+                        }
+
+                        $(".removeRow").click(function() {
+                            added_ids.delete(this.attributes.value.value);
+
+                            console.log(Array.from(added_ids))
+                            
+                            $('#subjectSelectedTable').DataTable().draw();
+                            $('#subjectTable').DataTable().draw();
+
+                        });
+                        $('input[id=subject_lessons]').val(Array.from(added_ids));
+
+                    },
+                    "error": function(e) {
+                        console.log(e);
+                    }
+                },
+            });
+
+
+
+
+
+                let subjectSelectedTable = $('#subjectSelectedTable').DataTable({
+                scrollX: true,
+                "language": {
+                    "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/' . get_wlocale() . '.json') ?>"
+                },
+                "order": [],
+                "bSort": false,
+                "pageLength": 50,
+                "pagingType": "input",
+                //"sDom": '<"wrapper"lfptip>',
+                "processing": true,
+                "serverSide": true,
+                "ordering": false,
+                "searching": false,
+                "searchDelay": 0, 
+                "bPaginate": false,
+                "bAutoWidth": false,
+                "ajax": {
+                    "url": "<?= admin_url($page_setting['controller'] . '/select_ajax') ?>",
+                    "method": "get",
+                    "timeout": "30000",
+                    "data": function(d) {
+                        d.added_ids = Array.from(added_ids)
+                        console.log('data',d);
+                    },
+                    "complete": function(e){
+                        $(".addLesson").change(function() {
+                            if ($(this).is(':checked')) {
+                                added_ids.add(this.value)
+                                // console.log(Array.from(added_ids));
+                            } else {
+                                added_ids.delete(this.value)
+                                // console.log(Array.from(added_ids));
+                            }
+                        });
+
+                        
+                        $(".removeRow").click(function() {
+                            added_ids.delete(this.attributes.value.value);
+
+                            console.log(Array.from(added_ids))
+                            // console.log(JSON.stringify(this));
+                            // console.log(this.attributes.value.value)
+
+
+                            $('#subjectSelectedTable').DataTable().draw();
+                            $('#subjectTable').DataTable().draw();
+
+                        });
+                        $('input[id=subject_lessons]').val(Array.from(added_ids));
+
+                    },
+                    "error": function(e) {
+                        console.log(e);
+                    }
+                },
+            });
+            // $(".controlSearchBtn").click(function() {
+
+
+            //     // $(".subject_achievementNew").slideToggle("active");
+
+            //     // Animation complete.
+
+            //     $(".subject_achievementNew").slideToggle('slow', function() {
+            //         $('.controlSearchBtn').toggleClass('active', $(this).is(':visible'));
+            //         if ($('.controlSearchBtn').hasClass("active")) {
+            //             $(".controlSearchBtn").text("隱藏搜尋");
+            //         } else {
+            //             $(".controlSearchBtn").text("顯示搜尋");
+            //         }
+            //     });
+
+
+            // });
+
+
+
+
+
+
+            // $(".subject_achievementNew").click(function() {
+
+            //     $(".subject_achievementNew").fadeIn();
+
+
+            // });
+            // $(".subject_achievementNew").fadeIn();
+            // $(".subjectSelect").change(function() {
+            //     if ($(this).val() != "") {
+            //         $(".subject_achievementNew").fadeIn();
+            //         $(".controlSearchBtn").fadeIn();
+            //         $(".controlSearchBtn").text("隱藏搜尋");
+            //     } else {
+            //         $(".subject_achievementNew").hide();
+            //     }
+
+            // });
+
+
+
+
+            // $(".searchBtn").click(function() {
+
+            //     $(".tableWrap").fadeIn();
+
+            // });
 
 
 
@@ -531,16 +467,16 @@
         });
 
 
-        function submit_form(_this) {
-            //form checking
-            var valid_data = true;
-            //.form checking
-            if (!valid_data) {
-                //alert('Invalid Data.');
-            } else {
-                ajax_submit_form(_this);
-            }
-        }
+        // function submit_form(_this) {
+        //     //form checking
+        //     var valid_data = true;
+        //     //.form checking
+        //     if (!valid_data) {
+        //         //alert('Invalid Data.');
+        //     } else {
+        //         ajax_submit_form(_this);
+        //     }
+        // }
 
         <?php /*
 //multiple image upload

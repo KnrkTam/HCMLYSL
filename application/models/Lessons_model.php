@@ -32,22 +32,41 @@ class Lessons_model extends BaseModel
         return $table_list;
     }
 
-    public static function list($course_id = null, $category_id = null, $sb_obj_id = array(), $id = array())
+    public static function list($course_id = null, $category_id = null, $sb_obj_id = array(), $id = array(), $subject_id = null)
     {
-        if ($id) {
-            $result = array();
-            foreach ($id as $i => $row) {
-                $result[$i] = Lessons_model::where('id', $row)->first();
-            }
-        } else if (!$course_id && !$category_id) {
-            $result = Lessons_model::all();
-        } else if ($course_id && !$category_id) {
-            $result = Lessons_model::where('course_id', $course_id)->get();
-        } else if ($category_id && !$course_id) {
-            $result = Lessons_model::where('category_id', $category_id)->get();
-        } else if ($course_id && $category_id) {
-            $result = Lessons_model::where('course_id', $course_id)->where('category_id', $category_id)->get();
+        if (!$subject_id) {
+            if ($id) {
+                $result = Lessons_model::whereIn('id', $id)->get();
+            } else if ($sb_obj_id) {
+                $result = Lessons_model::whereIn('sb_obj_id', $sb_obj_id)->get();
+            } else if (!$course_id && !$category_id) {
+                $result = Lessons_model::all();
+            } else if ($course_id && !$category_id) {
+                $result = Lessons_model::where('course_id', $course_id)->get();
+            } else if ($category_id && !$course_id) {
+                $result = Lessons_model::where('category_id', $category_id)->get();
+            } else if ($course_id && $category_id) {
+                $result = Lessons_model::where('course_id', $course_id)->where('category_id', $category_id)->get();
+            }  
+        } else if ($subject_id) {
+            $subject_arr = Subject_lessons_model::id_list($subject_id);
+            if ($id) {
+                $result = Lessons_model::whereIn('id', $id)->whereIn('id', $subject_arr)->get();
+            } else if ($sb_obj_id) {
+                $result = Lessons_model::whereIn('sb_obj_id', $sb_obj_id)->whereIn('id', $subject_arr)->get();
+            } else if (!$course_id && !$category_id) {
+                $result = Lessons_model::whereIn('id', $subject_arr)->get();
+            } else if ($course_id && !$category_id) {
+                $result = Lessons_model::whereIn('id', $subject_arr)->where('course_id', $course_id)->get();
+            } else if ($category_id && !$course_id) {
+                $result = Lessons_model::whereIn('id', $subject_arr)->where('category_id', $category_id)->get();
+            } else if ($course_id && $category_id) {
+                $result = Lessons_model::whereIn('id', $subject_arr)->where('course_id', $course_id)->where('category_id', $category_id)->get();
+            }  
         }
+
+        
+        
 
         foreach($result as $row){
             $list[$row['id']] = $row["code"];

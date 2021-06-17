@@ -39,293 +39,6 @@ class Bk_subject_achievement extends CI_Controller //change this
         return $page_setting;
     }
 
-    // public function ajax($type = NULL)
-    // {
-    //     $page_setting = $this->page_setting(array(
-    //         'view_' . $this->scope
-    //     ));
-
-    //     switch ($type) {
-    //         case 'delete_record':
-    //             if (!validate_user_access(['delete_' . $this->scope])) {
-    //                 $response = ['success' => FALSE, 'data' => [], 'message' => __('Access Denied.')];
-    //                 echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-    //                 exit;
-    //             }
-
-    //             $id = (int)$this->input->post('id');
-    //             $result = News_ajax_model::find($id);
-    //             if (!empty($result)) {
-    //                 $data = array(
-    //                     "deleted" => 1,
-    //                     "deleted_by" => $_SESSION['sys_user_id'],
-    //                     "deleted_at" => date('Y-m-d H:i:s'),
-    //                 );
-    //                 $result->update($data);
-    //                 //update sort
-    //                 $db_result = DB::table('news')->where('sort', '>', $result['sort'])->update(['sort' => DB::raw('sort-1')]);
-
-    //                 $response = ['success' => TRUE, 'data' => [], 'message' => __('Delete Successfully.')];
-    //             } else {
-    //                 $response = ['success' => FALSE, 'data' => [], 'message' => __('Cannot find data.')];
-    //             }
-
-    //             echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-    //             break;
-    //         case 'submit_form':
-    //             if (!validate_user_access(['create_' . $this->scope, 'update_' . $this->scope])) {
-    //                 $response = ['success' => FALSE, 'data' => [], 'message' => __('Access Denied.')];
-    //                 echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-    //                 exit;
-    //             }
-
-    //             $response = ['success' => FALSE, 'data' => [], 'message' => ''];
-    //             $id = (int)$this->input->post('id') > 0 ? (int)$this->input->post('id') : NULL;
-
-    //             //modify checking id data
-    //             if (!empty($id)) {
-    //                 $news = News_model::find($id);
-    //                 if (empty($news)) {
-    //                     $response['message'] = __('Cannot find data.');
-    //                     echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-    //                     exit;
-    //                 }
-    //             }
-
-    //             $rules = array();
-    //             $form_list = News_ajax_model::form_list();
-    //             $form_data = [];
-    //             foreach ($form_list as $field => $row) {
-    //                 $form_validation_error = form_validation_default_errors($row['label']);
-    //                 $form_validation_error['validate_date'] = $row['label'] . ' must be a date format.';
-    //                 $form_validation_error['validate_start_date'] = $row['label'] . ' must be a date format and before end date.';
-    //                 $form_validation_error['validate_end_date'] = $row['label'] . ' must be a date format and after end date.';
-    //                 array_push(
-    //                     $rules,
-    //                     array(
-    //                         'field' => $field,
-    //                         'label' => $row['label'],
-    //                         'rules' => $row['form_validation_rules'],
-    //                         'errors' => $form_validation_error,
-    //                     )
-    //                 );
-
-    //                 $form_data[$field] = $this->input->post($field);
-
-    //                 if ($id && in_array($row['type'], ['file', 'single_image_upload'])) {
-    //                     $form_data[$field] = $news->{$field};
-    //                 }
-    //             }
-
-    //             $this->form_validation->set_rules($rules);
-
-    //             //other checking
-    //             $error_message = '';
-    //             //upload file
-    //             foreach ($form_list as $field => $row) {
-    //                 if (in_array($row['type'], ['file', 'single_image_upload', 'elfinder_upload'])) {
-    //                     if ($id && $this->input->post('del_' . $field) == 1) {
-    //                         $news_model = News_ajax_model::find($id);
-    //                         if ($news_model->id) {
-    //                             $file_path = FCPATH . 'assets/' . $news_model->{$field};
-    //                             $form_data[$field] = ''; // remove on database
-    //                             if (file_exists($file_path) && $row['type'] != 'elfinder_upload') {
-    //                                 unlink($file_path);
-    //                             }
-    //                         }
-    //                     }
-    //                 }
-
-    //                 if (in_array($row['type'], ['file', 'single_image_upload'])) {
-    //                     //single image upload
-    //                     $single_upload = single_upload($field, $row['upload_config'], $row['thumb_config']);
-    //                     //if success return $single_upload['filename'] else return $single_upload['error']
-    //                     if ($single_upload['error']) {
-    //                         $error_message .= '<p>' . $single_upload['error'] . '</p>';
-    //                     } else if ($single_upload['filename']) {
-    //                         $form_data[$field] = $single_upload['file_path'];
-    //                     }
-    //                     //end of single image upload
-    //                 }
-    //             }
-    //             //.other checking
-
-    //             if ($this->form_validation->run() == FALSE || !empty($error_message)) {
-    //                 $response['message'] = validation_errors('<p>', '</p>') . $error_message;
-    //             } else {
-    //                 $data = array(
-    //                     'updated_at' => date("Y-m-d H:i:s"),
-    //                     'updated_by' => $_SESSION["sys_user_id"],
-    //                 );
-    //                 if (empty($id)) {
-    //                     $data['created_at'] = date("Y-m-d H:i:s");
-    //                     $data['created_by'] = $_SESSION["sys_user_id"];
-    //                 }
-    //                 foreach ($form_list as $field => $row) {
-    //                     if ($row['type'] == 'display')
-    //                         continue;
-
-    //                     if ($row['encryption']) {
-    //                         $data[$field] = $this->encryption->encrypt($form_data[$field]);
-    //                     } else {
-    //                         $data[$field] = $form_data[$field];
-    //                     }
-    //                 }
-    //                 //.upload file
-
-    //                 //var_dump($data);
-    //                 //exit;
-    //                 if (empty($id)) {
-    //                     $news = News_ajax_model::create($data);
-    //                     if ($news->id) {
-    //                         $response = ['success' => TRUE, 'data' => ['id' => $news->id], 'message' => __('Create Successfully.')];
-    //                     } else {
-    //                         $response = ['success' => FALSE, 'data' => [], 'message' => __('Create Unsuccessfully.')];
-    //                     }
-    //                 } else {
-    //                     $news = News_model::where('id', $id)->update($data);
-    //                     $response = ['success' => TRUE, 'data' => ['id' => $id], 'message' => __('Update Successfully.')];
-    //                 }
-    //             }
-    //             echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-    //             break;
-    //         case 'update_sort':
-    //             if (!validate_user_access(['update_' . $this->scope])) {
-    //                 $response = ['success' => FALSE, 'data' => [], 'message' => __('Access Denied.')];
-    //                 echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-    //                 exit;
-    //             }
-
-    //             $sorts = $this->input->post('sort');
-    //             if (!empty($sorts)) {
-    //                 foreach ($sorts as $id => $sort) {
-    //                     $data = array(
-    //                         "sort" => $sort,
-    //                     );
-    //                     News_model::where('id', $id)->update($data);
-    //                 }
-    //             }
-
-    //             $response = ['success' => TRUE, 'data' => [], 'message' => __('Update Successfully.')];
-    //             echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-
-    //             break;
-    //         case 'update_status':
-    //             if (!validate_user_access(['update_' . $this->scope])) {
-    //                 $response = ['success' => FALSE, 'data' => [], 'message' => __('Access Denied.')];
-    //                 echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-    //                 exit;
-    //             }
-
-    //             $id = $this->input->post('id');
-    //             $status = $this->input->post('status');
-    //             $result = News_ajax_model::find($id);
-    //             if (!empty($result)) {
-    //                 $data = array(
-    //                     'status' => $status,
-    //                     "updated_by" => $_SESSION['sys_user_id'],
-    //                     "updated_at" => date('Y-m-d H:i:s'),
-    //                 );
-    //                 $result->update($data);
-
-    //                 $response = ['success' => TRUE, 'data' => [], 'message' => __('Update Successfully.')];
-    //             } else {
-    //                 $response = ['success' => FALSE, 'data' => [], 'message' => __('Cannot find data.')];
-    //             }
-    //             echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-    //             break;
-    //         default:
-    //             $start = (int)$_GET["start"];
-    //             $length = (int)$_GET["length"];
-    //             $search = $_GET["search"]["value"];
-    //             $filter_type = $_GET["search_filter_type"];
-    //             $filter_para = $_GET["search_filter_para"];
-    //             $filter_para2 = $_POST["search_filter_para2"];
-
-    //             $result = News_ajax_model::orderBy('sort', 'ASC');
-
-    //             switch ($filter_type) {
-    //                 case 1: //All
-    //                     break;
-    //                 case 2: //title
-    //                     $result = $result->where('id', $filter_para);
-    //                     break;
-    //             }
-
-    //             if (empty($search)) {
-    //                 $result_count = $result->count();
-    //                 $result2 = $result->skip($start)->take($length)->get();
-    //             } else {
-    //                 $valid_result = array();
-    //                 $result = $result->get();
-    //                 $search_fields = array('title', 'date');
-    //                 $search_encrypted_fields = array();
-
-    //                 foreach ($result as $key => $row) {
-    //                     if (!empty($search_fields)) {
-    //                         $found = FALSE;
-    //                         foreach ($search_fields as $search_field) {
-    //                             if (strpos($row[$search_field], $search) !== FALSE) {
-    //                                 $found = TRUE;
-    //                             }
-    //                         }
-
-    //                         if (!$found) {
-    //                             if (!empty($search_encrypted_fields)) {
-    //                                 foreach ($search_encrypted_fields as $search_field) {
-    //                                     if (!empty($row[$search_field])) {
-    //                                         if (strpos($this->encryption->decrypt($row[$search_field]), $search) !== FALSE) {
-    //                                             $found = TRUE;
-    //                                         }
-    //                                     }
-    //                                 }
-    //                             }
-    //                         }
-
-    //                         if ($found) {
-    //                             $valid_result[] = $row;
-    //                         }
-    //                     }
-    //                 }
-
-    //                 $result_count = count($valid_result);
-    //                 $result2 = array();
-    //                 foreach ($valid_result as $key => $row) {
-    //                     if ($key >= $start && $key < ($start + $length)) {
-    //                         $result2[] = $row;
-    //                     }
-    //                 }
-    //             }
-
-    //             //rearrange data
-    //             $data = array();
-    //             $num = 0;
-    //             if (!empty($result2)) {
-    //                 foreach ($result2 as $key => $row) {
-    //                     $data[$num][] = '<input type="number" name="sort[' . $row["id"] . ']" value="' . $row["sort"] . '" style="width: 50px;"/>';
-    //                     $data[$num][] = $row["date"];
-    //                     $data[$num][] = '<a href="' . admin_url($page_setting['controller'] . '/modify/' . $row["id"]) . '">' . $row["title"] . '</a>';
-    //                     $action = '<div class="nowrap">';
-    //                     if (validate_user_access(['update_' . $this->scope])) {
-    //                         $action .= '<button type="button" class="btn btn-' . ($row["status"] == 1 ? 'success' : 'warning') . '" onclick="ajax_update_status(' . $row['id'] . ', ' . ($row["status"] == 1 ? 0 : 1) . ');" style="margin-right: 5px;">' . ($row["status"] == 1 ? __('Enable') : __('Disable')) . '</button>';
-    //                         $action .= '<a href="' . admin_url($page_setting['controller'] . '/modify/' . $row['id']) . '" style="margin-right: 5px;"><button type="button" class="btn btn-warning">' . __('Modify') . '</button></a>';
-    //                     }
-    //                     //delete this event and relate parent id
-    //                     if (validate_user_access(['delete_' . $this->scope])) {
-    //                         $action .= '<button type="button" class="btn btn-danger" onclick="ajax_delete_record(' . $row['id'] . ');">' . __('Delete') . '</button>';
-    //                     }
-    //                     $action .= '</div>';
-    //                     $data[$num][] = $action;
-    //                     $num++;
-    //                 }
-    //             }
-    //             $return = json_encode(array("draw" => $_GET["draw"], "recordsTotal" => $result_count, "recordsFiltered" => $result_count, "data" => $data));
-
-    //             echo $return;
-    //             break;
-    //     }
-    // }
-
     public function index()
     {
         $data['page_setting'] = $this->page_setting(array(
@@ -341,6 +54,10 @@ class Bk_subject_achievement extends CI_Controller //change this
         $data['categories_list'] = Categories_model::list();
         $data['sb_obj_list'] = Sb_obj_model::list();
         $data['lessons_list'] = Lessons_model::list();
+        array_unshift($data['courses_list'], "所有課程");
+        array_unshift($data['categories_list'], "所有課程");
+
+        $_SESSION['post_data'] = null;
 
        
         $this->load->view('webadmin/' . $this->scope . '', $data);
@@ -361,7 +78,9 @@ class Bk_subject_achievement extends CI_Controller //change this
         $lessons_arr = array();
 
         if ($subject_id) {
-            $filtered_lessons = Lessons_model::list($course_id, $category_id,$sb_obj_id, $lesson_id);
+            // $lesson_id = Subject_lessons_model::id_list($subject_id);
+            // dump($lesson_id)
+            $filtered_lessons = Lessons_model::list($course_id, $category_id,$sb_obj_id, $lesson_id, $subject_id);
             foreach ($filtered_lessons as $i =>$row) {
                 $lessons_arr[$i] = Lessons_model::table_list($i);
             }
@@ -378,7 +97,7 @@ class Bk_subject_achievement extends CI_Controller //change this
         $num = 0;
         if (!empty( $lessons_arr)) {
             foreach ( $lessons_arr as $key => $row) {
-                $data[$num][] = '<a class="editLinkBtn" href="'.admin_url(current_controller() . '/edit/'. $row['id']).'"><i class="fa fa-edit"></i></a>';
+                $data[$num][] = '<a class="editLinkBtn" href="'.admin_url(current_controller() . '/edit/'. $subject_id).'"><i class="fa fa-edit"></i></a>';
                 $data[$num][] = $row['course'];
                 $data[$num][] = $row['category'];
                 $data[$num][] = $row['central_obj'];
@@ -387,9 +106,13 @@ class Bk_subject_achievement extends CI_Controller //change this
                 $data[$num][] = $row['groups'];
                 $data[$num][] = $row['lpf_basic'];
                 $data[$num][] = $row['lpf_advanced'];
-                $data[$num][] = $row['poas'];
-                $data[$num][] = $row['skills'];
-                $data[$num][] = $row['preliminary_skill'];
+                $data[$num][] = $row['poas'].'<span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span>';
+                $data[$num][] = $row['skills'].'<span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span>';
+                if ($row['preliminary_skill'] == "1") { 
+                    $data[$num][] = '<p><span class="text-green"><i class="fa fa-check"></i></span></p>';
+                } else {
+                    $data[$num][] = '<p><span class="text-red"><i class="fa fa-close"></i></span></p>';
+                }
                 $data[$num][] = $row['code'];
                 $data[$num][] = $row['expected_outcome'];
                 $rel_les = '';
@@ -452,7 +175,7 @@ class Bk_subject_achievement extends CI_Controller //change this
                 $data = array();
                 $num = 0;
                 if (!empty( $lessons_arr)) {
-                    foreach ( $lessons_arr as $key => $row) {
+                    foreach ($lessons_arr as $key => $row) {
                         $data[$num][] = '<input type="checkbox" class="addLesson" value="'.$row['id'].'"/>';
                         $data[$num][] = $row['course'];
                         $data[$num][] = $row['category'];
@@ -462,10 +185,13 @@ class Bk_subject_achievement extends CI_Controller //change this
                         $data[$num][] = $row['groups'];
                         $data[$num][] = $row['lpf_basic'];
                         $data[$num][] = $row['lpf_advanced'];
-                        $data[$num][] = $row['poas'];
-                        $data[$num][] = $row['skills'];
-                        $data[$num][] = $row['preliminary_skill'];
-                        $data[$num][] = $row['code'];
+                        $data[$num][] = $row['poas'].'<span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span>';
+                        $data[$num][] = $row['skills'].'<span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span>';
+                        if ($row['preliminary_skill'] == "1") { 
+                            $data[$num][] = '<p><span class="text-green"><i class="fa fa-check"></i></span></p>';
+                        } else {
+                            $data[$num][] = '<p><span class="text-red"><i class="fa fa-close"></i></span></p>';
+                        }                        $data[$num][] = $row['code'];
                         $data[$num][] = $row['expected_outcome'];
                         $rel_les = '';
                         foreach ($row['rel_lessons'] as $key) {
@@ -524,10 +250,13 @@ class Bk_subject_achievement extends CI_Controller //change this
                         $data[$num][] = $row['groups'];
                         $data[$num][] = $row['lpf_basic'];
                         $data[$num][] = $row['lpf_advanced'];
-                        $data[$num][] = $row['poas'];
-                        $data[$num][] = $row['skills'];
-                        $data[$num][] = $row['preliminary_skill'];
-                        $data[$num][] = $row['code'];
+                        $data[$num][] = $row['poas'].'<span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span>';
+                        $data[$num][] = $row['skills'].'<span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span>';
+                        if ($row['preliminary_skill'] == "1") { 
+                            $data[$num][] = '<p><span class="text-green"><i class="fa fa-check"></i></span></p>';
+                        } else {
+                            $data[$num][] = '<p><span class="text-red"><i class="fa fa-close"></i></span></p>';
+                        }                        $data[$num][] = $row['code'];
                         $data[$num][] = $row['expected_outcome'];
                         $rel_les = '';
                         foreach ($row['rel_lessons'] as $key) {
@@ -586,16 +315,20 @@ class Bk_subject_achievement extends CI_Controller //change this
                         $data[$num][] = $row['groups'];
                         $data[$num][] = $row['lpf_basic'];
                         $data[$num][] = $row['lpf_advanced'];
-                        $data[$num][] = $row['poas'];
-                        $data[$num][] = $row['skills'];
-                        $data[$num][] = $row['preliminary_skill'];
-                        $data[$num][] = $row['code'];
+                        $data[$num][] = $row['poas'].'<span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span>';
+                        $data[$num][] = $row['skills'].'<span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span>';
+                        if ($row['preliminary_skill'] == "1") { 
+                            $data[$num][] = '<p><span class="text-green"><i class="fa fa-check"></i></span></p>';
+                        } else {
+                            $data[$num][] = '<p><span class="text-red"><i class="fa fa-close"></i></span></p>';
+                        }                        $data[$num][] = $row['code'];
                         $data[$num][] = $row['expected_outcome'];
                         $rel_les = '';
                         foreach ($row['rel_lessons'] as $key) {
                             $rel_les .= '<button type="button" class="btn-xs btn btn-primary badge">' .Lessons_model::code($key).'</button> &nbsp';
                         }
-                        $data[$num][] = $rel_les;                        // $action = '<div class="nowrap">';
+                        $data[$num][] = $rel_les;                        
+                        // $action = '<div class="nowrap">';
                         // if (validate_user_access(['update_' . $this->scope])) {
                         //     $action .= '<button type="button" class="btn btn-' . ($row["status"] == 1 ? 'success' : 'warning') . '" onclick="ajax_update_status(' . $row['id'] . ', ' . ($row["status"] == 1 ? 0 : 1) . ');" style="margin-right: 5px;">' . ($row["status"] == 1 ? __('Enable') : __('Disable')) . '</button>';
                         //     $action .= '<a href="' . admin_url($page_setting['controller'] . '/modify/' . $row['id']) . '" style="margin-right: 5px;"><button type="button" class="btn btn-warning">' . __('Modify') . '</button></a>';
@@ -617,37 +350,61 @@ class Bk_subject_achievement extends CI_Controller //change this
     public function create()
     {
         $data['page_setting'] = $this->page_setting(array(
-            'view_news'
+            'create_'. $this->scope,
         ), FALSE, TRUE);
+
+        $GLOBALS["select2"] = 1;
+        $GLOBALS["datatable"] = 1;
+
 
         // $data['form_action'] = admin_url($data['page_setting']['controller'] . '/submit_form');
         $data['action'] = __('新 增');
-
-        $data['subject_list'] = Subjects_model::list();
+        $data['function'] = "create";
+        $data['subject_list'] = Subjects_model::newList();
         $data['courses_list'] = Courses_model::list();
         $data['categories_list'] = Categories_model::list();
         $data['sb_obj_list'] = Sb_obj_model::list();
         $data['lessons_list'] = Lessons_model::list();
+        array_unshift($data['courses_list'], "所有課程");
+        array_unshift($data['categories_list'], "所有課程");
 
 
+        // dump($data);
 
-        $GLOBALS["select2"] = 1;
-        $GLOBALS["datatable"] = 1;
+        // dump($_SESSION);
 
         $data['form_action'] = admin_url($data['page_setting']['controller'] . '/preview');
 
         $this->load->view('webadmin/' . $this->scope . '_form',  $data);
     }
 
-    public function edit()
+    public function edit($id)
     {
         $data['page_setting'] = $this->page_setting(array(
-            'view_news'
+            'update_'. $this->scope,
         ), FALSE, TRUE);
-        $data['action'] = __('更 改');
 
         $GLOBALS["select2"] = 1;
         $GLOBALS["datatable"] = 1;
+
+        $subject = Subjects_model::find($id);
+        $data['action'] = __('更 改');
+        $data['function'] = "edit";
+        $data['subject_list'] = Subjects_model::list();
+        $data['courses_list'] = Courses_model::list();
+        $data['categories_list'] = Categories_model::list();
+        $data['sb_obj_list'] = Sb_obj_model::list();
+        $data['lessons_list'] = Lessons_model::list();
+        array_unshift($data['courses_list'], "所有課程");
+        array_unshift($data['categories_list'], "所有課程");
+        $result = Subject_lessons_model::where('subject_id',$id)->pluck('lesson_id');
+        $data['added_ids'] = $result;
+
+        $data['subject'] = Subjects_model::name($id); 
+        $data['subject_id'] = $subject['subject_id']; 
+
+        // dump($data);
+       
         $this->load->view('webadmin/' . $this->scope . '_edit',  $data);
     }
 
@@ -656,22 +413,123 @@ class Bk_subject_achievement extends CI_Controller //change this
     public function preview()
     {
         $data['page_setting'] = $this->page_setting(array(
-            'view_news'
+            'update_'. $this->scope,
         ), FALSE, TRUE);
+        $postData = $this->input->post();
 
+        // dump($postData);
         $GLOBALS["select2"] = 1;
         $GLOBALS["datatable"] = 1;
 
-        $postData = $this->input->post();
 
-        $added_ids_str = $postData['subject_lessons'][0];
-        $added_ids = explode(',', $added_ids_str);
- 
+        $postData['added_ids'] = explode(',', $postData['subject_lessons'][0]);
+        $_SESSION['post_data'] = $postData;
 
 
-        $data['added_ids'] = $added_ids;
+        $previous = $postData['action'];
+        $data['previous'] =  $previous;
+
+
+        $data['subject'] = Subjects_model::name($postData['subject_id']); 
+        $data['subject_id'] = $postData['subject_id']; 
+        $data['added_ids'] =  $postData['added_ids'];
+        $data['form_action'] = admin_url($data['page_setting']['controller'] . '/submit_form/'.$id);
+
+
+        dump($data);
+        dump($_SESSION);
 
         $this->load->view('webadmin/' . $this->scope . '_preview',  $data);
     }
     
+
+    public function submit_form($id = null){
+        $postData = $this->input->post();
+        // dump($postData);
+
+        if (!$id) {
+            $id = $postData['subject_id'];
+        
+        }
+
+        $lessons_id = json_decode($postData['lessons_id'][0]);
+
+        foreach ($lessons_id as $row){
+            $subject_lessons_id = Subject_lessons_model::create(array('subject_id' => $id, 'lesson_id' => $row))->id;
+
+        }
+
+        if ($subject_lessons_id) {
+
+            $_SESSION['success_msg'] = __('修改課程大綱成功');
+            $_SESSION['post_data'] = null;
+
+            redirect(admin_url('bk_'.$this->scope));
+        } else {
+            $_SESSION['error_msg'] = __('Error');
+        }        // $group_ids = $this->input->post('group_id');
+        // $skill_ids = $this->input->post('skills_id');
+        // $rel_lessons = $this->input->post('rel_lessons');
+        // // dump($this->input->post());
+        // $school_based_data = array(
+        //     'code' => $data['lesson_code'],
+        //     'course_id' => $data['course_id'],
+        //     'category_id' => $data['categories_id'],
+        //     'central_obj_id' => $data['central_obj_id'],
+        //     'sb_obj_id' => $data['sb_obj_id'],
+        //     'element_id' => $data['element_id'],
+        //     'lpf_basic_id' => $data['lpf_basic_id'],
+        //     'lpf_advanced_id' => $data['lpf_advanced_id'],
+        //     'poas_id' => $data['poas_id'],
+        //     'preliminary_skills' => $data['preliminary_skills'],
+        //     'expected_outcome' => $data['expected_outcome'],
+        //     'created_by' => $_SESSION["sys_user_id"],
+        //     'created_at' => date("Y-m-d H:i:s"),
+        // );
+
+        // if (empty($id)) {
+        //     $lesson_id = Lessons_model::create($school_based_data)->id;
+        //     foreach ($group_ids as $i => $row) {
+        //         Lessons_group_model::create(array('lesson_id' => $lesson_id, 'group_id' => $i,));
+        //     }
+        //     foreach ($skill_ids as $i => $row) {
+        //         Lessons_skill_model::create(array('lesson_id' => $lesson_id, 'skill_id' => $row,));
+        //     }
+
+        //     foreach ($rel_lessons as $i => $row) {
+        //         Lessons_relevant_model::create(array('lesson_id' => $lesson_id, 'rel_lesson_id' => $row,));
+        //     }
+            
+        //     if ($lesson_id) {
+        //         $_SESSION['success_msg'] = __('新增課程大綱成功');
+        //         $_SESSION['post_data'] = null;
+        //         redirect(admin_url('bk_'.$this->scope));
+        //     } else {
+        //         $_SESSION['error_msg'] = __('Error');
+        //     }
+        // } else {
+        //     Lessons_model::where('id', $id)->update($school_based_data);
+            
+        //     Lessons_group_model::where('lesson_id', $id)->delete(); 
+        //     Lessons_skill_model::where('lesson_id', $id)->delete(); 
+        //     Lessons_relevant_model::where('lesson_id', $id)->orwhere('rel_lesson_id', $id)->delete(); 
+
+        //     foreach ($group_ids as $i => $row) {
+        //         Lessons_group_model::create(array('lesson_id' => $id, 'group_id' => $i,));
+        //     }
+        //     if (strlen($skill_ids[0]) > 0) {
+        //         foreach ($skill_ids as $i => $row) {
+        //             Lessons_skill_model::create(array('lesson_id' => $id, 'skill_id' => $row,));
+        //         }
+        //     }
+
+        //     if (strlen($rel_lessons[0]) > 0) {
+        //         foreach ($rel_lessons as $i => $row) {
+        //             Lessons_relevant_model::create(array('lesson_id' => $id, 'rel_lesson_id' => $row,));
+        //         }
+        //     }
+
+
+        // } 
+    }
 }
