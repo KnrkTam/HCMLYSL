@@ -90,20 +90,20 @@ class Bk_permission extends CI_Controller
             ),
 
               // school base course outline
-              'create_master_course_outline' => array(
-                'desc' => 'Can create master_course_outline',
+            'create_master_lesson_outline' => array(
+                'desc' => 'Can create master_lesson_outline',
                 'role' => array('super_admin', 'admin')
             ),
-            'update_master_course_outline' => array(
-                'desc' => 'Can update master_course_outline',
+            'update_master_lesson_outline' => array(
+                'desc' => 'Can update master_lesson_outline',
                 'role' => array('super_admin', 'admin')
             ),
-            'delete_master_course_outline' => array(
-                'desc' => 'Can delete master_course_outline',
+            'delete_master_lesson_outline' => array(
+                'desc' => 'Can delete master_lesson_outline',
                 'role' => array('super_admin', 'admin')
             ),
-            'view_master_course_outline' => array(
-                'desc' => 'Can view master_course_outline',
+            'view_master_lesson_outline' => array(
+                'desc' => 'Can view master_lesson_outline',
                 'role' => array('super_admin', 'admin')
             ),
 
@@ -122,6 +122,24 @@ class Bk_permission extends CI_Controller
             ),
             'view_subject_achievement' => array(
                 'desc' => 'Can view subject_achievement',
+                'role' => array('super_admin', 'admin')
+            ),
+
+            // subject course outline
+            'create_subject_outline' => array(
+                'desc' => 'Can create subject_outline',
+                'role' => array('super_admin', 'admin')
+            ),
+            'update_subject_outline' => array(
+                'desc' => 'Can update subject_outline',
+                'role' => array('super_admin', 'admin')
+            ),
+            'delete_subject_outline' => array(
+                'desc' => 'Can delete subject_outline',
+                'role' => array('super_admin', 'admin')
+            ),
+            'view_subject_outline' => array(
+                'desc' => 'Can view subject_outline',
                 'role' => array('super_admin', 'admin')
             ),
 

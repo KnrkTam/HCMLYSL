@@ -75,6 +75,16 @@ class Lessons_model extends BaseModel
         return $list;
     }
 
+    public static function rel_list($id){
+        $result = Lessons_model::where('id', '!=', $id)->get();
+
+        foreach($result as $row){
+            $list[$row['id']] = $row["code"];
+        }
+        return $list;
+        
+    }
+    
     public static function code($id){
         $result = Lessons_model::where('id', $id)->first()->code;
         return $result;

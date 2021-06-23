@@ -2,15 +2,15 @@
 <html lang="en">
 
 <head>
-    <?php include_once "head.php"; ?>
+    <?php include_once("head.php"); ?>
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini">
     <div class="wrapper">
 
-        <?php include_once "header.php"; ?>
+    <?php include_once("header.php"); ?>
 
-        <?php include_once "menu.php"; ?>
+    <?php include_once("menu.php"); ?>
 
         <!-- Content Wrapper. Contains page content -->
 
@@ -65,79 +65,79 @@
 
                                         <div class="form-group w-100">
                                             <label class="text-nowrap">科目 : </label>
-                                            <p>語文1234</p>
-
+                                            <div style="flex: 1"><?php form_list_type('subject_id', ['type' => 'select', 'class'=> 'form-control subjectSelect select2' , 'value' => '' ,  'data-placeholder' => '請選擇...', 'enable_value' => $subject_list, 'form_validation_rules' => 'trim|required', 'disabled' => 1]) ?></div>
                                         </div>
 
 
                                     </div>
                                     <div class="col-lg-4">
-
                                         <div class="form-group">
-                                            <label class="text-nowrap"><span class="text-red">*</span>相關課程編號： </label>
-                                            <p>#SC557, #BD003</p>
-
+                                            <label class="text-nowrap required">課程編號： <a class="link small" id="searchTag" data-toggle="modal" data-target="#classNumber">搜尋編號</a></label>
+                                            <div style="width:100%"><?php form_list_type('lesson_id', ['type' => 'select', 'class'=> 'inputCourseNumber select2 form-control' , 'value' =>$rel_lessons, 'data-placeholder' => 'e.g.: #SC557, #BD003',  'enable_value' => $lessons_list, 'form_validation_rules' => 'trim|required', 'disabled' => 1]) ?></div>
                                         </div>
 
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="form-group">
                                             <label for="remarks">備註:</label>
-                                            <p>非華語</p>
-
+                                            <div style="flex: 1"><?php form_list_type('remark_id', ['type' => 'select', 'class'=> 'form-control subjectSelect select2' , 'value' =>'',  'data-placeholder' => '請選擇...', 'enable_value' => $remark_list, 'form_validation_rules' => 'trim|required']) ?></div>
                                         </div>
                                     </div>
 
                                     <div class="col-lg-12">
                                         <div class="form-group">
-                                            <label for="studyresults">預期學習成果:</label>
-                                            <p>能注意聲音的來源，對聲音作出反應 </p>
-
+                                            <label class="bold required">預期學習成果：</label>
+                                            <textarea class="form-control" name="expected_outcome" rows="3" placeholder="" ><?= $expected_outcome?></textarea>
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
-                                        <label>關鍵表現項目：</label>
-
-                                        <div class="row align-items-center performanceItem">
-                                            <div class="col-lg-8">
-                                                <p class="mr-4">有意識地留意及回應聲音 (1)</p>
-
-                                            </div>
-                                            <div class="col-lg-4">
-                                                <P class="text-red">評估模式: SS</p>
-                                            </div>
-
+                                        <div class="col-lg-4">
+                                            <label>關鍵表現項目：</label>
                                         </div>
+                                        <div class="col-lg-4">
+                                            <label><span class="text-green">建議評估模式 </span></label>
+                                        </div>
+                                        <div class="col-lg-4">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
                                         <div class="row align-items-center performanceItem">
-                                            <div class="col-lg-8">
-                                                <p class="mr-4">有意識地留意及回應聲音 (2)</p>
-
-                                            </div>
                                             <div class="col-lg-4">
-                                                <P class="text-red">評估模式: A</p>
+                                                <div class="form-group mb-3 w-100">
+                                                    <input type="text" class="form-control" id="key_performance" name="key_performance[]" value=""></input>
+                                                </div>
                                             </div>
+                                            <div class="col-lg-4 d-flex mt-3">
+                                                <?php foreach ($assessments_list as $row) { ?>
+                                                    <div class="form-check nowrap mr-3">
+                                                        <input class="form-check-input" type="radio" name="assessment_id[]" id="mode_<?= $row['mode']?>" value="<?= $row['id']?>"><label class="form-check-label" <?= $row['mode']?>><?= $row['mode']?></label>
+                                                    </div>
+                                                <?}?>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <div class="form-check w-100  d-flex align-items-center mb-3">
+                                                    <input class="form-check-input" type="radio" name="performanceItemGard" id="performanceItemGardOther" value="other">
+                                                    <label class="form-check-label nowrap mr-4" for="performanceItemGardOther">
+                                                        其他
+                                                    </label>
+                                                    <input type="text" class="form-control" id="other" name="other_assessment_id[]" value="">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-1"> <button type="button" class="btn bg-navy deleteBtn w-100" disabled><i class="fa fa-trash-o"></i></button></div>
                                         </div>
 
-                                        <div class="row align-items-center performanceItem">
-                                            <div class="col-lg-8">
-                                                <p class="mr-4">有意識地留意及回應聲音 (3)</p>
-
-                                            </div>
-                                            <div class="col-lg-4">
-                                                <P class="text-red">評估模式: B</p>
-                                            </div>
-                                        </div>
-
+                                        <button type="button" class="btn btn-info addBtn"><i class="fa fa-fw fa-plus"></i>增加關鍵表現項目</button>
                                     </div>
 
                                 </div>
                                 <hr />
                                 <div class="mt-4 d-flex justify-content-end">
-                                    <button type="button" class="btn bg-maroon mw-100 mb-4 mr-4" onclick="location.href='<?= admin_url($page_setting['controller']) ?>';">確 定</button>
+                                    <button type="submit" class="btn bg-maroon mw-100 mb-4 mr-4">下一步</button>
 
-                                    <button type="button" class="btn btn-default mw-100 mb-4" onclick="location.href='../Bk_course_outline/create';">返 回</button>
+                                    <button type="button" class="btn btn-default mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller']) ?>';">返 回</button>
 
                                 </div>
+
 
                             </div>
                             <!-- /.box-body -->
@@ -318,19 +318,23 @@
     </div>
 
 
+    <?php include_once("footer.php"); ?>
 
 
 
     <!-- ./wrapper -->
-    <?php include_once "script.php"; ?>
-
-
+    <?php include_once("script.php"); ?>
 
 
 
     <script>
         $(document).ready(function() {
             $('[data-toggle="tooltip"]').tooltip();
+
+
+            $('#subject_id').change(function() {
+                $('#lesson_id').prop('disabled', false);
+            })
 
             $('#searchCourseNumberTable').DataTable({
                 scrollX: true,
@@ -341,7 +345,6 @@
                 columnDefs: [{
                     targets: 'no-sort',
                     orderable: false,
-                    width: 100
                 }]
 
             });
@@ -357,10 +360,6 @@
                 $('.inputCourseNumber').val(courseNumberCount);
                 $('#classNumber').modal('hide');
             });
-
-
-
-
 
 
         });

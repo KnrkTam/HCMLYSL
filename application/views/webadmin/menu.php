@@ -28,7 +28,7 @@
                 ),
                 array(
                     'main_menu' => __('校本課程大綱 - 檢視'),
-                    'url' => 'Bk_master_course_outline',
+                    'url' => 'Bk_master_lesson_outline',
                     'access' => 'view_news',
                     'icon' => 'fa-file-text-o',
                 ),
@@ -44,13 +44,13 @@
                         array(
                             'title' => __('科目預期學習成果 - 檢視'),
                             'url' => 'Bk_subject_achievement',
-                            'access' => 'view_news',
+                            'access' => 'view_subject_achievement',
                             'icon' => 'fa-list-alt',
                         ),
                         array(
                             'title' => __('科目課程大綱 - 檢視'),
                             'url' => 'Bk_subject_outline',
-                            'access' => 'view_news',
+                            'access' => 'view_subject_outline',
                             'icon' => 'fa-list-alt',
                         )
                     )

@@ -78,6 +78,7 @@
 
                                         <div class="form-group w-100">
                                             <h3 class="text-blue"><b><?= $subject ?></b></h5>
+                                         
                                         </div>
                                         <a href="#" class="link nowrap mt-30 ml-2 controlSearchBtn">隱藏搜尋</a>
 
@@ -154,7 +155,6 @@
                                             <div class="mt-4 d-flex justify-content-end">
                                                 <input type="hidden" id="subject_lessons" name="subject_lessons[]" value=""></input>
                                                 <input type="hidden" value=<?= $function?> name="action"> </input>
-
                                                 <button type="submit" class="btn bg-maroon mw-100 mr-4">下一步</button>
                                                 <button type="button" class="btn btn-default mw-100" onclick="location.href='<?= (admin_url($page_setting['controller'])) ?>';">返 回</button>
                                             </div>
@@ -183,6 +183,10 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    <script>
+                                                                
+
+                                                    </script>
                                                 </tbody>
                                             </table> 
                                         </div>
@@ -193,7 +197,6 @@
                         </div>
                         <!-- /.box -->
                         <?= form_close() ?>
-
                     </div>
                     <!--/.col -->
                 </div>
@@ -201,6 +204,7 @@
             </section>
             <!-- /.content -->
         </div>
+
 
         <!-- /.content-wrapper -->
 
@@ -221,28 +225,29 @@
 
             $(".searchBtn").click(function() {
                 console.log('clicked')
-                $('#subjectTable').DataTable().draw();
+                SubjectTable.draw();
             });
 
             let added_ids = new Set();
 
             <?php if ($_SESSION['post_data']){ ?>
                 let session_data = <?= json_encode($_SESSION['post_data'])?>;
-                // $('#subject_id').val(session_data['subject_id']).select2();
                 for (i = 0; i < session_data['added_ids'].length; i++) {
-                    added_ids.add(session_data['added_ids'][i]);
+                    added_ids.add(parseInt(session_data['added_ids'][i]));
                 };
-            // <?} else {?>   
-            //     let added_arr = <?= json_encoded($added_ids);?>;
-            //     for (i = 0; i < added_arr.length; i++) {
-            //         added_ids.add(added_arr[i]);
-            //     };
+                console.log('postData', added_ids)
+
+            <?} else {?>   
+                let added_arr = <?= json_encode($added_ids);?>;
+                for (i = 0; i < added_arr.length; i++) {
+                    added_ids.add(parseInt(added_arr[i]));
+                };
             <? } ?>
 
             $('input[id=subject_lessons]').val(Array.from(added_ids));
 
 
-            var  Course_datatable = $('#subjectTable').DataTable({
+            let  SubjectTable = $('#subjectTable').DataTable({
                 // scrollY: '300px',
                 scrollX: true,
                 "language": {
@@ -275,7 +280,6 @@
                         d.sb_obj_search = sb_obj_id;
                         d.lesson_search = lesson_id;
                         d.subject_search = subject_id;
-                        console.log('data',d);
                         // var filter_type = $('#filter_type').val();
                         // d.search_filter_type = filter_type;
                         // d.search_filter_para = $('#filter_' + filter_type + '_para').val();
@@ -285,34 +289,26 @@
 
                         $(".addLesson").change(function(e) {
                             if ($(this).is(':checked')) {
-                                added_ids.add(this.value)
-                                console.log(Array.from(added_ids));
-                                e.stopPropagation();
-                                $(".tableWrap").fadeIn();
-
-                                $('#subjectSelectedTable').DataTable().draw();
+                                added_ids.add(parseInt(this.value))
+                                subjectSelectedTable.draw();
                             } else {
-                                added_ids.delete(this.value)
-                                console.log(Array.from(added_ids));
-                                $(".tableWrap").fadeIn();
+                                added_ids.delete(parseInt(this.value));
 
-                                $('#subjectSelectedTable').DataTable().draw();
+                                subjectSelectedTable.draw();
+                                console.log(old_arr);
 
                             }
                         });
                         let old_arr = Array.from(added_ids)
+                        console.log(old_arr)
                         for (let i = 0; i < old_arr.length; i++) {
                             $(`input[type=checkbox][class=addLesson][value=${old_arr[i]}]`).prop('checked', true)
                         }
 
                         $(".removeRow").click(function() {
-                            added_ids.delete(this.attributes.value.value);
-
-                            console.log(Array.from(added_ids))
-                            
-                            $('#subjectSelectedTable').DataTable().draw();
-                            $('#subjectTable').DataTable().draw();
-
+                            added_ids.delete(parseInt(this.attributes.value.value));
+                            subjectSelectedTable.draw();
+                            SubjectTable.draw();
                         });
                         $('input[id=subject_lessons]').val(Array.from(added_ids));
 
@@ -350,30 +346,24 @@
                     "timeout": "30000",
                     "data": function(d) {
                         d.added_ids = Array.from(added_ids)
-                        console.log('data',d);
                     },
                     "complete": function(e){
                         $(".addLesson").change(function() {
                             if ($(this).is(':checked')) {
-                                added_ids.add(this.value)
+                                added_ids.add(parseInt(this.value))
                                 // console.log(Array.from(added_ids));
                             } else {
-                                added_ids.delete(this.value)
+                                added_ids.delete(parseInt(this.value))
                                 // console.log(Array.from(added_ids));
                             }
                         });
 
                         
                         $(".removeRow").click(function() {
-                            added_ids.delete(this.attributes.value.value);
-
+                            added_ids.delete(parseInt(this.attributes.value.value));
                             console.log(Array.from(added_ids))
-                            // console.log(JSON.stringify(this));
-                            // console.log(this.attributes.value.value)
-
-
-                            $('#subjectSelectedTable').DataTable().draw();
-                            $('#subjectTable').DataTable().draw();
+                            subjectSelectedTable.draw();
+                            SubjectTable.draw();
 
                         });
                         $('input[id=subject_lessons]').val(Array.from(added_ids));

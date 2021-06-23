@@ -421,7 +421,7 @@ if (!function_exists('form_list_type')) {
                 $post_value = $CI->input->post($key);
                 $value = isset($post_value) ? $post_value : $row["value"];
 
-                echo '<select id="' . $id . '" name="' . $key . '" data-placeholder="' . $row["data-placeholder"] . '" placeholder="' . $row["name"] . '" class="form-control ' . $row["class"] . '" ' . $row["attr"] . ' style="' . $row["style"] .'" '. ($row['multiple'] == 1 ? ' multiple' : '') . '>';
+                echo '<select id="' . $id . '" name="' . $key . '" data-placeholder="' . $row["data-placeholder"] . '" placeholder="' . $row["name"] . '" class="form-control ' . $row["class"] . '" ' . $row["attr"] . ' style="' . $row["style"] .'" '. ($row['multiple'] == 1 ? ' multiple' : '') .' '. ($row['disabled'] == 1 ? ' disabled' : '').  '>';
 
                 if (!isset($row['disable_please_select'])) {
                     if (isset($row['please_select_label'])) {

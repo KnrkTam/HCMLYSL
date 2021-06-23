@@ -112,10 +112,7 @@
                                     </div>
                                 </div>
 
-
-
-
-                                <button type="button" class="btn bg-orange mw-100 mb-4" onclick="location.href='../webadmin/Bk_subject_achievement/create';">新 增</button>
+                                <button type="button" class="btn bg-orange mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller'] . '/create') ?>'">新 增</button>
 
 
                                 <div class="tableWrap">

@@ -16,9 +16,6 @@
         cursor: pointer;
     }
 </style>
-    <script>
-        console.log('test')
-    </script>
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini">

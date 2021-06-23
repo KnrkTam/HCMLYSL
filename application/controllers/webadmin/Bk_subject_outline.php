@@ -5,7 +5,7 @@ use Illuminate\Database\Capsule\Manager as DB;
 
 class Bk_subject_outline extends CI_Controller //change this
 {
-    private $scope = 'subject_ouline'; //change this
+    private $scope = 'subject_outline'; //change this
 
     public function __construct()
     {
@@ -38,302 +38,106 @@ class Bk_subject_outline extends CI_Controller //change this
 
         return $page_setting;
     }
-    /*
-    public function ajax($type = NULL)
+
+    public function index()
     {
-        $page_setting = $this->page_setting(array(
+        $data['page_setting'] = $this->page_setting(array(
             'view_' . $this->scope
-        ));
+        ), FALSE, TRUE);
 
-        switch ($type) {
-            case 'delete_record':
-                if (!validate_user_access(['delete_' . $this->scope])) {
-                    $response = ['success' => FALSE, 'data' => [], 'message' => __('Access Denied.')];
-                    echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-                    exit;
-                }
 
-                $id = (int)$this->input->post('id');
-                $result = News_ajax_model::find($id);
-                if (!empty($result)) {
-                    $data = array(
-                        "deleted" => 1,
-                        "deleted_by" => $_SESSION['sys_user_id'],
-                        "deleted_at" => date('Y-m-d H:i:s'),
-                    );
-                    $result->update($data);
-                    //update sort
-                    $db_result = DB::table('news')->where('sort', '>', $result['sort'])->update(['sort' => DB::raw('sort-1')]);
+        $GLOBALS["select2"] = 1;
+        $GLOBALS["datatable"] = 1;
+        $data['subject_list'] = Subjects_model::list();
+        $data['courses_list'] = Courses_model::list();
+        $data['categories_list'] = Categories_model::list();
+        $data['sb_obj_list'] = Sb_obj_model::list();
+        $data['lessons_list'] = Lessons_model::list();
+        array_unshift($data['courses_list'], "所有課程");
+        array_unshift($data['categories_list'], "所有課程");
 
-                    $response = ['success' => TRUE, 'data' => [], 'message' => __('Delete Successfully.')];
-                } else {
-                    $response = ['success' => FALSE, 'data' => [], 'message' => __('Cannot find data.')];
-                }
+        $_SESSION['post_data'] = null;
 
-                echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-                break;
-            case 'submit_form':
-                if (!validate_user_access(['create_' . $this->scope, 'update_' . $this->scope])) {
-                    $response = ['success' => FALSE, 'data' => [], 'message' => __('Access Denied.')];
-                    echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-                    exit;
-                }
-
-                $response = ['success' => FALSE, 'data' => [], 'message' => ''];
-                $id = (int)$this->input->post('id') > 0 ? (int)$this->input->post('id') : NULL;
-
-                //modify checking id data
-                if (!empty($id)) {
-                    $news = News_model::find($id);
-                    if (empty($news)) {
-                        $response['message'] = __('Cannot find data.');
-                        echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-                        exit;
-                    }
-                }
-
-                $rules = array();
-                $form_list = News_ajax_model::form_list();
-                $form_data = [];
-                foreach ($form_list as $field => $row) {
-                    $form_validation_error = form_validation_default_errors($row['label']);
-                    $form_validation_error['validate_date'] = $row['label'] . ' must be a date format.';
-                    $form_validation_error['validate_start_date'] = $row['label'] . ' must be a date format and before end date.';
-                    $form_validation_error['validate_end_date'] = $row['label'] . ' must be a date format and after end date.';
-                    array_push(
-                        $rules,
-                        array(
-                            'field' => $field,
-                            'label' => $row['label'],
-                            'rules' => $row['form_validation_rules'],
-                            'errors' => $form_validation_error,
-                        )
-                    );
-
-                    $form_data[$field] = $this->input->post($field);
-
-                    if ($id && in_array($row['type'], ['file', 'single_image_upload'])) {
-                        $form_data[$field] = $news->{$field};
-                    }
-                }
-
-                $this->form_validation->set_rules($rules);
-
-                //other checking
-                $error_message = '';
-                //upload file
-                foreach ($form_list as $field => $row) {
-                    if (in_array($row['type'], ['file', 'single_image_upload', 'elfinder_upload'])) {
-                        if ($id && $this->input->post('del_' . $field) == 1) {
-                            $news_model = News_ajax_model::find($id);
-                            if ($news_model->id) {
-                                $file_path = FCPATH . 'assets/' . $news_model->{$field};
-                                $form_data[$field] = ''; // remove on database
-                                if (file_exists($file_path) && $row['type'] != 'elfinder_upload') {
-                                    unlink($file_path);
-                                }
-                            }
-                        }
-                    }
-
-                    if (in_array($row['type'], ['file', 'single_image_upload'])) {
-                        //single image upload
-                        $single_upload = single_upload($field, $row['upload_config'], $row['thumb_config']);
-                        //if success return $single_upload['filename'] else return $single_upload['error']
-                        if ($single_upload['error']) {
-                            $error_message .= '<p>' . $single_upload['error'] . '</p>';
-                        } else if ($single_upload['filename']) {
-                            $form_data[$field] = $single_upload['file_path'];
-                        }
-                        //end of single image upload
-                    }
-                }
-                //.other checking
-
-                if ($this->form_validation->run() == FALSE || !empty($error_message)) {
-                    $response['message'] = validation_errors('<p>', '</p>') . $error_message;
-                } else {
-                    $data = array(
-                        'updated_at' => date("Y-m-d H:i:s"),
-                        'updated_by' => $_SESSION["sys_user_id"],
-                    );
-                    if (empty($id)) {
-                        $data['created_at'] = date("Y-m-d H:i:s");
-                        $data['created_by'] = $_SESSION["sys_user_id"];
-                    }
-                    foreach ($form_list as $field => $row) {
-                        if ($row['type'] == 'display')
-                            continue;
-
-                        if ($row['encryption']) {
-                            $data[$field] = $this->encryption->encrypt($form_data[$field]);
-                        } else {
-                            $data[$field] = $form_data[$field];
-                        }
-                    }
-                    //.upload file
-
-                    //var_dump($data);
-                    //exit;
-                    if (empty($id)) {
-                        $news = News_ajax_model::create($data);
-                        if ($news->id) {
-                            $response = ['success' => TRUE, 'data' => ['id' => $news->id], 'message' => __('Create Successfully.')];
-                        } else {
-                            $response = ['success' => FALSE, 'data' => [], 'message' => __('Create Unsuccessfully.')];
-                        }
-                    } else {
-                        $news = News_model::where('id', $id)->update($data);
-                        $response = ['success' => TRUE, 'data' => ['id' => $id], 'message' => __('Update Successfully.')];
-                    }
-                }
-                echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-                break;
-            case 'update_sort':
-                if (!validate_user_access(['update_' . $this->scope])) {
-                    $response = ['success' => FALSE, 'data' => [], 'message' => __('Access Denied.')];
-                    echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-                    exit;
-                }
-
-                $sorts = $this->input->post('sort');
-                if (!empty($sorts)) {
-                    foreach ($sorts as $id => $sort) {
-                        $data = array(
-                            "sort" => $sort,
-                        );
-                        News_model::where('id', $id)->update($data);
-                    }
-                }
-
-                $response = ['success' => TRUE, 'data' => [], 'message' => __('Update Successfully.')];
-                echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-
-                break;
-            case 'update_status':
-                if (!validate_user_access(['update_' . $this->scope])) {
-                    $response = ['success' => FALSE, 'data' => [], 'message' => __('Access Denied.')];
-                    echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-                    exit;
-                }
-
-                $id = $this->input->post('id');
-                $status = $this->input->post('status');
-                $result = News_ajax_model::find($id);
-                if (!empty($result)) {
-                    $data = array(
-                        'status' => $status,
-                        "updated_by" => $_SESSION['sys_user_id'],
-                        "updated_at" => date('Y-m-d H:i:s'),
-                    );
-                    $result->update($data);
-
-                    $response = ['success' => TRUE, 'data' => [], 'message' => __('Update Successfully.')];
-                } else {
-                    $response = ['success' => FALSE, 'data' => [], 'message' => __('Cannot find data.')];
-                }
-                echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-                break;
-            default:
-                $start = (int)$_GET["start"];
-                $length = (int)$_GET["length"];
-                $search = $_GET["search"]["value"];
-                $filter_type = $_GET["search_filter_type"];
-                $filter_para = $_GET["search_filter_para"];
-                $filter_para2 = $_POST["search_filter_para2"];
-
-                $result = News_ajax_model::orderBy('sort', 'ASC');
-
-                switch ($filter_type) {
-                    case 1: //All
-                        break;
-                    case 2: //title
-                        $result = $result->where('id', $filter_para);
-                        break;
-                }
-
-                if (empty($search)) {
-                    $result_count = $result->count();
-                    $result2 = $result->skip($start)->take($length)->get();
-                } else {
-                    $valid_result = array();
-                    $result = $result->get();
-                    $search_fields = array('title', 'date');
-                    $search_encrypted_fields = array();
-
-                    foreach ($result as $key => $row) {
-                        if (!empty($search_fields)) {
-                            $found = FALSE;
-                            foreach ($search_fields as $search_field) {
-                                if (strpos($row[$search_field], $search) !== FALSE) {
-                                    $found = TRUE;
-                                }
-                            }
-
-                            if (!$found) {
-                                if (!empty($search_encrypted_fields)) {
-                                    foreach ($search_encrypted_fields as $search_field) {
-                                        if (!empty($row[$search_field])) {
-                                            if (strpos($this->encryption->decrypt($row[$search_field]), $search) !== FALSE) {
-                                                $found = TRUE;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-
-                            if ($found) {
-                                $valid_result[] = $row;
-                            }
-                        }
-                    }
-
-                    $result_count = count($valid_result);
-                    $result2 = array();
-                    foreach ($valid_result as $key => $row) {
-                        if ($key >= $start && $key < ($start + $length)) {
-                            $result2[] = $row;
-                        }
-                    }
-                }
-
-                //rearrange data
-                $data = array();
-                $num = 0;
-                if (!empty($result2)) {
-                    foreach ($result2 as $key => $row) {
-                        $data[$num][] = '<input type="number" name="sort[' . $row["id"] . ']" value="' . $row["sort"] . '" style="width: 50px;"/>';
-                        $data[$num][] = $row["date"];
-                        $data[$num][] = '<a href="' . admin_url($page_setting['controller'] . '/modify/' . $row["id"]) . '">' . $row["title"] . '</a>';
-                        $action = '<div class="nowrap">';
-                        if (validate_user_access(['update_' . $this->scope])) {
-                            $action .= '<button type="button" class="btn btn-' . ($row["status"] == 1 ? 'success' : 'warning') . '" onclick="ajax_update_status(' . $row['id'] . ', ' . ($row["status"] == 1 ? 0 : 1) . ');" style="margin-right: 5px;">' . ($row["status"] == 1 ? __('Enable') : __('Disable')) . '</button>';
-                            $action .= '<a href="' . admin_url($page_setting['controller'] . '/modify/' . $row['id']) . '" style="margin-right: 5px;"><button type="button" class="btn btn-warning">' . __('Modify') . '</button></a>';
-                        }
-                        //delete this event and relate parent id
-                        if (validate_user_access(['delete_' . $this->scope])) {
-                            $action .= '<button type="button" class="btn btn-danger" onclick="ajax_delete_record(' . $row['id'] . ');">' . __('Delete') . '</button>';
-                        }
-                        $action .= '</div>';
-                        $data[$num][] = $action;
-                        $num++;
-                    }
-                }
-                $return = json_encode(array("draw" => $_GET["draw"], "recordsTotal" => $result_count, "recordsFiltered" => $result_count, "data" => $data));
-
-                echo $return;
-                break;
-        }
+        $this->load->view('webadmin/' . $this->scope . '', $data);
     }
-*/
+
+    public function ajax(){
+        // $postData = $this->input->post();
+        $data['page_setting'] = $this->page_setting(array(
+            'view_'. $this->scope,
+        ), FALSE, TRUE);
+        $subject_id = $_GET['subject_search'];
+        $course_id = $_GET['course_search'];
+        $category_id = $_GET['category_search'];
+        $sb_obj_id = $_GET['sb_obj_search'];
+        $lesson_id = $_GET['lesson_search'];
+        $lessons_arr = array();
+
+        if ($subject_id) {
+            $filtered_lessons = Lessons_model::list($course_id, $category_id,$sb_obj_id, $lesson_id, $subject_id);
+            foreach ($filtered_lessons as $i =>$row) {
+                $lessons_arr[$i] = Lessons_model::table_list($i);
+            }
+        } else {
+            $lessons_arr = null;
+        }
+        
+        $result_count = count($lessons_arr);
+
+        //rearrange data
+        $data = array();
+        $num = 0;
+        if (!empty( $lessons_arr)) {
+            foreach ( $lessons_arr as $key => $row) {
+                $subject_lesson_id = Subject_lessons_model::where('subject_id', $subject_id)->where('lesson_id', $row['id'])->first()->id;
+                $data[$num][] = '<a class="editLinkBtn" href="'.admin_url(current_controller() . '/edit/'. $subject_lesson_id ).'"><i class="fa fa-edit"></i></a>';
+                $data[$num][] = Subjects_model::name($subject_id);
+                $data[$num][] = $row['course'];
+                $data[$num][] = $row['category'];
+                $data[$num][] = $row['sb_obj'];
+                $data[$num][] = $row['element'];
+                $data[$num][] = $row['groups'];
+                $data[$num][] = $row['lpf_basic'];
+                $data[$num][] = $row['lpf_advanced'];
+                $data[$num][] = $row['poas'].'<span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span>';
+                $data[$num][] = $row['skills'].'<span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span>';
+                $data[$num][] = 'expected outcome';
+                $data[$num][] = 'key performance';
+                $data[$num][] = 'assessment';
+                $data[$num][] = $row['code'];
+                $rel_les = '';
+                foreach ($row['rel_lessons'] as $key) {
+                    $rel_les .= '<button type="button" class="btn-xs btn btn-primary badge">' .Lessons_model::code($key).'</button> &nbsp';
+                }
+                $data[$num][] = $rel_les;
+                $data[$num][] = '相關項目編號';
+                $data[$num][] = 'remark';
+                $num++;
+            }
+        }
+        $return = json_encode(array("draw" => $_GET["draw"], "data" => $data, "get" => $_GET, "recordsTotal" => $result_count, "recordsFiltered" => $result_count));
+
+        echo $return;
+
+    }
+
     public function create()
     {
         $data['page_setting'] = $this->page_setting(array(
-            'view_news'
+            'create_' . $this->scope
         ), FALSE, TRUE);
 
-        $data['form_action'] = admin_url($data['page_setting']['controller'] . '/submit_form');
         $data['action'] = __('新 增');
+        $data['function'] = "create";
+        $data['subject_list'] = Subjects_model::list();
+        $data['categories_list'] = Categories_model::list();
+        $data['assessments_list'] = Assessments_model::list();
+        $data['lessons_list'] = Lessons_model::list();
+        $data['remarks_list'] = Remarks_model::list();
+
+        array_unshift($data['courses_list'], "所有課程");
+        array_unshift($data['categories_list'], "所有課程");
+        $data['form_action'] = admin_url($data['page_setting']['controller'] . '/preview');
 
 
         $GLOBALS["select2"] = 1;
@@ -341,70 +145,133 @@ class Bk_subject_outline extends CI_Controller //change this
         $this->load->view('webadmin/' . $this->scope . '_form',  $data);
     }
 
-    public function edit()
+    public function edit($id)
     {
         $data['page_setting'] = $this->page_setting(array(
-            'view_news'
+            'update_' . $this->scope
         ), FALSE, TRUE);
         $data['action'] = __('更 改');
 
         $GLOBALS["select2"] = 1;
         $GLOBALS["datatable"] = 1;
+
+        $subject_lesson = Subject_lessons_model::find($id);
+        $lesson_id = $subject_lesson->lesson_id;
+        $subject_id = $subject_lesson->subject_id;
+
+        $performance_model = Key_performances_model::where('subject_lesson_id', $id)->get();
+
+        foreach ($performance_model as $i => $row) {
+            $performance_arr[$i] = array('performance' => $row['performance'], 'assessment' => $row['assessment_id'], 'other' =>$row['assessment_other']);
+        }
+    
+        $lesson = Lessons_model::find($lesson_id);
+        $data['subject_list'] = Subjects_model::list();
+        $data['lessons_list'] = Lessons_model::list();
+        $data['assessments_list'] = Assessments_model::list();
+        $data['remarks_list'] = Remarks_model::list();
+        $data['remark_id'] =  Lessons_remarks_model::id_list($lesson_id);
+
+        $data['performance_arr'] = $performance_arr;
+        $data['subject_id'] = $subject_id;
+        $data['lesson_id'] = $lesson_id ;
+        $data['expected_outcome'] = $lesson->expected_outcome;
+
+        $data['form_action'] = admin_url($data['page_setting']['controller'] . '/preview/'. $id);
+
         $this->load->view('webadmin/' . $this->scope . '_edit',  $data);
     }
 
 
 
-    public function preview()
+    public function preview($id = null)
     {
         $data['page_setting'] = $this->page_setting(array(
-            'view_news'
+            'update_' . $this->scope
         ), FALSE, TRUE);
+
+        $postData = $this->input->post();
+        $previous = $postData['action'];
+
+        $subject_lesson = Subject_lessons_model::find($id);
+        $subject = Subjects_model::name($subject_lesson->subject_id);
+        $lesson = Lessons_model::code($subject_lesson->lesson_id);
+        foreach ($postData['remark_id'] as $i => $row) {
+            $remark[$i] = Remarks_model::name($row);
+        }
+
+        
+        foreach ($postData['performance'] as $i => $row) {
+            $performance[$i] = array('performance' => $row, 'assessment' => $postData['assessment_id'][$i], 'other' => $postData['assessment_other_field'][$i]);
+
+            foreach ($performance as $set) {
+                if ($set['assessment'] == null) {
+                    $_SESSION['error_msg'] = __('請確定選擇所有評估模式');
+                    redirect(admin_url('bk_'.$this->scope.'/'.$previous.'/'.$id ));
+                } else if ($set['assessment'] == 'other') {
+                    if ($set['other'] == null) {
+                        $_SESSION['error_msg'] = __('請輸入其他評估模式');
+                        redirect(admin_url('bk_'.$this->scope.'/'.$previous.'/'.$id ));
+                    }
+                }
+            }
+        }
+        $data['assessments_list'] = Assessments_model::list();
+
+        $data['subject'] = $subject;
+        $data['lesson'] = $lesson;
+        $data['remark'] = $remark;
+        $data['performance'] = $performance;
+        $data['remark_ids'] = $postData['remark_id'];
+        $data['previous'] = $previous;
+        $data['id'] =$id;
+        $data['form_action'] = admin_url($data['page_setting']['controller'] . '/submit_form/'.$id);
 
 
         $this->load->view('webadmin/' . $this->scope . '_preview',  $data);
     }
-    public function index()
-    {
-        $data['page_setting'] = $this->page_setting(array(
-            //'view_' . $this->scope
-            'view_news'
-        ), FALSE, TRUE);
 
-        // $data['filter_type'] = $filter_type;
-        // $data['filter_para'] = $filter_para;
-        // if ($filter_type == 6 && $filter_para == 'null') {
-        //     $data['filter_para'] = '';
-        // }
-        // $data['filter_para2'] = $filter_para2;
+    public function submit_form($id = null){
+        $postData = $this->input->post();
 
-        // $data['filter_type_list'] = '';
+        $subject_lessons = Subject_lessons_model::find($id);
 
-        // $option_array = array(1 => __('All'), 2 => __('Title'));
+        $performance = json_decode($postData['performance'][0], true);
+        $remark_id = json_decode($postData['remark_id'][0],true);
+        $lesson_id = $subject_lessons->lesson_id;
 
-        // foreach ($option_array as $key => $row) {
-        //     $selected = '';
-        //     if ($filter_type == $key) {
-        //         $selected = 'selected';
-        //     }
-        //     $data['filter_type_list'] .= '<option value="' . $key . '" ' . $selected . '>' . $row . '</option>';
-        // }
 
-        // $data['filter_2_para_list'] = '';
-        // //$result = News_ajax_model::orderBy('title', 'asc')->get();
-        // $result = [];
-        // if (!empty($result)) {
-        //     foreach ($result as $row) {
-        //         $selected = '';
-        //         if ($filter_type == 2 && $filter_para == $row['id']) {
-        //             $selected = 'selected';
-        //         }
-        //         $data['filter_2_para_list'] .= '<option value="' . $row['id'] . '" ' . $selected . '>' . $row['title'] . '</option>';
-        //     }
-        // }
+        if ($performance) {
+            Key_performances_model::where('subject_lesson_id', $id)->delete();
+        }
+        if ($remark_id) {
+            Lessons_remarks_model::where('lesson_id', $lesson_id)->delete();
+        }
+        foreach ($performance as $row) {
+            $performance_data =  array(
+                'performance' => $row['performance'],
+                'assessment_id' => $row['assessment'],
+                'assessment_other' => $row['other'],
+                'subject_lesson_id' => $id,
+                'created_by' => $_SESSION['sys_user_id'],
+            );
+            Key_performances_model::create($performance_data);
+        }
 
-        $GLOBALS["select2"] = 1;
-        $GLOBALS["datatable"] = 1;
-        $this->load->view('webadmin/' . $this->scope . '', $data);
+        foreach ($remark_id as $row) {
+            $lessons_remarks_data =  array(
+                'lesson_id' => $lesson_id,
+                'remark_id' => $row,
+                'created_by' => $_SESSION['sys_user_id'],
+            );
+            Lessons_remarks_model::create($lessons_remarks_data);
+        }
+
+
+            $_SESSION['success_msg'] = __('修改科目課程大綱成功');
+            redirect(admin_url('bk_'.$this->scope));
+
     }
+
+
 }

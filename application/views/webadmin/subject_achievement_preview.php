@@ -58,9 +58,6 @@
                             <div class="box-body">
                                 <div id="signupalert" class="alert alert-danger margin_bottom_20"></div>
 
-
-
-
                                 <div class="tableWrap">
                                     <div class="row">
                                     <div class="col-lg-12">
@@ -72,7 +69,6 @@
                                             <table class="table table-bordered table-striped" id="subjectTable">
                                                 <thead>
                                                     <tr class="bg-light-blue color-palette">
-
                                                         <th class="nowrap">課程</th>
                                                         <th class="nowrap">範疇</th>
                                                         <th class="nowrap">中央課程學習重點</th>
@@ -89,13 +85,12 @@
                                                         <th class="nowrap">相關項目編號</th>
                                                     </tr>
                                                 </thead>
-
                                                 <tbody>
                                                 </tbody>
                                             </table>
 
                                             <div class="mt-4 d-flex justify-content-end">
-                                                <input type="hidden" name="subject_id" value="<?= $subject_id?>"></input>
+                                                <input type="hidden" name="subject_id" value="<?= $id?>"></input>
                                                 <input type="hidden" name="lessons_id[]" value=<?= json_encode($added_ids, true)?>></input>
 
                                                 <button type="submit" class="btn bg-maroon mr-4 mw-100">確 定</button>

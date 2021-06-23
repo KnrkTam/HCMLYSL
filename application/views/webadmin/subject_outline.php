@@ -63,28 +63,16 @@
                                 <div class="row mb-4">
                                     <div class="col-lg-3">
                                         <div class="form-group ">
-                                            <label class="text-nowrap">課程 : </label>
-                                            <select class="form-control">
-                                                <option hidden>請選擇...</option>
-                                                <option value="語文">語文</option>
-                                                <option value="音">音</option>
-                                                <option value="科技">科技</option>
-                                                <option value="STEM">STEM</option>
+                                            <label class="text-nowrap">科目 : </label>
+                                            <div style="flex: 1"><?php form_list_type('subject_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'data-placeholder' => '請選擇...', 'enable_value' => $subject_list, 'form_validation_rules' => 'trim|required']) ?></div>
 
-                                            </select>
                                         </div>
                                     </div>
                                     <div class="col-lg-2">
                                         <div class="form-group">
                                             <label class="text-nowrap">範疇 : </label>
-                                            <select class="form-control">
-                                                <option hidden>請選擇...</option>
-                                                <option value="聆聽">聆聽</option>
-                                                <option value="聆聽">聆聽</option>
-                                                <option value="聆聽">聆聽</option>
-                                                <option value="聆聽">聆聽</option>
+                                            <div style="flex: 1"><?php form_list_type('categories_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'data-placeholder' => '請選擇...', 'enable_value' => $categories_list, 'form_validation_rules' => 'trim|required']) ?></div>
 
-                                            </select>
                                         </div>
                                     </div>
                                     <div class="col-lg-6 d-flex align-items-center">
@@ -92,24 +80,14 @@
 
                                         <div class="form-group w-100">
                                             <label class="text-nowrap">校本課程學習重點 : (多項選擇) </label>
-                                            <select class="form-control select2" multiple="" data-placeholder="請選擇...">
-                                                <option value="聽力訓練">聽力訓練</option>
-                                                <option value="理解語意:把握重心">理解語意:把握重心</option>
-                                                <option value="聽力訓練">聽力訓練</option>
-                                                <option value="理解語意:把握重心">理解語意:把握重心</option>
-                                            </select>
+                                            <div style="flex: 1"><?php form_list_type('sb_obj_id[]', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'data-placeholder' => '請選擇...', 'enable_value' => $sb_obj_list, 'form_validation_rules' => 'trim|required', 'multiple' => 1]) ?></div>
+
                                         </div>
                                         <span class="ml-2 mr-2 mt-2">或</span>
                                         <div class="form-group w-100">
                                             <label class="text-nowrap">課程編號 : (多項選擇) </label>
-                                            <select class="form-control select2" multiple="" data-placeholder="請選擇...">
+                                            <div style="flex: 1"><?php form_list_type('lesson_id[]', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'data-placeholder' => '請選擇...', 'enable_value' => $lessons_list, 'form_validation_rules' => 'trim|required', 'multiple' => 1]) ?></div>
 
-                                                <option value="MN0155">MN0155</option>
-                                                <option value="MN0158">MN0158</option>
-                                                <option value="MN0160">MN0160</option>
-                                                <option value="MN0162">MN0162</option>
-
-                                            </select>
                                         </div>
                                     </div>
                                     <div class="col-lg-1">
@@ -118,15 +96,34 @@
 
                                 </div>
 
+                                <!-- <button type="button" class="btn bg-orange mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller'] . '/create') ?>'">新 增</button> -->
 
-
-
-                                <button type="button" class="btn bg-orange mw-100 mb-4" onclick="location.href='../webadmin/Bk_subject_outline/create';">新 增</button>
 
 
                                 <div class="tableWrap hidenWrap">
-                                    <table class="table table-bordered table-striped" id="subjectSelectedTable">
-
+                                    <table class="table table-bordered table-striped" id="subjectCourseTable">
+                                    <thead>
+                                        <tr class="bg-light-blue color-palette">
+                                            <th class="no-sort"></th>
+                                            <th class="nowrap">科目</th>
+                                            <th class="nowrap">課程</th>
+                                            <th class="nowrap">範疇</th>
+                                            <th class="nowrap">校本課程學習重點</th>
+                                            <th class="nowrap">學習元素</th>
+                                            <th class="nowrap">組別</th>
+                                            <th class="nowrap">LPF(基礎)</th>
+                                            <th class="nowrap">LPF(高中)</th>
+                                            <th class="nowrap">POAS</th>
+                                            <th class="nowrap">Key Skill</th>
+                                            <th class="nowrap">預期學習成果</th>
+                                            <th class="nowrap">關鍵表現項目</th>
+                                            <th class="nowrap">評估模式</th>
+                                            <th class="nowrap">課程編號</th>
+                                            <th class="nowrap">相關課程編號</th>
+                                            <th class="nowrap">相關項目編號</th>
+                                            <th class="nowrap">備註</th>
+                                        </tr>
+                                    </thead>
 
 
                                     </table>
@@ -163,7 +160,7 @@
                 <div class="modal-body">
 
                     <div class="tableWrap">
-                        <table class="table table-bordered table-striped width100p" id="editHistoryTable">
+                        <table class="table table-bordered table-striped width100p" id="subjectCourseTable2">
                             <thead>
                                 <tr class="bg-light-blue color-palette">
                                     <th class="no-sort"></th>
@@ -185,45 +182,7 @@
                             </thead>
 
                             <tbody>
-                                <tr>
-                                    <td><input type="checkbox" name="searchCourseNumberCheck" class="searchCourseNumberCheck" /></td>
-                                    <td>語文</td>
-                                    <td>聆聽</td>
-                                    <td>聽力訓練</td>
-                                    <td>聽力訓練</td>
-                                    <td>技能</td>
-                                    <td>初組、中組</td>
-                                    <td>I2</td>
-                                    <td>I2</td>
-                                    <td class="nowrap">IB.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-                                    <td class="nowrap">IC.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-
-                                    <td>能注意聲音的來源，對聲音作出反應</td>
-                                    <td class="courseNum">MN0155</td>
-                                    <td>MN0449,MS0002</td>
-
-                                    <td></td>
-                                </tr>
-                                <tr>
-
-                                    <td><input type="checkbox" name="searchCourseNumberCheck" class="searchCourseNumberCheck" /></td>
-                                    <td>語文</td>
-                                    <td>聆聽</td>
-                                    <td>聽力訓練</td>
-                                    <td>聽力訓練</td>
-                                    <td>技能</td>
-                                    <td>初組、中組</td>
-                                    <td>I2</td>
-                                    <td>I2</td>
-                                    <td class="nowrap">IB.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-                                    <td class="nowrap">IC.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-                                    <td>能注意聲音的來源，對聲音作出反應</td>
-                                    <td class="courseNum">MN0157</td>
-                                    <td>MN0449,MS0002</td>
-
-                                    <td></td>
-                                </tr>
-                                <tr>
+                                <!-- <tr>
 
                                     <td><input type="checkbox" name="searchCourseNumberCheck" class="searchCourseNumberCheck" /></td>
                                     <td>語文</td>
@@ -242,7 +201,7 @@
                                     <td>MN0449,MS0002</td>
 
                                     <td></td>
-                                </tr>
+                                </tr> -->
 
                             </tbody>
                         </table>
@@ -271,7 +230,51 @@
         $(document).ready(function() {
             $('[data-toggle="tooltip"]').tooltip();
 
+            let Main_table = $('#subjectCourseTable').DataTable({
+                // scrollY: '300px',
+                scrollX: true,
+                "language": {
+                    "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/' . get_wlocale() . '.json') ?>"
+                },
+                "order": [],
+                "bSort": false,
+                "bPaginate": false,
+                "pageLength": 50,
+                "pagingType": "input",
+                //"sDom": '<"wrapper"lfptip>',
+                "processing": true,
+                "serverSide": true,
+                "ordering": false,
+                "searching": true,
+                // "drawType": 'none',
+                "searchDelay": 0,                    
+                "ajax": {
+                    "url": "<?= admin_url($page_setting['controller'] . '/ajax') ?>",
+                    "method": "get",
+                    "timeout": "30000",
+                    "data": function(d) {
+                        let course_id = $('#courses_id').val();
+                        let category_id = $('#categories_id').val();
+                        let sb_obj_id = $('#sb_obj_id').val();
+                        let lesson_id = $('#lesson_id').val();
+                        let subject_id = $('#subject_id').val();
 
+                        d.subject_search = subject_id
+                        d.course_search = course_id;
+                        d.category_search = category_id;
+                        d.sb_obj_search = sb_obj_id;
+                        d.lesson_search = lesson_id;
+                        console.log(d);
+                    },
+                    "complete" : function(){
+                        $('[data-toggle="tooltip"]').tooltip();
+
+                    },
+                    "error": function(e) {
+                        console.log(e);
+                    }
+                },
+                });
 
             var data = [{
                     "id": "1",
@@ -564,17 +567,7 @@
             $(".searchBtn").click(function() {
 
                 $(".tableWrap").fadeIn();
-                $('#editHistoryTable').DataTable({
-
-                    scrollX: true,
-                    scrollCollapse: true,
-                    columnDefs: [{
-                        targets: 0,
-                        orderable: false,
-
-                    }]
-                });
-
+                Main_table.draw();
             });
 
 
@@ -587,43 +580,6 @@
 
 
         });
-
-
-        function submit_form(_this) {
-            //form checking
-            var valid_data = true;
-            //.form checking
-            if (!valid_data) {
-                //alert('Invalid Data.');
-            } else {
-                ajax_submit_form(_this);
-            }
-        }
-
-        <?php /*
-//multiple image upload
-$("input.multiple_upload").fileinput({
-language: '<?=get_wlocale()?>',
-previewFileType: "image",
-showCaption: false,
-showUpload: false,
-maxFileSize: 2048,
-maxFileCount: 30,
-maxImageHeight: 2000,
-maxImageWidth: 2000,
-overwriteInitial: false,
-allowedFileExtensions: ['jpg','jpeg','png'],
-initialPreview: <?=isset($photos_preview) ? $photos_preview : "{}"?>,
-initialPreviewAsData: true,
-initialPreviewConfig: <?=isset($photos_json) ? $photos_json : "{}"?>,
-deleteUrl: "<?=admin_url('bk_news/delete_multiple_upload')?>",
-// hiddenThumbnailContent: true,
-// initialPreviewShowDelete: true,
-// removeFromPreviewOnError: true,
-}).on('filedeleted', function(event, key, jqXHR, data) {
-alertify.success("<?=__('Deleted successfully!')?>");
-});
- */ ?>
     </script>
 
 </body>

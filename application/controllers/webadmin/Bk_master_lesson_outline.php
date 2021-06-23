@@ -3,9 +3,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 use Illuminate\Database\Capsule\Manager as DB;
 
-class Bk_master_course_outline extends CI_Controller //change this
+class Bk_master_lesson_outline extends CI_Controller //change this
 {
-    private $scope = 'master_course_outline'; //change this
+    private $scope = 'master_lesson_outline'; //change this
 
     public function __construct()
     {
@@ -550,7 +550,7 @@ class Bk_master_course_outline extends CI_Controller //change this
         $data['form_action'] = admin_url($data['page_setting']['controller'] . '/preview/'. $id);
         $data['action'] = __('修 改');
         $data['function'] = 'edit';
-        $data['lessons_list'] = Lessons_model::list();
+        $data['lessons_list'] = Lessons_model::rel_list($id);
         $data['courses_list'] = Courses_model::list();
         $data['categories_list'] = Categories_model::list();
         $data['central_obj_list'] = Central_obj_model::list();

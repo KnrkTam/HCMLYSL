@@ -5,11 +5,10 @@
 	{
 		protected $table = "levels";
 
-        public static function list()
+        public static function list($id = null)
 		{
-
             $result = Levels_model::all();
-
+            
             foreach($result as $row){
                 $list[$row['id']] = $row["level"];
             }

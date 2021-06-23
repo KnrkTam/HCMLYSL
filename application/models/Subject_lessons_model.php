@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Subject_lessons_model extends BaseModel
 {
-    protected $table = "Subject_lessons";
+    protected $table = "subject_lessons";
 
     public static function list($subject_id)
     {        
@@ -18,8 +18,7 @@ class Subject_lessons_model extends BaseModel
 
     public static function id_list($subject_id)
     {        
-        $result = Subject_lessons_model::where('subject_id', $subject_id)->orWhere('lesson_id', $subject_id)->get();
-
+        $result = Subject_lessons_model::where('subject_id', $subject_id)->get();
 
             foreach ($result as $i => $row){
                 if ($row['subject_id'] == $subject_id) {
