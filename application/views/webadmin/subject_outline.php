@@ -57,9 +57,6 @@
 
                             <div class="box-body">
                                 <div id="signupalert" class="alert alert-danger margin_bottom_20"></div>
-
-
-
                                 <div class="row mb-4">
                                     <div class="col-lg-3">
                                         <div class="form-group ">
@@ -95,14 +92,13 @@
                                     </div>
 
                                 </div>
-
-                                <!-- <button type="button" class="btn bg-orange mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller'] . '/create') ?>'">新 增</button> -->
+                                <div id="newBtn"> </div>
 
 
 
                                 <div class="tableWrap hidenWrap">
                                     <table class="table table-bordered table-striped" id="subjectCourseTable">
-                                    <thead>
+                                    <!-- <thead>
                                         <tr class="bg-light-blue color-palette">
                                             <th class="no-sort"></th>
                                             <th class="nowrap">科目</th>
@@ -123,7 +119,7 @@
                                             <th class="nowrap">相關項目編號</th>
                                             <th class="nowrap">備註</th>
                                         </tr>
-                                    </thead>
+                                    </thead> -->
 
 
                                     </table>
@@ -148,7 +144,7 @@
 
     </div>
 
-    <div class="modal fade in" tabindex="-1" role="dialog" id="editHistory">
+    <!-- <div class="modal fade in" tabindex="-1" role="dialog" id="editHistory">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -161,49 +157,7 @@
 
                     <div class="tableWrap">
                         <table class="table table-bordered table-striped width100p" id="subjectCourseTable2">
-                            <thead>
-                                <tr class="bg-light-blue color-palette">
-                                    <th class="no-sort"></th>
-                                    <th class="nowrap">課程</th>
-                                    <th class="nowrap">範疇</th>
-                                    <th class="nowrap">中央課程學習重點</th>
-                                    <th class="nowrap">校本課程學習重點</th>
-                                    <th class="nowrap">學習元素</th>
-                                    <th class="nowrap">組別</th>
-                                    <th class="nowrap">LPF(基礎)</th>
-                                    <th class="nowrap">LPF(高中)</th>
-                                    <th class="nowrap">POAS</th>
-                                    <th class="nowrap">Key Skill</th>
-                                    <th class="nowrap">預期學習成果</th>
-                                    <th class="nowrap">課程編號</th>
-                                    <th class="nowrap">相關課程編號</th>
-                                    <th class="nowrap">相關項目編號</th>
-                                </tr>
-                            </thead>
 
-                            <tbody>
-                                <!-- <tr>
-
-                                    <td><input type="checkbox" name="searchCourseNumberCheck" class="searchCourseNumberCheck" /></td>
-                                    <td>語文</td>
-                                    <td>聆聽</td>
-                                    <td>聽力訓練</td>
-                                    <td>聽力訓練</td>
-                                    <td>技能</td>
-                                    <td>初組、中組</td>
-                                    <td>I2</td>
-                                    <td>I2</td>
-                                    <td class="nowrap">IB.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-                                    <td class="nowrap">IC.3 <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></td>
-
-                                    <td>能注意聲音的來源，對聲音作出反應</td>
-                                    <td class="courseNum">MN0156</td>
-                                    <td>MN0449,MS0002</td>
-
-                                    <td></td>
-                                </tr> -->
-
-                            </tbody>
                         </table>
                     </div>
 
@@ -214,7 +168,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
 
 
@@ -228,11 +182,130 @@
 
     <script>
         $(document).ready(function() {
+
+            $('#subject_id').change(function() {
+            ajax_choose(this.value)
+            function ajax_choose(subject_id) {
+                $.ajax({
+                url: '<?= (admin_url($page_setting['controller'])) . '/select_subject' ?>',
+                method:'POST',
+                data:{subject_id:subject_id},
+                dataType:'json',
+                success:function(data){
+                    $('#newBtn').fadeIn("slow", function() {});
+                    $('#newBtn').html(`<button type="button" class="btn bg-orange mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller'] . '/create/') ?>${data.id}'">新 增</button>`)
+                    // $('#expected_outcome').val(data.expected_outcome);
+                    // $('#expected_outcome_text').html(data.expected_outcome);
+                    // console.log(data)
+                }
+                })
+            }
+        })
             $('[data-toggle="tooltip"]').tooltip();
+
+
+            let columnDefs = [{
+                    name: 'zore',
+                    title: "",
+                    class: "no-sort"
+                },
+                {
+                    data: "1",
+                    title: "科目",
+                    name: 'first',
+                },                
+                {
+                    data: "2",
+                    title: "課程",
+                    name: 'first',
+                },                
+                {
+                    data: "3",
+                    title: "範疇",
+                    name: 'first',
+                },                
+                {
+                    data: "4",
+                    title: "校本課程學習重點",
+                    name: 'first',
+                },                
+                {
+                    data: "5",
+                    title: "學習元素",
+                    name: 'first',
+                },                
+                {
+                    data: "6",
+                    title: "組別",
+                    name: 'first',
+                },                
+                {
+                    data: "7",
+                    title: "LPF(基礎)",
+                    name: 'first',
+                },                
+                {
+                    data: "8",
+                    title: "LPF(高中)",
+                    name: 'first',
+                },                
+                {
+                    data: "9",
+                    title: "POAS",
+                    name: 'first',
+                },                
+                {
+                    data: "10",
+                    title: "Key Skill",
+                    name: 'first',
+                },                
+                {
+                    data: "11",
+                    title: "預期學習成果",
+                    name: 'first',
+                },                
+                {
+                    data: "12",
+                    title: "關鍵表現項目",
+                    name: 'double',
+                },                
+                {
+                    data: "13",
+                    title: "評估模式",
+                    name: 'double',
+                },                
+                {
+                    data: "14",
+                    title: "課程編號",
+                    name: 'first',
+                },                
+                {
+                    data: "15",
+                    title: "相關課程編號",
+                    name: 'first',
+                },                
+                {
+                    data: "16",
+                    title: "相關項目編號",
+                    name: 'first',
+                },                
+                {
+                    data: "17",
+                    title: "備註",
+                    name: 'first',
+                },              
+            ];
+
+  
 
             let Main_table = $('#subjectCourseTable').DataTable({
                 // scrollY: '300px',
                 scrollX: true,
+                rowsGroup: [
+                        'zore:name',
+                        'first:name',
+                    ],
+                // 'rowsGroup': [],
                 "language": {
                     "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/' . get_wlocale() . '.json') ?>"
                 },
@@ -245,9 +318,10 @@
                 "processing": true,
                 "serverSide": true,
                 "ordering": false,
-                "searching": true,
+                // "searching": true,
                 // "drawType": 'none',
-                "searchDelay": 0,                    
+                "searchDelay": 0,     
+                "columns": columnDefs,            
                 "ajax": {
                     "url": "<?= admin_url($page_setting['controller'] . '/ajax') ?>",
                     "method": "get",
@@ -264,7 +338,7 @@
                         d.category_search = category_id;
                         d.sb_obj_search = sb_obj_id;
                         d.lesson_search = lesson_id;
-                        console.log(d);
+                        // console.log(columnDefs);
                     },
                     "complete" : function(){
                         $('[data-toggle="tooltip"]').tooltip();
@@ -272,295 +346,15 @@
                     },
                     "error": function(e) {
                         console.log(e);
-                    }
+                    },
+                    drawCallback: function(settings) {
+                        console.log(data)
+
+                        $('[data-toggle="tooltip"]').tooltip();
+
+                    },
                 },
                 });
-
-            var data = [{
-                    "id": "1",
-                    "subjct": "語文1234",
-                    "course": "語文",
-                    "category": "聆聽",
-                    "coursepoint": "聽力訓練",
-                    "element": "技能",
-                    "group": "初組、中組",
-                    "lpfl": "I2",
-                    "lpfh": "I2",
-                    "poas": "IB.3",
-                    "keyskill": "IB.3",
-                    "studyresults": "能注意聲音的來源，對聲音作出反應",
-                    "performance": "有意識地留意及回應聲音 (1)",
-                    "evaluation": "A",
-                    "coursenum": "MN0155",
-                    "courserelatenum": "MN0449, MS0002",
-                    "projectnum": "",
-                    "remarks": "非華語",
-                },
-                {
-                    "id": "1",
-                    "subjct": "語文1234",
-                    "course": "語文",
-                    "category": "聆聽",
-                    "coursepoint": "聽力訓練",
-                    "element": "技能",
-                    "group": "初組、中組",
-                    "lpfl": "I2",
-                    "lpfh": "I2",
-                    "poas": "IB.3",
-                    "keyskill": "IB.3",
-                    "studyresults": "能注意聲音的來源，對聲音作出反應",
-                    "performance": "有意識地留意及回應聲音 (2)",
-                    "evaluation": "B",
-                    "coursenum": "MN0155",
-                    "courserelatenum": "MN0449, MS0002",
-                    "projectnum": "",
-                    "remarks": "非華語",
-                },
-                {
-                    "id": "2",
-                    "subjct": "自理",
-                    "course": "語文",
-                    "category": "聆聽",
-                    "coursepoint": "聽力訓練",
-                    "element": "技能",
-                    "group": "初組、中組",
-                    "lpfl": "I2",
-                    "lpfh": "I2",
-                    "poas": "IB.3",
-                    "keyskill": "IB.3",
-                    "studyresults": "能注意聲音的來源，對聲音作出反應",
-                    "performance": "有意識地留意及回應聲音 (1)",
-                    "evaluation": "A",
-                    "coursenum": "MN0155",
-                    "courserelatenum": "MN0449, MS0002",
-                    "projectnum": "",
-                    "remarks": "非華語",
-                },
-                {
-                    "id": "2",
-                    "subjct": "自理",
-                    "course": "語文",
-                    "category": "聆聽",
-                    "coursepoint": "聽力訓練",
-                    "element": "技能",
-                    "group": "初組、中組",
-                    "lpfl": "I2",
-                    "lpfh": "I2",
-                    "poas": "IB.3",
-                    "keyskill": "IB.3",
-                    "studyresults": "能注意聲音的來源，對聲音作出反應",
-                    "performance": "有意識地留意及回應聲音 (2)",
-                    "evaluation": "B",
-                    "coursenum": "MN0155",
-                    "courserelatenum": "MN0449, MS0002",
-                    "projectnum": "",
-                    "remarks": "非華語",
-                },
-                {
-                    "id": "2",
-                    "subjct": "自理",
-                    "course": "語文",
-                    "category": "聆聽",
-                    "coursepoint": "聽力訓練",
-                    "element": "技能",
-                    "group": "初組、中組",
-                    "lpfl": "I2",
-                    "lpfh": "I2",
-                    "poas": "IB.3",
-                    "keyskill": "IB.3",
-                    "studyresults": "能注意聲音的來源，對聲音作出反應",
-                    "performance": "有意識地留意及回應聲音 (3)",
-                    "evaluation": "c",
-                    "coursenum": "MN0155",
-                    "courserelatenum": "MN0449, MS0002",
-                    "projectnum": "",
-                    "remarks": "非華語",
-                },
-                {
-                    "id": "3",
-                    "subjct": "生活常規",
-                    "course": "語文",
-                    "category": "聆聽",
-                    "coursepoint": "聽力訓練",
-                    "element": "技能",
-                    "group": "初組、中組",
-                    "lpfl": "I2",
-                    "lpfh": "I2",
-                    "poas": "IB.3",
-                    "keyskill": "IB.3",
-                    "studyresults": "能注意聲音的來源，對聲音作出反應",
-                    "performance": "有意識地留意及回應聲音 (1)",
-                    "evaluation": "A",
-                    "coursenum": "MN0155",
-                    "courserelatenum": "MN0449, MS0002",
-                    "projectnum": "",
-                    "remarks": "非華語",
-                }
-            ];
-
-
-
-            var columnDefs = [{
-                    render: function(data, type, row) {
-                        // alert(row.id);
-                        // data: null,
-                        // title: "操作",
-                        // defaultContent:
-                        // '<a href="#"  class="editor_edit"  data-toggle="modal" data-id="editId" data-target="#itemEdit">Edit</a> / <a href="#" class="editor_remove" rdata-toggle="modal" data-target=".bd-example-modal-lg">Delete</a>'
-                        // defaultContent: '<a href="#" class="button moreBtn" data-toggle="modal" data-target=".bd-example-modal-lg">Edit Btn</a>'
-                        var result = '<a class="editLinkBtn" href="../webadmin/Bk_subject_outline/edit" data-id="' + row
-                            .id + '"><i class="fa fa-edit"></i></a>';
-                        return result;
-
-                    },
-                    data: "id",
-                    name: 'zore',
-                    title: "",
-                    class: "no-sort"
-                },
-                {
-                    name: 'first',
-                    data: "subjct",
-                    title: "課程",
-                    class: ""
-                },
-                {
-                    name: 'first',
-                    data: "course",
-                    title: "課程",
-                    class: "",
-                },
-                {
-                    name: 'first',
-                    data: "category",
-                    title: "範疇",
-                    class: ""
-                },
-                {
-                    name: 'first',
-                    data: "coursepoint",
-                    title: "校本課程學習重點",
-                    class: ""
-                },
-                {
-                    name: 'first',
-                    data: "element",
-                    title: "學習元素",
-                    class: ""
-                },
-                {
-                    name: 'first',
-                    data: "group",
-                    title: "組別",
-                    class: ""
-                },
-                {
-                    name: 'first',
-                    data: "lpfl",
-                    title: "LPF(基礎)",
-                    class: ""
-                },
-                {
-                    name: 'first',
-                    data: "lpfh",
-                    title: "LPF(高中)",
-                    class: ""
-                },
-                {
-
-                    render: function(data, type, row) {
-                        var result = row.poas + ' <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span>';
-                        return result;
-                    },
-
-                    name: 'first',
-                    data: "poas",
-                    title: "POAS",
-                    class: ""
-                },
-                {
-                    render: function(data, type, row) {
-                        var result = row.poas + ' <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span>';
-                        return result;
-                    },
-
-                    name: 'first',
-                    data: "keyskill",
-                    title: "Key Skill",
-                    class: ""
-                },
-                {
-
-                    render: function(data, type, row) {
-                        var result = row.studyresults + ' <a class="link" href="#"  data-toggle="modal" data-id="' + row
-                            .id +
-                            '" data-target="#editHistory"><i class="fa fa-eye"></i></a>';
-                        return result;
-                    },
-                    name: 'first',
-                    data: "studyresults",
-                    title: "預期學習成果",
-                    class: ""
-                },
-                {
-                    data: "performance",
-                    title: "關鍵表現項目",
-                    class: ""
-                },
-                {
-                    data: "evaluation",
-                    title: "評估模式",
-                    class: ""
-                },
-                {
-                    name: 'first',
-                    data: "coursenum",
-                    title: "課程編號",
-                    class: ""
-                },
-                {
-                    name: 'first',
-                    data: "courserelatenum",
-                    title: "相關課程編號",
-                    class: ""
-                },
-                {
-                    name: 'first',
-                    data: "projectnum",
-                    title: "相關項目編號",
-                    class: ""
-                },
-                {
-                    name: 'first',
-                    data: "remarks",
-                    title: "備註",
-                    class: ""
-                }
-            ];
-            $('#subjectSelectedTable').DataTable({
-                data: data,
-                columns: columnDefs,
-                rowsGroup: [
-                    'zore:name',
-                    'first:name',
-                ],
-
-
-                scrollX: true,
-                scrollCollapse: true,
-                columnDefs: [{
-                    targets: 0,
-                    orderable: false,
-
-                }],
-                drawCallback: function(settings) {
-                    $('[data-toggle="tooltip"]').tooltip();
-
-                }
-
-            });
-
-
 
 
 
@@ -569,15 +363,6 @@
                 $(".tableWrap").fadeIn();
                 Main_table.draw();
             });
-
-
-
-
-
-
-
-
-
 
         });
     </script>

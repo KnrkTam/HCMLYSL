@@ -98,7 +98,7 @@
 
 
 
-                                <div class="subject_achievementNew">
+                                <div class="subject_outcomeNew">
 
                                     <div class="row mb-4">
                                         <div class="col-lg-5">
@@ -534,11 +534,11 @@
             $(".controlSearchBtn").click(function() {
 
 
-                // $(".subject_achievementNew").slideToggle("active");
+                // $(".subject_outcomeNew").slideToggle("active");
 
                 // Animation complete.
 
-                $(".subject_achievementNew").slideToggle('slow', function() {
+                $(".subject_outcomeNew").slideToggle('slow', function() {
                     $('.controlSearchBtn').toggleClass('active', $(this).is(':visible'));
                     if ($('.controlSearchBtn').hasClass("active")) {
                         $(".controlSearchBtn").text("隱藏搜尋");
@@ -551,11 +551,11 @@
             });
             $(".subjectSelect").change(function() {
                 if ($(this).val() != "") {
-                    $(".subject_achievementNew").fadeIn();
+                    $(".subject_outcomeNew").fadeIn();
                     $(".controlSearchBtn").fadeIn();
                     $(".controlSearchBtn").text("隱藏搜尋");
                 } else {
-                    $(".subject_achievementNew").hide();
+                    $(".subject_outcomeNew").hide();
                 }
 
             });

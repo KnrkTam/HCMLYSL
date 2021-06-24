@@ -426,7 +426,7 @@
                             // var btn = $(this).parnet().parnet().find(".addonDetail");
                             alert($(this));
 
-                            // $(".subject_achievementNew").slideToggle("active");
+                            // $(".subject_outcomeNew").slideToggle("active");
 
                             // Animation complete.
 

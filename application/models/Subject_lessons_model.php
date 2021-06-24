@@ -31,4 +31,20 @@ class Subject_lessons_model extends BaseModel
         
         return $subject_lessons_arr;
     }
+
+    public static function newlist($subject_id)
+    {        
+        $existing_arr = Key_performances_model::distinct()->pluck('subject_lesson_id');
+        $result = Subject_lessons_model::where('subject_id', $subject_id)->whereNotIn('id', $existing_arr)->get();
+
+            foreach ($result as $i => $row){
+                if ($row['subject_id'] == $subject_id) {
+                    $subject_lessons_arr[$i] = $row['lesson_id'];
+                } else if ($row['lesson_id'] == $subject_id) {
+                    $subject_lessons_arr[$i] = $row['subject_id'];
+                }
+            }; 
+        return $subject_lessons_arr;
+    }
+
 }

@@ -177,10 +177,10 @@
 
             $(".subjectSelect").change(function() {
                 if ($(this).val() != "") {
-                    $(".subject_achievementNew").fadeIn();
+                    $(".subject_outcomeNew").fadeIn();
 
                 } else {
-                    $(".subject_achievementNew").hide();
+                    $(".subject_outcomeNew").hide();
                 }
 
             });
@@ -194,6 +194,8 @@
             })
                 let Course_table = $('#courseOutlineTable').DataTable({
                 // scrollY: '300px',
+                'rowsGroup': [0],
+
                 scrollX: true,
                 "language": {
                     "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/' . get_wlocale() . '.json') ?>"

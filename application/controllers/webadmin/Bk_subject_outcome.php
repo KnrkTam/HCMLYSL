@@ -3,9 +3,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 use Illuminate\Database\Capsule\Manager as DB;
 
-class Bk_subject_achievement extends CI_Controller //change this
+class Bk_subject_outcome extends CI_Controller //change this
 {
-    private $scope = 'subject_achievement'; //change this
+    private $scope = 'subject_outcome'; //change this
 
     public function __construct()
     {

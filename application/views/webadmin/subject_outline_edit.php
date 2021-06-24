@@ -2,15 +2,15 @@
 <html lang="en">
 
 <head>
-    <?php include_once "head.php"; ?>
+    <?php include_once("head.php"); ?>
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini">
     <div class="wrapper">
 
-        <?php include_once "header.php"; ?>
+    <?php include_once("header.php"); ?>
 
-        <?php include_once "menu.php"; ?>
+    <?php include_once("menu.php"); ?>
 
         <!-- Content Wrapper. Contains page content -->
 
@@ -34,58 +34,29 @@
                     <div class="col-md-12">
                         <!-- form start -->
                         <?= form_open_multipart($form_action, 'class="form-horizontal"'); ?>
-                        <!-- general form elements
-                    <input type="hidden" name="id" value="<?= $id ?>"/>-->
                         <div class="box box-primary">
-                            <!-- <div class="box-header">
-                            <div class="row col-md-2">
-                                <div class="btn-group" data-spy="affix" data-offset-top="2" style="z-index: 20;">
-                                    <a href="<?= admin_url($page_setting['controller']) ?>" class="btn btn-default">
-                                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
-                                        <?= __('Cancel') ?>
-                                    </a>
-
-                                    <?php if (validate_user_access(['create_news', 'update_news'])) { ?>
-                                        <button type="button" class="btn btn-primary" onclick="submit_form(this);">
-                                            <i class="fa fa-floppy-o" aria-hidden="true"></i> <?= __('Save') ?>
-                                        </button>
-                                    <?php } ?>
-                                </div>
-                            </div>
-                        </div> -->
-                            <!-- /.box-header -->
 
                             <div class="box-body">
                                 <div id="signupalert" class="alert alert-danger margin_bottom_20"></div>
-
-
                                 <div class="row">
-
                                     <div class="col-lg-4">
-
                                         <div class="form-group w-100">
                                             <label class="text-nowrap">科目 : </label>
                                             <div style="flex: 1"><?php form_list_type('subject_id', ['type' => 'select', 'class'=> 'form-control subjectSelect select2' , 'value' => $subject_id ,  'data-placeholder' => '請選擇...', 'enable_value' => $subject_list, 'form_validation_rules' => 'trim|required', 'disabled' => 1]) ?></div>
                                         </div>
-
-
                                     </div>
                                     <div class="col-lg-4">
-
                                         <div class="form-group">
                                             <label class="text-nowrap"><span class="text-red">*</span>課程編號：</label>
                                             <div style="width:100%"><?php form_list_type('lesson_id', ['type' => 'select', 'class'=> 'inputCourseNumber select2 form-control' , 'value' => $lesson_id,  'enable_value' => $lessons_list, 'form_validation_rules' => 'trim|required', 'disabled' => 1]) ?></div>
                                         </div>
-
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="form-group">
                                             <label for="remarks">備註:</label>
                                             <div style="width:100%"><?php form_list_type('remark_id[]', ['type' => 'select', 'class'=> 'inputCourseNumber select2 form-control' , 'value' => $remark_id,  'enable_value' => $remarks_list, 'form_validation_rules' => 'trim|required', 'multiple' => 1]) ?></div>
-
                                         </div>
                                     </div>
-
                                     <div class="col-lg-12">
                                         <div class="form-group">
                                             <label for="studyresults">預期學習成果:</label>
@@ -97,7 +68,6 @@
                                     </div>
                                     <div class="col-lg-4">
                                         <label><span class="text-green required">建議評估模式 </span></label>
-
                                     </div>
                                     <div class="col-lg-4">
                                     </div>

@@ -86,33 +86,37 @@ class Bk_subject_outline extends CI_Controller //change this
 
         //rearrange data
         $data = array();
+        $name = array();
         $num = 0;
         if (!empty( $lessons_arr)) {
             foreach ( $lessons_arr as $key => $row) {
                 $subject_lesson_id = Subject_lessons_model::where('subject_id', $subject_id)->where('lesson_id', $row['id'])->first()->id;
-                $data[$num][] = '<a class="editLinkBtn" href="'.admin_url(current_controller() . '/edit/'. $subject_lesson_id ).'"><i class="fa fa-edit"></i></a>';
-                $data[$num][] = Subjects_model::name($subject_id);
-                $data[$num][] = $row['course'];
-                $data[$num][] = $row['category'];
-                $data[$num][] = $row['sb_obj'];
-                $data[$num][] = $row['element'];
-                $data[$num][] = $row['groups'];
-                $data[$num][] = $row['lpf_basic'];
-                $data[$num][] = $row['lpf_advanced'];
-                $data[$num][] = $row['poas'].'<span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span>';
-                $data[$num][] = $row['skills'].'<span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span>';
-                $data[$num][] = 'expected outcome';
-                $data[$num][] = 'key performance';
-                $data[$num][] = 'assessment';
-                $data[$num][] = $row['code'];
-                $rel_les = '';
-                foreach ($row['rel_lessons'] as $key) {
-                    $rel_les .= '<button type="button" class="btn-xs btn btn-primary badge">' .Lessons_model::code($key).'</button> &nbsp';
+                $lesson_performance = Key_performances_model::where('subject_lesson_id', $subject_lesson_id)->get();
+                foreach ($lesson_performance as $foo ) {
+                    $data[$num][] = '<a class="editLinkBtn" href="'.admin_url(current_controller() . '/edit/'. $subject_lesson_id ).'"><i class="fa fa-edit"></i></a>';
+                    $data[$num][] = Subjects_model::name($subject_id);
+                    $data[$num][] = $row['course'];
+                    $data[$num][] = $row['category'];
+                    $data[$num][] = $row['sb_obj'];
+                    $data[$num][] = $row['element'];
+                    $data[$num][] = $row['groups'];
+                    $data[$num][] = $row['lpf_basic'];
+                    $data[$num][] = $row['lpf_advanced'];
+                    $data[$num][] = $row['poas'].'<span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span>';
+                    $data[$num][] = $row['skills'].'<span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span>';
+                    $data[$num][] = $row['expected_outcome'];
+                    $data[$num][] = $foo['performance'];
+                    $data[$num][] = Assessments_model::mode($foo['assessment_id']);
+                    $data[$num][] = $row['code'];
+                    $rel_les = '';
+                    foreach ($row['rel_lessons'] as $key) {
+                        $rel_les .= '<button type="button" class="btn-xs btn btn-primary badge">' .Lessons_model::code($key).'</button> &nbsp';
+                    }
+                    $data[$num][] = $rel_les;
+                    $data[$num][] = '相關項目編號';
+                    $data[$num][] = 'remark';
+                    $num++;
                 }
-                $data[$num][] = $rel_les;
-                $data[$num][] = '相關項目編號';
-                $data[$num][] = 'remark';
-                $num++;
             }
         }
         $return = json_encode(array("draw" => $_GET["draw"], "data" => $data, "get" => $_GET, "recordsTotal" => $result_count, "recordsFiltered" => $result_count));
@@ -121,7 +125,7 @@ class Bk_subject_outline extends CI_Controller //change this
 
     }
 
-    public function create()
+    public function create($subject_id = null)
     {
         $data['page_setting'] = $this->page_setting(array(
             'create_' . $this->scope
@@ -132,18 +136,38 @@ class Bk_subject_outline extends CI_Controller //change this
         $data['subject_list'] = Subjects_model::list();
         $data['categories_list'] = Categories_model::list();
         $data['assessments_list'] = Assessments_model::list();
-        $data['lessons_list'] = Lessons_model::list();
+        $data['lessons_list'] = Lessons_model::newlist($subject_id);
         $data['remarks_list'] = Remarks_model::list();
 
         array_unshift($data['courses_list'], "所有課程");
         array_unshift($data['categories_list'], "所有課程");
         $data['form_action'] = admin_url($data['page_setting']['controller'] . '/preview');
-
-
+        $data['subject_id'] = $subject_id;
         $GLOBALS["select2"] = 1;
         $GLOBALS["datatable"] = 1;
         $this->load->view('webadmin/' . $this->scope . '_form',  $data);
     }
+
+    public function select_lesson()
+    {
+        $id = $this->input->post('lesson_id');
+
+        $data = Lessons_model::find($id);
+
+        echo json_encode($data);
+
+    }
+
+    public function select_subject()
+    {
+        $id = $this->input->post('subject_id');
+
+        $data = Subjects_model::find($id);
+
+        echo json_encode($data);
+
+    }
+    
 
     public function edit($id)
     {
@@ -192,10 +216,21 @@ class Bk_subject_outline extends CI_Controller //change this
 
         $postData = $this->input->post();
         $previous = $postData['action'];
+        if (!$id) {
+            dump($postData);
+            $id = Subject_lessons_model::where('subject_id', $postData['subject_id'])->where('lesson_id', $postData['lesson_id'])->first()->id;
 
+            if (!$postData['lesson_id']) {
+                $_SESSION['error_msg'] = __('請選擇課程編號');
+                redirect(admin_url('bk_'.$this->scope.'/'.$previous.'/'.$id ));
+            }
+        }
+
+            
         $subject_lesson = Subject_lessons_model::find($id);
         $subject = Subjects_model::name($subject_lesson->subject_id);
         $lesson = Lessons_model::code($subject_lesson->lesson_id);
+
         foreach ($postData['remark_id'] as $i => $row) {
             $remark[$i] = Remarks_model::name($row);
         }
@@ -206,7 +241,7 @@ class Bk_subject_outline extends CI_Controller //change this
 
             foreach ($performance as $set) {
                 if ($set['assessment'] == null) {
-                    $_SESSION['error_msg'] = __('請確定選擇所有評估模式');
+                    $_SESSION['error_msg'] = __('請確定已選擇所有評估模式');
                     redirect(admin_url('bk_'.$this->scope.'/'.$previous.'/'.$id ));
                 } else if ($set['assessment'] == 'other') {
                     if ($set['other'] == null) {
@@ -224,7 +259,7 @@ class Bk_subject_outline extends CI_Controller //change this
         $data['performance'] = $performance;
         $data['remark_ids'] = $postData['remark_id'];
         $data['previous'] = $previous;
-        $data['id'] =$id;
+        $data['id'] = $id;
         $data['form_action'] = admin_url($data['page_setting']['controller'] . '/submit_form/'.$id);
 
 

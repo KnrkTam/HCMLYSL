@@ -43,8 +43,8 @@
                     'sub_menu' => array(
                         array(
                             'title' => __('科目預期學習成果 - 檢視'),
-                            'url' => 'Bk_subject_achievement',
-                            'access' => 'view_subject_achievement',
+                            'url' => 'Bk_subject_outcome',
+                            'access' => 'view_subject_outcome',
                             'icon' => 'fa-list-alt',
                         ),
                         array(

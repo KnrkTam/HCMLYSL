@@ -108,20 +108,20 @@ class Bk_permission extends CI_Controller
             ),
 
             // subject course outline
-            'create_subject_achievement' => array(
-                'desc' => 'Can create subject_achievement',
+            'create_subject_outcome' => array(
+                'desc' => 'Can create subject_outcome',
                 'role' => array('super_admin', 'admin')
             ),
-            'update_subject_achievement' => array(
-                'desc' => 'Can update subject_achievement',
+            'update_subject_outcome' => array(
+                'desc' => 'Can update subject_outcome',
                 'role' => array('super_admin', 'admin')
             ),
-            'delete_subject_achievement' => array(
-                'desc' => 'Can delete subject_achievement',
+            'delete_subject_outcome' => array(
+                'desc' => 'Can delete subject_outcome',
                 'role' => array('super_admin', 'admin')
             ),
-            'view_subject_achievement' => array(
-                'desc' => 'Can view subject_achievement',
+            'view_subject_outcome' => array(
+                'desc' => 'Can view subject_outcome',
                 'role' => array('super_admin', 'admin')
             ),
 

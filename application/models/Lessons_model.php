@@ -90,5 +90,17 @@ class Lessons_model extends BaseModel
         return $result;
     }
 
+    public static function newlist($subject_id = null)
+    {
+        $subject_arr = Subject_lessons_model::newlist($subject_id);
+        $result = Lessons_model::whereIn('id', $subject_arr)->get();
+
+        foreach($result as $row){
+            $list[$row['id']] = $row["code"];
+        }
+        
+        return $list;
+    }
+
 
 };

@@ -153,7 +153,7 @@
                     "year": "19/20",
                     "degree": "學階一",
                     "date": "10/2/2020 - 24/4/2020",
-                    "week": "1-11",
+                    "week": "23-33",
                     "evaluation01": "1/3/2020",
                     "evaluation02": "1/4/2020",
                 },
@@ -162,7 +162,7 @@
                     "year": "19/20",
                     "degree": "學階一",
                     "date": "27/4/2020 - 17/11/2020",
-                    "week": "12-23",
+                    "week": "34-52",
                     "evaluation01": "1/5/2020",
                     "evaluation02": "1/7/2020",
                 },
@@ -301,9 +301,12 @@
                     scrollX: true,
                     scrollCollapse: true,
                     drawCallback: function(settings) {
+                        console.log(columnDefs)
+
                         $('[data-toggle="tooltip"]').tooltip();
 
-                    }
+                    },
+                
 
                 });
 
