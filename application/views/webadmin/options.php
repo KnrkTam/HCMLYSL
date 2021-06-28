@@ -94,6 +94,11 @@
 								<div class="col-sm-8"><?php form_list_type('subject_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'enable_value' => $subjects_list, 'form_validation_rules' => 'trim|required', 'disable_please_select' => 1]) ?></div>
 								<div class="col-sm-2"><button type="button" class="btn createBtn mw-100 bg-orange mb-4" data-toggle="modal" data-target="#addOption" data-title="科目">新 增</button></div>
 							</div>
+                            <div class="form-group">
+								<label class="text-nowrap required col-sm-2"><span>年度：</span> </label>
+								<div class="col-sm-8"><?php form_list_type('year_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'enable_value' => $years_list, 'form_validation_rules' => 'trim|required', 'disable_please_select' => 1]) ?></div>
+								<div class="col-sm-2"><button type="button" class="btn createBtn mw-100 bg-orange mb-4" data-toggle="modal" data-target="#addOption" data-title="年度">新 增</button></div>
+							</div>
                         </div>
                         <!-- /.box-body -->
                     </div>
@@ -202,6 +207,18 @@
                             `;
                         $(".modal-core").html(content);
                         break;
+
+                case '年度':
+                content = "";
+                content += `
+                            <label class="text-nowrap">${title}： </label>
+                            <input type="hidden" id="modalTitle" value="${title}"></input>
+                                    <input type="text" class="form-control required" placeholder="輸入年份（YYYY）" id="modalName" value=""></input>
+                                    <label class="text-nowrap">至</label>
+                                    <input type="text" class="form-control required" placeholder="輸入年份（YYYY）" id="modalName2" value=""></input>
+                            `;
+                        $(".modal-core").html(content);
+                        break;
                 default: 
                 
             }
@@ -210,12 +227,12 @@
         let addBtn = document.querySelector('#add-btn');
         addBtn.addEventListener("click",function(){
             // let  addOption = confirm(`Confirm to add "${modalName.value}" into ${modalTitle.value}?`);
-            addFunction(modalTitle.value, modalName.value);
-            function addFunction(type,name){
+            addFunction(modalTitle.value, modalName.value, modalName2.value);
+            function addFunction(type,name, name2 = null){
                 $.ajax({
                 url: `<?= (admin_url($page_setting['controller'])) . '/ajax' ?>`,
                 method:'POST',
-                data:{type:type, name: name},
+                data:{type:type, name: name, name2: name2},
                 dataType:'json',     
                 success:function(data){
                     if (data.status == 'success') {

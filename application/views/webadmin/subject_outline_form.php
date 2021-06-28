@@ -80,23 +80,23 @@
                                         <div class="row align-items-center key_performance_item">
                                         <div class="col-lg-4">
                                             <div class="form-group mb-3 w-100">
-                                                <input type="text" class="form-control" id="key_performance" name="performance[0]" value="0" required>
+                                                <input type="text" class="form-control" id="key_performance" name="performance[0]" placeholder="輸入關鍵表現項目" value="123" required data-required-message="請填寫此資料">
                                             </div>
                                         </div>
                                         <div class="col-lg-4 d-flex mt-3">
                                             <?php foreach ($assessments_list as $i => $row) { ?>
                                                 <div class="form-check nowrap mr-3">
-                                                    <label class="form-check-label" <?= $row['mode']?>><input class="form-check-input" type="radio" name="assessment_id[0]" id="ass_0"  data-set="0" value="<?= $i?>" required><?= $row['mode']?></label>
+                                                    <label class="form-check-label" <?= $row['mode']?>><input class="form-check-input" type="radio" name="assessment_id[0]" id="ass_0"  data-set="0" value="<?= $i?>" required data-required-message="請填寫此資料"><?= $row['mode']?></label>
                                                 </div>
                                             <?}?>
                                         </div>
                                         <div class="col-lg-3">
                                             <div class="form-check w-100  d-flex align-items-center mb-3">
                                                 <label class="form-check-label nowrap mr-4"> 
-                                                    <input class="form-check-input radio" type="radio" name="assessment_id[0]" value="0" id="ass_0" data-set="0" required>
+                                                    <input class="form-check-input radio" type="radio" name="assessment_id[0]" value="0"  id="ass_0" data-set="0" required >
                                                     其他
                                                 </label>
-                                                <input type="text" class="form-control" name="assessment_other_field[0]" id="other_0">
+                                                <input type="text" class="form-control" name="assessment_other_field[0]" id="other_0" data-required-message="請填寫此資料">
                                             </div>
                                         </div>
                                             <div class="col-lg-1"> <button type="button" class="btn bg-navy deleteBtn w-100" disabled><i class="fa fa-trash-o"></i></button></div>
@@ -108,7 +108,6 @@
                                 <hr />
                                 <div class="mt-4 d-flex justify-content-end">
                                     <input type="hidden" name="action" value="create"/>
-
                                     <button type="submit" class="btn bg-maroon mw-100 mb-4 mr-4">下一步</button>
 
                                     <button type="button" class="btn btn-default mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller']) ?>';">返 回</button>
@@ -148,39 +147,29 @@
 
 
     <script>
-        $(document).ready(function() {
-            $('[data-toggle="tooltip"]').tooltip();
+    $(document).ready(function() {
+        $('[data-toggle="tooltip"]').tooltip();
 
 
-            $('#subject_id').change(function() {
-                $('#lesson_id').prop('disabled', false);
+        $('input[required]').on('change invalid', function() {
+            this.setCustomValidity('');
+            if (!this.validity.valid) {
+                this.setCustomValidity($(this).data("required-message"));
+            }
+        });
+
+
+        $('input[type=radio][id=ass_0]').change(function () {
+                $('#other_0').attr('required', this.value == "0" ? true: false);
+                $('input[required]').on('change invalid', function() {
+                    this.setCustomValidity('');
+                    if (!this.validity.valid) {
+                        this.setCustomValidity($(this).data("required-message"));
+                    }
+                });
             })
 
-            $('input[type=radio][id=ass_0]').change(function () {
-                    console.log(this)
-                    $('#other_0').attr('required', this.value == "0" ? true: false);
-                })
 
-
-            // $(".comfirmSelectCourseNumber").click(function() {
-            //     var courseNumberCount = new Array();
-            //     $("input[name='searchCourseNumberCheck']:checked").each(function() {
-            //         courseNumberCount.push($(this).closest("tr").find(".courseNum").text());
-            //     });
-
-            //     $('.inputCourseNumber').val(courseNumberCount);
-            //     $('#classNumber').modal('hide');
-            // });
-
-
-
-        // let select = document.getElementById('lesson_id');
-        // select.addEventListener("change", function(){
-        //     let lesson_search = select.options[select.selectedIndex].value;
-        //     console.log('123');
-
-        //     console.log(lesson_search);
-        // })
         $('#lesson_id').change(function() {
             ajax_choose(this.value)
             function ajax_choose(lesson_id) {
@@ -199,8 +188,6 @@
 
 
         let countRow = 0;
-        
-        $('.addBtn').click(function() {
 
         countRow++;
         $('.key_performance_item:first').before(`
@@ -208,14 +195,14 @@
             <div class="col-lg-4">
 
                 <div class="form-group mb-3 w-100">
-                    <input type="text" class="form-control" id="key_performance" name="performance[${countRow}]" value="有意識地留意及回應聲音 (${countRow})" required>
+                    <input type="text" class="form-control" id="key_performance" name="performance[${countRow}]" value="有意識地留意及回應聲音 (${countRow})" required data-required-message="請填寫此資料">
                 </div>
             </div>
             <div class="col-lg-4 d-flex mt-3">
 
                 <?php foreach ($assessments_list as $i => $row) { ?>
                     <div class="form-check nowrap mr-3">
-                        <label class="form-check-label" <?= $row['mode']?>><input class="form-check-input" id="ass_${countRow}" data-set="${countRow}" type="radio"  name="assessment_id[${countRow}]"  value="<?= $i?>" required><?= $row['mode']?></label>
+                        <label class="form-check-label" <?= $row['mode']?>><input class="form-check-input" id="ass_${countRow}" data-set="${countRow}" type="radio"  name="assessment_id[${countRow}]"  value="<?= $i?>" required data-required-message="請填寫此資料"><?= $row['mode']?></label>
                     </div>
                 <?}?>
             </div>
@@ -225,7 +212,7 @@
                             <input class="form-check-input radio" type="radio" name="assessment_id[${countRow}]" value="0" data-set="${countRow}" id="ass_${countRow}">
                             其他
                         </label>
-                        <input type="text" class="form-control" name="assessment_other_field[${countRow}]" id="other_${countRow}">
+                        <input type="text" class="form-control" name="assessment_other_field[${countRow}]" id="other_${countRow}" data-required-message="請填寫此資料">
 
                     </div>
                 </div>
@@ -235,6 +222,12 @@
 
             $(`input[type=radio][id=ass_${countRow}]`).change(function () {
                 $(`#other_${this.dataset.set}`).attr('required', this.value == "0" ? true : false);
+                $('input[required]').on('change invalid', function() {
+                    this.setCustomValidity('');
+                    if (!this.validity.valid) {
+                        this.setCustomValidity($(this).data("required-message"));
+                    }
+                });
             })
         });
 

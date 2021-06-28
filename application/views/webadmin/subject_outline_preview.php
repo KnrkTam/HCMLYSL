@@ -122,8 +122,12 @@
                                     <textarea class="hidden" name="remark_id[]"><?php echo json_encode($remark_ids)?> </textarea>
                                     <textarea class="hidden" name="performance[]" id='performance'><?php echo json_encode($performance)?> </textarea>
                                     <button type="submit" class="btn bg-maroon mw-100 mb-4 mr-4">確 定</button>
-                                    <button type="button" class="btn btn-default mw-100 mb-4 mr-4" onclick="location.href='<?= (admin_url($page_setting['controller'])) . '/'. $previous. '/'. $id?>';">返 回</button>
 
+                                    <?php if ($previous == "edit") { ?>
+                                    <button type="button" class="btn btn-default mw-100 mb-4 mr-4" onclick="location.href='<?= (admin_url($page_setting['controller'])) . '/'. $previous. '/'. $id?>';">返 回</button>
+                                    <? } else { ?>
+                                    <button type="button" class="btn btn-default mw-100 mb-4 mr-4" onclick="location.href='<?= (admin_url($page_setting['controller'])) . '/'. $previous. '/'. $subject_id?>';">返 回</button>
+                                    <? } ?>
                                 </div>
 
                             </div>
@@ -153,7 +157,6 @@
     <script>
         $(document).ready(function() {
             $('[data-toggle="tooltip"]').tooltip();
-
         });
 
     </script>

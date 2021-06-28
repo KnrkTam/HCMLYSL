@@ -1,17 +1,17 @@
 <?php
 	defined('BASEPATH') OR exit('No direct script access allowed');
 
-	class Levels_model extends BaseModel
+	class Classes_model extends BaseModel
 	{
-		protected $table = "levels";
+		protected $table = "classes";
 
         public static function list($id = null)
 		{   
-            if (!$id) {
-                $result = Levels_model::all();
-            } else {
-                $result = Levels_model::where('id', '!=', 5)->get();
-            }
+            // if (!$id) {
+                $result = Classes_model::orderBy('id', 'asc')->get();
+            // } else {
+            //     $result = Classes_model::where('id', '!=', 5)->get();
+            // }
             
             foreach($result as $row){
                 $list[$row['id']] = $row["name"];
@@ -21,8 +21,7 @@
         }
 
         public static function name($id){
-
-            $result = Levels_model::find($id)->name;
+            $result = Classes_model::where('id', $id)->first()->name;
 
             return $result;
         }

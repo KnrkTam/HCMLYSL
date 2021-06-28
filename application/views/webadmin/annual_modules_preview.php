@@ -63,21 +63,21 @@
                                     <div class="col-lg-3">
                                         <div class="form-group ">
                                             <label class="text-nowrap">年度： </label>
-                                            <p>19/20</p>
+                                            <p><?= $annual?></p>
 
                                         </div>
                                     </div>
                                     <div class="col-lg-3">
                                         <div class="form-group ">
                                             <label class="text-nowrap">學階： </label>
-                                            <p>學階一</p>
+                                            <p><?= $level ?></p>
 
                                         </div>
                                     </div>
                                     <div class="col-lg-3">
                                         <div class="form-group ">
                                             <label class="text-nowrap">班別： </label>
-                                            <p>忠</p>
+                                            <p> <?= $class ?> </p>
 
                                         </div>
                                     </div>
@@ -87,14 +87,14 @@
                                     <div class="col-lg-3">
                                         <div class="form-group ">
                                             <label class="text-nowrap">單元一 </label>
-                                            <p>1.1 我的學校</p>
+                                            <p><?= $module1 ?></p>
 
                                         </div>
                                     </div>
                                     <div class="col-lg-9">
                                         <div class="form-group ">
                                             <label class="text-nowrap">備註</label>
-                                            <p>我的學校</p>
+                                            <p><?= $remark1 ? $remark1 : "&nbsp"?></p>
 
 
                                         </div>
@@ -102,14 +102,14 @@
                                     <div class="col-lg-3">
                                         <div class="form-group ">
                                             <label class="text-nowrap">單元二 </label>
-                                            <p>1.2 常用的電器</p>
+                                            <p><?= $module2 ?></p>
 
                                         </div>
                                     </div>
                                     <div class="col-lg-9">
                                         <div class="form-group ">
                                             <label class="text-nowrap">備註</label>
-                                            <p>常用的電器</p>
+                                            <p><?= $remark2 ? $remark2 : "&nbsp" ?></p>
 
 
                                         </div>
@@ -117,37 +117,38 @@
                                     <div class="col-lg-3">
                                         <div class="form-group ">
                                             <label class="text-nowrap">單元三 </label>
-                                            <p>1.4 幫助我們的人</p>
+                                            <p><?= $module3 ?></p>
 
                                         </div>
                                     </div>
                                     <div class="col-lg-9">
                                         <div class="form-group ">
                                             <label class="text-nowrap">備註</label>
-                                            <p>幫助我們的人</p>
+                                            <p><?= $remark3 ? $remark3 : "&nbsp"?></p>
 
                                         </div>
                                     </div>
                                     <div class="col-lg-3">
                                         <div class="form-group ">
                                             <label class="text-nowrap">單元四 </label>
-                                            <p>1.1我的學校</p>
+                                            <p><?= $module4 ?></p>
 
                                         </div>
                                     </div>
                                     <div class="col-lg-9">
                                         <div class="form-group ">
                                             <label class="text-nowrap">備註</label>
-                                            <p>我的學校</p>
+                                            <p><?= $remark4 ? $remark4 : "&nbsp"?></p>
 
                                         </div>
                                     </div>
 
                                 </div>
                                 <div class="mt-4 d-flex justify-content-end">
-                                    <button type="button" class="btn bg-maroon mw-100 mb-4 mr-4" onclick="location.href='<?= admin_url($page_setting['controller']) ?>';">確 定</button>
+                                <textarea name="post_data" class="hidden" ><?= json_encode($postData)?></textarea>
+                                <button type="submit" class="btn bg-maroon mw-100 mb-4 mr-4">確 定</button>
 
-                                    <button type="button" class="btn btn-default mw-100 mb-4" onclick="location.href='../Bk_course_outline/create';">返 回</button>
+                                    <button type="button" class="btn btn-default mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller']. '/'. $previous. '/'. $id) ?>';">返 回</button>
 
                                 </div>
                             </div>
@@ -192,43 +193,6 @@
 
         });
 
-
-
-        function submit_form(_this) {
-            //form checking
-            var valid_data = true;
-            //.form checking
-            if (!valid_data) {
-                //alert('Invalid Data.');
-            } else {
-                ajax_submit_form(_this);
-            }
-        }
-
-        <?php /*
-    //multiple image upload
-    $("input.multiple_upload").fileinput({
-        language: '<?=get_wlocale()?>',
-        previewFileType: "image",
-        showCaption: false,
-        showUpload: false,
-        maxFileSize: 2048,
-        maxFileCount: 30,
-        maxImageHeight: 2000,
-        maxImageWidth: 2000,
-        overwriteInitial: false,
-        allowedFileExtensions: ['jpg','jpeg','png'],
-        initialPreview: <?=isset($photos_preview) ? $photos_preview : "{}"?>,
-        initialPreviewAsData: true,
-        initialPreviewConfig: <?=isset($photos_json) ? $photos_json : "{}"?>,
-        deleteUrl: "<?=admin_url('bk_news/delete_multiple_upload')?>",
-        // hiddenThumbnailContent: true,
-        // initialPreviewShowDelete: true,
-        // removeFromPreviewOnError: true,
-    }).on('filedeleted', function(event, key, jqXHR, data) {
-        alertify.success("<?=__('Deleted successfully!')?>");
-    });
- */ ?>
     </script>
 
 </body>

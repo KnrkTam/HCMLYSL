@@ -143,6 +143,24 @@ class Bk_permission extends CI_Controller
                 'role' => array('super_admin', 'admin')
             ),
 
+            // 設定各級年度學習單元
+            'create_annual_modules' => array(
+            'desc' => 'Can create annual_modules',
+            'role' => array('super_admin', 'admin')
+            ),
+            'update_annual_modules' => array(
+                'desc' => 'Can update annual_modules',
+                'role' => array('super_admin', 'admin')
+            ),
+            'delete_annual_modules' => array(
+                'desc' => 'Can delete annual_modules',
+                'role' => array('super_admin', 'admin')
+            ),
+            'view_annual_modules' => array(
+                'desc' => 'Can view annual_modules',
+                'role' => array('super_admin', 'admin')
+            ),
+
             //news_ajax
             'create_news_ajax' => array(
                 'desc' => 'Can create news_ajax',

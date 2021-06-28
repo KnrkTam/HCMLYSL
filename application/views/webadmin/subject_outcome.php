@@ -69,7 +69,6 @@
                                             <div style="flex: 1"><?php form_list_type('subject_id', ['type' => 'select', 'class'=> 'form-control subjectSelect select2' , 'value' =>'',  'data-placeholder' => '請選擇...', 'enable_value' => $subject_list, 'form_validation_rules' => 'trim|required']) ?></div>
 
                                         </div>
-                                        <a href="#" class="link nowrap mt-30 ml-2 controlSearchBtn">隱藏搜尋</a>
 
                                     </div>
 
@@ -188,7 +187,6 @@
 
 
             $(".searchBtn").click(function() {
-                $(".tableWrap").fadeIn();
                 Course_table.draw();
 
             })

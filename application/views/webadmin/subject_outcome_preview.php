@@ -95,6 +95,7 @@
 
                                                 <button type="submit" class="btn bg-maroon mr-4 mw-100">確 定</button>
                                                 <button type="button" class="btn btn-default mw-100" onclick="location.href='<?= (admin_url($page_setting['controller'])) . '/'. $previous. '/'. $id?>';">返 回</button>
+                                         
                                             </div>
                                             <hr>
                                         </div>

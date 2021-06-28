@@ -54,6 +54,8 @@ class Bk_options extends CI_Controller //change this
         $data['central_obj_list'] = Central_obj_model::list();
         $data['sb_obj_list'] = Sb_obj_model::list();
         $data['subjects_list'] = Subjects_model::list();
+        $data['years_list'] = Years_model::list();
+
 
 
         $this->load->view('webadmin/' . $this->scope . '', $data);
@@ -70,14 +72,18 @@ class Bk_options extends CI_Controller //change this
 
         $type = $postData['type'];
         $name = $postData['name'];
+        $name2 = $postData['name2'];
         $dup_course = Courses_model::where('name',$name)->first()->name;
         $dup_category = Categories_model::where('name',$name)->first()->name;
         $dup_central_obj = Central_obj_model::where('name',$name)->first()->name;
         $dup_sb_obj = Sb_obj_model::where('name',$name)->first()->name;
         $dup_subject = Subjects_model::where('name',$name)->first()->name;
+        $dup_year = Years_model::where('year_from', $name)->first()->year_from;
+        $dup_year2 = Years_model::where('year_to', $name2)->first()->year_to;
+
 
         if (empty($name)) {
-            $data['status'] = '請輸入'. $type. '名稱';
+            $data['status'] = '請輸入'. $type;
         } else {
             switch ($type) {
                     case ('課程'):
@@ -142,7 +148,29 @@ class Bk_options extends CI_Controller //change this
                             $data['status'] =  'success';
                             $_SESSION['success_msg'] = __('新增'.$type.'成功');
                         };
-                        break;               
+                        break;      
+                        
+                    case ('年度'):
+                        if (empty($name2)) {
+                            $data['status'] = '請輸入'. $type. ' 至';
+                        } else {
+                            if($dup_year || $dup_year2) {
+                                $data['status'] =  $type. '已重複';
+                            } else if ($name2 < $name) {
+                                $data['status'] =  $type. '次序錯誤';
+                            } else if ($name2 - $name > 1 || $name == $name2 || strlen($name) !== 4 || strlen($name2) !== 4 ) {
+                                    $data['status'] =  $type. '錯誤';
+                            } else {
+                                $new_data = array(
+                                    'year_from' => $name,
+                                    'year_to' => $name2,
+                                );
+                                Years_model::create($new_data);
+                                $data['status'] =  'success';
+                                $_SESSION['success_msg'] = __('新增'.$type.'成功');
+                            }
+                        }
+                        break;              
             }
         }
     

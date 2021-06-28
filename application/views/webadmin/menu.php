@@ -57,7 +57,7 @@
                 ),
                 array(
                     'main_menu' => __('設定各級年度學習單元 - 檢視'),
-                    'url' => 'Bk_setting_unit',
+                    'url' => 'Bk_annual_modules',
                     'access' => 'view_news',
                     'icon' => 'fa-sticky-note-o',
                 ),
@@ -287,13 +287,13 @@
                         'icon' => 'fa-sliders',
                     ),
                     array(
-                        'main_menu' => __('System User'),
+                        'main_menu' => __('系統用戶'),
                         'url' => 'bk_sys_user',
                         'access' => 'create_sys_user',
                         'icon' => 'fa-gear',
                     ),
                     array(
-                        'main_menu' => __('Site Info'),
+                        'main_menu' => __('網頁資料'),
                         'url' => 'bk_site_info/modify/1',
                         'access' => 'update_site_info',
                         'icon' => 'fa-gears',

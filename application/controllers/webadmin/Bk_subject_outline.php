@@ -125,11 +125,17 @@ class Bk_subject_outline extends CI_Controller //change this
 
     }
 
-    public function create($subject_id = null)
+    public function create($subject_id)
     {
         $data['page_setting'] = $this->page_setting(array(
             'create_' . $this->scope
         ), FALSE, TRUE);
+        $subject = Subjects_model::find($subject_id);
+
+        if (!$subject) {
+            $_SESSION['error_msg'] = __('找不到相關科目');
+            redirect(admin_url('bk_'.$this->scope));
+        }
 
         $data['action'] = __('新 增');
         $data['function'] = "create";
@@ -215,14 +221,16 @@ class Bk_subject_outline extends CI_Controller //change this
         ), FALSE, TRUE);
 
         $postData = $this->input->post();
+        $subject_id = $postData['subject_id'];
+
         $previous = $postData['action'];
         if (!$id) {
-            dump($postData);
-            $id = Subject_lessons_model::where('subject_id', $postData['subject_id'])->where('lesson_id', $postData['lesson_id'])->first()->id;
-
+            // dump($postData);
+            $id = Subject_lessons_model::where('subject_id', $subject_id)->where('lesson_id', $postData['lesson_id'])->first()->id;
+            $data['subject_id'] = $subject_id;
             if (!$postData['lesson_id']) {
                 $_SESSION['error_msg'] = __('請選擇課程編號');
-                redirect(admin_url('bk_'.$this->scope.'/'.$previous.'/'.$id ));
+                redirect(admin_url('bk_'.$this->scope.'/'.$previous.'/'.$subject_id));
             }
         }
 
