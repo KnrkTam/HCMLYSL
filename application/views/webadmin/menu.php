@@ -58,13 +58,13 @@
                 array(
                     'main_menu' => __('設定各級年度學習單元 - 檢視'),
                     'url' => 'Bk_annual_modules',
-                    'access' => 'view_news',
+                    'access' => 'view_annual_modules',
                     'icon' => 'fa-sticky-note-o',
                 ),
                 array(
                     'main_menu' => __('全校學習單元週次 - 檢視'),
-                    'url' => 'Bk_study_unit',
-                    'access' => 'view_news',
+                    'url' => 'Bk_modules_week',
+                    'access' => 'view_modules_week',
                     'icon' => 'fa-clipboard',
                 ),
                 array(

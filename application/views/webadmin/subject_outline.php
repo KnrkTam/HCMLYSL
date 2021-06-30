@@ -88,7 +88,7 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-1">
-                                        <button type="button" class="btn btn-success mt-25 w-100 mb-4 searchBtn">搜 尋</button>
+                                        <button type="submit" class="btn btn-success mt-25 w-100 mb-4 searchBtn">搜 尋</button>
                                     </div>
 
                                 </div>
@@ -96,30 +96,9 @@
 
 
 
-                                <div class="tableWrap hidenWrap">
+                                <div class="tableWrap">
                                     <table class="table table-bordered table-striped" id="subjectCourseTable">
-                                    <!-- <thead>
-                                        <tr class="bg-light-blue color-palette">
-                                            <th class="no-sort"></th>
-                                            <th class="nowrap">科目</th>
-                                            <th class="nowrap">課程</th>
-                                            <th class="nowrap">範疇</th>
-                                            <th class="nowrap">校本課程學習重點</th>
-                                            <th class="nowrap">學習元素</th>
-                                            <th class="nowrap">組別</th>
-                                            <th class="nowrap">LPF(基礎)</th>
-                                            <th class="nowrap">LPF(高中)</th>
-                                            <th class="nowrap">POAS</th>
-                                            <th class="nowrap">Key Skill</th>
-                                            <th class="nowrap">預期學習成果</th>
-                                            <th class="nowrap">關鍵表現項目</th>
-                                            <th class="nowrap">評估模式</th>
-                                            <th class="nowrap">課程編號</th>
-                                            <th class="nowrap">相關課程編號</th>
-                                            <th class="nowrap">相關項目編號</th>
-                                            <th class="nowrap">備註</th>
-                                        </tr>
-                                    </thead> -->
+             
 
 
                                     </table>
@@ -143,32 +122,6 @@
         <?php include_once "footer.php"; ?>
 
     </div>
-
-    <!-- <div class="modal fade in" tabindex="-1" role="dialog" id="editHistory">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title"><b>過往被修改過版本內容</b> <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button></h3>
-
-                </div>
-                <div class="modal-body">
-
-                    <div class="tableWrap">
-                        <table class="table table-bordered table-striped width100p" id="subjectCourseTable2">
-
-                        </table>
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">關 閉</button>
-                </div>
-            </div>
-        </div>
-    </div> -->
 
 
 
@@ -309,22 +262,22 @@
                 "language": {
                     "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/' . get_wlocale() . '.json') ?>"
                 },
-                "order": [],
+                // "order": [],
                 "bSort": false,
                 "bPaginate": false,
                 "pageLength": 50,
                 "pagingType": "input",
                 //"sDom": '<"wrapper"lfptip>',
                 "processing": true,
-                "serverSide": true,
-                "ordering": false,
+                "serverSide": false,
+                "ordering": true,
                 // "searching": true,
                 // "drawType": 'none',
                 "searchDelay": 0,     
                 "columns": columnDefs,            
                 "ajax": {
                     "url": "<?= admin_url($page_setting['controller'] . '/ajax') ?>",
-                    "method": "get",
+                    "method": "post",
                     "timeout": "30000",
                     "data": function(d) {
                         let course_id = $('#courses_id').val();
@@ -339,6 +292,7 @@
                         d.sb_obj_search = sb_obj_id;
                         d.lesson_search = lesson_id;
                         // console.log(columnDefs);
+                        console.log(d)
                     },
                     "complete" : function(){
                         $('[data-toggle="tooltip"]').tooltip();

@@ -5,9 +5,13 @@
 	{
 		protected $table = "categories";
 
-        public static function list()
+        public static function list($all = null)
 		{
-            $result = Categories_model::all();
+            $result = Categories_model::orderBy('id', 'DESC')->get();
+
+            if ($all) {
+                $list[0] = '所有範疇';
+            }
 
             foreach($result as $row){
                 $list[$row['id']] = $row["name"];

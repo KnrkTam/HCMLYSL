@@ -59,8 +59,8 @@ class Bk_subject_outcome extends CI_Controller //change this
 
         $_SESSION['post_data'] = null;
 
+        $data['form_action'] = admin_url($data['page_setting']['controller']);
 
-       
         $this->load->view('webadmin/' . $this->scope . '', $data);
     }
 

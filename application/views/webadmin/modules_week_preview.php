@@ -63,301 +63,234 @@
                                     <div class="col-md-3">
                                         <div class="form-group ">
                                             <label class="text-nowrap">年度： </label>
-                                            <select class="form-control">
-                                                <option hidden>請選擇...</option>
-                                                <option value="19/20" selected>2019/2020</option>
-                                                <option value="20/21">2021/2022</option>
+                                            <p><?= $annual?></p>
 
-                                            </select>
                                         </div>
                                     </div>
                                     <div class="col-md-8">
                                         <div class="form-group">
                                             <label class="text-nowrap">學階： </label>
-                                            <select class="form-control">
-                                                <option hidden>請選擇...</option>
-                                                <option value="全部/學階一/學階二/學階三/學階四" selected>全部/學階一/學階二/學階三/學階四</option>
-                                                <option value="學階一">學階一</option>
-                                                <option value="學階二">學階二</option>
-                                                <option value="學階三">學階三</option>
-                                                <option value="學階四 ">學階四 </option>
-                                            </select>
+                                            <p><?= $level ?></p>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="row d-flex list-row-header mb-2">
-                                    <div class="col-5 bold">
+                                    <div class="col-4 bold">
                                         日期：
                                     </div>
-                                    <div class="col-3 bold">
+                                    <div class="col-2 bold">
                                         週次：
                                     </div>
-                                    <div class="col-2 bold">
+                                    <div class="col-3 bold">
                                         評估日期 1：
                                     </div>
-                                    <div class="col-2 bold">
+                                    <div class="col-3 bold">
                                         評估日期 2：
                                     </div>
                                 </div>
-
+                                <?php foreach ($modules_list as $i => $row) {?>
                                 <div class="row mb-2">
-                                    <div class="col-md-5 bold">
+                                    <div class="col-md-4 bold">
                                         <div class="form-group">
-                                            <div class="d-flex flex-md-row flex-column ">
-                                                <label class="text-nowrap mr-2 mt-3">單元一 </label>
+                                            <div class="d-flex flex-lg-row flex-column ">
+                                                <label class="text-nowrap mr-2 mb-0 bold w-100"><?=$row ?> </label>
                                                 <div class="d-flex align-items-center w-100">
-                                                    <div class="input-group date w-100">
-                                                        <div class="input-group-addon">
-                                                            <i class="fa fa-calendar"></i>
-                                                        </div>
-                                                        <input type="text" class="form-control pull-right datepicker" value="2/9/2019">
+                                                    <div class="input-group date">
+                                                        <p class="mb-0"><?= $moduleFrom[$i] ?></p>
                                                     </div>
 
                                                     <span class="ml-2 mr-2">至</span>
-                                                    <div class="input-group date w-100">
-                                                        <div class="input-group-addon">
-                                                            <i class="fa fa-calendar"></i>
-                                                        </div>
-                                                        <input type="text" class="form-control pull-right datepicker" value="8/11/2019">
+                                                    <div class="input-group date">
+                                                        <p class="mb-0"><?= $moduleTo[$i] ?></p>
+
                                                     </div>
                                                 </div>
 
                                             </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 bold">
+                                        <div class="form-group">
+                                            <div class="d-flex flex-md-row flex-column ">
+
+                                                <div class="d-flex align-items-center w-100 ">
+                                                    <p class="mb-0 mobileShow bold">週次：</p>
+                                                    <p class="mb-0"><?= $weekNumFrom[$i] ?></p>
+                                                    <span class="ml-2 mr-2">至</span>
+                                                    <p class="mb-0"><?= $weekNumTo[$i] ?></p>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-3 bold">
+                                        <div class="input-group date mb-3 d-flex">
+                                            <p class="mb-0 mobileShow bold">評估日期 1：</p>
+                                            <p class="mb-0"><?= $assessment1[$i]?></p>
                                         </div>
                                     </div>
                                     <div class="col-md-3 bold">
+                                        <div class="input-group date mb-3  d-flex">
+                                            <p class="mb-0 mobileShow bold">評估日期 2：</p>
+                                            <p class="mb-0"><?= $assessment2[$i]?></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <? } ?>
+                                
+                                <!-- <div class="row mb-2">
+                                    <div class="col-md-4 bold">
+                                        <div class="form-group">
+                                            <div class="d-flex flex-md-row flex-column ">
+                                                <label class="text-nowrap mr-2 mb-0 bold w-100">單元二 </label>
+                                                <div class="d-flex align-items-center w-100">
+                                                    <div class="input-group date">
+                                                        <p class="mb-0"><?= $moduleFrom[2] ?></p>
+                                                    </div>
+
+                                                    <span class="ml-2 mr-2">至</span>
+                                                    <div class="input-group date">
+                                                        <p class="mb-0">8/11/2019</p>
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 bold">
                                         <div class="form-group">
                                             <div class="d-flex flex-md-row flex-column ">
 
-                                                <div class="d-flex align-items-center w-100">
-                                                    <select class="form-control w-100 weekNum">
-                                                        <option hidden selected>1</option>
-
-                                                    </select>
-
+                                                <div class="d-flex align-items-center w-100 ">
+                                                    <p class="mb-0 mobileShow bold">週次：</p>
+                                                    <p class="mb-0">1</p>
                                                     <span class="ml-2 mr-2">至</span>
-                                                    <select class="form-control w-100 weekNum">
-                                                        <option hidden selected>1</option>
-
-                                                    </select>
+                                                    <p class="mb-0">10</p>
                                                 </div>
 
                                             </div>
                                         </div>
 
                                     </div>
-                                    <div class="col-md-2 bold">
-                                        <div class="input-group date mb-3">
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-calendar"></i>
-                                            </div>
-                                            <input type="text" class="form-control pull-right datepicker">
+                                    <div class="col-md-3 bold">
+                                        <div class="input-group date mb-3 d-flex">
+                                            <p class="mb-0 mobileShow bold">評估日期 1：</p>
+                                            <p class="mb-0">8/11/2019</p>
                                         </div>
                                     </div>
-                                    <div class="col-md-2 bold">
-                                        <div class="input-group date mb-3">
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-calendar"></i>
-                                            </div>
-                                            <input type="text" class="form-control pull-right datepicker">
+                                    <div class="col-md-3 bold">
+                                        <div class="input-group date mb-3  d-flex">
+                                            <p class="mb-0 mobileShow bold">評估日期 2：</p>
+                                            <p class="mb-0">8/11/2019</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row mb-2">
-                                    <div class="col-md-5 bold">
+                                    <div class="col-md-4 bold">
                                         <div class="form-group">
                                             <div class="d-flex flex-md-row flex-column ">
-                                                <label class="text-nowrap mr-2 mt-3">單元二 </label>
+                                                <label class="text-nowrap mr-2 mb-0 bold w-100">單元三 </label>
                                                 <div class="d-flex align-items-center w-100">
-                                                    <div class="input-group date w-100">
-                                                        <div class="input-group-addon">
-                                                            <i class="fa fa-calendar"></i>
-                                                        </div>
-                                                        <input type="text" class="form-control pull-right datepicker" value="11/11/2019">
+                                                    <div class="input-group date">
+                                                        <p class="mb-0"><?= $moduleFrom[3] ?></p>
                                                     </div>
 
                                                     <span class="ml-2 mr-2">至</span>
-                                                    <div class="input-group date w-100">
-                                                        <div class="input-group-addon">
-                                                            <i class="fa fa-calendar"></i>
-                                                        </div>
-                                                        <input type="text" class="form-control pull-right datepicker" value="7/2/2020">
+                                                    <div class="input-group date">
+                                                        <p class="mb-0">8/11/2019</p>
+
                                                     </div>
                                                 </div>
 
                                             </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 bold">
+                                        <div class="form-group">
+                                            <div class="d-flex flex-md-row flex-column ">
+
+                                                <div class="d-flex align-items-center w-100 ">
+                                                    <p class="mb-0 mobileShow bold">週次：</p>
+                                                    <p class="mb-0">1</p>
+                                                    <span class="ml-2 mr-2">至</span>
+                                                    <p class="mb-0">10</p>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-3 bold">
+                                        <div class="input-group date mb-3 d-flex">
+                                            <p class="mb-0 mobileShow bold">評估日期 1：</p>
+                                            <p class="mb-0">8/11/2019</p>
                                         </div>
                                     </div>
                                     <div class="col-md-3 bold">
-                                        <div class="form-group">
-                                            <div class="d-flex flex-md-row flex-column ">
-
-                                                <div class="d-flex align-items-center w-100">
-                                                    <select class="form-control w-100 weekNum">
-                                                        <option hidden selected>1</option>
-
-                                                    </select>
-
-                                                    <span class="ml-2 mr-2">至</span>
-                                                    <select class="form-control w-100 weekNum">
-                                                        <option hidden selected>1</option>
-
-                                                    </select>
-                                                </div>
-
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <div class="col-md-2 bold">
-                                        <div class="input-group date mb-3">
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-calendar"></i>
-                                            </div>
-                                            <input type="text" class="form-control pull-right datepicker">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2 bold">
-                                        <div class="input-group date mb-3">
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-calendar"></i>
-                                            </div>
-                                            <input type="text" class="form-control pull-right datepicker">
+                                        <div class="input-group date mb-3  d-flex">
+                                            <p class="mb-0 mobileShow bold">評估日期 2：</p>
+                                            <p class="mb-0">8/11/2019</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row mb-2">
-                                    <div class="col-md-5 bold">
+                                    <div class="col-md-4 bold">
                                         <div class="form-group">
                                             <div class="d-flex flex-md-row flex-column ">
-                                                <label class="text-nowrap mr-2 mt-3">單元三 </label>
+                                                <label class="text-nowrap mr-2 mb-0 bold w-100">單元四 </label>
                                                 <div class="d-flex align-items-center w-100">
-                                                    <div class="input-group date w-100">
-                                                        <div class="input-group-addon">
-                                                            <i class="fa fa-calendar"></i>
-                                                        </div>
-                                                        <input type="text" class="form-control pull-right datepicker" value="7/2/2020">
+                                                    <div class="input-group date">
+                                                        <p class="mb-0"><?= $moduleFrom[4] ?></p>
                                                     </div>
 
                                                     <span class="ml-2 mr-2">至</span>
-                                                    <div class="input-group date w-100">
-                                                        <div class="input-group-addon">
-                                                            <i class="fa fa-calendar"></i>
-                                                        </div>
-                                                        <input type="text" class="form-control pull-right datepicker" value="7/2/2020">
+                                                    <div class="input-group date">
+                                                        <p class="mb-0"><?= $moduleTo[4] ?></p>
+
                                                     </div>
                                                 </div>
 
                                             </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 bold">
+                                        <div class="form-group">
+                                            <div class="d-flex flex-md-row flex-column ">
+
+                                                <div class="d-flex align-items-center w-100 ">
+                                                    <p class="mb-0 mobileShow bold">週次：</p>
+                                                    <p class="mb-0">1</p>
+                                                    <span class="ml-2 mr-2">至</span>
+                                                    <p class="mb-0">10</p>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-3 bold">
+                                        <div class="input-group date mb-3 d-flex">
+                                            <p class="mb-0 mobileShow bold">評估日期 1：</p>
+                                            <p class="mb-0">8/11/2019</p>
                                         </div>
                                     </div>
                                     <div class="col-md-3 bold">
-                                        <div class="form-group">
-                                            <div class="d-flex flex-md-row flex-column ">
-
-                                                <div class="d-flex align-items-center w-100">
-                                                    <select class="form-control w-100 weekNum" value="1">
-                                                        <option hidden selected>1</option>
-
-                                                    </select>
-
-                                                    <span class="ml-2 mr-2">至</span>
-                                                    <select class="form-control w-100 weekNum" value="1">
-                                                        <option hidden selected>1</option>
-
-                                                    </select>
-                                                </div>
-
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <div class="col-md-2 bold">
-                                        <div class="input-group date mb-3">
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-calendar"></i>
-                                            </div>
-                                            <input type="text" class="form-control pull-right datepicker">
+                                        <div class="input-group date mb-3  d-flex">
+                                            <p class="mb-0 mobileShow bold">評估日期 2：</p>
+                                            <p class="mb-0">8/11/2019</p>
                                         </div>
                                     </div>
-                                    <div class="col-md-2 bold">
-                                        <div class="input-group date mb-3">
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-calendar"></i>
-                                            </div>
-                                            <input type="text" class="form-control pull-right datepicker">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-md-5 bold">
-                                        <div class="form-group">
-                                            <div class="d-flex flex-md-row flex-column ">
-                                                <label class="text-nowrap mr-2 mt-3">單元四 </label>
-                                                <div class="d-flex align-items-center w-100">
-                                                    <div class="input-group date w-100">
-                                                        <div class="input-group-addon">
-                                                            <i class="fa fa-calendar"></i>
-                                                        </div>
-                                                        <input type="text" class="form-control pull-right datepicker" value="7/2/2020">
-                                                    </div>
-
-                                                    <span class="ml-2 mr-2">至</span>
-                                                    <div class="input-group date w-100">
-                                                        <div class="input-group-addon">
-                                                            <i class="fa fa-calendar"></i>
-                                                        </div>
-                                                        <input type="text" class="form-control pull-right datepicker" value="7/2/2020">
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 bold">
-                                        <div class="form-group">
-                                            <div class="d-flex flex-md-row flex-column ">
-
-                                                <div class="d-flex align-items-center w-100">
-                                                    <select class="form-control w-100 weekNum">
-                                                        <option hidden selected>1</option>
-
-                                                    </select>
-
-                                                    <span class="ml-2 mr-2">至</span>
-                                                    <select class="form-control w-100 weekNum" value="1">
-                                                        <option hidden selected>1</option>
-
-                                                    </select>
-                                                </div>
-
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <div class="col-md-2 bold">
-                                        <div class="input-group date mb-3">
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-calendar"></i>
-                                            </div>
-                                            <input type="text" class="form-control pull-right datepicker">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2 bold">
-                                        <div class="input-group date mb-3">
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-calendar"></i>
-                                            </div>
-                                            <input type="text" class="form-control pull-right datepicker">
-                                        </div>
-                                    </div>
-                                </div>
+                                </div> -->
 
                                 <div class="mt-4 d-flex justify-content-end">
-                                    <button type="button" class="btn btn-primary mw-100 mb-4 mr-4" onclick="location.href='../Bk_study_unit/preview';">確 定</button>
+                                <textarea name="post_data" class="hidden" ><?= json_encode($postData)?></textarea>
 
-                                    <button type="button" class="btn btn-default mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller']) ?>';">返 回</button>
+                                    <button type="submit" class="btn bg-maroon mw-100 mb-4 mr-4">確 定</button>
+
+                                    <button type="button" class="btn btn-default mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller']. '/'. $previous. '/'. $id) ?>';">返 回</button>
 
                                 </div>
 

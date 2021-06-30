@@ -58,19 +58,23 @@ class Bk_subject_outline extends CI_Controller //change this
 
         $_SESSION['post_data'] = null;
 
+        $data['form_action'] = admin_url($data['page_setting']['controller']);
+
+
         $this->load->view('webadmin/' . $this->scope . '', $data);
     }
 
     public function ajax(){
-        // $postData = $this->input->post();
+        $postData = $this->input->post();
+        // dump($postData);
         $data['page_setting'] = $this->page_setting(array(
             'view_'. $this->scope,
         ), FALSE, TRUE);
-        $subject_id = $_GET['subject_search'];
-        $course_id = $_GET['course_search'];
-        $category_id = $_GET['category_search'];
-        $sb_obj_id = $_GET['sb_obj_search'];
-        $lesson_id = $_GET['lesson_search'];
+        $subject_id = $postData['subject_search'];
+        $course_id = $postData['course_search'];
+        $category_id = $postData['category_search'];
+        $sb_obj_id = $postData['sb_obj_search'];
+        $lesson_id = $postData['lesson_search'];
         $lessons_arr = array();
 
         if ($subject_id) {

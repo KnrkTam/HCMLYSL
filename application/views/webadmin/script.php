@@ -200,7 +200,7 @@
 <?php } ?>
 
 <?php if ($GLOBALS["datetimepicker"] == 1) { ?>
-
+    <!-- <script src="<?= assets_url('webadmin/admin_lte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') ?>"></script> -->
     <script type="text/javascript" src="<?= assets_url('libraries/datetimepicker/jquery-ui-timepicker-addon.js') ?>"></script>
     <script type="text/javascript" src="<?= assets_url('libraries/datetimepicker/i18n/jquery-ui-timepicker-addon-i18n.min.js') ?>"></script>
     <script type="text/javascript" src="<?= assets_url('libraries/datetimepicker/jquery-ui-sliderAccess.js') ?>"></script>
@@ -216,7 +216,7 @@
                 language: 'en'
             });
             $('.datepicker').datepicker({
-                dateFormat: 'yy-mm-dd'
+                dateFormat: 'dd/mm/yy'
             });
             //$.datepicker.setDefaults($.datepicker.regional['zh-TW']);
         });

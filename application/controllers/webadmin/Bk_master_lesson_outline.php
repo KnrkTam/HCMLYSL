@@ -49,8 +49,8 @@ class Bk_master_lesson_outline extends CI_Controller //change this
         $GLOBALS["select2"] = 1;
         $GLOBALS["datatable"] = 1;
 
-        $data['courses_list'] = Courses_model::list();
-        $data['categories_list'] = Categories_model::list();
+        $data['courses_list'] = Courses_model::list('All');
+        $data['categories_list'] = Categories_model::list('All');
         $data['central_obj_list'] = Central_obj_model::list();
         $data['sb_obj_list'] = Sb_obj_model::list();
         $data['elements_list'] = Elements_model::list();
@@ -62,9 +62,16 @@ class Bk_master_lesson_outline extends CI_Controller //change this
         }
         $data['lessons'] = $lessons_arr;
         $_SESSION['post_data'] = null;
-        // dump($data);
+        // $postData = $this->input->post();
+        // if ($postData) {
+        //     dump($postData);
+        // }
+
+        $data['form_action'] = admin_url($data['page_setting']['controller']);
+
         $this->load->view('webadmin/' . $this->scope . '', $data);
     }
+    
 
 
     public function ajax(){

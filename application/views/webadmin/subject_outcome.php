@@ -67,11 +67,8 @@
                                         <div class="form-group w-100">
                                             <label class="text-nowrap">科目 : </label>
                                             <div style="flex: 1"><?php form_list_type('subject_id', ['type' => 'select', 'class'=> 'form-control subjectSelect select2' , 'value' =>'',  'data-placeholder' => '請選擇...', 'enable_value' => $subject_list, 'form_validation_rules' => 'trim|required']) ?></div>
-
                                         </div>
-
                                     </div>
-
                                 </div>
                                 <hr>
 
@@ -105,7 +102,7 @@
                                             </div>
                                         </div>
                                         <div class="col-lg-1">
-                                            <button type="button" class="btn btn-success mt-25 w-100 mb-4 searchBtn">搜 尋</button>
+                                            <button type="submit" class="btn btn-success mt-25 w-100 mb-4 searchBtn">搜 尋</button>
                                         </div>
 
                                     </div>
@@ -205,8 +202,8 @@
                 "pagingType": "input",
                 //"sDom": '<"wrapper"lfptip>',
                 "processing": true,
-                "serverSide": true,
-                "ordering": false,
+                "serverSide": false,
+                "ordering": true,
                 "searching": true,
                 // "drawType": 'none',
                 "searchDelay": 0,                    

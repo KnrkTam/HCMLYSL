@@ -63,14 +63,14 @@
                                     <div class="col-lg-3">
                                         <div class="form-group ">
                                             <label class="text-nowrap">課程 : </label>
-                                            <div style="flex: 1"><?php form_list_type('courses_id', ['type' => 'select', 'class'=> 'form-control' , 'value' =>'',  'enable_value' => $courses_list, 'form_validation_rules' => 'trim|required']) ?></div>
+                                            <div style="flex: 1"><?php form_list_type('courses_id', ['type' => 'select', 'class'=> 'form-control' , 'value' => 0 , 'enable_value' => $courses_list, 'form_validation_rules' => 'trim|required', 'disable_please_select' => 1]) ?></div>
 
                                         </div>
                                     </div>
                                     <div class="col-lg-2">
                                         <div class="form-group">
                                             <label class="text-nowrap">範疇 : </label>
-                                            <div style="flex: 1"><?php form_list_type('categories_id', ['type' => 'select', 'class'=> 'form-control' , 'value' =>'',  'enable_value' => $categories_list, 'form_validation_rules' => 'trim|required']) ?></div>
+                                            <div style="flex: 1"><?php form_list_type('categories_id', ['type' => 'select', 'class'=> 'form-control' , 'value' =>'',  'enable_value' => $categories_list, 'form_validation_rules' => 'trim|required','disable_please_select' => 1]) ?></div>
 
                                         </div>
                                     </div>
@@ -89,7 +89,7 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-1">
-                                        <button type="button" class="btn btn-success mt-25 w-100 mb-4 searchBtn" >搜 尋</button>
+                                        <button type="submit" class="btn btn-success mt-25 w-100 mb-4 searchBtn" >搜 尋</button>
                                     </div>
 
                                 </div>
@@ -100,7 +100,7 @@
                                 <button type="button" class="btn bg-orange mw-100 mb-4" onclick="location.href='<?= (admin_url($page_setting['controller'])) . '/create'?>';">新 增</button>
 
 
-                                <div class="tableWrap hidenWrap">
+                                <div class="tableWrap">
                                     <table class="table table-bordered table-striped" id="Course_datatable">
                                         <thead>
                                             <tr class="bg-light-blue color-palette" style="z-index: -1000;">
@@ -122,7 +122,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                       
+                                    
                                         </tbody>
                                     </table>
                                 </div>
@@ -153,10 +153,12 @@
 
 
     <script>
-        // $(document).ready(function() {
+        $(document).ready(function() {
             $('[data-toggle="tooltip"]').tooltip({
                 container: 'body'
             });
+
+
 
             // function submit_filter() {
             //     // let course_id = $('#courses_id').val();
@@ -185,7 +187,7 @@
 
 
 
-            var Course_datatable = $('#Course_datatable').DataTable({
+            let Course_datatable = $('#Course_datatable').DataTable({
                 scrollX: true,
                 "language": {
                     "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/' . get_wlocale() . '.json') ?>"
@@ -196,8 +198,8 @@
                 "pagingType": "input",
                 //"sDom": '<"wrapper"lfptip>',
                 "processing": true,
-                "serverSide": true,
-                "ordering": false,
+                "serverSide": false,
+                "ordering": true,
                 "searching": true,
                 "searchDelay": 0,
                 "ajax": {
@@ -227,15 +229,15 @@
 
 
             $(".searchBtn").click(function() {
-                $(".tableWrap").fadeIn();
-                $('#Course_datatable').DataTable().draw();
+                // $(".tableWrap").fadeIn();
+                Course_datatable.draw();
 
             });
 
 
 
      
-        // });
+        });
 
     </script>
 

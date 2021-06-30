@@ -39,7 +39,7 @@ class Bk_annual_modules extends CI_Controller //change this
         return $page_setting;
     }
 
-    public function index($filter_type = NULL, $filter_para = NULL, $filter_para2 = NULL)
+    public function index()
     {
         $data['page_setting'] = $this->page_setting(array(
             'view_' . $this->scope
@@ -52,6 +52,8 @@ class Bk_annual_modules extends CI_Controller //change this
         $data['years_list'] = Years_model::list();
         $year_id = Years_model::orderBy('year_from', 'DESC')->first()->id;
         $data['year_id'] = $year_id; 
+
+        $data['form_action'] = admin_url($data['page_setting']['controller']);
 
 
         $this->load->view('webadmin/' . $this->scope . '', $data);
@@ -68,12 +70,7 @@ class Bk_annual_modules extends CI_Controller //change this
 
         if ($year_id) {
             $result = Annual_modules_model::where('year_id', $year_id)->get();
-            // foreach ($result as $i =>$row) {
-            //     $result_arr[$i] = $row;
-            //     // dump($row);
-            // }
-        // } else {
-            // $lessons_arr = null;
+
         }
         
         $result_count = count($result);
@@ -182,18 +179,34 @@ class Bk_annual_modules extends CI_Controller //change this
             'view_' . $this->scope
         ), FALSE, TRUE);
         $postData = $this->input->post();
+        // dump($postData);
         $previous = $postData['action'];
         if (!$id) {
             $dup_annual_module = Annual_modules_model::where('year_id', $postData['year_id'])->where('level_id', $postData['level_id'])->where('class_id', $postData['class_id'])->first();
-
-            if ($dup_annual_module) {
-                $_SESSION['log_msg'] = __('已重複年度學習單元');
-                redirect(admin_url('bk_'.$this->scope. '/edit/'. $dup_annual_module->id));
-            }
         }
-        if (!$postData['year_id']) {
+    
+        switch(true) {
+            case ($dup_annual_module);
+            $_SESSION['log_msg'] = __('已重複年度學習單元');
+            redirect(admin_url('bk_'.$this->scope. '/edit/'. $dup_annual_module->id));
+            break;
+
+            case (!$postData['year_id']);
             $_SESSION['error_msg'] = __('請選擇年度');
             redirect(admin_url('bk_'.$this->scope. '/'. $previous));
+            break;
+
+            case (!$postData['level_id']);
+            $_SESSION['error_msg'] = __('請選擇學階');
+            redirect(admin_url('bk_'.$this->scope. '/'. $previous));
+            break;
+
+            case (!$postData['class_id']);
+            $_SESSION['error_msg'] = __('請選擇班別');
+            redirect(admin_url('bk_'.$this->scope. '/'. $previous));
+            break;
+
+            default;
         }
 
         $data['previous'] = $previous;

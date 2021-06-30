@@ -107,7 +107,7 @@ class Bk_permission extends CI_Controller
                 'role' => array('super_admin', 'admin')
             ),
 
-            // subject course outline
+            // subject subject outcome
             'create_subject_outcome' => array(
                 'desc' => 'Can create subject_outcome',
                 'role' => array('super_admin', 'admin')
@@ -125,7 +125,7 @@ class Bk_permission extends CI_Controller
                 'role' => array('super_admin', 'admin')
             ),
 
-            // subject course outline
+            // subject subject outline
             'create_subject_outline' => array(
                 'desc' => 'Can create subject_outline',
                 'role' => array('super_admin', 'admin')
@@ -158,6 +158,24 @@ class Bk_permission extends CI_Controller
             ),
             'view_annual_modules' => array(
                 'desc' => 'Can view annual_modules',
+                'role' => array('super_admin', 'admin')
+            ),
+
+            // 全校學習單元週次
+            'create_modules_week' => array(
+            'desc' => 'Can create modules_week',
+            'role' => array('super_admin', 'admin')
+            ),
+            'update_modules_week' => array(
+                'desc' => 'Can update modules_week',
+                'role' => array('super_admin', 'admin')
+            ),
+            'delete_modules_week' => array(
+                'desc' => 'Can delete modules_week',
+                'role' => array('super_admin', 'admin')
+            ),
+            'view_modules_week' => array(
+                'desc' => 'Can view modules_week',
                 'role' => array('super_admin', 'admin')
             ),
 
