@@ -82,14 +82,14 @@
                     'sub_menu' => array(
                         array(
                             'title' => __('設定年度教職員 - 檢視'),
-                            'url' => 'Bk_setting_teacher',
-                            'access' => 'view_news',
+                            'url' => 'Bk_annual_staff_list',
+                            'access' => 'view_annual_staff_list',
                             'icon' => 'fa-mortar-board',
                         ),
                         array(
                             'title' => __('設定年度科長 - 檢視'),
-                            'url' => 'Bk_setting_subject_teacher',
-                            'access' => 'view_news',
+                            'url' => 'Bk_annual_subject_monitor',
+                            'access' => 'view_annual_subject_monitor',
                             'icon' => 'fa-mortar-board',
                         ),
                         array(

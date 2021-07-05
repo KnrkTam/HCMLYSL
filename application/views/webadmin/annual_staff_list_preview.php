@@ -34,25 +34,7 @@
                     <div class="col-md-12">
                         <!-- form start -->
                         <?= form_open_multipart($form_action, 'class="form-horizontal"'); ?>
-                        <!-- general form elements 
-                    <input type="hidden" name="id" value="<?= $id ?>"/>-->
                         <div class="box box-primary">
-                            <!-- <div class="box-header">
-                            <div class="row col-md-2">
-                                <div class="btn-group" data-spy="affix" data-offset-top="2" style="z-index: 20;">
-                                    <a href="<?= admin_url($page_setting['controller']) ?>" class="btn btn-default">
-                                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
-                                        <?= __('Cancel') ?>
-                                    </a>
-
-                                    <?php if (validate_user_access(['create_news', 'update_news'])) { ?>
-                                        <button type="button" class="btn btn-primary" onclick="submit_form(this);">
-                                            <i class="fa fa-floppy-o" aria-hidden="true"></i> <?= __('Save') ?>
-                                        </button>
-                                    <?php } ?>
-                                </div>
-                            </div>
-                        </div> -->
                             <!-- /.box-header -->
 
                             <div class="box-body">
@@ -63,46 +45,30 @@
                                     <div class="col-lg-4">
                                         <div class="form-group">
                                             <label class="text-nowrap">年度： </label>
-                                            <select class="form-control">
-                                                <option hidden>請選擇...</option>
-                                                <option value="19/20" selected>2019/2020</option>
-                                                <option value="20/21">2021/2022</option>
+                                            <p><?= $year_id?></p>
 
-
-                                            </select>
                                         </div>
                                     </div>
 
                                     <div class="col-lg-4">
                                         <div class="form-group ">
                                             <label class="text-nowrap">職位：</label>
-                                            <select class="form-control">
-                                                <option hidden>請選擇...</option>
-                                                <option value="校長" selected>校長</option>
-                                                <option value="副校長">副校長</option>
-                                                <option value="教師">教師</option>
+                                            <p><?= $position_id?></p>
 
-                                            </select>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="form-group ">
                                             <label class="text-nowrap">姓名：</label>
-                                            <select class="form-control">
-                                                <option hidden>請選擇...</option>
-                                                <option value="陳大文" selected>陳大文</option>
-                                                <option value="黃文">黃文</option>
-                                                <option value="陳一文">陳一文</option>
+                                            <p><?= $staff_id?></p>
 
-                                            </select>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="mt-4 d-flex justify-content-end">
-                                    <button type="button" class="btn btn-primary mw-100 mb-4 mr-4" onclick="location.href='../Bk_setting_teacher/preview';">確 定</button>
-
+                                    <textarea name="post_data" class="hidden" ><?= json_encode($postData)?></textarea>
+                                    <button type="submit" class="btn bg-maroon mw-100 mb-4 mr-4">確 定</button>
                                     <button type="button" class="btn btn-default mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller']) ?>';">返 回</button>
-
                                 </div>
 
                             </div>
@@ -122,8 +88,6 @@
         <!-- /.content-wrapper -->
 
         <?php include_once("footer.php"); ?>
-
-
 
 
 

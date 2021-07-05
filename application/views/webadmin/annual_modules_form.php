@@ -33,7 +33,7 @@
                     <!-- column -->
                     <div class="col-md-12">
                         <!-- form start -->
-                        <?= form_open_multipart($form_action, 'class="form-horizontal"'); ?>
+                        <?= form_open_multipart($form_action, 'id="myForm" class="form-horizontal"'); ?>
                         <div class="box box-primary">
                             <!-- /.box-header -->
 
@@ -123,7 +123,7 @@
                                 <div class="mt-4 d-flex justify-content-end">
                                     <input type="hidden" name="action" value="create"/>
 
-                                    <button type="submit" class="btn bg-orange mw-100 mb-4 mr-4">確 定</button>
+                                    <button type="button" id="createBtn" class="btn bg-orange mw-100 mb-4 mr-4">確 定</button>
 
                                     <button type="button" class="btn btn-default mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller']) ?>';">返 回</button>
 
@@ -183,7 +183,35 @@
                 }
                 })
             }
-            })            
+            })    
+
+
+
+            let createBtn = document.querySelector('#createBtn');
+            createBtn.addEventListener("click",function(){
+                createModule(year_id.value, level_id.value, class_id.value);
+                function createModule(year_id, level_id, class_id){
+                    // console.log(year_id, level_id, class_id)
+                    $.ajax({
+                    url: '<?= (admin_url($page_setting['controller'])) . '/validate' ?>',
+                    method:'POST',
+                    data:{year_id:year_id,level_id: level_id, class_id: class_id},
+                    dataType:'json',     
+                    success:function(data){
+                        if (data.status == 'success') {
+                            document.getElementById('myForm').submit();
+                        } else {
+                            alertify.error(data.status)
+                        }
+                    },
+                    error: function(error){
+                        alert('error');
+                        // alert('duplicated');
+                        // console.log(error);
+                    }
+                    });
+                } 
+            })        
         });
 
 

@@ -112,8 +112,7 @@
                         <h3 class="modal-title bold">修改 單元名稱 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button></h3>
-
-                    </div>
+                        </div>
                     <div class="modal-body">
 
                         <div class="row mb-4">

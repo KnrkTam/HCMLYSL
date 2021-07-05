@@ -38,7 +38,11 @@ class Lessons_model extends BaseModel
             if ($id) {
                 $result = Lessons_model::whereIn('id', $id)->get();
             } else if ($sb_obj_id) {
-                $result = Lessons_model::whereIn('sb_obj_id', $sb_obj_id)->get();
+                if ($course_id) {
+                    $result = Lessons_model::whereIn('sb_obj_id', $sb_obj_id)->where('course_id', $course_id)->get();
+                } else {
+                    $result = Lessons_model::whereIn('sb_obj_id', $sb_obj_id)->get();
+                }
             } else if (!$course_id && !$category_id) {
                 $result = Lessons_model::all();
             } else if ($course_id && !$category_id) {
@@ -51,9 +55,13 @@ class Lessons_model extends BaseModel
         } else if ($subject_id) {
             $subject_arr = Subject_lessons_model::id_list($subject_id);
             if ($id) {
-                $result = Lessons_model::whereIn('id', $id)->whereIn('id', $subject_arr)->get();
+                $result = Lessons_model::whereIn('id', $id)->get();
             } else if ($sb_obj_id) {
-                $result = Lessons_model::whereIn('sb_obj_id', $sb_obj_id)->whereIn('id', $subject_arr)->get();
+                if ($course_id) {
+                    $result = Lessons_model::whereIn('sb_obj_id', $sb_obj_id)->whereIn('id', $subject_arr)->where('course_id', $course_id)->get();
+                } else {
+                    $result = Lessons_model::whereIn('sb_obj_id', $sb_obj_id)->whereIn('id', $subject_arr)->get();
+                }
             } else if (!$course_id && !$category_id) {
                 $result = Lessons_model::whereIn('id', $subject_arr)->get();
             } else if ($course_id && !$category_id) {

@@ -79,7 +79,7 @@
 
                                         <div class="form-group w-100">
                                             <label class="text-nowrap">校本課程學習重點 : (多項選擇) </label>
-                                            <div style="flex: 1"><?php form_list_type('sb_obj_id[]', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'data-placeholder' => '請選擇...', 'enable_value' => $sb_obj_list, 'form_validation_rules' => 'trim|required', 'multiple' => 1]) ?></div>
+                                            <div style="flex: 1"><?php form_list_type('sb_obj_id[]', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'data-placeholder' => '請選擇...', 'enable_value' => $sb_obj_list, 'form_validation_rules' => 'trim|required', 'multiple' => 1, 'disable_please_select' => 1]) ?></div>
 
                                         </div>
                                         <span class="ml-2 mr-2 mt-2">或</span>
@@ -158,34 +158,13 @@
                 container: 'body'
             });
 
+            // <?php if ($sb_obj_id) {?>
+            //     let sb_value =  <?= json_encode($sb_obj_id)?>;
+            // <?}?>
 
-
-            // function submit_filter() {
-            //     // let course_id = $('#courses_id').val();
-            //     // if (!course_id) {
-            //     //     alert('<?=__('請先選擇課程.')?>');
-            //     // } else {
-            // //     //     var filter_para = $('#filter_' + filter_type + '_para').val();
-            // //     //     var filter_para2 = $('#filter_' + filter_type + '_para2').val();
-
-            // //     //     if (filter_type == 1) {
-            // //     //         filter_para = '';
-            // //     //         location.href = '<?= admin_url($page_setting['controller'] . '/index/'); ?>' + filter_type + '/' + filter_para;
-            // //     //     } else if ((filter_type == 2) && !filter_para) {
-            // //     //         alert('<?=__('Please fill filter parameters.')?>');
-            // //     //     }else{
-            // //             /*location.href = '<//?= admin_url($page_setting['controller'] . '/index/'); ?>' + filter_type + '/' + filter_para + '/' + filter_para2; */
-            //             filter_data();
-            // //     //     }
-            // //     // }
-            //     // }
-            // }
-
-            // function filter_data() {
-            //     $('#Course_datatable').DataTable().draw();
-            // }
-
-
+            // <?php if ($lesson_id) {?>
+            //     let lesson_value = <?= json_encode($lesson_id) ?>
+            // <?}?>
 
             let Course_datatable = $('#Course_datatable').DataTable({
                 scrollX: true,
@@ -207,6 +186,18 @@
                     "method": "get",
                     "timeout": "30000",
                     "data": function(d) {
+                        <?php if ($sb_obj_id) {?>
+                            $('#sb_obj_id').val(<?= json_encode($sb_obj_id)?>).change();
+                        <?}?>
+
+                        <?php if ($lesson_id) {?>
+                            $('#lesson_id').val(<?= json_encode($lesson_id) ?>).change();
+                            $('#sb_obj_id').val(null).trigger('change');
+                            $('#courses_id').val(0).trigger('change');
+                            $('#categories_id').val(0).trigger('change');
+
+                        <?}?>
+
                         let course_id = $('#courses_id').val();
                         let category_id = $('#categories_id').val();
                         let sb_obj_id = $('#sb_obj_id').val();
@@ -215,7 +206,8 @@
                         d.category_search = category_id;
                         d.sb_obj_search = sb_obj_id;
                         d.lesson_search = lesson_id;
-                        console.log('data',d);
+            
+                        console.log(d)
                         // var filter_type = $('#filter_type').val();
                         // d.search_filter_type = filter_type;
                         // d.search_filter_para = $('#filter_' + filter_type + '_para').val();
@@ -229,7 +221,7 @@
 
 
             $(".searchBtn").click(function() {
-                // $(".tableWrap").fadeIn();
+                console.log('vlicked')
                 Course_datatable.draw();
 
             });

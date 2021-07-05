@@ -53,7 +53,7 @@ class Bk_permission extends CI_Controller
                 'role' => array('super_admin', 'admin')
             ),
 
-            // master_modules
+            // 各學階單元設定
             'create_master_modules' => array(
                 'desc' => 'Can create master_modules',
                 'role' => array('super_admin', 'admin')
@@ -71,7 +71,7 @@ class Bk_permission extends CI_Controller
                 'role' => array('super_admin', 'admin')
             ),
 
-             // create list option
+             // 增加選項
              'create_options' => array(
                 'desc' => 'Can create options',
                 'role' => array('super_admin', 'admin')
@@ -89,7 +89,7 @@ class Bk_permission extends CI_Controller
                 'role' => array('super_admin', 'admin')
             ),
 
-              // school base course outline
+              // 校本課程大綱
             'create_master_lesson_outline' => array(
                 'desc' => 'Can create master_lesson_outline',
                 'role' => array('super_admin', 'admin')
@@ -107,7 +107,7 @@ class Bk_permission extends CI_Controller
                 'role' => array('super_admin', 'admin')
             ),
 
-            // subject subject outcome
+            // 科目預期學習成果
             'create_subject_outcome' => array(
                 'desc' => 'Can create subject_outcome',
                 'role' => array('super_admin', 'admin')
@@ -125,7 +125,7 @@ class Bk_permission extends CI_Controller
                 'role' => array('super_admin', 'admin')
             ),
 
-            // subject subject outline
+            // 科目課程大綱
             'create_subject_outline' => array(
                 'desc' => 'Can create subject_outline',
                 'role' => array('super_admin', 'admin')
@@ -176,6 +176,42 @@ class Bk_permission extends CI_Controller
             ),
             'view_modules_week' => array(
                 'desc' => 'Can view modules_week',
+                'role' => array('super_admin', 'admin')
+            ),
+
+            // 設定年度教職員
+            'create_annual_staff_list' => array(
+            'desc' => 'Can create annual_staff_list',
+            'role' => array('super_admin', 'admin')
+            ),
+            'update_annual_staff_list' => array(
+                'desc' => 'Can update annual_staff_list',
+                'role' => array('super_admin', 'admin')
+            ),
+            'delete_annual_staff_list' => array(
+                'desc' => 'Can delete annual_staff_list',
+                'role' => array('super_admin', 'admin')
+            ),
+            'view_annual_staff_list' => array(
+                'desc' => 'Can view annual_staff_list',
+                'role' => array('super_admin', 'admin')
+            ),
+
+            // 設定年度科長
+            'create_annual_subject_monitor' => array(
+            'desc' => 'Can create annual_subject_monitor',
+            'role' => array('super_admin', 'admin')
+            ),
+            'update_annual_subject_monitor' => array(
+                'desc' => 'Can update annual_subject_monitor',
+                'role' => array('super_admin', 'admin')
+            ),
+            'delete_annual_subject_monitor' => array(
+                'desc' => 'Can delete annual_subject_monitor',
+                'role' => array('super_admin', 'admin')
+            ),
+            'view_annual_subject_monitor' => array(
+                'desc' => 'Can view annual_subject_monitor',
                 'role' => array('super_admin', 'admin')
             ),
 

@@ -172,6 +172,51 @@ class Bk_annual_modules extends CI_Controller //change this
         $this->load->view('webadmin/' . $this->scope . '_edit',  $data);
     }
 
+    public function validate($id = null)
+    {
+        $data['page_setting'] = $this->page_setting(array(
+            'create_' . $this->scope
+        ), FALSE, TRUE);
+
+        $postData = $this->input->post();
+        if (!$id){
+            $dup_annual_module = Annual_modules_model::where('year_id', $postData['year_id'])->where('level_id', $postData['level_id'])->where('class_id', $postData['class_id'])->first();
+        }
+
+
+        switch(true) {
+            case ($dup_annual_module);
+            $data = array(
+                'status' => '已重複年度學習單元',
+            );
+            break;
+
+            case (!$postData['year_id']);
+            $data = array(
+                'status' => '請選擇年度',
+            );
+            break;
+
+            case (!$postData['level_id']);
+            $data = array(
+                'status' => '請選擇學階',
+            );
+            break;
+
+            case (!$postData['class_id']);
+            $data = array(
+                'status' => '請選擇班別',
+            );
+            break;
+
+            default;
+            $data = array(
+                'status' => 'success',
+            );
+        }
+        echo json_encode($data);
+
+    }
 
     public function preview($id = null)
     {
@@ -206,7 +251,7 @@ class Bk_annual_modules extends CI_Controller //change this
             redirect(admin_url('bk_'.$this->scope. '/'. $previous));
             break;
 
-            default;
+            default;  
         }
 
         $data['previous'] = $previous;

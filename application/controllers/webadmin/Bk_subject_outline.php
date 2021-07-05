@@ -45,7 +45,6 @@ class Bk_subject_outline extends CI_Controller //change this
             'view_' . $this->scope
         ), FALSE, TRUE);
 
-
         $GLOBALS["select2"] = 1;
         $GLOBALS["datatable"] = 1;
         $data['subject_list'] = Subjects_model::list();
@@ -55,6 +54,8 @@ class Bk_subject_outline extends CI_Controller //change this
         $data['lessons_list'] = Lessons_model::list();
         array_unshift($data['courses_list'], "所有課程");
         array_unshift($data['categories_list'], "所有課程");
+        $data['sb_obj_id'] = $_POST['sb_obj_id'];
+        $data['lesson_id'] = $_POST['lesson_id'];
 
         $_SESSION['post_data'] = null;
 
@@ -65,36 +66,48 @@ class Bk_subject_outline extends CI_Controller //change this
     }
 
     public function ajax(){
-        $postData = $this->input->post();
-        // dump($postData);
         $data['page_setting'] = $this->page_setting(array(
             'view_'. $this->scope,
         ), FALSE, TRUE);
-        $subject_id = $postData['subject_search'];
-        $course_id = $postData['course_search'];
-        $category_id = $postData['category_search'];
-        $sb_obj_id = $postData['sb_obj_search'];
-        $lesson_id = $postData['lesson_search'];
+        $subject_id = $_POST['subject_search'];
+        $course_id = $_POST['course_search'];
+        $category_id = $_POST['category_search'];
+        $sb_obj_id = $_POST['sb_obj_search'];
+        $lesson_id = $_POST['lesson_search'];
         $lessons_arr = array();
 
-        if ($subject_id) {
+        if ($subject_id ) {
             $filtered_lessons = Lessons_model::list($course_id, $category_id,$sb_obj_id, $lesson_id, $subject_id);
             foreach ($filtered_lessons as $i =>$row) {
                 $lessons_arr[$i] = Lessons_model::table_list($i);
             }
+        } else if ($lesson_id) {
+            $filtered_lessons = Lessons_model::list($course_id, $category_id,$sb_obj_id, $lesson_id, $subject_id);
+            foreach ($filtered_lessons as $i =>$row) {
+                $lessons_arr[$i] = Lessons_model::table_list($i);
+            }
+            // dump($lessons_arr);
+
         } else {
             $lessons_arr = null;
         }
-        
-        $result_count = count($lessons_arr);
 
+        $result_count = count($lessons_arr);
         //rearrange data
         $data = array();
         $name = array();
         $num = 0;
         if (!empty( $lessons_arr)) {
+
             foreach ( $lessons_arr as $key => $row) {
-                $subject_lesson_id = Subject_lessons_model::where('subject_id', $subject_id)->where('lesson_id', $row['id'])->first()->id;
+                if ($subject_id) {
+                    $subject_lesson_id = Subject_lessons_model::where('subject_id', $subject_id)->where('lesson_id', $row['id'])->first()->id;
+
+                } else {
+                    $subject_lesson_id = Subject_lessons_model::where('lesson_id', $row['id'])->first()->id;
+                    $subject_id = Subject_lessons_model::where('lesson_id', $row['id'])->first()->subject_id;
+                }
+
                 $lesson_performance = Key_performances_model::where('subject_lesson_id', $subject_lesson_id)->get();
                 foreach ($lesson_performance as $foo ) {
                     $data[$num][] = '<a class="editLinkBtn" href="'.admin_url(current_controller() . '/edit/'. $subject_lesson_id ).'"><i class="fa fa-edit"></i></a>';

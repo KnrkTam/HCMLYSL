@@ -34,27 +34,8 @@
                     <div class="col-md-12">
                         <!-- form start -->
                         <?= form_open_multipart($form_action, 'class="form-horizontal"'); ?>
-                        <!-- general form elements 
-                    <input type="hidden" name="id" value="<?= $id ?>"/>-->
+
                         <div class="box box-primary">
-                            <!-- <div class="box-header">
-                            <div class="row col-md-2">
-                                <div class="btn-group" data-spy="affix" data-offset-top="2" style="z-index: 20;">
-                                    <a href="<?= admin_url($page_setting['controller']) ?>" class="btn btn-default">
-                                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
-                                        <?= __('Cancel') ?>
-                                    </a>
-
-                                    <?php if (validate_user_access(['create_news', 'update_news'])) { ?>
-                                        <button type="button" class="btn btn-primary" onclick="submit_form(this);">
-                                            <i class="fa fa-floppy-o" aria-hidden="true"></i> <?= __('Save') ?>
-                                        </button>
-                                    <?php } ?>
-                                </div>
-                            </div>
-                        </div> -->
-                            <!-- /.box-header -->
-
                             <div class="box-body">
                                 <div id="signupalert" class="alert alert-danger margin_bottom_20"></div>
 
@@ -63,43 +44,28 @@
                                     <div class="col-lg-4">
                                         <div class="form-group">
                                             <label class="text-nowrap">年度： </label>
-                                            <select class="form-control">
-                                                <option hidden>請選擇...</option>
-                                                <option value="19/20">2019/2020</option>
-                                                <option value="20/21">2021/2022</option>
-
-
-                                            </select>
+                                            <?php form_list_type('year_id', ['type' => 'select', 'class'=> 'form-control select2' , 'data-placeholder' => '請選擇...', 'value' => $year_id, 'enable_value' => $years_list, 'form_validation_rules' => 'trim|required', 'disabled' => 1]) ?>
+                                            <input type="hidden" name="year_id" value="<?= $year_id?>">
                                         </div>
                                     </div>
 
                                     <div class="col-lg-4">
                                         <div class="form-group ">
                                             <label class="text-nowrap">職位：</label>
-                                            <select class="form-control">
-                                                <option hidden>請選擇...</option>
-                                                <option value="校長">校長</option>
-                                                <option value="副校長">副校長</option>
-                                                <option value="教師">教師</option>
+                                            <?php form_list_type('position_id', ['type' => 'select', 'class'=> 'form-control select2' , 'data-placeholder' => '請選擇...', 'value' => $position_id, 'enable_value' => $positions_list, 'form_validation_rules' => 'trim|required']) ?>
 
-                                            </select>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="form-group ">
                                             <label class="text-nowrap">姓名：</label>
-                                            <select class="form-control">
-                                                <option hidden>請選擇...</option>
-                                                <option value="陳大文">陳大文</option>
-                                                <option value="黃文">黃文</option>
-                                                <option value="陳一文">陳一文</option>
+                                            <?php form_list_type('staff_id', ['type' => 'select', 'class'=> 'form-control select2' , 'data-placeholder' => '請選擇...', 'value' => $staff_id, 'enable_value' => $staff_list, 'form_validation_rules' => 'trim|required']) ?>
 
-                                            </select>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="mt-4 d-flex justify-content-end">
-                                    <button type="button" class="btn bg-orange mw-100 mb-4 mr-4" onclick="location.href='../Bk_setting_teacher/preview';">確 定</button>
+                                    <button type="submit" class="btn btn-primary mw-100 mb-4 mr-4" >確 定</button>
 
                                     <button type="button" class="btn btn-default mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller']) ?>';">返 回</button>
 
@@ -173,30 +139,7 @@
             }
         }
 
-        <?php /*
-    //multiple image upload
-    $("input.multiple_upload").fileinput({
-        language: '<?=get_wlocale()?>',
-        previewFileType: "image",
-        showCaption: false,
-        showUpload: false,
-        maxFileSize: 2048,
-        maxFileCount: 30,
-        maxImageHeight: 2000,
-        maxImageWidth: 2000,
-        overwriteInitial: false,
-        allowedFileExtensions: ['jpg','jpeg','png'],
-        initialPreview: <?=isset($photos_preview) ? $photos_preview : "{}"?>,
-        initialPreviewAsData: true,
-        initialPreviewConfig: <?=isset($photos_json) ? $photos_json : "{}"?>,
-        deleteUrl: "<?=admin_url('bk_news/delete_multiple_upload')?>",
-        // hiddenThumbnailContent: true,
-        // initialPreviewShowDelete: true,
-        // removeFromPreviewOnError: true,
-    }).on('filedeleted', function(event, key, jqXHR, data) {
-        alertify.success("<?=__('Deleted successfully!')?>");
-    });
- */ ?>
+
     </script>
 
 </body>

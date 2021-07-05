@@ -178,18 +178,7 @@
     <?php include_once("script.php"); ?>
     <script>
         $(document).ready(function() {
-            $('#settingTable').DataTable({
-                scrollX: true,
-                scrollCollapse: true,
-                bFilter: false,
-                bInfo: true,
-                bLengthChange: true,
-                columnDefs: [{
-                    targets: 'no-sort',
-                    orderable: false,
-                }]
-
-            });
+        
 
         });
 

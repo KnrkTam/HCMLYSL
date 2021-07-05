@@ -3,6 +3,13 @@
 
 <head>
     <?php include_once("head.php"); ?>
+
+<style>
+
+    .nav-toggle-icon {
+        cursor: pointer; 
+    }
+</style>
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini">
@@ -34,25 +41,8 @@
                     <div class="col-md-12">
                         <!-- form start -->
                         <?= form_open_multipart($form_action, 'class="form-horizontal"'); ?>
-                        <!-- general form elements 
-                    <input type="hidden" name="id" value="<?= $id ?>"/>-->
                         <div class="box box-primary">
-                            <!-- <div class="box-header">
-                            <div class="row col-md-2">
-                                <div class="btn-group" data-spy="affix" data-offset-top="2" style="z-index: 20;">
-                                    <a href="<?= admin_url($page_setting['controller']) ?>" class="btn btn-default">
-                                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
-                                        <?= __('Cancel') ?>
-                                    </a>
-
-                                    <?php if (validate_user_access(['create_news', 'update_news'])) { ?>
-                                        <button type="button" class="btn btn-primary" onclick="submit_form(this);">
-                                            <i class="fa fa-floppy-o" aria-hidden="true"></i> <?= __('Save') ?>
-                                        </button>
-                                    <?php } ?>
-                                </div>
-                            </div>
-                        </div> -->
+                        
                             <!-- /.box-header -->
 
                             <div class="box-body">
@@ -68,37 +58,17 @@
 
 
                                 <div class="mt-4 mb-4"><a class="link showAllBtn" href="#">全部展開</a> |　<a class="link hideAllBtn" href="#">全部隱藏</a> </div>
-
+                            <?php foreach ($courses as $i => $course) { ?>
                                 <ul class="nav nav-list-main">
-                                    <li><label class="nav-toggle nav-header"><span class="nav-toggle-icon text-red mr-2"><i class="fa fa-fw fa-plus-square-o"></i> 數學</span> <a class="link" href="#" data-toggle="modal" data-target="#newCategory">新增</a> | <a class="link" href="#" data-toggle="modal" data-target="#editCategory">修改範疇</a></label>
+                                    <li><label class="nav-toggle nav-header"><span class="nav-toggle-icon text-red mr-2"><i class="fa fa-fw fa-plus-square-o"></i> <?= $course?></span> <a class="link" href="#" data-toggle="modal" data-target="#newCategory">新增</a> | <a class="link" href="#" data-toggle="modal" data-target="#editCategory">修改範疇</a></label>
+                                    <?php foreach ($categories as $j => $category) { ?>
                                         <ul class="nav nav-list nav-left-ml">
-                                            <li><label class="nav-toggle nav-header"><span class="nav-toggle-icon text-green mr-2"><i class="fa fa-fw fa-plus-square-o"></i> 數與代數</span> <a class="link" href="#" data-toggle="modal" data-target="#newStudyPoint">新增</a> | <a class="link" href="#" data-toggle="modal" data-target="#editStudyPoint">修改校本課程學習重點</a></label>
+                                            <li><label class="nav-toggle nav-header"><span class="nav-toggle-icon text-green mr-2"><i class="fa fa-fw fa-plus-square-o"></i><?= $category?></span> <a class="link" href="#" data-toggle="modal" data-target="#newStudyPoint">新增</a> | <a class="link" href="#" data-toggle="modal" data-target="#editStudyPoint">修改校本課程學習重點</a></label>
+                                            <?php foreach (Lessons_model::where('course_id', $i)->where('category_id', $j)->get() as $row) {?>
                                                 <ul class="nav nav-list nav-left-ml">
-                                                    <li><label class="nav-toggle nav-header"><span class="nav-toggle-icon text-maroon mr-2"><i class="fa fa-fw fa-plus-square-o"></i> 意識數學活動</span> <a class="link" href="#" data-toggle="modal" data-target="#newStudyResults">新增</a> | <a class="link" href="#" data-toggle="modal" data-target="#editStudyResults">修改預期學習成果</a></label>
-                                                        <ul class="nav nav-list nav-left-ml">
-                                                            <li><label class="nav-toggle nav-header"><span class="nav-toggle-icon text-purple mr-2"><i class="fa fa-fw fa-plus-square-o"></i> [初組] 能注意活動及作出反應</span> <a class="link" href="#" data-toggle="modal" data-target="#keyPerformance">新增/修改關鍵表現</a></label>
-                                                                <ul class="nav nav-list nav-left-ml lastList">
-                                                                    <li class="text-orange">對物件產生興趣，嘗試用不同的方法探索物件(如:拿起數粒、排列物件等)
-                                                                    </li>
-                                                                    <li class="text-orange">察覺物件的用途(如: 會對不同形狀的物件有反應、按口號作踏步動作等)</li>
-                                                                </ul>
-                                                            </li>
+                                                    <li><label class="nav-toggle nav-header"><span class="nav-toggle-icon text-maroon mr-2"><i class="fa fa-fw fa-plus-square-o"></i> <?= Sb_obj_model::name($row->sb_obj_id)?></span> <a class="link" href="#" data-toggle="modal" data-target="#newStudyResults">新增</a> | <a class="link" href="#" data-toggle="modal" data-target="#editStudyResults">修改預期學習成果</a></label>
+                                                    <?php foreach (Lessons_model::where('course_id', $i)->where('category_id', $j)->get() as $row) {?>
 
-                                                        </ul>
-                                                    </li>
-                                                    <li><label class="nav-toggle nav-header"><span class="nav-toggle-icon text-maroon mr-2"><i class="fa fa-fw fa-plus-square-o"></i> 意識數學活動</span> <a class="link" href="#" data-toggle="modal" data-target="#newStudyResults">新增</a> | <a class="link" href="#" data-toggle="modal" data-target="#editStudyResults">修改預期學習成果</a></label>
-                                                        <ul class="nav nav-list nav-left-ml">
-                                                            <li><label class="nav-toggle nav-header"><span class="nav-toggle-icon text-purple mr-2"><i class="fa fa-fw fa-plus-square-o"></i> [初組] 能注意活動及作出反應</span> <a class="link" href="#" data-toggle="modal" data-target="#keyPerformance">新增/修改關鍵表現</a></label>
-                                                                <ul class="nav nav-list nav-left-ml lastList">
-                                                                    <li class="text-orange">對物件產生興趣，嘗試用不同的方法探索物件(如:拿起數粒、排列物件等)
-                                                                    </li>
-                                                                    <li class="text-orange">察覺物件的用途(如: 會對不同形狀的物件有反應、按口號作踏步動作等)</li>
-                                                                </ul>
-                                                            </li>
-
-                                                        </ul>
-                                                    </li>
-                                                    <li><label class="nav-toggle nav-header"><span class="nav-toggle-icon text-maroon mr-2"><i class="fa fa-fw fa-plus-square-o"></i> 意識數學活動</span> <a class="link" href="#" data-toggle="modal" data-target="#newStudyResults">新增</a> | <a class="link" href="#" data-toggle="modal" data-target="#editStudyResults">修改預期學習成果</a></label>
                                                         <ul class="nav nav-list nav-left-ml">
                                                             <li><label class="nav-toggle nav-header"><span class="nav-toggle-icon text-purple mr-2"><i class="fa fa-fw fa-plus-square-o"></i> [初組] 能注意活動及作出反應</span> <a class="link" href="#" data-toggle="modal" data-target="#keyPerformance">新增/修改關鍵表現</a></label>
                                                                 <ul class="nav nav-list nav-left-ml lastList">
@@ -111,14 +81,21 @@
                                                         </ul>
                                                     </li>
                                                 </ul>
+                                                <? } ?>
+
                                             </li>
                                         </ul>
+                                        <? } ?>
+
                                     </li>
 
 
                                 </ul>
                                 <hr>
-                                <ul class="nav nav-list-main">
+                            <? } ?>
+                                
+
+                                <!-- <ul class="nav nav-list-main">
                                     <li><label class="nav-toggle nav-header"><span class="nav-toggle-icon text-red mr-2"><i class="fa fa-fw fa-plus-square-o"></i> 語文</span> <a class="link" href="#" data-toggle="modal" data-target="#newCategory">新增</a> | <a class="link" href="#" data-toggle="modal" data-target="#editCategory">修改範疇</a></label>
                                         <ul class="nav nav-list nav-left-ml">
                                             <li><label class="nav-toggle nav-header"><span class="nav-toggle-icon text-green mr-2"><i class="fa fa-fw fa-plus-square-o"></i> 聆聽</span> <a class="link" href="#" data-toggle="modal" data-target="#newStudyPoint">新增</a> | <a class="link" href="#" data-toggle="modal" data-target="#editStudyPoint">修改校本課程學習重點</a></label>
@@ -140,7 +117,10 @@
                                             </li>
                                         </ul>
                                     </li>
-                                </ul>
+                                </ul> -->
+
+
+
                                 <hr>
                             </div>
                             <!-- /.box-body -->
@@ -741,7 +721,7 @@
                     <div class="modal-body">
 
 
-                        <button type="button" class="btn mw-100 btn-default mb-4" onclick="location.href='../webadmin/Bk_course_outline';">返回校本課程大綱</button>
+                        <button type="button" class="btn mw-100 btn-default mb-4" onclick="location.href='../webadmin/Bk_master_lesson_outline';">返回校本課程大綱</button>
 
                         <div class="row">
                             <div class="col-lg-4">
@@ -1053,8 +1033,8 @@
         $('ul.nav-left-ml').toggle();
         $('label.nav-toggle span').click(function() {
             $(this).parent().parent().children('ul.nav-left-ml').toggle(300);
-            var cs = $(this).children('i').attr("class");
-
+            let cs = $(this).children('i').attr("class");
+            console.log(this)
 
             if (cs == 'fa fa-fw fa-plus-square-o') {
                 $(this).children('i').removeClass('fa-plus-square-o').addClass('fa-minus-square-o');
@@ -1075,19 +1055,19 @@
         });
 
 
-        $('#searchCourseNumberTable').DataTable({
-            scrollX: true,
-            scrollCollapse: true,
-            bFilter: false,
-            bInfo: true,
-            bLengthChange: false,
-            columnDefs: [{
-                targets: 'no-sort',
-                orderable: false,
-                width: 100
-            }]
+        // $('#searchCourseNumberTable').DataTable({
+        //     scrollX: true,
+        //     scrollCollapse: true,
+        //     bFilter: false,
+        //     bInfo: true,
+        //     bLengthChange: false,
+        //     columnDefs: [{
+        //         targets: 'no-sort',
+        //         orderable: false,
+        //         width: 100
+        //     }]
 
-        });
+        // });
 
         $(".searchClassNumBtn").click(function() {
 
@@ -1121,41 +1101,7 @@
 
 
 
-        function submit_form(_this) {
-            //form checking
-            var valid_data = true;
-            //.form checking
-            if (!valid_data) {
-                //alert('Invalid Data.');
-            } else {
-                ajax_submit_form(_this);
-            }
-        }
 
-        <?php /*
-    //multiple image upload
-    $("input.multiple_upload").fileinput({
-        language: '<?=get_wlocale()?>',
-        previewFileType: "image",
-        showCaption: false,
-        showUpload: false,
-        maxFileSize: 2048,
-        maxFileCount: 30,
-        maxImageHeight: 2000,
-        maxImageWidth: 2000,
-        overwriteInitial: false,
-        allowedFileExtensions: ['jpg','jpeg','png'],
-        initialPreview: <?=isset($photos_preview) ? $photos_preview : "{}"?>,
-        initialPreviewAsData: true,
-        initialPreviewConfig: <?=isset($photos_json) ? $photos_json : "{}"?>,
-        deleteUrl: "<?=admin_url('bk_news/delete_multiple_upload')?>",
-        // hiddenThumbnailContent: true,
-        // initialPreviewShowDelete: true,
-        // removeFromPreviewOnError: true,
-    }).on('filedeleted', function(event, key, jqXHR, data) {
-        alertify.success("<?=__('Deleted successfully!')?>");
-    });
- */ ?>
     </script>
 
 </body>

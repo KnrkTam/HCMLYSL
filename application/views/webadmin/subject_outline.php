@@ -77,7 +77,7 @@
 
                                         <div class="form-group w-100">
                                             <label class="text-nowrap">校本課程學習重點 : (多項選擇) </label>
-                                            <div style="flex: 1"><?php form_list_type('sb_obj_id[]', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'data-placeholder' => '請選擇...', 'enable_value' => $sb_obj_list, 'form_validation_rules' => 'trim|required', 'multiple' => 1]) ?></div>
+                                            <div style="flex: 1"><?php form_list_type('sb_obj_id[]', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'data-placeholder' => '請選擇...', 'enable_value' => $sb_obj_list, 'form_validation_rules' => 'trim|required', 'multiple' => 1, 'disable_please_select' => 1]) ?></div>
 
                                         </div>
                                         <span class="ml-2 mr-2 mt-2">或</span>
@@ -136,6 +136,7 @@
     <script>
         $(document).ready(function() {
 
+
             $('#subject_id').change(function() {
             ajax_choose(this.value)
             function ajax_choose(subject_id) {
@@ -146,7 +147,7 @@
                 dataType:'json',
                 success:function(data){
                     $('#newBtn').fadeIn("slow", function() {});
-                    $('#newBtn').html(`<button type="button" class="btn bg-orange mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller'] . '/create/') ?>${data.id}'">新 增</button>`)
+                    // $('#newBtn').html(`<button type="button" class="btn bg-orange mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller'] . '/create/') ?>${data.id}'">新 增</button>`)
                     // $('#expected_outcome').val(data.expected_outcome);
                     // $('#expected_outcome_text').html(data.expected_outcome);
                     // console.log(data)
@@ -280,6 +281,19 @@
                     "method": "post",
                     "timeout": "30000",
                     "data": function(d) {
+
+                        <?php if ($sb_obj_id) {?>
+                            $('#sb_obj_id').val(<?= json_encode($sb_obj_id)?>).change();
+                        <?}?>
+
+                        <?php if ($lesson_id) {?>
+                            $('#lesson_id').val(<?= json_encode($lesson_id) ?>).change();
+                            $('#sb_obj_id').val(null).trigger('change');
+                            $('#subject_id').val(0).trigger('change');
+                            $('#categories_id').val(0).trigger('change');
+
+                        <?}?>
+
                         let course_id = $('#courses_id').val();
                         let category_id = $('#categories_id').val();
                         let sb_obj_id = $('#sb_obj_id').val();
@@ -291,7 +305,7 @@
                         d.category_search = category_id;
                         d.sb_obj_search = sb_obj_id;
                         d.lesson_search = lesson_id;
-                        // console.log(columnDefs);
+
                         console.log(d)
                     },
                     "complete" : function(){

@@ -152,6 +152,37 @@ class Bk_modules_week extends CI_Controller //change this
         $GLOBALS['datetimepicker'] = 1;
         $this->load->view('webadmin/' . $this->scope . '_form',  $data);
     }
+
+    public function validate()
+    {
+        $data['page_setting'] = $this->page_setting(array(
+            'create_' . $this->scope
+        ), FALSE, TRUE);
+
+        $postData = $this->input->post();
+
+        switch(true) {
+            case (!$postData['year_id']);
+            $data = array(
+                'status' => '請選擇年度',
+            );
+            break;
+
+            case (!$postData['level_id']);
+            $data = array(
+                'status' => '請選擇學階',
+            );
+            break;
+
+            default;
+            $data = array(
+                'status' => 'success',
+            );
+        }
+        echo json_encode($data);
+
+    }
+
     public function edit($id)
     {
         $data['page_setting'] = $this->page_setting(array(
@@ -214,14 +245,7 @@ class Bk_modules_week extends CI_Controller //change this
             }
         }
 
-        if (!$postData['year_id']) {
-            $_SESSION['error_msg'] = __('請選擇年度');
-            redirect(admin_url('bk_'.$this->scope. '/'. $previous));
-        }
-        if (!$postData['level_id']) {
-            $_SESSION['error_msg'] = __('請選擇學階');
-            redirect(admin_url('bk_'.$this->scope. '/'. $previous));
-        }
+
         $data['modules_list'] = array(
             '1' => '單元一',
             '2' => '單元二',

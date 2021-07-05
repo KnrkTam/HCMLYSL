@@ -34,60 +34,45 @@
                     <div class="col-md-12">
                         <!-- form start -->
                         <?= form_open_multipart($form_action, 'class="form-horizontal"'); ?>
-                        <!-- general form elements 
-                    <input type="hidden" name="id" value="<?= $id ?>"/>-->
+
                         <div class="box box-primary">
-                            <!-- <div class="box-header">
-                            <div class="row col-md-2">
-                                <div class="btn-group" data-spy="affix" data-offset-top="2" style="z-index: 20;">
-                                    <a href="<?= admin_url($page_setting['controller']) ?>" class="btn btn-default">
-                                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
-                                        <?= __('Cancel') ?>
-                                    </a>
-
-                                    <?php if (validate_user_access(['create_news', 'update_news'])) { ?>
-                                        <button type="button" class="btn btn-primary" onclick="submit_form(this);">
-                                            <i class="fa fa-floppy-o" aria-hidden="true"></i> <?= __('Save') ?>
-                                        </button>
-                                    <?php } ?>
-                                </div>
-                            </div>
-                        </div> -->
-                            <!-- /.box-header -->
-
                             <div class="box-body">
                                 <div id="signupalert" class="alert alert-danger margin_bottom_20"></div>
 
 
                                 <div class="row mb-4">
-                                    <div class="col-lg-4">
+                                    <div class="col-lg-3">
                                         <div class="form-group">
-                                            <label class="text-nowrap">年度： </label>
-                                            <p>2019/2020</p>
-
+                                            <label class="text-nowrap">年度：</label>
+                                            <?php form_list_type('year_id', ['type' => 'select', 'class'=> 'form-control select2' , 'data-placeholder' => '請選擇...', 'enable_value' => $years_list, 'form_validation_rules' => 'trim|required']) ?>
                                         </div>
                                     </div>
 
-                                    <div class="col-lg-4">
-                                        <div class="form-group ">
-                                            <label class="text-nowrap">職位：</label>
-                                            <p>副校長</p>
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <label class="text-nowrap">科目：</label>
+                                            <?php form_list_type('subject_id', ['type' => 'select', 'class'=> 'form-control select2' , 'data-placeholder' => '請選擇...', 'enable_value' => $subjects_list, 'form_validation_rules' => 'trim|required']) ?>
 
                                         </div>
                                     </div>
-                                    <div class="col-lg-4">
-                                        <div class="form-group ">
-                                            <label class="text-nowrap">姓名：</label>
-                                            <p>陳大文</p>
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <label class="text-nowrap">科長：</label>
+                                            <?php form_list_type('monitor_id', ['type' => 'select', 'class'=> 'form-control select2' , 'data-placeholder' => '請選擇...', 'enable_value' => $staff_list, 'form_validation_rules' => 'trim|required']) ?>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <label class="text-nowrap">副科長：</label>
+                                            <?php form_list_type('deputy_monitor_id', ['type' => 'select', 'class'=> 'form-control select2' , 'data-placeholder' => '請選擇...', 'enable_value' => $staff_list, 'form_validation_rules' => 'trim|required']) ?>
 
                                         </div>
                                     </div>
                                 </div>
                                 <div class="mt-4 d-flex justify-content-end">
-                                    <button type="button" class="btn bg-maroon mw-100 mb-4 mr-4" onclick="location.href='../Bk_setting_teacher';">確 定</button>
-
+                                    <button type="button" class="btn bg-orange mw-100 mb-4 mr-4" onclick="location.href='../Bk_setting_subject_teacher/preview';">確 定</button>
                                     <button type="button" class="btn btn-default mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller']) ?>';">返 回</button>
-
                                 </div>
 
                             </div>
@@ -107,6 +92,8 @@
         <!-- /.content-wrapper -->
 
         <?php include_once("footer.php"); ?>
+
+
 
 
 

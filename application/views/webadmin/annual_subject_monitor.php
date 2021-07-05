@@ -61,55 +61,80 @@
 
                                 <div class="row mb-4">
                                     <div class="col-lg-3">
-                                        <div class="form-group">
-                                            <label class="text-nowrap">年度：</label>
-                                            <select class="form-control">
-                                                <option hidden>請選擇...</option>
-                                                <option value="19/20">2019/2020</option>
-                                                <option value="20/21">2021/2022</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-3">
-                                        <div class="form-group">
-                                            <label class="text-nowrap">科目：</label>
-                                            <select class="form-control">
-                                                <option hidden>請選擇...</option>
-                                                <option value="語文科1234">語文科1234</option>
-                                                <option value="常識科">常識科</option>
-                                                <option value="語文科">語文科</option>
-                                            </select>
+                                        <div class="form-group ">
+                                            <label class="text-nowrap">年度： </label>
+                                            <?php form_list_type('year_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' => $year_id, 'data-placeholder' => '請選擇...', 'enable_value' => $years_list, 'form_validation_rules' => 'trim|required']) ?>
                                         </div>
                                     </div>
                                     <div class="col-lg-3">
-                                        <div class="form-group">
-                                            <label class="text-nowrap">科長：</label>
-                                            <select class="form-control">
-                                                <option hidden>請選擇...</option>
-                                                <option value="陳大文">陳大文</option>
-                                                <option value="黃文">黃文</option>
-                                                <option value="陳一文">陳一文</option>
-                                            </select>
+                                        <div class="form-group ">
+                                            <label class="text-nowrap">科目： </label>
+                                            <?php form_list_type('subject_id', ['type' => 'select', 'class'=> 'form-control select2' , 'data-placeholder' => '請選擇...', 'enable_value' => $subjects_list, 'form_validation_rules' => 'trim|required']) ?>
                                         </div>
                                     </div>
-                                    <div class="col-lg-3">
-                                        <div class="form-group">
-                                            <label class="text-nowrap">副科長：</label>
-                                            <select class="form-control">
-                                                <option hidden>請選擇...</option>
-                                                <option value="陳大文">陳大文</option>
-                                                <option value="黃文">黃文</option>
-                                                <option value="陳一文">陳一文</option>
-                                            </select>
-                                        </div>
+                                    <div class="col-lg-1">
+                                        <button type="button" class="btn btn-success mt-25 w-100 mb-4 searchBtn">搜 尋</button>
                                     </div>
                                 </div>
-                                <div class="mt-4 d-flex justify-content-end">
-                                    <button type="button" class="btn bg-orange mw-100 mb-4 mr-4" onclick="location.href='../Bk_setting_subject_teacher/preview';">確 定</button>
-                                    <button type="button" class="btn btn-default mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller']) ?>';">返 回</button>
-                                </div>
 
+                                <button type="button" class="btn bg-orange mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller'].'/create')?>';">新 增</button>
+
+
+                                <div class="tableWrap hidenWrap">
+                                    <table class="table table-bordered table-striped w-100" id="settingTable">
+                                        <thead>
+                                            <tr class="bg-light-blue color-palette">
+                                                <th class="no-sort" style="min-width: 4px;  max-width:15px"></th>
+                                                <th class="nowrap">年度</th>
+                                                <th class="nowrap">科目</th>
+                                                <th class="nowrap">科長</th>
+                                                <th class="nowrap">副科長</th>
+
+
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            <tr>
+                                                <td><a class="editLinkBtn" href="../webadmin/Bk_setting_subject_teacher/edit"><i class="fa fa-edit"></i></a></td>
+                                                <td>19/20</td>
+                                                <td>語文科123</td>
+                                                <td>陳大文</td>
+                                                <td>陳大文</td>
+                                            </tr>
+                                            <tr>
+
+                                                <td><a class="editLinkBtn" href="../webadmin/Bk_setting_subject_teacher/edit"><i class="fa fa-edit"></i></a></td>
+                                                <td>19/20</td>
+                                                <td>常識科</td>
+                                                <td>黃文</td>
+                                                <td>黃文</td>
+
+                                            </tr>
+                                            <tr>
+
+                                                <td><a class="editLinkBtn" href="../webadmin/Bk_setting_subject_teacher/edit"><i class="fa fa-edit"></i></a></td>
+                                                <td>19/20</td>
+                                                <td>語文科</td>
+                                                <td>陳大文</td>
+                                                <td>陳大文</td>
+
+
+                                            </tr>
+
+                                            <tr>
+
+                                                <td><a class="editLinkBtn" href="../webadmin/Bk_setting_subject_teacher/edit"><i class="fa fa-edit"></i></a></td>
+                                                <td>19/20</td>
+                                                <td>常識科</td>
+                                                <td>黃文</td>
+                                                <td>黃文</td>
+
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                             <!-- /.box-body -->
                         </div>

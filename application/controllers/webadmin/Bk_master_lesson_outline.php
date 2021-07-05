@@ -45,7 +45,6 @@ class Bk_master_lesson_outline extends CI_Controller //change this
             'view_' . $this->scope
             // 'view_news'
         ), FALSE, TRUE);
-
         $GLOBALS["select2"] = 1;
         $GLOBALS["datatable"] = 1;
 
@@ -61,11 +60,9 @@ class Bk_master_lesson_outline extends CI_Controller //change this
             $lessons_arr[$i] = Lessons_model::table_list($i);
         }
         $data['lessons'] = $lessons_arr;
+        $data['sb_obj_id'] = $_POST['sb_obj_id'];
+        $data['lesson_id'] = $_POST['lesson_id'];
         $_SESSION['post_data'] = null;
-        // $postData = $this->input->post();
-        // if ($postData) {
-        //     dump($postData);
-        // }
 
         $data['form_action'] = admin_url($data['page_setting']['controller']);
 
@@ -86,7 +83,7 @@ class Bk_master_lesson_outline extends CI_Controller //change this
         $lesson_id = $_GET['lesson_search'];
 
 
-        $filtered_lessons = Lessons_model::list($course_id, $category_id,$sb_obj_id, $lesson_id);
+        $filtered_lessons = Lessons_model::list($course_id, $category_id, $sb_obj_id, $lesson_id);
         $lessons_arr = array();
         foreach ($filtered_lessons as $i =>$row) {
             $lessons_arr[$i] = Lessons_model::table_list($i);
@@ -134,7 +131,6 @@ class Bk_master_lesson_outline extends CI_Controller //change this
             }
         }
         $return = json_encode(array("draw" => $_GET["draw"], "data" => $data, "get" => $_GET, "recordsTotal" => $result_count, "recordsFiltered" => $result_count));
-        // dump(current_controller());
         echo $return;
         // echo json_encode($data);
 
@@ -152,7 +148,7 @@ class Bk_master_lesson_outline extends CI_Controller //change this
                 $sb_obj_id = $_GET['sb_obj_search'];
                 $lesson_id = $_GET['lesson_search'];
         
-        
+                // dump($_GET);
                 $filtered_lessons = Lessons_model::list($course_id, $category_id,$sb_obj_id, $lesson_id);
                 $lessons_arr = array();
                 foreach ($filtered_lessons as $i =>$row) {
