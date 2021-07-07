@@ -73,15 +73,15 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-1">
-                                        <button type="button" class="btn btn-success mt-25 w-100 mb-4 searchBtn">搜 尋</button>
+                                        <button type="submit" class="btn btn-success mt-25 w-100 mb-4 searchBtn">搜 尋</button>
                                     </div>
                                 </div>
 
                                 <button type="button" class="btn bg-orange mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller'].'/create')?>';">新 增</button>
 
 
-                                <div class="tableWrap hidenWrap">
-                                    <table class="table table-bordered table-striped w-100" id="settingTable">
+                                <div class="tableWrap">
+                                    <table class="table table-bordered table-striped w-100" id="mainTable">
                                         <thead>
                                             <tr class="bg-light-blue color-palette">
                                                 <th class="no-sort" style="min-width: 4px;  max-width:15px"></th>
@@ -93,45 +93,7 @@
 
                                             </tr>
                                         </thead>
-
                                         <tbody>
-                                            <tr>
-                                                <td><a class="editLinkBtn" href="../webadmin/Bk_setting_subject_teacher/edit"><i class="fa fa-edit"></i></a></td>
-                                                <td>19/20</td>
-                                                <td>語文科123</td>
-                                                <td>陳大文</td>
-                                                <td>陳大文</td>
-                                            </tr>
-                                            <tr>
-
-                                                <td><a class="editLinkBtn" href="../webadmin/Bk_setting_subject_teacher/edit"><i class="fa fa-edit"></i></a></td>
-                                                <td>19/20</td>
-                                                <td>常識科</td>
-                                                <td>黃文</td>
-                                                <td>黃文</td>
-
-                                            </tr>
-                                            <tr>
-
-                                                <td><a class="editLinkBtn" href="../webadmin/Bk_setting_subject_teacher/edit"><i class="fa fa-edit"></i></a></td>
-                                                <td>19/20</td>
-                                                <td>語文科</td>
-                                                <td>陳大文</td>
-                                                <td>陳大文</td>
-
-
-                                            </tr>
-
-                                            <tr>
-
-                                                <td><a class="editLinkBtn" href="../webadmin/Bk_setting_subject_teacher/edit"><i class="fa fa-edit"></i></a></td>
-                                                <td>19/20</td>
-                                                <td>常識科</td>
-                                                <td>黃文</td>
-                                                <td>黃文</td>
-
-                                            </tr>
-
                                         </tbody>
                                     </table>
                                 </div>
@@ -168,24 +130,55 @@
             //  table.columns.adjust();
             $(".searchBtn").click(function() {
 
-                $(".tableWrap").fadeIn();
+                AnnualSubjectTable.draw();
 
-                $('#settingTable').DataTable({
-                    scrollX: true,
-                    scrollCollapse: true,
-                    bFilter: false,
-                    bInfo: true,
-                    sScrollXInner: "100%",
-                    bLengthChange: true,
-                    columnDefs: [{
-                        targets: 'no-sort',
-                        orderable: false,
+              
 
-                    }]
+            });
 
+            let AnnualSubjectTable = $('#mainTable').DataTable({
+                scrollX: true,
+                "language": {
+                    "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/' . get_wlocale() . '.json') ?>"
+                },
+                "order": [],
+                "bSort": false,
+                "bPaginate": false,
+                "pageLength": 50,
+                "pagingType": "input",
+                "columnDefs": [ {
+                    "targets": 0,
+                    "orderable": false
+                } ] ,
+                "processing": true,
+                "serverSide": false,
+                "ordering": true,
+                "searching": false,
+                dom: "rtiS",
+                deferRender: true,
+                // "drawType": 'none',
+                "searchDelay": 0,     
+                "ajax": {
+                    "url": "<?= admin_url($page_setting['controller'] . '/ajax') ?>",
+                    "method": "get",
+                    "timeout": "30000",
+                    "data": function(d) {
+                        let year_id = $('#year_id').val();
+                        let subject_id = $('#subject_id').val();
 
-                }).columns.adjust();
+                        d.year_search = year_id;
+                        d.subject_search = subject_id;
 
+                    },
+                    "complete" : function(){
+                        $('[data-toggle="tooltip"]').tooltip();
+
+                    },
+                    "error": function(e) {
+                        alertify.error('error')
+                    },
+               
+                },
             });
 
         });

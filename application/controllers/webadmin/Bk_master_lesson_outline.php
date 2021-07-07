@@ -107,7 +107,7 @@ class Bk_master_lesson_outline extends CI_Controller //change this
                 $data[$num][] = $row['lpf_advanced'];
                 $data[$num][] = $row['poas'];
                 $data[$num][] = $row['skills'];
-                $data[$num][] = $row['preliminary_skill'];
+                $data[$num][] = $row['preliminary_skill'] == 1? '<span class="text-green" ><i class="fa fa-check"></i></span>': '<span class="text-red"><i class="fa fa-close"></i></span>';
                 $data[$num][] = $row['code'];
                 $data[$num][] = $row['expected_outcome'];
                 $rel_les = '';

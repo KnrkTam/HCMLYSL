@@ -37,56 +37,31 @@
                         <!-- general form elements 
                     <input type="hidden" name="id" value="<?= $id ?>"/>-->
                         <div class="box box-primary">
-                            <!-- <div class="box-header">
-                            <div class="row col-md-2">
-                                <div class="btn-group" data-spy="affix" data-offset-top="2" style="z-index: 20;">
-                                    <a href="<?= admin_url($page_setting['controller']) ?>" class="btn btn-default">
-                                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
-                                        <?= __('Cancel') ?>
-                                    </a>
-
-                                    <?php if (validate_user_access(['create_news', 'update_news'])) { ?>
-                                        <button type="button" class="btn btn-primary" onclick="submit_form(this);">
-                                            <i class="fa fa-floppy-o" aria-hidden="true"></i> <?= __('Save') ?>
-                                        </button>
-                                    <?php } ?>
-                                </div>
-                            </div>
-                        </div> -->
                             <!-- /.box-header -->
-
                             <div class="box-body">
                                 <div id="signupalert" class="alert alert-danger margin_bottom_20"></div>
                                 <div class="row mb-4">
                                     <div class="col-lg-3">
                                         <div class="form-group">
                                             <label class="text-nowrap">年度：</label>
-                                            <select class="form-control">
-                                                <option hidden>請選擇...</option>
-                                                <option value="2019/2020" selected>2019/2020</option>
-                                                <option value="2021/2022">2021/2022</option>
-                                            </select>
+                                            <?php form_list_type('year_id', ['type' => 'select', 'class'=> 'form-control select2' , 'data-placeholder' => '請選擇...', 'value' => $year_id, 'enable_value' => $years_list, 'form_validation_rules' => 'trim|required', 'disabled' => 1]) ?>
+                                            <input type="hidden" name="year_id" value="<?= $year_id?>">
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label class="text-nowrap">服務：</label>
-                                            <select class="form-control">
-                                                <option hidden>請選擇...</option>
-                                                <option value="個別化學習計劃及支援性教學" selected>個別化學習計劃及支援性教學</option>
-                                                <option value="言語治療">言語治療</option>
-                                            </select>
+                                            <?php form_list_type('service_id', ['type' => 'select', 'class'=> 'form-control select2' , 'data-placeholder' => '請選擇...', 'value' => $service_id, 'enable_value' => $services_list, 'form_validation_rules' => 'trim|required', 'disabled' => 1]) ?>
+                                            <input type="hidden" name="service_id" value="<?= $service_id?>">
+
                                         </div>
                                     </div>
 
                                     <div class="col-lg-3">
                                         <div class="form-group">
                                             <label class="text-nowrap">教職員：</label>
-                                            <select class="form-control">
-                                                <option hidden>請選擇...</option>
-                                                <option value="陳大文" selected>陳大文</option>
-                                                <option value="黃文">黃文</option>
-                                            </select>
+                                            <?php form_list_type('staff_id', ['type' => 'select', 'class'=> 'form-control select2' , 'data-placeholder' => '請選擇...', 'value' => $staff_id, 'enable_value' => $staff_list, 'form_validation_rules' => 'trim|required']) ?>
+
                                         </div>
                                     </div>
 
@@ -94,7 +69,10 @@
 
 
                                 <div class="mt-4 d-flex justify-content-end">
-                                    <button type="button" class="btn btn-primary mw-100 mb-4 mr-4" onclick="location.href='../Bk_setting_support/preview';">確 定</button>
+
+                                    <input type="hidden" name="action" value="edit"/>
+
+                                    <button type="submit" class="btn btn-primary mw-100 mb-4 mr-4">確 定</button>
 
                                     <button type="button" class="btn btn-default mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller']) ?>';">返 回</button>
 

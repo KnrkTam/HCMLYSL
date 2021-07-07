@@ -65,6 +65,8 @@
                                     </div>
                                 </div>
                                 <div class="mt-4 d-flex justify-content-end">
+                                    <input type="hidden" name="action" value="edit"/>
+
                                     <button type="submit" class="btn btn-primary mw-100 mb-4 mr-4" >確 定</button>
 
                                     <button type="button" class="btn btn-default mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller']) ?>';">返 回</button>

@@ -111,7 +111,7 @@ class Bk_subject_outline extends CI_Controller //change this
                 $lesson_performance = Key_performances_model::where('subject_lesson_id', $subject_lesson_id)->get();
                 foreach ($lesson_performance as $foo ) {
                     $data[$num][] = '<a class="editLinkBtn" href="'.admin_url(current_controller() . '/edit/'. $subject_lesson_id ).'"><i class="fa fa-edit"></i></a>';
-                    $data[$num][] = Subjects_model::name($subject_id);
+                    $data[$num][] = $subject_id ? Subjects_model::name($subject_id) : "not yet assigned";
                     $data[$num][] = $row['course'];
                     $data[$num][] = $row['category'];
                     $data[$num][] = $row['sb_obj'];

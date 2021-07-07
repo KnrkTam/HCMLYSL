@@ -68,7 +68,7 @@
                                 <div class="mt-4 d-flex justify-content-end">
                                     <textarea name="post_data" class="hidden" ><?= json_encode($postData)?></textarea>
                                     <button type="submit" class="btn bg-maroon mw-100 mb-4 mr-4">確 定</button>
-                                    <button type="button" class="btn btn-default mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller']) ?>';">返 回</button>
+                                    <button type="button" class="btn btn-default mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller']. '/'. $previous. '/'. $id) ?>';">返 回</button>
                                 </div>
 
                             </div>

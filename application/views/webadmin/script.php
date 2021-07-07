@@ -240,6 +240,9 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $('select.select2').select2();
+            $(document).on('select2:opening.disabled', ':disabled', function() { return false; })
+
+
         });
     </script>
 <?php } ?>

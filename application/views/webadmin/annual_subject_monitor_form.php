@@ -33,7 +33,7 @@
                     <!-- column -->
                     <div class="col-md-12">
                         <!-- form start -->
-                        <?= form_open_multipart($form_action, 'class="form-horizontal"'); ?>
+                        <?= form_open_multipart($form_action, 'id="myForm" class="form-horizontal"'); ?>
 
                         <div class="box box-primary">
                             <div class="box-body">
@@ -70,8 +70,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="mt-4 d-flex justify-content-end">
-                                    <button type="button" class="btn bg-orange mw-100 mb-4 mr-4" onclick="location.href='../Bk_setting_subject_teacher/preview';">確 定</button>
+                                <div class="mt-4 d-flex justify-content-end">                                   
+                                    <input type="hidden" name="action" value="create"/>
+                                    <button type="button" id="createBtn" class="btn bg-orange mw-100 mb-4 mr-4">確 定</button>
                                     <button type="button" class="btn btn-default mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller']) ?>';">返 回</button>
                                 </div>
 
@@ -128,45 +129,36 @@
 
             });
 
+
+            let createBtn = document.querySelector('#createBtn');
+            createBtn.addEventListener("click",function(){
+                createModule(year_id.value, subject_id.value, monitor_id.value, deputy_monitor_id.value);
+                function createModule(year_id, subject_id, monitor_id, deputy_monitor_id){
+                    $.ajax({
+                    url: '<?= (admin_url($page_setting['controller'])) . '/validate' ?>',
+                    method:'POST',
+                    data:{year_id:year_id,subject_id: subject_id, monitor_id: monitor_id, deputy_monitor_id: deputy_monitor_id},
+                    dataType:'json',     
+                    success:function(data){
+                        if (data.status == 'success') {
+                            document.getElementById('myForm').submit();
+                        } else {
+                            alertify.error(data.status)
+                        }
+                    },
+                    error: function(error){
+                        alert('error');
+                    
+                    }
+                    });
+                } 
+            })    
+
+
         });
 
 
 
-        function submit_form(_this) {
-            //form checking
-            var valid_data = true;
-            //.form checking
-            if (!valid_data) {
-                //alert('Invalid Data.');
-            } else {
-                ajax_submit_form(_this);
-            }
-        }
-
-        <?php /*
-    //multiple image upload
-    $("input.multiple_upload").fileinput({
-        language: '<?=get_wlocale()?>',
-        previewFileType: "image",
-        showCaption: false,
-        showUpload: false,
-        maxFileSize: 2048,
-        maxFileCount: 30,
-        maxImageHeight: 2000,
-        maxImageWidth: 2000,
-        overwriteInitial: false,
-        allowedFileExtensions: ['jpg','jpeg','png'],
-        initialPreview: <?=isset($photos_preview) ? $photos_preview : "{}"?>,
-        initialPreviewAsData: true,
-        initialPreviewConfig: <?=isset($photos_json) ? $photos_json : "{}"?>,
-        deleteUrl: "<?=admin_url('bk_news/delete_multiple_upload')?>",
-        // hiddenThumbnailContent: true,
-        // initialPreviewShowDelete: true,
-        // removeFromPreviewOnError: true,
-    }).on('filedeleted', function(event, key, jqXHR, data) {
-        alertify.success("<?=__('Deleted successfully!')?>");
-    });
- */ ?>
     </script>
 
 </body>

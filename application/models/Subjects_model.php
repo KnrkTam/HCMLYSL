@@ -5,8 +5,11 @@
 	{
 		protected $table = "subjects";
 
-        public static function list()
+        public static function list($all = null)
 		{
+            if ($all) {
+                $list[0] = '所有科目';
+            }
             $result = Subjects_model::all();
             foreach($result as $row){
                 $list[$row['id']] = $row["name"];

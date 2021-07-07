@@ -147,7 +147,7 @@
                 dataType:'json',
                 success:function(data){
                     $('#newBtn').fadeIn("slow", function() {});
-                    // $('#newBtn').html(`<button type="button" class="btn bg-orange mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller'] . '/create/') ?>${data.id}'">新 增</button>`)
+                    $('#newBtn').html(`<button type="button" class="btn bg-orange mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller'] . '/create/') ?>${data.id}'">新 增</button>`)
                     // $('#expected_outcome').val(data.expected_outcome);
                     // $('#expected_outcome_text').html(data.expected_outcome);
                     // console.log(data)

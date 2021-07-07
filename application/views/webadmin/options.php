@@ -99,6 +99,11 @@
 								<div class="col-sm-8"><?php form_list_type('year_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'enable_value' => $years_list, 'form_validation_rules' => 'trim|required', 'disable_please_select' => 1]) ?></div>
 								<div class="col-sm-2"><button type="button" class="btn createBtn mw-100 bg-orange mb-4" data-toggle="modal" data-target="#addOption" data-title="年度">新 增</button></div>
 							</div>
+                            <div class="form-group">
+								<label class="text-nowrap required col-sm-2"><span>職員：</span> </label>
+								<div class="col-sm-8"><?php form_list_type('staff_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'enable_value' => $staff_list, 'form_validation_rules' => 'trim|required', 'disable_please_select' => 1]) ?></div>
+								<div class="col-sm-2"><button type="button" class="btn updateBtn mw-100 btn-info mb-4" data-toggle="modal" >更 新 </button></div>
+							</div>
                         </div>
                         <!-- /.box-body -->
                     </div>
@@ -163,6 +168,8 @@
                             <label class="text-nowrap">${title}名稱： </label>
                             <input type="hidden" id="modalTitle" value="${title}"></input>
                             <input type="text" class="form-control required" placeholder="輸入名稱"  id="modalName" value=""></input>
+                            <input type="hidden" id="modalName2" value=null></input>
+
                             `;
                         $(".modal-core").html(content);
                         break;
@@ -173,6 +180,8 @@
                             <label class="text-nowrap">${title}名稱： </label>
                             <input type="hidden" id="modalTitle" value="${title}"></input>
                             <input type="text" class="form-control required" placeholder="輸入名稱" id="modalName" value=""></input>
+                            <input type="hidden" id="modalName2" value=null></input>
+
                             `;
                         $(".modal-core").html(content);
                         break;
@@ -182,7 +191,7 @@
                 content += `
                             <label class="text-nowrap">${title}名稱： </label>
                             <input type="hidden" id="modalTitle" value="${title}"></input>
-
+                            <input type="hidden" id="modalName2" value=null></input>
                             <input type="text" class="form-control required" placeholder="輸入名稱" id="modalName" value=""></input>
                             `;
                         $(".modal-core").html(content);
@@ -194,6 +203,8 @@
                             <label class="text-nowrap">${title}名稱： </label>
                             <input type="hidden" id="modalTitle" value="${title}"></input>
                             <input type="text" class="form-control required" placeholder="輸入名稱" id="modalName" value=""></input>
+                            <input type="hidden" id="modalName2" value=null></input>
+
                             `;
                         $(".modal-core").html(content);
                         break;
@@ -204,6 +215,7 @@
                             <label class="text-nowrap">${title}名稱： </label>
                             <input type="hidden" id="modalTitle" value="${title}"></input>
                             <input type="text" class="form-control required" placeholder="輸入名稱" id="modalName" value=""></input>
+                            <input type="hidden" id="modalName2" value=null></input>
                             `;
                         $(".modal-core").html(content);
                         break;
@@ -224,11 +236,18 @@
             }
         });
 
+        $(document).on("click", ".updateBtn", function () {
+            let confirmUpdate = confirm('更新職員名單')
+            if (confirmUpdate) {
+                alertify.log('TBC');
+            }
+        })
+
         let addBtn = document.querySelector('#add-btn');
         addBtn.addEventListener("click",function(){
             // let  addOption = confirm(`Confirm to add "${modalName.value}" into ${modalTitle.value}?`);
             addFunction(modalTitle.value, modalName.value, modalName2.value);
-            function addFunction(type,name, name2 = null){
+            function addFunction(type,name, name2){
                 $.ajax({
                 url: `<?= (admin_url($page_setting['controller'])) . '/ajax' ?>`,
                 method:'POST',

@@ -83,13 +83,11 @@ class Bk_tree_map extends CI_Controller //change this
             //'view_' . $this->scope
             'view_news'
         ), FALSE, TRUE);
-
-        $data['courses'] = Courses_model::list();
-        $data['categories'] = Categories_model::list();
         $GLOBALS["select2"] = 1;
         $GLOBALS["datatable"] = 1;
+        $data['courses'] = Courses_model::list();
+        $data['categories'] = Categories_model::list();
 
-        dump($data);
         $this->load->view('webadmin/' . $this->scope . '', $data);
     }
 }

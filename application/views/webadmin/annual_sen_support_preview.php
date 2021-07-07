@@ -61,28 +61,29 @@
                                     <div class="col-lg-3">
                                         <div class="form-group">
                                             <label class="text-nowrap">年度：</label>
-                                            <p>2019/2020</p>
+                                            <p><?= $year_id?></p>
 
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group ">
                                             <label class="text-nowrap">服務：</label>
-                                            <p>個別化學習計劃及支援性教學</p>
+                                            <p><?= $service_id?></p>
                                         </div>
                                     </div>
 
                                     <div class="col-lg-3">
                                         <div class="form-group ">
                                             <label class="text-nowrap">教職員：</label>
-                                            <p>陳大文</p>
+                                            <p><?= $staff_id?></p>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="mt-4 d-flex justify-content-end">
-                                    <button type="button" class="btn bg-maroon mw-100 mb-4 mr-4" onclick="location.href='../Bk_setting_support';">確 定</button>
-                                    <button type="button" class="btn btn-default mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller']) ?>';">返 回</button>
+                                    <textarea name="post_data" class="hidden" ><?= json_encode($postData)?></textarea>
+                                    <button type="submit" class="btn bg-maroon mw-100 mb-4 mr-4">確 定</button>
+                                    <button type="button" class="btn btn-default mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller']. '/'. $previous. '/'. $id) ?>';">返 回</button>
                                 </div>
 
                             </div>

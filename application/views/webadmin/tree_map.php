@@ -77,19 +77,15 @@
                                                                     <li class="text-orange">察覺物件的用途(如: 會對不同形狀的物件有反應、按口號作踏步動作等)</li>
                                                                 </ul>
                                                             </li>
-
                                                         </ul>
+                                                    <? } ?>
                                                     </li>
                                                 </ul>
-                                                <? } ?>
-
+                                            <? } ?>
                                             </li>
                                         </ul>
-                                        <? } ?>
-
+                                    <? } ?>
                                     </li>
-
-
                                 </ul>
                                 <hr>
                             <? } ?>
@@ -1026,7 +1022,7 @@
     <!-- ./wrapper -->
     <?php include_once("script.php"); ?>
     <script>
-        $(function() {
+        $(document).ready(function() {
             $("#sortable").sortable();
             $("#sortable").disableSelection();
         });
@@ -1098,8 +1094,7 @@
             $('#newStudyResults').modal('show');
         });
 
-
-
+    
 
 
     </script>

@@ -94,8 +94,8 @@
                         ),
                         array(
                             'title' => __('設定年度支援/個別化學習負責人 - 檢視'),
-                            'url' => 'Bk_setting_support',
-                            'access' => 'view_news',
+                            'url' => 'Bk_annual_sen_support',
+                            'access' => 'view_annual_sen_support',
                             'icon' => 'fa-mortar-board',
                         )
                     )

@@ -6,6 +6,8 @@
  
 </head>
 
+
+
 <body class="hold-transition skin-blue sidebar-mini">
     <div class="wrapper">
 
@@ -65,8 +67,8 @@
                                     <div class="col-lg-5 d-flex">
 
                                         <div class="form-group w-100">
-                                            <label class="text-nowrap">科目 : </label>
-                                            <div style="flex: 1"><?php form_list_type('subject_id', ['type' => 'select', 'class'=> 'form-control subjectSelect select2' , 'value' =>'',  'data-placeholder' => '請選擇...', 'enable_value' => $subject_list, 'form_validation_rules' => 'trim|required']) ?></div>
+                                            <label class="text-nowrap required">科目 : </label>
+                                            <div style="flex: 1"><?php form_list_type('subject_id', ['type' => 'select', 'class'=> 'form-control subjectSelect  select2' , 'value' =>'',  'data-placeholder' => '請選擇...', 'enable_value' => $subject_list, 'form_validation_rules' => 'trim|required']) ?></div>
                                         </div>
                                     </div>
                                 </div>

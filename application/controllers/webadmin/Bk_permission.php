@@ -213,6 +213,23 @@ class Bk_permission extends CI_Controller
             'view_annual_subject_monitor' => array(
                 'desc' => 'Can view annual_subject_monitor',
                 'role' => array('super_admin', 'admin')
+            ),           
+            // 設定年度科長
+            'create_annual_sen_support' => array(
+            'desc' => 'Can create annual_sen_support',
+            'role' => array('super_admin', 'admin')
+            ),
+            'update_annual_sen_support' => array(
+                'desc' => 'Can update annual_sen_support',
+                'role' => array('super_admin', 'admin')
+            ),
+            'delete_annual_sen_support' => array(
+                'desc' => 'Can delete annual_sen_support',
+                'role' => array('super_admin', 'admin')
+            ),
+            'view_annual_sen_support' => array(
+                'desc' => 'Can view annual_sen_support',
+                'role' => array('super_admin', 'admin')
             ),
 
             //news_ajax

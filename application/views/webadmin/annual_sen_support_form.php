@@ -33,7 +33,7 @@
                     <!-- column -->
                     <div class="col-md-12">
                         <!-- form start -->
-                        <?= form_open_multipart($form_action, 'class="form-horizontal"'); ?>
+                        <?= form_open_multipart($form_action, 'id="myForm" class="form-horizontal"'); ?>
                         <!-- general form elements 
                     <input type="hidden" name="id" value="<?= $id ?>"/>-->
                         <div class="box box-primary">
@@ -63,34 +63,22 @@
                                     <div class="col-lg-3">
                                         <div class="form-group">
                                             <label class="text-nowrap">年度：</label>
-                                            <select class="form-control">
-                                                <option hidden>請選擇...</option>
-                                                <option value="19/20">2019/2020</option>
-                                                <option value="20/21">2021/2022</option>
+                                            <?php form_list_type('year_id', ['type' => 'select', 'class'=> 'form-control select2' , 'data-placeholder' => '請選擇...', 'enable_value' => $years_list, 'form_validation_rules' => 'trim|required']) ?>
 
-
-                                            </select>
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group ">
                                             <label class="text-nowrap">服務：</label>
-                                            <select class="form-control">
-                                                <option hidden>請選擇...</option>
-                                                <option value="個別化學習計劃及支援性教學">個別化學習計劃及支援性教學</option>
-                                                <option value="言語治療">言語治療</option>
-                                            </select>
+                                            <?php form_list_type('service_id', ['type' => 'select', 'class'=> 'form-control select2' , 'data-placeholder' => '請選擇...', 'enable_value' => $services_list, 'form_validation_rules' => 'trim|required']) ?>
+
                                         </div>
                                     </div>
 
                                     <div class="col-lg-3">
                                         <div class="form-group ">
                                             <label class="text-nowrap">教職員：</label>
-                                            <select class="form-control">
-                                                <option hidden>請選擇...</option>
-                                                <option value="陳大文">陳大文</option>
-                                                <option value="黃文">黃文</option>
-                                            </select>
+                                            <?php form_list_type('staff_id', ['type' => 'select', 'class'=> 'form-control select2' , 'data-placeholder' => '請選擇...', 'enable_value' => $staff_list, 'form_validation_rules' => 'trim|required']) ?>
                                         </div>
                                     </div>
 
@@ -98,7 +86,9 @@
 
 
                                 <div class="mt-4 d-flex justify-content-end">
-                                    <button type="button" class="btn bg-orange mw-100 mb-4 mr-4" onclick="location.href='../Bk_setting_support/preview';">確 定</button>
+                                    <input type="hidden" name="action" value="create"/>
+
+                                    <button type="button" id="createBtn" class="btn bg-orange mw-100 mb-4 mr-4">確 定</button>
 
                                     <button type="button" class="btn btn-default mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller']) ?>';">返 回</button>
 
@@ -157,45 +147,35 @@
 
             });
 
+
+
+
+        let createBtn = document.querySelector('#createBtn');
+            createBtn.addEventListener("click",function(){
+                createModule(year_id.value,service_id.value, staff_id.value);
+                function createModule(year_id,service_id, staff_id){
+                    $.ajax({
+                    url: '<?= (admin_url($page_setting['controller'])) . '/validate' ?>',
+                    method:'POST',
+                    data:{year_id:year_id,service_id:service_id, staff_id: staff_id},
+                    dataType:'json',     
+                    success:function(data){
+                        if (data.status == 'success') {
+                            document.getElementById('myForm').submit();
+                        } else {
+                            alertify.error(data.status)
+                        }
+                    },
+                    error: function(error){
+                        alert('error');
+                    
+                    }
+                    });
+                } 
+            })    
         });
 
 
-
-        function submit_form(_this) {
-            //form checking
-            var valid_data = true;
-            //.form checking
-            if (!valid_data) {
-                //alert('Invalid Data.');
-            } else {
-                ajax_submit_form(_this);
-            }
-        }
-
-        <?php /*
-    //multiple image upload
-    $("input.multiple_upload").fileinput({
-        language: '<?=get_wlocale()?>',
-        previewFileType: "image",
-        showCaption: false,
-        showUpload: false,
-        maxFileSize: 2048,
-        maxFileCount: 30,
-        maxImageHeight: 2000,
-        maxImageWidth: 2000,
-        overwriteInitial: false,
-        allowedFileExtensions: ['jpg','jpeg','png'],
-        initialPreview: <?=isset($photos_preview) ? $photos_preview : "{}"?>,
-        initialPreviewAsData: true,
-        initialPreviewConfig: <?=isset($photos_json) ? $photos_json : "{}"?>,
-        deleteUrl: "<?=admin_url('bk_news/delete_multiple_upload')?>",
-        // hiddenThumbnailContent: true,
-        // initialPreviewShowDelete: true,
-        // removeFromPreviewOnError: true,
-    }).on('filedeleted', function(event, key, jqXHR, data) {
-        alertify.success("<?=__('Deleted successfully!')?>");
-    });
- */ ?>
     </script>
 
 </body>

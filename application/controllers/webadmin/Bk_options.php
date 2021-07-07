@@ -55,6 +55,7 @@ class Bk_options extends CI_Controller //change this
         $data['sb_obj_list'] = Sb_obj_model::list();
         $data['subjects_list'] = Subjects_model::list();
         $data['years_list'] = Years_model::list();
+        $data['staff_list'] = Staff_model::list();
 
 
 

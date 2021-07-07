@@ -63,38 +63,29 @@
                                     <div class="col-lg-3">
                                         <div class="form-group ">
                                             <label class="text-nowrap">年度： </label>
-                                            <select class="form-control">
-                                                <option hidden>請選擇...</option>
-                                                <option value="19/20">2019/2020</option>
-                                                <option value="20/21">2021/2022</option>
-
-
-                                            </select>
+                                            <?php form_list_type('year_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' => $year_id, 'data-placeholder' => '請選擇...', 'enable_value' => $years_list, 'form_validation_rules' => 'trim|required']) ?>
                                         </div>
                                     </div>
                                     <div class="col-lg-8">
                                         <div class="form-group ">
                                             <label class="text-nowrap">服務： </label>
-                                            <select class="form-control">
-                                                <option hidden>請選擇...</option>
-                                                <option value="個別化學習計劃及支援性教學">個別化學習計劃及支援性教學</option>
-                                                <option value="言語治療">言語治療</option>
-                                            </select>
+                                            <?php form_list_type('service_id', ['type' => 'select', 'class'=> 'form-control select2' , 'data-placeholder' => '請選擇...', 'enable_value' => $services_list, 'form_validation_rules' => 'trim|required']) ?>
+
                                         </div>
                                     </div>
 
                                     <div class="col-lg-1">
-                                        <button type="button" class="btn btn-success mt-25 w-100 mb-4 searchBtn">搜 尋</button>
+                                        <button type="submit" class="btn btn-success mt-25 w-100 mb-4 searchBtn">搜 尋</button>
                                     </div>
 
                                 </div>
 
 
-                                <button type="button" class="btn bg-orange mw-100 mb-4" onclick="location.href='../webadmin/Bk_setting_support/create';">新 增</button>
+                                <button type="button" class="btn bg-orange mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller'].'/create')?>';">新 增</button>
 
 
-                                <div class="tableWrap hidenWrap">
-                                    <table class="table table-bordered table-striped w-100" id="settingTable">
+                                <div class="tableWrap">
+                                    <table class="table table-bordered table-striped w-100"  id="mainTable">
                                         <thead>
                                             <tr class="bg-light-blue color-palette">
                                                 <th class="no-sort" style="min-width: 4px;  max-width:15px"></th>
@@ -105,44 +96,7 @@
 
                                             </tr>
                                         </thead>
-
                                         <tbody>
-                                            <tr>
-                                                <td><a class="editLinkBtn" href="../webadmin/Bk_setting_support/edit"><i class="fa fa-edit"></i></a></td>
-                                                <td>19/20</td>
-                                                <td>個別化學習計劃及支援性教學</td>
-                                                <td>陳大文</td>
-
-
-                                            </tr>
-                                            <tr>
-
-                                                <td><a class="editLinkBtn" href="../webadmin/Bk_setting_support/edit"><i class="fa fa-edit"></i></a></td>
-                                                <td>19/20</td>
-                                                <td>個別化學習計劃及支援性教學</td>
-                                                <td>黃文</td>
-
-                                            </tr>
-                                            <tr>
-
-                                                <td><a class="editLinkBtn" href="../webadmin/Bk_setting_support/edit"><i class="fa fa-edit"></i></a></td>
-                                                <td>19/20</td>
-                                                <td>言語治療</td>
-                                                <td>陳一文</td>
-
-
-                                            </tr>
-
-                                            <tr>
-
-                                                <td><a class="editLinkBtn" href="../webadmin/Bk_setting_support/edit"><i class="fa fa-edit"></i></a></td>
-                                                <td>19/20</td>
-                                                <td>言語治療</td>
-                                                <td>黃一文</td>
-
-
-                                            </tr>
-
                                         </tbody>
                                     </table>
                                 </div>
@@ -176,66 +130,58 @@
 
             //  table.columns.adjust();
             $(".searchBtn").click(function() {
+                MainTable.draw();
+            });
 
-                $(".tableWrap").fadeIn();
+            let MainTable = $('#mainTable').DataTable({
+                scrollX: true,
+                "language": {
+                    "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/' . get_wlocale() . '.json') ?>"
+                },
+                "order": [],
+                "bSort": false,
+                "bPaginate": false,
+                "pageLength": 50,
+                "pagingType": "input",
+                "columnDefs": [ {
+                    "targets": 0,
+                    "orderable": false
+                } ] ,
+                "processing": true,
+                "serverSide": false,
+                "ordering": true,
+                "searching": false,
+                dom: "rtiS",
+                deferRender: true,
+                // "drawType": 'none',
+                "searchDelay": 0,     
+                "ajax": {
+                    "url": "<?= admin_url($page_setting['controller'] . '/ajax') ?>",
+                    "method": "get",
+                    "timeout": "30000",
+                    "data": function(d) {
+                        let year_id = $('#year_id').val();
+                        let service_id = $('#service_id').val();
 
-                $('#settingTable').DataTable({
-                    scrollX: true,
-                    scrollCollapse: true,
-                    bFilter: false,
-                    bInfo: true,
-                    sScrollXInner: "100%",
-                    bLengthChange: true,
-                    columnDefs: [{
-                        targets: 'no-sort',
-                        orderable: false,
+                        d.year_search = year_id;
+                        d.service_search = service_id;
 
-                    }]
+                    },
+                    "complete" : function(){
+                        $('[data-toggle="tooltip"]').tooltip();
 
-
-                }).columns.adjust();
-
+                    },
+                    "error": function(e) {
+                        alertify.error('error')
+                    },
+               
+                },
             });
 
         });
 
 
 
-        function submit_form(_this) {
-            //form checking
-            var valid_data = true;
-            //.form checking
-            if (!valid_data) {
-                //alert('Invalid Data.');
-            } else {
-                ajax_submit_form(_this);
-            }
-        }
-
-        <?php /*
-    //multiple image upload
-    $("input.multiple_upload").fileinput({
-        language: '<?=get_wlocale()?>',
-        previewFileType: "image",
-        showCaption: false,
-        showUpload: false,
-        maxFileSize: 2048,
-        maxFileCount: 30,
-        maxImageHeight: 2000,
-        maxImageWidth: 2000,
-        overwriteInitial: false,
-        allowedFileExtensions: ['jpg','jpeg','png'],
-        initialPreview: <?=isset($photos_preview) ? $photos_preview : "{}"?>,
-        initialPreviewAsData: true,
-        initialPreviewConfig: <?=isset($photos_json) ? $photos_json : "{}"?>,
-        deleteUrl: "<?=admin_url('bk_news/delete_multiple_upload')?>",
-        // hiddenThumbnailContent: true,
-        // initialPreviewShowDelete: true,
-        // removeFromPreviewOnError: true,
-    }).on('filedeleted', function(event, key, jqXHR, data) {
-        alertify.success("<?=__('Deleted successfully!')?>");
-    });
- */ ?>
     </script>
 
 </body>

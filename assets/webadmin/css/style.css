@@ -1,6 +1,21 @@
+
 .required:after, .required_field:after {
     content: ' * ';
     color: red;
+    left: 10px;
+    position: absolute;
+}
+
+/* .modal-dialog,
+.modal-content {
+    /* 80% of window height */
+    /* height: 90%; */
+/* } */ 
+
+.modal-body {
+    /* 100% = dialog height, 120px = header + footer */
+    max-height: calc(100% - 120px);
+    overflow-y: scroll;
 }
 
 .italic {

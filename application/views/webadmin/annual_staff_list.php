@@ -48,12 +48,12 @@
                                     </div>
 
                                     <div class="col-lg-1">
-                                        <button type="button" class="btn btn-success mt-25 w-100 mb-4 searchBtn">搜 尋</button>
+                                        <button type="submit" class="btn btn-success mt-25 w-100 mb-4 searchBtn">搜 尋</button>
                                     </div>
 
                                 </div>
 
-                                <button type="button" class="btn btn-info mw-100 mb-4" id="read-btn">複製上年度</button>
+                                <button type="button" class="btn btn-info mw-100 mb-4" id="read-btn" data-toggle="modal" data-target="#cloneList">複製上年度</button>
                                 <button type="button" class="btn bg-orange mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller'].'/create')?>';">新 增</button>
 
 
@@ -86,6 +86,31 @@
         </div>
 
         <!-- /.content-wrapper -->
+        <div class="modal fade in" tabindex="-1" role="dialog" id="cloneList">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title bold">複製上年度教職員 <span id="title"></span> <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button></h3>
+
+                    </div>
+                    <div class="modal-body">
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="form-group modal-core" >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="clone-btn" class="btn btn-primary">確 定</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">關 閉</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
         <?php include_once("footer.php"); ?>
 
@@ -118,8 +143,8 @@
                     "orderable": false
                 } ] ,
                 "processing": true,
-                "serverSide": true,
-                "ordering": false,
+                "serverSide": false,
+                "ordering": true,
                 "searching": false,
                 dom: "rtiS",
                 deferRender: true,
@@ -157,24 +182,29 @@
             // console.log(arrayData);
             // console.log(jsonData)
             // let arraydata = jsondata.map(element => element.username):
-            let readBtn = document.querySelector('#read-btn');
-            readBtn.addEventListener("click",function(){
-            createModule();
-            function createModule(){
-                $.ajax({
-                url: '<?= (admin_url($page_setting['controller'])) . '/readAPI' ?>',
-                method:'POST',
-                data: jsonData,
-                dataType:'json',     
-                success:function(data){
-                    console.log((data))
-                },
-                error: function(error){
-                    alertify.error('error');
-                    
+            let cloneBtn = document.querySelector('#clone-btn');
+            cloneBtn.addEventListener("click",function(){
+                let confirmCopy = confirm('確定複製上年度?')
+                if (confirmCopy) {
+                    alertify.log('Tbc');
+
                 }
-                });
-            } 
+            // createModule();
+            // function createModule(){
+            //     $.ajax({
+            //     url: '<?= (admin_url($page_setting['controller'])) . '/readAPI' ?>',
+            //     method:'POST',
+            //     data: jsonData,
+            //     dataType:'json',     
+            //     success:function(data){
+            //         console.log((data))
+            //     },
+            //     error: function(error){
+            //         alertify.error('error');
+                    
+            //     }
+            //     });
+            // } 
             })
 
         });
