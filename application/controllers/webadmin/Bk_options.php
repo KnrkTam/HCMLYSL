@@ -49,14 +49,17 @@ class Bk_options extends CI_Controller //change this
         $GLOBALS["select2"] = 1;
         $GLOBALS["datatable"] = 1;
 
-        $data['courses_list'] = Courses_model::list();
-        $data['categories_list'] = Categories_model::list();
+        $data['courses_list'] = Courses_model::list('All');
+        $data['categories_list'] = Categories_model::optionList();
         $data['central_obj_list'] = Central_obj_model::list();
         $data['sb_obj_list'] = Sb_obj_model::list();
         $data['subjects_list'] = Subjects_model::list();
         $data['years_list'] = Years_model::list();
         $data['staff_list'] = Staff_model::list();
 
+        // dump($course = Courses_model::with('cat')->get());
+
+        // dump($course->cat());
 
 
         $this->load->view('webadmin/' . $this->scope . '', $data);
@@ -105,6 +108,7 @@ class Bk_options extends CI_Controller //change this
                         } else {
                             $new_data = array(
                                 'name' => $name,
+                                'course_id' => $name2,
                             );
                             Categories_model::create($new_data);
                             $data['status'] =  'success';

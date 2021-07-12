@@ -120,7 +120,7 @@
                                     <div class="col-lg-4">
                                         <div class="form-group">
                                             <label class="text-nowrap">相關項目編號： </label>
-                                            <p>MS0002</p>
+                                            <p><?= $pv_rel_code ?></p>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
@@ -246,75 +246,22 @@
                 $('#classNumber').modal('hide');
             });
 
-
-
-
-
-
             /*
-
-
-
-                        $('.searchCourseNumberCheck').change(function() {
-                            var values = [];
-                                $('.searchCourseNumberCheck:checked').each(function() {
-                                //if(values.indexOf($(this).val()) === -1){
-                                 values=$(this).closest("tr").find(".courseNum").text();
-                               
-                                //  $('.inputCourseNumber').attr("value", values)
-                                // }
-                                });
-                                console.log(values);
+                $('.searchCourseNumberCheck').change(function() {
+                    var values = [];
+                        $('.searchCourseNumberCheck:checked').each(function() {
+                        //if(values.indexOf($(this).val()) === -1){
+                            values=$(this).closest("tr").find(".courseNum").text();
+                        
+                        //  $('.inputCourseNumber').attr("value", values)
+                        // }
                         });
+                        console.log(values);
+                });
             */
-
-
-
-
-
-
-
-
-
 
         });
 
-
-        function submit_form(_this) {
-            //form checking
-            var valid_data = true;
-            //.form checking
-            if (!valid_data) {
-                //alert('Invalid Data.');
-            } else {
-                ajax_submit_form(_this);
-            }
-        }
-
-        <?php /*
-    //multiple image upload
-    $("input.multiple_upload").fileinput({
-        language: '<?=get_wlocale()?>',
-        previewFileType: "image",
-        showCaption: false,
-        showUpload: false,
-        maxFileSize: 2048,
-        maxFileCount: 30,
-        maxImageHeight: 2000,
-        maxImageWidth: 2000,
-        overwriteInitial: false,
-        allowedFileExtensions: ['jpg','jpeg','png'],
-        initialPreview: <?=isset($photos_preview) ? $photos_preview : "{}"?>,
-        initialPreviewAsData: true,
-        initialPreviewConfig: <?=isset($photos_json) ? $photos_json : "{}"?>,
-        deleteUrl: "<?=admin_url('bk_news/delete_multiple_upload')?>",
-        // hiddenThumbnailContent: true,
-        // initialPreviewShowDelete: true,
-        // removeFromPreviewOnError: true,
-    }).on('filedeleted', function(event, key, jqXHR, data) {
-        alertify.success("<?=__('Deleted successfully!')?>");
-    });
- */ ?>
     </script>
 
 </body>

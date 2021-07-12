@@ -161,6 +161,7 @@ class Bk_subject_outline extends CI_Controller //change this
         $data['assessments_list'] = Assessments_model::list();
         $data['lessons_list'] = Lessons_model::newlist($subject_id);
         $data['remarks_list'] = Remarks_model::list();
+        $data['expected_outcome'] = $subject->expected_outcome;
 
         array_unshift($data['courses_list'], "所有課程");
         array_unshift($data['categories_list'], "所有課程");
@@ -168,6 +169,7 @@ class Bk_subject_outline extends CI_Controller //change this
         $data['subject_id'] = $subject_id;
         $GLOBALS["select2"] = 1;
         $GLOBALS["datatable"] = 1;
+
         $this->load->view('webadmin/' . $this->scope . '_form',  $data);
     }
 

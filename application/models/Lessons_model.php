@@ -23,6 +23,7 @@ class Lessons_model extends BaseModel
             'poas' => Poas_model::name($lesson['poas_id']),
             'skills' => Lessons_skill_model::list($id),
             'rel_lessons' => Lessons_relevant_model::id_list($id),
+            'rel_code' => $lesson['rel_code'],
             'preliminary_skill' => $lesson['preliminary_skills'],
             'expected_outcome' => $lesson['expected_outcome'],
             'code' => $lesson['code'],
@@ -77,7 +78,7 @@ class Lessons_model extends BaseModel
         
 
         foreach($result as $row){
-            $list[$row['id']] = $row["code"];
+            $list[$row['id']] = $row["code"].'  (' .$row['expected_outcome'].')';
         }
         
         return $list;

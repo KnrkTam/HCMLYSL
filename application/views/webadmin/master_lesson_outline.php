@@ -63,14 +63,14 @@
                                     <div class="col-lg-3">
                                         <div class="form-group ">
                                             <label class="text-nowrap">課程 : </label>
-                                            <div style="flex: 1"><?php form_list_type('courses_id', ['type' => 'select', 'class'=> 'form-control' , 'value' => 0 , 'enable_value' => $courses_list, 'form_validation_rules' => 'trim|required', 'disable_please_select' => 1]) ?></div>
+                                            <div style="flex: 1"><?php form_list_type('courses_id', ['type' => 'select', 'class'=> 'select2 form-control' , 'value' => 0 , 'enable_value' => $courses_list, 'form_validation_rules' => 'trim|required', 'disable_please_select' => 1]) ?></div>
 
                                         </div>
                                     </div>
                                     <div class="col-lg-2">
                                         <div class="form-group">
-                                            <label class="text-nowrap">範疇 : </label>
-                                            <div style="flex: 1"><?php form_list_type('categories_id', ['type' => 'select', 'class'=> 'form-control' , 'value' =>'',  'enable_value' => $categories_list, 'form_validation_rules' => 'trim|required','disable_please_select' => 1]) ?></div>
+                                            <label class="text-nowrap">課程範疇 : </label>
+                                            <div style="flex: 1"><?php form_list_type('categories_id', ['type' => 'select', 'class'=> 'select2-tree form-control' , 'value' =>'',  'enable_value' => $categories_list, 'form_validation_rules' => 'trim|required','disable_please_select' => 1]) ?></div>
 
                                         </div>
                                     </div>
@@ -98,15 +98,13 @@
 
 
                                 <button type="button" class="btn bg-orange mw-100 mb-4" onclick="location.href='<?= (admin_url($page_setting['controller'])) . '/create'?>';">新 增</button>
-
-
                                 <div class="tableWrap">
                                     <table class="table table-bordered table-striped" id="Course_datatable">
                                         <thead>
                                             <tr class="bg-light-blue color-palette" style="z-index: -1000;">
                                                 <th class="no-sort" style="min-width: 4px;"></th>
                                                 <th class="nowrap">課程</th>
-                                                <th class="nowrap">範疇</th>
+                                                <th class="nowrap">課程範疇</th>
                                                 <th class="nowrap">中央課程學習重點</th>
                                                 <th class="nowrap">校本課程學習重點</th>
                                                 <th class="nowrap">學習元素</th>
@@ -221,14 +219,47 @@
 
 
             $(".searchBtn").click(function() {
-                console.log('vlicked')
                 Course_datatable.draw();
 
             });
 
+            let data = [{
+                id: 0,
+                text: 'enhancement',
+                children: [{
+                    id: 5,
+                    text: 'enhancement child1'
+                },
+                {
+                    id: 6,
+                    text: 'enhancement child2'
 
+                }
+                ]
+            },
+            {
+                id: 1,
+                text: 'bug'
+            },
+            {
+                id: 2,
+                text: 'duplicate'
+            },
+            {
+                id: 3,
+                text: 'invalid'
+            },
+            {
+                id: 4,
+                text: 'wontfix'
+            }
+            ];
 
-     
+            $(".select2-tree").select2({
+                data: data,
+                width: 'auto'
+            });
+
         });
 
     </script>

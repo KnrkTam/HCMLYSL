@@ -5,16 +5,22 @@
 	{
 		protected $table = "categories";
 
-        public static function list($all = null)
+        public static function list($course_id = null, $all = null)
 		{
-            $result = Categories_model::orderBy('id', 'DESC')->get();
 
             if ($all) {
+                $result = Categories_model::orderBy('id', 'DESC')->get();
+
                 $list[0] = '所有範疇';
+            }
+            if ($course_id) {
+                $result = Categories_model::orderBy('id', 'DESC')->where('course_id', $course_id)->get();
+            } else {
+
             }
 
             foreach($result as $row){
-                $list[$row['id']] = $row["name"];
+                $list[$row['id']] =Courses_model::name($row['course_id']). ' - '. $row["name"];
             }
             
             return $list;
@@ -25,4 +31,24 @@
 
             return $result;
         }
+        public static function optionList()
+        {
+            $result = Categories_model::orderBy('course_id', 'DESC')->get();
+            $courses = Courses_model::with('cat')->get();
+
+            foreach ($courses as $j => $course) {
+                foreach($course->cat as $i => $row){
+
+                    $children_list[$course->id][$i] = array('id' => $row['id'], 'text' => $row['name']);
+            
+                    $list[$j] = array('text' => $course->name, 'children' => $children_list[$course->id]);
+                }
+            }
+
+
+
+            return $list;
+        }
+
+
 	}

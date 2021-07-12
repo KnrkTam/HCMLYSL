@@ -16,7 +16,7 @@ class Bk_tree_map extends CI_Controller //change this
     {
         $page_setting = array(
             'controller' => current_controller(),
-            'scope' => __('校本課程及科目課程大綱樹狀圖'), //change this
+            'scope' => __('校本課程大綱樹狀圖'), //change this
             'scope_code' => $this->scope,
             'permission' => $permission
         );

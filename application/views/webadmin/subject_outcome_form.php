@@ -46,39 +46,29 @@
                     <!-- column -->
                     <div class="col-md-12">
                         <!-- form start -->
-                        <?= form_open_multipart($form_action, 'class="form-horizontal"'); ?>
+                        <?= form_open_multipart($form_action, 'id="myForm" class="form-horizontal"'); ?>
                         <!-- general form elements
                     <input type="hidden" name="id" value="<?= $id ?>"/>-->
                         <div class="box box-primary">
-                            <!-- <div class="box-header">
-                            <div class="row col-md-2">
-                                <div class="btn-group" data-spy="affix" data-offset-top="2" style="z-index: 20;">
-                                    <a href="<?= admin_url($page_setting['controller']) ?>" class="btn btn-default">
-                                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
-                                        <?= __('Cancel') ?>
-                                    </a>
-
-                                    <?php if (validate_user_access(['create_'.$page_setting['scope_code'], 'update_'.$page_setting['scope_code']])) { ?>
-                                        <button type="button" class="btn btn-primary" onclick="submit_form(this);">
-                                            <i class="fa fa-floppy-o" aria-hidden="true"></i> <?= __('Save') ?>
-                                        </button>
-                                    <?php } ?>
-                                </div>
-                            </div>
-                        </div> -->
+                 
                             <!-- /.box-header -->
 
                             <div class="box-body">
                                 <div id="signupalert" class="alert alert-danger margin_bottom_20"></div>
-
-
                                 <div class="row">
                                     <div class="col-lg-5 d-flex">
                                         <div class="form-group w-100">
                                             <label class="text-nowrap">選擇科目 : </label>
                                             <div style="flex: 1"><?php form_list_type('subject_id', ['type' => 'select', 'class'=> 'form-control subjectSelect select2' , 'value' =>'',  'data-placeholder' => '請選擇...', 'enable_value' => $subject_list, 'form_validation_rules' => 'trim|required']) ?></div>
                                         </div>
-                                        <!-- <a href="#" class="link nowrap mt-30 ml-2 controlSearchBtn">隱藏搜尋</a> -->
+                                    </div>
+
+                                    <div class="col-lg-5 d-flex">
+                                        <div class="form-group w-100">
+
+                                            <label class="text-nowrap">選擇科目範疇: </label>
+                                            <div style="flex: 1"><?php form_list_type('sub_category_id', ['type' => 'select', 'class'=> 'form-control subjectSelect select2' , 'value' =>'',  'data-placeholder' => '請選擇...', 'enable_value' => $sub_categories_list, 'form_validation_rules' => 'trim|required']) ?></div>
+                                        </div>
                                     </div>
                                 </div>
                                 <hr>
@@ -92,7 +82,7 @@
                                         </div>
                                         <div class="col-lg-3">
                                             <div class="form-group">
-                                                <label class="text-nowrap">範疇 : </label>
+                                                <label class="text-nowrap">課程範疇 : </label>
                                                 <div style="flex: 1"><?php form_list_type('categories_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'data-placeholder' => '請選擇...', 'enable_value' => $categories_list, 'form_validation_rules' => 'trim|required']) ?></div>                                               
                                             </div>
                                         </div>
@@ -210,8 +200,8 @@
             // $(".tableWrap").hide();
 
             $(".searchBtn").click(function() {
-            //     // $(".tableWrap").fadeIn();
-                $('#subjectTable').DataTable().draw();
+                console.log('clclc')
+                Course_datatable.draw()
             });
 
             let added_ids = new Set();
@@ -233,10 +223,13 @@
                     "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/' . get_wlocale() . '.json') ?>"
                 },
                 "order": [],
-                "bSort": false,
-                "bPaginate": false,
-                "pageLength": 50,
-                "pagingType": "input",
+                // "bSort": false,
+                // "bPaginate": false,
+                // "paging": true,
+                // "pageLength": 10,
+            
+                "pagingType": "simple",
+
                 //"sDom": '<"wrapper"lfptip>',
                 "processing": true,
                 "serverSide": true,
@@ -247,6 +240,7 @@
                     "url": "<?= admin_url($page_setting['controller'] . '/search_ajax') ?>",
                     "method": "get",
                     "timeout": "30000",
+                    
                     "data": function(d) {
                         let course_id = $('#courses_id').val();
                         let category_id = $('#categories_id').val();
@@ -259,25 +253,20 @@
                         d.sb_obj_search = sb_obj_id;
                         d.lesson_search = lesson_id;
                         d.subject_search = subject_id;
-                        console.log('data',d);
-                        // var filter_type = $('#filter_type').val();
-                        // d.search_filter_type = filter_type;
-                        // d.search_filter_para = $('#filter_' + filter_type + '_para').val();
+                        
                     },
                     "complete": function(e){
-                                                $('[data-toggle="tooltip"]').tooltip();
-
+                        console.log(e)
+                        $('[data-toggle="tooltip"]').tooltip();
                         $(".addLesson").change(function(e) {
                             if ($(this).is(':checked')) {
                                 added_ids.add(this.value)
-                                console.log(Array.from(added_ids));
                                 e.stopPropagation();
                                 $(".tableWrap").fadeIn();
 
                                 $('#subjectSelectedTable').DataTable().draw();
                             } else {
                                 added_ids.delete(this.value)
-                                console.log(Array.from(added_ids));
                                 $(".tableWrap").fadeIn();
 
                                 $('#subjectSelectedTable').DataTable().draw();
@@ -292,7 +281,6 @@
                         $(".removeRow").click(function() {
                             added_ids.delete(this.attributes.value.value);
 
-                            console.log(Array.from(added_ids))
                             
                             $('#subjectSelectedTable').DataTable().draw();
                             $('#subjectTable').DataTable().draw();
@@ -334,7 +322,7 @@
                     "timeout": "30000",
                     "data": function(d) {
                         d.added_ids = Array.from(added_ids)
-                        console.log('data',d);
+                        // console.log('data',d);
                     },
                     "complete": function(e){
                         $(".addLesson").change(function() {

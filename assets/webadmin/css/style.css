@@ -6,6 +6,10 @@
     position: absolute;
 }
 
+.select2-results__group {
+  color: white;
+  background-color: #1E282C;
+}
 /* .modal-dialog,
 .modal-content {
     /* 80% of window height */

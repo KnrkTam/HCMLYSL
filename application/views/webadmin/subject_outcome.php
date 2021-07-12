@@ -85,8 +85,8 @@
                                         </div>
                                         <div class="col-lg-3">
                                             <div class="form-group">
-                                                <label class="text-nowrap">範疇 : </label>
-                                                <div style="flex: 1"><?php form_list_type('categories_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'data-placeholder' => '請選擇...', 'enable_value' => $categories_list, 'form_validation_rules' => 'trim|required']) ?></div>
+                                                <label class="text-nowrap">科目範疇 : </label>
+                                                <div style="flex: 1"><?php form_list_type('categories_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'data-placeholder' => '請選擇...', 'enable_value' => $sub_categories_list, 'form_validation_rules' => 'trim|required']) ?></div>
                                             </div>
                                         </div>
                                         <div class="col-lg-6 d-flex align-items-start">
@@ -119,7 +119,7 @@
                                             <tr class="bg-light-blue color-palette">
                                                 <th class="no-sort" style="min-width: 4px;"></th>
                                                 <th class="nowrap">課程</th>
-                                                <th class="nowrap">範疇</th>
+                                                <th class="nowrap">科目範疇</th>
                                                 <th class="nowrap">中央課程學習重點</th>
                                                 <th class="nowrap">校本課程學習重點</th>
                                                 <th class="nowrap">學習元素</th>

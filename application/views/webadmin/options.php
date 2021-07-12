@@ -2,6 +2,10 @@
 <html lang="en">
 <head>
     <?php include_once("head.php"); ?>
+
+<style>
+
+</style>
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini">
@@ -75,8 +79,8 @@
 								<div class="col-sm-2"><button type="button" class="btn createBtn mw-100 bg-orange mb-4" data-toggle="modal" data-target="#addOption" data-title="課程">新 增</button></div>
 							</div>
 							<div class="form-group">
-								<label class="text-nowrap required col-sm-2"><span>範疇：</span> </label>
-								<div class="col-sm-8"><?php form_list_type('categories_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'enable_value' => $categories_list, 'form_validation_rules' => 'trim|required', 'disable_please_select' => 1]) ?></div>
+								<label class="text-nowrap required col-sm-2"><span>課程範疇：</span> </label>
+								<div class="col-sm-8"><?php form_list_type('categories_id', ['type' => 'select', 'class'=> 'form-control' , 'value' =>'', 'form_validation_rules' => 'trim|required', 'disable_please_select' => 1]) ?></div>
 								<div class="col-sm-2"><button type="button" class="btn createBtn mw-100 bg-orange mb-4" data-toggle="modal" data-target="#addOption" data-title="範疇">新 增</button></div>
 							</div>
 							<div class="form-group">
@@ -177,11 +181,11 @@
                 case '範疇':
                 content = "";
                 content += `
+                            <label class="text-nowrap">所屬課程： </label>
+                            <?php form_list_type('modalName2', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'enable_value' => $courses_list, 'form_validation_rules' => 'trim|required']) ?><br />
                             <label class="text-nowrap">${title}名稱： </label>
                             <input type="hidden" id="modalTitle" value="${title}"></input>
                             <input type="text" class="form-control required" placeholder="輸入名稱" id="modalName" value=""></input>
-                            <input type="hidden" id="modalName2" value=null></input>
-
                             `;
                         $(".modal-core").html(content);
                         break;
@@ -267,6 +271,29 @@
                 }
                 });
             } 
+        })
+
+        // let data = [{
+        //     id: 1,
+        //     text: 'Menu',
+        //     children: [{
+        //         id:2,
+        //         text: 'child1',
+        //     },
+        //     {
+        //         id:3,
+        //         text: 'child2',
+        //     }
+        //     ]
+        // }]
+        jQuery(" .select2-results__group").css("background-color", "#8e00ff ");
+
+        let data = <?php echo json_encode($categories_list)?>
+
+        console.log(data);
+
+        $('#categories_id').select2({
+            data: data
         })
     })
 

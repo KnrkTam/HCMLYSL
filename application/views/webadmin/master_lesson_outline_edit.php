@@ -125,7 +125,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-lg-4">
-                                            <p class="mb-4 required">學習元素：</p>
+                                            <p class="mb-4 required bold">學習元素：</p>
                                             <?php foreach ($elements_list as $i => $row) { ?>
                                             <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="radio" name="element_id" value="<?= $i?>" id="<?= $row['nickname']?>">
@@ -134,18 +134,18 @@
                                             <? } ?>
                                         </div>
                                         <div class="col-lg-4">
-                                            <p class="mb-4 required"> 組別：</p>
-                                            <?php foreach ($groups_list as $i => $row) { ?>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" name="group_id[<?=$i?>]" value="<?= $row['name']?>" id=<?= $row['nickname']?>>
-                                                    <label class="form-check-label" for="<?= $row['nickname']?>"><?= $row['name']?></label>
-                                                </div>
-                                            <? } ?>
-                                        </div>
+                                        <p class=" "> <label class="form-label required">組別：</label></p>
+                                        <?php foreach ($groups_list as $i => $row) { ?>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox" name="group_id[<?=$i?>]" value="<?= $row['name']?>" id=<?= $row['nickname']?>>
+                                                <label class="form-check-label" for="<?= $row['nickname']?>"><?= $row['name']?></label>
+                                            </div>
+                                        <? } ?>
+                                    </div>
                                         <div class="col-lg-4">
                                             <div class="form-group">
                                                 <label class="text-nowrap">相關項目編號： </label>
-                                                <input type="text" class="form-control" placeholder="自訂輸入" name="rel_code">
+                                                <input type="text" class="form-control" placeholder="自訂輸入" name="rel_code" value="<?= $rel_code?>">
                                             </div>
                                         </div>
                                     </div>

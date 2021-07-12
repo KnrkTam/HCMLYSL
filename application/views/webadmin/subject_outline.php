@@ -67,8 +67,8 @@
                                     </div>
                                     <div class="col-lg-2">
                                         <div class="form-group">
-                                            <label class="text-nowrap">範疇 : </label>
-                                            <div style="flex: 1"><?php form_list_type('categories_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'data-placeholder' => '請選擇...', 'enable_value' => $categories_list, 'form_validation_rules' => 'trim|required']) ?></div>
+                                            <label class="text-nowrap">科目範疇 : </label>
+                                            <div style="flex: 1"><?php form_list_type('categories_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'data-placeholder' => '請選擇...', 'enable_value' => $sub_categories_list, 'form_validation_rules' => 'trim|required']) ?></div>
 
                                         </div>
                                     </div>
@@ -175,7 +175,7 @@
                 },                
                 {
                     data: "3",
-                    title: "範疇",
+                    title: "科目範疇",
                     name: 'first',
                 },                
                 {
@@ -305,11 +305,17 @@
                         d.category_search = category_id;
                         d.sb_obj_search = sb_obj_id;
                         d.lesson_search = lesson_id;
+                    
+                    if (d.subject_search) {
+                        $('#newBtn').fadeIn("slow", function() {});
+                        $('#newBtn').html(`<button type="button" class="btn bg-orange mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller'] . '/create/') ?>${d.subject_search}'">新 增</button>`)    
+                    }
 
-                        console.log(d)
                     },
+                
                     "complete" : function(){
                         $('[data-toggle="tooltip"]').tooltip();
+                      
 
                     },
                     "error": function(e) {

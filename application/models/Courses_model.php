@@ -24,4 +24,10 @@
 
             return $result;
         }
+
+
+        public function cat() 
+        {
+            return $this->hasMany('Categories_model', 'course_id');
+        }
 	}

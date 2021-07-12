@@ -43,13 +43,12 @@ class Bk_master_lesson_outline extends CI_Controller //change this
     {
         $data['page_setting'] = $this->page_setting(array(
             'view_' . $this->scope
-            // 'view_news'
         ), FALSE, TRUE);
         $GLOBALS["select2"] = 1;
         $GLOBALS["datatable"] = 1;
 
         $data['courses_list'] = Courses_model::list('All');
-        $data['categories_list'] = Categories_model::list('All');
+        $data['categories_list'] = Categories_model::list(null, 'All');
         $data['central_obj_list'] = Central_obj_model::list();
         $data['sb_obj_list'] = Sb_obj_model::list();
         $data['elements_list'] = Elements_model::list();
@@ -102,6 +101,7 @@ class Bk_master_lesson_outline extends CI_Controller //change this
                 $data[$num][] = $row['central_obj'];
                 $data[$num][] = $row['sb_obj'];
                 $data[$num][] = $row['element'];
+                // $data[$num][] = '<span class="hidden">'.Groups_model::value($row['group']).'</span>'.$row['group']; 
                 $data[$num][] = $row['groups'];
                 $data[$num][] = $row['lpf_basic'];
                 $data[$num][] = $row['lpf_advanced'];
@@ -116,17 +116,7 @@ class Bk_master_lesson_outline extends CI_Controller //change this
                 }
                 $data[$num][] = $rel_les;
 
-                // $action = '<div class="nowrap">';
-                // if (validate_user_access(['update_' . $this->scope])) {
-                //     $action .= '<button type="button" class="btn btn-' . ($row["status"] == 1 ? 'success' : 'warning') . '" onclick="ajax_update_status(' . $row['id'] . ', ' . ($row["status"] == 1 ? 0 : 1) . ');" style="margin-right: 5px;">' . ($row["status"] == 1 ? __('Enable') : __('Disable')) . '</button>';
-                //     $action .= '<a href="' . admin_url($page_setting['controller'] . '/modify/' . $row['id']) . '" style="margin-right: 5px;"><button type="button" class="btn btn-warning">' . __('Modify') . '</button></a>';
-                // }
-                // //delete this event and relate parent id
-                // if (validate_user_access(['delete_' . $this->scope])) {
-                //     $action .= '<button type="button" class="btn btn-danger" onclick="ajax_delete_record(' . $row['id'] . ');">' . __('Delete') . '</button>';
-                // }
-                // $action .= '</div>';
-                // $data[$num][] = $action;
+    
                 $num++;
             }
         }
@@ -168,7 +158,7 @@ class Bk_master_lesson_outline extends CI_Controller //change this
                         $data[$num][] = $row['central_obj'];
                         $data[$num][] = $row['sb_obj'];
                         $data[$num][] = $row['element'];
-                        $data[$num][] = $row['groups'];
+                        $data[$num][] = '<span class="hidden">'.Groups_model::value($row['group']).'</span>'.$row['group']; 
                         $data[$num][] = $row['lpf_basic'];
                         $data[$num][] = $row['lpf_advanced'];
                         $data[$num][] = $row['poas'];
@@ -195,9 +185,7 @@ class Bk_master_lesson_outline extends CI_Controller //change this
                     }
                 }
                 $return = json_encode(array("draw" => $_GET["draw"], "data" => $data, "get" => $_GET, "recordsTotal" => $result_count, "recordsFiltered" => $result_count));
-                // dump(current_controller());
                 echo $return;
-                // echo json_encode($data);
 
     }
 
@@ -215,7 +203,7 @@ class Bk_master_lesson_outline extends CI_Controller //change this
         $data['function'] = 'create';
         $data['lessons_list'] = Lessons_model::list();
         $data['courses_list'] = Courses_model::list();
-        $data['categories_list'] = Categories_model::list();
+        $data['categories_list'] = Categories_model::list(null, 0);
         $data['central_obj_list'] = Central_obj_model::list();
         $data['sb_obj_list'] = Sb_obj_model::list();
         $data['elements_list'] = Elements_model::list();
@@ -248,13 +236,27 @@ class Bk_master_lesson_outline extends CI_Controller //change this
             $data['poas_id'] = $sessionData['poas_id'];
             $data['preliminary_skills'] = $sessionData['preliminary_skills'];
             $data['expected_outcome'] = $sessionData['expected_outcome'];
-            $data['group_ids'] = $sessionData['group_id'];
+            $data['group_id'] = $sessionData['group_id'];
             $data['skills_ids'] = $sessionData['skills_id'];
         }
 
         $data['form_action'] = admin_url($data['page_setting']['controller'] . '/preview');
 
         $this->load->view('webadmin/' . $this->scope . '_form',  $data);
+    }
+
+    public function select_course()
+    {
+        $id = $_POST['course_id'];
+        $list = array();
+        $cat = Categories_model::where('course_id', $id)->get();
+
+        foreach ($cat as $i => $row) {
+            $list[$i] = array('id' => $row['id'], 'text' => Courses_model::name($row['course_id']). ' - '. $row['name']);
+        }
+
+        $data = $list;
+        echo json_encode($data);
     }
 
 
@@ -300,6 +302,7 @@ class Bk_master_lesson_outline extends CI_Controller //change this
             $data['rel_lessons'] = $sessionData['rel_lessons'];
             $data['lpf_basic_id'] = $sessionData['lpf_basic_id'];
             $data['lpf_advanced_id'] = $sessionData['lpf_advanced_id'];
+            $data['rel_code'] = $sessionData['rel_code'];
             $data['poas_id'] = $sessionData['poas_id'];
             $data['preliminary_skills'] = $sessionData['preliminary_skills'];
             $data['expected_outcome'] = $sessionData['expected_outcome'];
@@ -317,6 +320,7 @@ class Bk_master_lesson_outline extends CI_Controller //change this
             $data['lpf_basic_id'] = $lesson['lpf_basic_id'];
             $data['lpf_advanced_id'] = $lesson['lpf_advanced_id'];
             $data['poas_id'] = $lesson['poas_id'];
+            $data['rel_code'] = $lesson['rel_code'];
             $data['preliminary_skills'] = $lesson['preliminary_skills'];
             $data['expected_outcome'] = $lesson['expected_outcome'];
             $data['group_ids'] = Lessons_group_model::id_list($id);
@@ -390,7 +394,9 @@ class Bk_master_lesson_outline extends CI_Controller //change this
 
         $group_arr = array();
         foreach ($postData['group_id'] as $i => $row){
-            $group_arr[$i] = Groups_model::name($i);
+            if (strlen($i > 0)) {
+            $group_arr[$i] = $row;
+            };
         };
 
         $skill_arr = array();
@@ -418,7 +424,7 @@ class Bk_master_lesson_outline extends CI_Controller //change this
             "pv_lpf_basic_id" => Lpf_basic_model::name($postData['lpf_basic_id']),
             "pv_lpf_advanced_id" => Lpf_advanced_model::name($postData['lpf_advanced_id']),
             "pv_poas_id" => Poas_model::name($postData['poas_id']),
-            "pv_rel_code" => $postData['rel_code'],
+            "pv_rel_code" => $postData['rel_code'] ? $postData['rel_code'] : "&nbsp",
             "pv_skills_id" => implode(',', $skill_arr),
             'pv_rel_lessons' => implode(',', $rel_lesson_arr),
             "pv_preliminary_skills" => $postData['preliminary_skills'],
@@ -445,7 +451,8 @@ class Bk_master_lesson_outline extends CI_Controller //change this
         $group_ids = $this->input->post('group_id');
         $skill_ids = $this->input->post('skills_id');
         $rel_lessons = $this->input->post('rel_lessons');
-        // dump($this->input->post());
+        // dump($group_ids);
+
         $school_based_data = array(
             'code' => $data['lesson_code'],
             'course_id' => $data['course_id'],
@@ -453,9 +460,11 @@ class Bk_master_lesson_outline extends CI_Controller //change this
             'central_obj_id' => $data['central_obj_id'],
             'sb_obj_id' => $data['sb_obj_id'],
             'element_id' => $data['element_id'],
-            'lpf_basic_id' => $data['lpf_basic_id'],
-            'lpf_advanced_id' => $data['lpf_advanced_id'],
-            'poas_id' => $data['poas_id'],
+            'lpf_basic_id' => (int)$data['lpf_basic_id'],
+            'lpf_advanced_id' => (int)$data['lpf_advanced_id'],
+            'poas_id' => (int)$data['poas_id'],
+            // 'group_id' => (int)$data['group_id'],
+            'rel_code' => $data['rel_code'],
             'preliminary_skills' => $data['preliminary_skills'],
             'expected_outcome' => $data['expected_outcome'],
             'created_by' => $_SESSION["sys_user_id"],
@@ -476,7 +485,7 @@ class Bk_master_lesson_outline extends CI_Controller //change this
             }
             
             if ($lesson_id) {
-                $_SESSION['success_msg'] = __('新增課程大綱成功');
+                $_SESSION['success_msg'] = __('新增課程大綱成功'); 
                 $_SESSION['post_data'] = null;
                 redirect(admin_url('bk_'.$this->scope));
             } else {

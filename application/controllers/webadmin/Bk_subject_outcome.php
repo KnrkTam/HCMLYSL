@@ -113,18 +113,16 @@ class Bk_subject_outcome extends CI_Controller //change this
                 }
                 $data[$num][] = $row['expected_outcome'];
                 $data[$num][] = $row['code'];
-
                 $rel_les = '';
                 foreach ($row['rel_lessons'] as $key) {
                     $rel_les .= '<button type="button" class="btn-xs btn btn-primary badge">' .Lessons_model::code($key).'</button> &nbsp';
                 }
                 $data[$num][] = $rel_les;
 
-
                 $num++;
             }
         }
-        $return = json_encode(array("draw" => $_GET["draw"], "data" => $data, "get" => $_GET, "recordsTotal" => $result_count, "recordsFiltered" => $result_count));
+        $return = json_encode(array("draw" => $_GET["draw"], "data" => $data, "get" => $_GET, "recordsTotal" => $result_count, "recordsFiltered" => $result_count, "subject_id" => $subject_id));
 
         echo $return;
 
@@ -146,7 +144,8 @@ class Bk_subject_outcome extends CI_Controller //change this
 
                 $lessons_arr = array();
 
-                    $filtered_lessons = Lessons_model::list($course_id, $category_id,$sb_obj_id, $lesson_id);
+                    $filtered_lessons = Lessons_model::list($course_id, $category_id,$sb_obj_id, $lesson_id)
+                    ;
                     foreach ($filtered_lessons as $i =>$row) {
                         $lessons_arr[$i] = Lessons_model::table_list($i);
                     }

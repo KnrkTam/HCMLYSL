@@ -24,7 +24,7 @@
 
         public static function module_row($level_id)
 		{
-            $result = Modules_model::where('level_id', $level_id)->get();
+            $result = Modules_model::orderBy('code', 'ASC')->where('level_id', $level_id)->get();
 
             foreach($result as $key => $row){
                 $module_row[$key] = $row;

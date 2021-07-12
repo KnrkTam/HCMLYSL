@@ -179,9 +179,10 @@
                 data:{lesson_id:lesson_id},
                 dataType:'json',
                 success:function(data){
+                    console.log('select_lesson');
                     $('#expected_outcome').val(data.expected_outcome);
                     $('#expected_outcome_text').html(data.expected_outcome);
-                }
+                },
                 })
             }
         })
@@ -229,7 +230,6 @@
                     }
                 });
             })
-        });
 
 
 
@@ -238,8 +238,9 @@
             $(this).closest('.performanceItem').remove();
         });
 
-
     });
+
+    
 
     </script>
 
