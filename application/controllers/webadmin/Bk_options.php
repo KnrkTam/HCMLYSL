@@ -50,18 +50,13 @@ class Bk_options extends CI_Controller //change this
         $GLOBALS["datatable"] = 1;
 
         $data['courses_list'] = Courses_model::list('All');
-        $data['categories_list'] = Categories_model::optionList();
-        $data['central_obj_list'] = Central_obj_model::list();
-        $data['sb_obj_list'] = Sb_obj_model::list();
-        $data['subjects_list'] = Subjects_model::list();
+        $data['categories_list'] = json_encode(Categories_model::optionList('All')); 
+        $data['subject_categories_list'] = json_encode(Subject_categories_model::optionList('All')); 
+        $data['central_obj_list'] = Central_obj_model::list('Alln');
+        $data['sb_obj_list'] = Sb_obj_model::list('All');
+        $data['subjects_list'] = Subjects_model::list('All');
         $data['years_list'] = Years_model::list();
         $data['staff_list'] = Staff_model::list();
-
-        // dump($course = Courses_model::with('cat')->get());
-
-        // dump($course->cat());
-
-
         $this->load->view('webadmin/' . $this->scope . '', $data);
     }
 
@@ -82,6 +77,7 @@ class Bk_options extends CI_Controller //change this
         $dup_central_obj = Central_obj_model::where('name',$name)->first()->name;
         $dup_sb_obj = Sb_obj_model::where('name',$name)->first()->name;
         $dup_subject = Subjects_model::where('name',$name)->first()->name;
+        $dup_subject_category = Subject_categories_model::where('name',$name)->first()->name;
         $dup_year = Years_model::where('year_from', $name)->first()->year_from;
         $dup_year2 = Years_model::where('year_to', $name2)->first()->year_to;
 
@@ -154,7 +150,22 @@ class Bk_options extends CI_Controller //change this
                             $_SESSION['success_msg'] = __('新增'.$type.'成功');
                         };
                         break;      
-                        
+
+                    case ('科目範疇'):
+                        if ($dup_subject_category) {
+                            $data['status'] =  $type. '名稱重複';
+                        } else {
+                            $new_data = array(
+                                'name' => $name,
+                                'subject_id' => $name2,
+                            );
+                            Subject_categories_model::create($new_data);
+                            $data['status'] =  'success';
+                            $_SESSION['success_msg'] = __('新增'.$type.'成功');
+                        } ;         
+                        break;               
+        
+                    
                     case ('年度'):
                         if (empty($name2)) {
                             $data['status'] = '請輸入'. $type. ' 至';

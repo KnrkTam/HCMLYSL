@@ -57,15 +57,13 @@
                             </div>
                         </div> -->
                             <!-- /.box-header -->
-
                             <div class="box-body">
                                 <div id="signupalert" class="alert alert-danger margin_bottom_20"></div>
-
-
+                                <!-- <div class="col-lg-12">  -->
+                                <h5 class="text-purple"><b>搜尋科目：</b></h5>
+                                <!-- </div> -->
                                 <div class="row">
-
                                     <div class="col-lg-5 d-flex">
-
                                         <div class="form-group w-100">
                                             <label class="text-nowrap required">科目 : </label>
                                             <div style="flex: 1"><?php form_list_type('subject_id', ['type' => 'select', 'class'=> 'form-control subjectSelect  select2' , 'value' =>'',  'data-placeholder' => '請選擇...', 'enable_value' => $subject_list, 'form_validation_rules' => 'trim|required']) ?></div>
@@ -73,9 +71,7 @@
                                     </div>
                                 </div>
                                 <hr>
-
                                 <div class="mb-4">
-
                                     <div class="row">
                                         <div class="col-lg-2">
                                             <div class="form-group ">
@@ -86,16 +82,13 @@
                                         <div class="col-lg-3">
                                             <div class="form-group">
                                                 <label class="text-nowrap">科目範疇 : </label>
-                                                <div style="flex: 1"><?php form_list_type('categories_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'data-placeholder' => '請選擇...', 'enable_value' => $sub_categories_list, 'form_validation_rules' => 'trim|required']) ?></div>
+                                                <div style="flex: 1"><?php form_list_type('subject_category_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' => $subject_categories_id,  'data-placeholder' => '請選擇...', 'form_validation_rules' => 'trim|required']) ?></div>
                                             </div>
                                         </div>
                                         <div class="col-lg-6 d-flex align-items-start">
-
-
                                             <div class="form-group w-100">
                                                 <label class="text-nowrap">校本課程學習重點 : (多項選擇) </label>
                                                 <div style="flex: 1"><?php form_list_type('sb_obj_id[]', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'data-placeholder' => '請選擇...', 'enable_value' => $sb_obj_list, 'form_validation_rules' => 'trim|required', 'multiple' => 1]) ?></div>
-
                                             </div>
                                             <span class="ml-2 mr-2 mt-30">或</span>
                                             <div class="form-group w-100">
@@ -106,20 +99,20 @@
                                         <div class="col-lg-1">
                                             <button type="submit" class="btn btn-success mt-25 w-100 mb-4 searchBtn">搜 尋</button>
                                         </div>
-
                                     </div>
                                 </div>
-
                                 <button type="button" class="btn bg-orange mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller'] . '/create') ?>'">新 增</button>
-
-
+                                <hr />
+                                <!-- <div class="col-lg-12">  -->
+                                    <h5 class="text-red"><b>搜尋結果：</b></h5>
+                                <!-- </div> -->
                                 <div class="tableWrap">
                                     <table class="table table-bordered table-striped dataTable" id="courseOutlineTable">
                                         <thead>
                                             <tr class="bg-light-blue color-palette">
                                                 <th class="no-sort" style="min-width: 4px;"></th>
-                                                <th class="nowrap">課程</th>
                                                 <th class="nowrap">科目範疇</th>
+                                                <th class="nowrap">課程</th>
                                                 <th class="nowrap">中央課程學習重點</th>
                                                 <th class="nowrap">校本課程學習重點</th>
                                                 <th class="nowrap">學習元素</th>
@@ -134,20 +127,15 @@
                                                 <th class="nowrap">相關項目編號</th>
                                             </tr>
                                         </thead>
-
                                         <tbody>
-                                       
                                         </tbody>
                                     </table>
                                 </div>
-
-
                             </div>
                             <!-- /.box-body -->
                         </div>
                         <!-- /.box -->
                         <?= form_close() ?>
-
                     </div>
                     <!--/.col -->
                 </div>
@@ -168,34 +156,20 @@
 
     <script>
         $(document).ready(function() {
-
             $('[data-toggle="tooltip"]').tooltip({
                 container: 'body'
             });
 
-            $(".subjectSelect").change(function() {
-                if ($(this).val() != "") {
-                    $(".subject_outcomeNew").fadeIn();
-
-                } else {
-                    $(".subject_outcomeNew").hide();
-                }
-
-            });
-     
-
 
             $(".searchBtn").click(function() {
                 Course_table.draw();
-
             })
                 let Course_table = $('#courseOutlineTable').DataTable({
-                // scrollY: '300px',
-                'rowsGroup': [0],
+                'rowsGroup': [0, 1],
 
                 scrollX: true,
                 "language": {
-                    "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/' . get_wlocale() . '.json') ?>"
+                    "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/Chinese-traditional.json') ?>",
                 },
                 "order": [],
                 "bSort": false,
@@ -215,7 +189,7 @@
                     "timeout": "30000",
                     "data": function(d) {
                         let course_id = $('#courses_id').val();
-                        let category_id = $('#categories_id').val();
+                        let category_id = $('#subject_category_id').val();
                         let sb_obj_id = $('#sb_obj_id').val();
                         let lesson_id = $('#lesson_id').val();
                         let subject_id = $('#subject_id').val();
@@ -236,45 +210,27 @@
                     }
                 },
                 });
-            });
+
+
+                let data =  <?php echo $subject_categories_list?>;
+
+                $('#subject_category_id').select2({
+                    data: data
+                })
+
+        
+                let sub_id = <?php echo $subject_categories_id ?  $subject_categories_id : 0?>;
+                let sb_obj_id = <?php echo $sb_obj_id ?  $sb_obj_id : 0?>;
+                let lesson_id = <?php echo $lesson_id ?  $lesson_id : 0?>;
+                $("#subject_category_id").val(sub_id);
+                $("#sb_obj_id").val(sb_obj_id);
+                $("#lesson_id").val(lesson_id);
+                
+                $(".select2").trigger('change');
+        });
 
 
 
-            // function submit_form(_this) {
-            //     //form checking
-            //     var valid_data = true;
-            //     //.form checking
-            //     if (!valid_data) {
-            //         //alert('Invalid Data.');
-            //     } else {
-            //         ajax_submit_form(_this);
-            //     }
-            // }
-        // });
-        <?php /*
-    //multiple image upload
-    $("input.multiple_upload").fileinput({
-        language: '<?=get_wlocale()?>',
-        previewFileType: "image",
-        showCaption: false,
-        showUpload: false,
-        maxFileSize: 2048,
-        maxFileCount: 30,
-        maxImageHeight: 2000,
-        maxImageWidth: 2000,
-        overwriteInitial: false,
-        allowedFileExtensions: ['jpg','jpeg','png'],
-        initialPreview: <?=isset($photos_preview) ? $photos_preview : "{}"?>,
-        initialPreviewAsData: true,
-        initialPreviewConfig: <?=isset($photos_json) ? $photos_json : "{}"?>,
-        deleteUrl: "<?=admin_url('bk_news/delete_multiple_upload')?>",
-        // hiddenThumbnailContent: true,
-        // initialPreviewShowDelete: true,
-        // removeFromPreviewOnError: true,
-    }).on('filedeleted', function(event, key, jqXHR, data) {
-        alertify.success("<?=__('Deleted successfully!')?>");
-    });
- */ ?>
     </script>
 
 </body>

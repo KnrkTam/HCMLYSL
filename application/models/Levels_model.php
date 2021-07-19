@@ -5,13 +5,13 @@
 	{
 		protected $table = "levels";
 
-        public static function list($id = null)
+        public static function list($all = null)
 		{   
-            if (!$id) {
-                $result = Levels_model::all();
-            } else {
-                $result = Levels_model::where('id', '!=', 5)->get();
+            if ($all) {
+                $list[0] = '所有學階';
             }
+            $result = Levels_model::orderBy('id', 'ASC')->get();
+        
             
             foreach($result as $row){
                 $list[$row['id']] = $row["name"];

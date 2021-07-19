@@ -54,6 +54,21 @@ class Bk_tree_map extends CI_Controller //change this
         $this->load->view('webadmin/' . $this->scope . '_form',  $data);
     }
 
+    public function index()
+    {
+        $data['page_setting'] = $this->page_setting(array(
+            //'view_' . $this->scope
+            'view_news'
+        ), FALSE, TRUE);
+        $GLOBALS["select2"] = 1;
+        $GLOBALS["datatable"] = 1;
+        $data['courses'] = Courses_model::all();
+        $data['categories'] = Categories_model::list(null, 'All');
+
+        $this->load->view('webadmin/' . $this->scope . '', $data);
+    }
+
+
     public function edit()
     {
         $data['page_setting'] = $this->page_setting(array(
@@ -77,17 +92,5 @@ class Bk_tree_map extends CI_Controller //change this
 
         $this->load->view('webadmin/' . $this->scope . '_preview',  $data);
     }
-    public function index()
-    {
-        $data['page_setting'] = $this->page_setting(array(
-            //'view_' . $this->scope
-            'view_news'
-        ), FALSE, TRUE);
-        $GLOBALS["select2"] = 1;
-        $GLOBALS["datatable"] = 1;
-        $data['courses'] = Courses_model::list();
-        $data['categories'] = Categories_model::list();
 
-        $this->load->view('webadmin/' . $this->scope . '', $data);
-    }
 }

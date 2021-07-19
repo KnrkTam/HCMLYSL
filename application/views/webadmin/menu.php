@@ -68,7 +68,7 @@
                     'icon' => 'fa-clipboard',
                 ),
                 array(
-                    'main_menu' => __('課程及科目課程大綱樹狀圖'),
+                    'main_menu' => __('校本課程大綱樹狀圖'),
                     'url' => 'Bk_tree_map',
                     'access' => 'view_news',
                     'icon' => 'fa-map-o',

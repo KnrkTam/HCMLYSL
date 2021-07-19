@@ -20,6 +20,8 @@
                 <h1>
                     <?= ($page_setting['scope']) ?>
                     <small><?= ($action) ?></small>
+                    <small class="text-purple"><?= $subject ?></small>
+
                 </h1>
                 <ol class="breadcrumb">
                     <li><a href="<?= admin_url('') ?>"><?= __('Home') ?></a></li>
@@ -41,8 +43,8 @@
                                 <div class="row">
                                     <div class="col-lg-4">
                                         <div class="form-group w-100">
-                                            <label class="text-nowrap">科目 : </label>
-                                            <div style="flex: 1"><?php form_list_type('subject_id', ['type' => 'select', 'class'=> 'form-control subjectSelect select2' , 'value' => $subject_id ,  'data-placeholder' => '請選擇...', 'enable_value' => $subject_list, 'form_validation_rules' => 'trim|required', 'disabled' => 1]) ?></div>
+                                            <label class="text-nowrap">科目範疇 : </label>
+                                            <div style="flex: 1"><?php form_list_type('subject_cat_id', ['type' => 'select', 'class'=> 'form-control subjectSelect select2' , 'value' => $subject_cat_id ,  'data-placeholder' => '請選擇...', 'enable_value' => $subject_cat_list, 'form_validation_rules' => 'trim|required', 'disabled' => 1]) ?></div>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">

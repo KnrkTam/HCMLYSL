@@ -77,8 +77,7 @@
                                     <div class="col-lg-5 d-flex">
 
                                         <div class="form-group w-100">
-                                            <h3 class="text-blue"><b><?= $subject ?></b></h5>
-                                         
+                                            <h3 class="text-blue"><b><?= $subject?> - <?= $subject_category ?></b></h5>
                                         </div>
                                         <a href="#" class="link nowrap mt-30 ml-2 controlSearchBtn">隱藏搜尋</a>
 
@@ -97,7 +96,7 @@
                                         </div>
                                         <div class="col-lg-3">
                                             <div class="form-group">
-                                                <label class="text-nowrap">範疇 : </label>
+                                                <label class="text-nowrap">課程範疇 : </label>
                                                 <div style="flex: 1"><?php form_list_type('categories_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'data-placeholder' => '請選擇...', 'enable_value' => $categories_list, 'form_validation_rules' => 'trim|required']) ?></div>                                               
 
                                             </div>
@@ -224,7 +223,6 @@
 
 
             $(".searchBtn").click(function() {
-                console.log('clicked')
                 SubjectTable.draw();
             });
 
@@ -235,7 +233,6 @@
                 for (i = 0; i < session_data['added_ids'].length; i++) {
                     added_ids.add(parseInt(session_data['added_ids'][i]));
                 };
-                console.log('postData', added_ids)
 
             <?} else {?>   
                 let added_arr = <?= json_encode($added_ids);?>;
@@ -254,10 +251,13 @@
                     "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/' . get_wlocale() . '.json') ?>"
                 },
                 "order": [],
-                "bSort": false,
-                "bPaginate": false,
-                "pageLength": 50,
-                "pagingType": "input",
+                "bInfo": true,
+                // "bSort": false,
+                "bPaginate": true,
+                // "paging": true,
+                "pageLength": 10,
+                // "lengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
+                // "pagingType": "simple",
                 //"sDom": '<"wrapper"lfptip>',
                 "processing": true,
                 "serverSide": true,
@@ -293,14 +293,10 @@
                                 subjectSelectedTable.draw();
                             } else {
                                 added_ids.delete(parseInt(this.value));
-
                                 subjectSelectedTable.draw();
-                                console.log(old_arr);
-
                             }
                         });
                         let old_arr = Array.from(added_ids)
-                        console.log(old_arr)
                         for (let i = 0; i < old_arr.length; i++) {
                             $(`input[type=checkbox][class=addLesson][value=${old_arr[i]}]`).prop('checked', true)
                         }
@@ -374,124 +370,32 @@
                     }
                 },
             });
-            // $(".controlSearchBtn").click(function() {
+     
+            $("#subject_id").change(function() {
+                // alertify.error(this.value);
 
-
-            //     // $(".subject_outcomeNew").slideToggle("active");
-
-            //     // Animation complete.
-
-            //     $(".subject_outcomeNew").slideToggle('slow', function() {
-            //         $('.controlSearchBtn').toggleClass('active', $(this).is(':visible'));
-            //         if ($('.controlSearchBtn').hasClass("active")) {
-            //             $(".controlSearchBtn").text("隱藏搜尋");
-            //         } else {
-            //             $(".controlSearchBtn").text("顯示搜尋");
-            //         }
-            //     });
-
-
-            // });
-
-
-
-
-
-
-            // $(".subject_outcomeNew").click(function() {
-
-            //     $(".subject_outcomeNew").fadeIn();
-
-
-            // });
-            // $(".subject_outcomeNew").fadeIn();
-            // $(".subjectSelect").change(function() {
-            //     if ($(this).val() != "") {
-            //         $(".subject_outcomeNew").fadeIn();
-            //         $(".controlSearchBtn").fadeIn();
-            //         $(".controlSearchBtn").text("隱藏搜尋");
-            //     } else {
-            //         $(".subject_outcomeNew").hide();
-            //     }
-
-            // });
-
-
-
-
-            // $(".searchBtn").click(function() {
-
-            //     $(".tableWrap").fadeIn();
-
-            // });
-
-
-
-
-            /*
-
-
-
-                        $('.searchCourseNumberCheck').change(function() {
-                            var values = [];
-                                $('.searchCourseNumberCheck:checked').each(function() {
-                                //if(values.indexOf($(this).val()) === -1){
-                                 values=$(this).closest("tr").find(".courseNum").text();
-
-                                //  $('.inputCourseNumber').attr("value", values)
-                                // }
-                                });
-                                console.log(values);
+                    ajax_choose(this.value)
+                function ajax_choose(subject_id) {
+                    $.ajax({
+                    url: '<?= (admin_url($page_setting['controller'])) . '/select_subject' ?>',
+                    method:'POST',
+                    data:{subject_id:subject_id},
+                    dataType:'json',
+                    beforeSend:function(){
+                        $('#sub_category_id').empty();
+                    },
+                    success:function(d){
+                        $('#sub_category_id').select2({
+                            data: d
                         });
-            */
-
-
-
-
-
-
-
-
-
-
+                    },
+                    })
+                    }
+            })
         });
 
 
-        // function submit_form(_this) {
-        //     //form checking
-        //     var valid_data = true;
-        //     //.form checking
-        //     if (!valid_data) {
-        //         //alert('Invalid Data.');
-        //     } else {
-        //         ajax_submit_form(_this);
-        //     }
-        // }
 
-        <?php /*
-//multiple image upload
-$("input.multiple_upload").fileinput({
-language: '<?=get_wlocale()?>',
-previewFileType: "image",
-showCaption: false,
-showUpload: false,
-maxFileSize: 2048,
-maxFileCount: 30,
-maxImageHeight: 2000,
-maxImageWidth: 2000,
-overwriteInitial: false,
-allowedFileExtensions: ['jpg','jpeg','png'],
-initialPreview: <?=isset($photos_preview) ? $photos_preview : "{}"?>,
-initialPreviewAsData: true,
-initialPreviewConfig: <?=isset($photos_json) ? $photos_json : "{}"?>,
-deleteUrl: "<?=admin_url('bk_news/delete_multiple_upload')?>",
-// hiddenThumbnailContent: true,
-// initialPreviewShowDelete: true,
-// removeFromPreviewOnError: true,
-}).on('filedeleted', function(event, key, jqXHR, data) {
-alertify.success("<?=__('Deleted successfully!')?>");
-});
- */ ?>
     </script>
 
 </body>

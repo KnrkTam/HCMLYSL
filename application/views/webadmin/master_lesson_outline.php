@@ -70,8 +70,7 @@
                                     <div class="col-lg-2">
                                         <div class="form-group">
                                             <label class="text-nowrap">課程範疇 : </label>
-                                            <div style="flex: 1"><?php form_list_type('categories_id', ['type' => 'select', 'class'=> 'select2-tree form-control' , 'value' =>'',  'enable_value' => $categories_list, 'form_validation_rules' => 'trim|required','disable_please_select' => 1]) ?></div>
-
+                                            <div style="flex: 1"><?php form_list_type('categories_id', ['type' => 'select', 'class'=> 'select2 form-control' , 'value' => $category_id ,  'form_validation_rules' => 'trim|required','disable_please_select' => 1]) ?></div>
                                         </div>
                                     </div>
                                     <div class="col-lg-6 d-flex align-items-center">
@@ -171,7 +170,7 @@
                 },
                 "order": [],
                 "bSort": false,
-                "pageLength": 50,
+                "pageLength": 10,
                 "pagingType": "input",
                 //"sDom": '<"wrapper"lfptip>',
                 "processing": true,
@@ -204,8 +203,7 @@
                         d.category_search = category_id;
                         d.sb_obj_search = sb_obj_id;
                         d.lesson_search = lesson_id;
-            
-                        console.log(d)
+
                         // var filter_type = $('#filter_type').val();
                         // d.search_filter_type = filter_type;
                         // d.search_filter_para = $('#filter_' + filter_type + '_para').val();
@@ -223,42 +221,21 @@
 
             });
 
-            let data = [{
-                id: 0,
-                text: 'enhancement',
-                children: [{
-                    id: 5,
-                    text: 'enhancement child1'
-                },
-                {
-                    id: 6,
-                    text: 'enhancement child2'
+            let data = <?php echo json_encode($categories_list)?>
 
-                }
-                ]
-            },
-            {
-                id: 1,
-                text: 'bug'
-            },
-            {
-                id: 2,
-                text: 'duplicate'
-            },
-            {
-                id: 3,
-                text: 'invalid'
-            },
-            {
-                id: 4,
-                text: 'wontfix'
-            }
-            ];
-
-            $(".select2-tree").select2({
+            $('#categories_id').select2({
                 data: data,
-                width: 'auto'
-            });
+            })
+
+            $("#categories_id").val(<?php echo $category_id ?>);
+            $("#categories_id").trigger('change');
+            $('#categories_id').change(function() {
+                $('#courses_id').val(0).trigger('change');
+            })
+
+            // $('#categories_id').change(function() {
+            //     $('#categories_id').trigger('change');
+            // })
 
         });
 

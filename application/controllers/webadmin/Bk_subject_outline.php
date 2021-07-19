@@ -48,15 +48,32 @@ class Bk_subject_outline extends CI_Controller //change this
         $GLOBALS["select2"] = 1;
         $GLOBALS["datatable"] = 1;
         $data['subject_list'] = Subjects_model::list();
-        $data['courses_list'] = Courses_model::list();
-        $data['categories_list'] = Categories_model::list();
+        // $data['courses_list'] = Courses_model::list('All');
+        $data['sub_categories_list'] = json_encode(Subject_categories_model::optionList('All')); 
         $data['sb_obj_list'] = Sb_obj_model::list();
-        $data['lessons_list'] = Lessons_model::list();
-        array_unshift($data['courses_list'], "所有課程");
-        array_unshift($data['categories_list'], "所有課程");
         $data['sb_obj_id'] = $_POST['sb_obj_id'];
-        $data['lesson_id'] = $_POST['lesson_id'];
+        $lesson_data = Lessons_model::list();
 
+        // dump($_POST);
+        foreach ($lesson_data as $row) {
+            $lessons_list[$row['id']] = $row['code']; 
+        }
+        $data['lessons_list'] = $lessons_list;
+        if (count($_POST)) {
+            // if (!$_POST['subject_id']) {
+            //     $_SESSION['error_msg'] = __('請選擇科目');
+            //     redirect(admin_url('bk_'.$this->scope));
+            // } else {
+                if(!$_POST['lesson_id']) {
+                    $data['subject_categories_id'] = $_POST['subject_category_id'];
+                    if (count($_POST['sb_obj_id'])){
+                        $data['sb_obj_id'] = json_encode($_POST['sb_obj_id']);
+                    }
+                } else {
+                    $data['lesson_id'] = json_encode($_POST['lesson_id']);
+                }
+            // }
+        }
         $_SESSION['post_data'] = null;
 
         $data['form_action'] = admin_url($data['page_setting']['controller']);
@@ -71,37 +88,39 @@ class Bk_subject_outline extends CI_Controller //change this
         ), FALSE, TRUE);
         $subject_id = $_POST['subject_search'];
         $course_id = $_POST['course_search'];
-        $category_id = $_POST['category_search'];
+        $sub_category_id = $_POST['category_search'];
         $sb_obj_id = $_POST['sb_obj_search'];
         $lesson_id = $_POST['lesson_search'];
         $lessons_arr = array();
 
-        if ($subject_id ) {
-            $filtered_lessons = Lessons_model::list($course_id, $category_id,$sb_obj_id, $lesson_id, $subject_id);
+        if ($subject_id) {
+            $filtered_lessons = Lessons_model::subjectList($course_id, $sub_category_id,$sb_obj_id, $lesson_id, $subject_id);
             foreach ($filtered_lessons as $i =>$row) {
-                $lessons_arr[$i] = Lessons_model::table_list($i);
-            }
-        } else if ($lesson_id) {
-            $filtered_lessons = Lessons_model::list($course_id, $category_id,$sb_obj_id, $lesson_id, $subject_id);
-            foreach ($filtered_lessons as $i =>$row) {
-                $lessons_arr[$i] = Lessons_model::table_list($i);
-            }
-            // dump($lessons_arr);
+                // dump($filtered_lessons);
 
-        } else {
-            $lessons_arr = null;
+                $lessons_arr[$i] = array('lesson' => Lessons_model::table_list($row['id']), 'subject_lesson_id' => $row['sub_lesson_id'], 'subject_cat_id' => Subject_lessons_model::find($row['sub_lesson_id'])->subject_category_id);
+            }
         }
-
+        // } else if ($lesson_id) {
+        //     $filtered_lessons = Lessons_model::list($course_id, $category_id,$sb_obj_id, $lesson_id, $subject_id);
+        //     foreach ($filtered_lessons as $i =>$row) {
+        //         $lessons_arr[$i] = Lessons_model::table_list($i);
+        //     }
+        // }
+        // dump($filtered_lessons);
+        // dump($lessons_arr);
         $result_count = count($lessons_arr);
         //rearrange data
         $data = array();
         $name = array();
         $num = 0;
-        if (!empty( $lessons_arr)) {
-
+        if (!empty( $lessons_arr)) {    
             foreach ( $lessons_arr as $key => $row) {
+                // dump($row['lesson']);
                 if ($subject_id) {
-                    $subject_lesson_id = Subject_lessons_model::where('subject_id', $subject_id)->where('lesson_id', $row['id'])->first()->id;
+                    $subject_lesson_id = Subject_lessons_model::find($row['subject_lesson_id'])->id;
+
+                    // dump($subject_lesson_id);
 
                 } else {
                     $subject_lesson_id = Subject_lessons_model::where('lesson_id', $row['id'])->first()->id;
@@ -110,23 +129,23 @@ class Bk_subject_outline extends CI_Controller //change this
 
                 $lesson_performance = Key_performances_model::where('subject_lesson_id', $subject_lesson_id)->get();
                 foreach ($lesson_performance as $foo ) {
-                    $data[$num][] = '<a class="editLinkBtn" href="'.admin_url(current_controller() . '/edit/'. $subject_lesson_id ).'"><i class="fa fa-edit"></i></a>';
-                    $data[$num][] = $subject_id ? Subjects_model::name($subject_id) : "not yet assigned";
-                    $data[$num][] = $row['course'];
-                    $data[$num][] = $row['category'];
-                    $data[$num][] = $row['sb_obj'];
-                    $data[$num][] = $row['element'];
-                    $data[$num][] = $row['groups'];
-                    $data[$num][] = $row['lpf_basic'];
-                    $data[$num][] = $row['lpf_advanced'];
-                    $data[$num][] = $row['poas'].'<span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span>';
-                    $data[$num][] = $row['skills'].'<span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span>';
-                    $data[$num][] = $row['expected_outcome'];
+                    $data[$num][] = '<a class="editLinkBtn" href="'.admin_url(current_controller() . '/edit/'. $subject_lesson_id) .'"><i class="fa fa-edit"></i></a>';
+                    $data[$num][] = $row['subject_cat_id'] ? Subject_categories_model::name($row['subject_cat_id']) : "not yet assigned";
+                    $data[$num][] = $row['lesson']['code'];
+                    $data[$num][] = $row['lesson']['course'];
+                    $data[$num][] = $row['lesson']['category'];
+                    $data[$num][] = $row['lesson']['sb_obj'];
+                    $data[$num][] = $row['lesson']['element'];
+                    $data[$num][] = $row['lesson']['groups'];
+                    $data[$num][] = $row['lesson']['lpf_basic'];
+                    $data[$num][] = $row['lesson']['lpf_advanced'];
+                    $data[$num][] = $row['lesson']['poas'].'<span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span>';
+                    $data[$num][] = $row['lesson']['skills'].'<span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span>';
+                    $data[$num][] = $row['lesson']['expected_outcome'];
                     $data[$num][] = $foo['performance'];
                     $data[$num][] = Assessments_model::mode($foo['assessment_id']);
-                    $data[$num][] = $row['code'];
                     $rel_les = '';
-                    foreach ($row['rel_lessons'] as $key) {
+                    foreach ($row['lesson']['rel_lessons'] as $key) {
                         $rel_les .= '<button type="button" class="btn-xs btn btn-primary badge">' .Lessons_model::code($key).'</button> &nbsp';
                     }
                     $data[$num][] = $rel_les;
@@ -159,14 +178,16 @@ class Bk_subject_outline extends CI_Controller //change this
         $data['subject_list'] = Subjects_model::list();
         $data['categories_list'] = Categories_model::list();
         $data['assessments_list'] = Assessments_model::list();
-        $data['lessons_list'] = Lessons_model::newlist($subject_id);
+        $data['lessons_list'] = Lessons_model::newlist2($subject_id);
         $data['remarks_list'] = Remarks_model::list();
         $data['expected_outcome'] = $subject->expected_outcome;
+        $data['subject_cat_list'] = Subject_categories_model::list($subject_id, null);
 
-        array_unshift($data['courses_list'], "所有課程");
-        array_unshift($data['categories_list'], "所有課程");
+        // array_unshift($data['courses_list'], "所有課程");
+        // array_unshift($data['categories_list'], "所有課程");
         $data['form_action'] = admin_url($data['page_setting']['controller'] . '/preview');
         $data['subject_id'] = $subject_id;
+        $data['subject'] = Subjects_model::name($subject_id);
         $GLOBALS["select2"] = 1;
         $GLOBALS["datatable"] = 1;
 
@@ -194,7 +215,7 @@ class Bk_subject_outline extends CI_Controller //change this
     }
     
 
-    public function edit($id)
+    public function edit($subject_lesson_id)
     {
         $data['page_setting'] = $this->page_setting(array(
             'update_' . $this->scope
@@ -204,11 +225,14 @@ class Bk_subject_outline extends CI_Controller //change this
         $GLOBALS["select2"] = 1;
         $GLOBALS["datatable"] = 1;
 
-        $subject_lesson = Subject_lessons_model::find($id);
+        $subject_lesson = Subject_lessons_model::find($subject_lesson_id);
         $lesson_id = $subject_lesson->lesson_id;
         $subject_id = $subject_lesson->subject_id;
+        
+        $subject_cat_id = $subject_lesson->subject_category_id;
+        $lesson = Lessons_model::find($lesson_id);
 
-        $performance_model = Key_performances_model::where('subject_lesson_id', $id)->get();
+        $performance_model = Key_performances_model::where('subject_lesson_id', $subject_lesson_id)->get();
 
         foreach ($performance_model as $i => $row) {
             $performance_arr[$i] = array('performance' => $row['performance'], 'assessment' => $row['assessment_id'], 'other' =>$row['assessment_other']);
@@ -216,19 +240,44 @@ class Bk_subject_outline extends CI_Controller //change this
     
         $lesson = Lessons_model::find($lesson_id);
         $data['subject_list'] = Subjects_model::list();
-        $data['lessons_list'] = Lessons_model::list();
+        $data['subject_cat_list'] = Subject_categories_model::list(null, 'all');
+        // $data['courses_list'] = Courses_model::list();
+        $lesson_data = Lessons_model::list();;
+        foreach ($lesson_data as $row) {
+            $lessons_list[$row['id']] = $row['code']; 
+        }
+        $data['lessons_list'] = $lessons_list;        
         $data['assessments_list'] = Assessments_model::list();
         $data['remarks_list'] = Remarks_model::list();
         $data['remark_id'] =  Lessons_remarks_model::id_list($lesson_id);
-
+        $data['subject'] = Subjects_model::name($subject_id);
         $data['performance_arr'] = $performance_arr;
         $data['subject_id'] = $subject_id;
+        $data['subject_cat_id'] = $subject_cat_id;
         $data['lesson_id'] = $lesson_id ;
         $data['expected_outcome'] = $lesson->expected_outcome;
 
-        $data['form_action'] = admin_url($data['page_setting']['controller'] . '/preview/'. $id);
+        // dump($data);
+        $data['form_action'] = admin_url($data['page_setting']['controller'] . '/preview/'. $subject_lesson_id);
 
         $this->load->view('webadmin/' . $this->scope . '_edit',  $data);
+    }
+
+
+    public function select_subject_cat()
+    {
+        $id = $_POST['subject_cat_id'];
+        $list = array();
+
+        $cat_lessons = Subject_lessons_model::where('subject_category_id', $id)->pluck('lesson_id');
+
+
+        foreach ($cat_lessons as $i => $row) {
+            $list[$i] = array('id' => $row, 'text' => Lessons_model::code($row));
+        }
+
+        $data = $list;
+        echo json_encode($data);
     }
 
 
@@ -288,8 +337,9 @@ class Bk_subject_outline extends CI_Controller //change this
         $data['previous'] = $previous;
         $data['id'] = $id;
         $data['form_action'] = admin_url($data['page_setting']['controller'] . '/submit_form/'.$id);
+        $_SESSION['post_data'] = $postData;
 
-
+        dump($_POST);
         $this->load->view('webadmin/' . $this->scope . '_preview',  $data);
     }
 

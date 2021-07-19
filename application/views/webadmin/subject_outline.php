@@ -68,7 +68,7 @@
                                     <div class="col-lg-2">
                                         <div class="form-group">
                                             <label class="text-nowrap">科目範疇 : </label>
-                                            <div style="flex: 1"><?php form_list_type('categories_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'data-placeholder' => '請選擇...', 'enable_value' => $sub_categories_list, 'form_validation_rules' => 'trim|required']) ?></div>
+                                            <div style="flex: 1"><?php form_list_type('subject_category_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'data-placeholder' => '請選擇...', 'enable_value' => $sub_categories_list, 'form_validation_rules' => 'trim|required']) ?></div>
 
                                         </div>
                                     </div>
@@ -165,73 +165,73 @@
                 },
                 {
                     data: "1",
-                    title: "科目",
+                    title: "科目範疇",
                     name: 'first',
-                },                
+                },          
                 {
                     data: "2",
+                    title: "課程編號",
+                    name: 'first',
+                },        
+                {
+                    data: "3",
                     title: "課程",
                     name: 'first',
                 },                
                 {
-                    data: "3",
-                    title: "科目範疇",
-                    name: 'first',
-                },                
-                {
                     data: "4",
-                    title: "校本課程學習重點",
+                    title: "範疇",
                     name: 'first',
                 },                
                 {
                     data: "5",
-                    title: "學習元素",
+                    title: "校本課程學習重點",
                     name: 'first',
                 },                
                 {
                     data: "6",
-                    title: "組別",
+                    title: "學習元素",
                     name: 'first',
                 },                
                 {
                     data: "7",
-                    title: "LPF(基礎)",
+                    title: "組別",
                     name: 'first',
                 },                
                 {
                     data: "8",
-                    title: "LPF(高中)",
+                    title: "LPF(基礎)",
                     name: 'first',
                 },                
                 {
                     data: "9",
-                    title: "POAS",
+                    title: "LPF(高中)",
                     name: 'first',
                 },                
                 {
                     data: "10",
-                    title: "Key Skill",
+                    title: "POAS",
                     name: 'first',
                 },                
                 {
                     data: "11",
-                    title: "預期學習成果",
+                    title: "Key Skill",
                     name: 'first',
                 },                
                 {
                     data: "12",
+                    title: "預期學習成果",
+                    name: 'first',
+                },                
+                {
+                    data: "13",
                     title: "關鍵表現項目",
                     name: 'double',
                 },                
                 {
-                    data: "13",
+                    data: "14",
                     title: "評估模式",
                     name: 'double',
-                },                
-                {
-                    data: "14",
-                    title: "課程編號",
-                    name: 'first',
                 },                
                 {
                     data: "15",
@@ -261,7 +261,7 @@
                     ],
                 // 'rowsGroup': [],
                 "language": {
-                    "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/' . get_wlocale() . '.json') ?>"
+                    "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/Chinese-traditional.json') ?>",
                 },
                 // "order": [],
                 "bSort": false,
@@ -290,12 +290,12 @@
                             $('#lesson_id').val(<?= json_encode($lesson_id) ?>).change();
                             $('#sb_obj_id').val(null).trigger('change');
                             $('#subject_id').val(0).trigger('change');
-                            $('#categories_id').val(0).trigger('change');
+                            $('#subject_category_id').val(0).trigger('change');
 
                         <?}?>
 
                         let course_id = $('#courses_id').val();
-                        let category_id = $('#categories_id').val();
+                        let category_id = $('#subject_category_id').val();
                         let sb_obj_id = $('#sb_obj_id').val();
                         let lesson_id = $('#lesson_id').val();
                         let subject_id = $('#subject_id').val();
@@ -315,7 +315,6 @@
                 
                     "complete" : function(){
                         $('[data-toggle="tooltip"]').tooltip();
-                      
 
                     },
                     "error": function(e) {
@@ -329,14 +328,27 @@
                     },
                 },
                 });
-
-
-
+                
             $(".searchBtn").click(function() {
 
                 $(".tableWrap").fadeIn();
                 Main_table.draw();
             });
+
+            let data =  <?php echo $sub_categories_list?>;
+            let sub_id = <?php echo $subject_categories_id ?  $subject_categories_id : 0?>;
+            let sb_obj_id = <?php echo $sb_obj_id ?  $sb_obj_id : 0?>;
+            let lesson_id = <?php echo $lesson_id ?  $lesson_id : 0?>;
+
+            $('#subject_category_id').select2({
+                data: data
+            })
+            $("#sb_obj_id").val(sb_obj_id);
+            $("#subject_category_id").val(sub_id);
+            $("#lesson_id").val(lesson_id);
+            $("#lesson_id").trigger('change');
+            $(".select2").trigger('change');
+
 
         });
     </script>

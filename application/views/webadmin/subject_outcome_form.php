@@ -56,6 +56,9 @@
                             <div class="box-body">
                                 <div id="signupalert" class="alert alert-danger margin_bottom_20"></div>
                                 <div class="row">
+                                <div class="col-lg-12">
+                                            <h5 class="text-red"><b>新增科目：</b></h5>
+                                        </div>
                                     <div class="col-lg-5 d-flex">
                                         <div class="form-group w-100">
                                             <label class="text-nowrap">選擇科目 : </label>
@@ -74,6 +77,9 @@
                                 <hr>
                                 <div class="">
                                     <div class="row">
+                                        <div class="col-lg-12">
+                                            <h5 class="text-red"><b>搜尋項目：</b></h5>
+                                        </div>
                                         <div class="col-lg-2">
                                             <div class="form-group ">
                                                 <label class="text-nowrap">課程 : </label>
@@ -200,7 +206,6 @@
             // $(".tableWrap").hide();
 
             $(".searchBtn").click(function() {
-                console.log('clclc')
                 Course_datatable.draw()
             });
 
@@ -208,29 +213,34 @@
 
             <?php if ($_SESSION['post_data']){ ?>
                 let session_data = <?= json_encode($_SESSION['post_data'])?>;
-                $('#subject_id').val(session_data['subject_id']).select2();
+                $('#subject_id').val(session_data['subject_id']).select2();    
+                ajax_choose(session_data['subject_id']);
+                setTimeout(() => {
+                    $('#sub_category_id').val(session_data['sub_category_id']).select2();
+                }, 500);
                 for (i = 0; i < session_data['added_ids'].length; i++) {
                     added_ids.add(session_data['added_ids'][i]);
                 };
             <?}?>
+
+            // $('#sub_category_id').change(function(){
+            //     alertify.error(this.value)
+            // })
             
             $('input[id=subject_lessons]').val(Array.from(added_ids));
 
             var  Course_datatable = $('#subjectTable').DataTable({
-                // scrollY: '300px',
+                // scrollY: '500px',
                 scrollX: true,
                 "language": {
                     "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/' . get_wlocale() . '.json') ?>"
                 },
                 "order": [],
+                "bInfo": true,
                 // "bSort": false,
-                // "bPaginate": false,
+                "bPaginate": true,
                 // "paging": true,
-                // "pageLength": 10,
-            
-                "pagingType": "simple",
-
-                //"sDom": '<"wrapper"lfptip>',
+                "pageLength": 10,
                 "processing": true,
                 "serverSide": true,
                 "ordering": false,
@@ -240,7 +250,6 @@
                     "url": "<?= admin_url($page_setting['controller'] . '/search_ajax') ?>",
                     "method": "get",
                     "timeout": "30000",
-                    
                     "data": function(d) {
                         let course_id = $('#courses_id').val();
                         let category_id = $('#categories_id').val();
@@ -253,10 +262,8 @@
                         d.sb_obj_search = sb_obj_id;
                         d.lesson_search = lesson_id;
                         d.subject_search = subject_id;
-                        
                     },
                     "complete": function(e){
-                        console.log(e)
                         $('[data-toggle="tooltip"]').tooltip();
                         $(".addLesson").change(function(e) {
                             if ($(this).is(':checked')) {
@@ -322,7 +329,6 @@
                     "timeout": "30000",
                     "data": function(d) {
                         d.added_ids = Array.from(added_ids)
-                        // console.log('data',d);
                     },
                     "complete": function(e){
                         $(".addLesson").change(function() {
@@ -357,6 +363,30 @@
                 },
             });
             
+            // ajax_choose(1)
+
+            function ajax_choose(subject_id) {
+                $.ajax({
+                url: '<?= (admin_url($page_setting['controller'])) . '/select_subject' ?>',
+                method:'POST',
+                data:{subject_id:subject_id},
+                dataType:'json',
+                beforeSend:function(){
+                    $('#sub_category_id').empty();
+                    },
+                success:function(d){
+                    $('#sub_category_id').select2({
+                        data: d
+                    });
+                    },
+                })
+            }
+            $("#subject_id").change(function() {
+                // alertify.error(this.value);
+                ajax_choose(this.value)
+            })
+
+
         });
 
 

@@ -48,19 +48,19 @@ class Bk_master_lesson_outline extends CI_Controller //change this
         $GLOBALS["datatable"] = 1;
 
         $data['courses_list'] = Courses_model::list('All');
-        $data['categories_list'] = Categories_model::list(null, 'All');
+        $data['categories_list'] = Categories_model::optionList('all');
         $data['central_obj_list'] = Central_obj_model::list();
         $data['sb_obj_list'] = Sb_obj_model::list();
         $data['elements_list'] = Elements_model::list();
-        $data['lessons_list'] = Lessons_model::list();
-        $lesson_list = Lessons_model::list();
-        $lessons_arr = array();
-        foreach ($lesson_list as $i =>$row) {
-            $lessons_arr[$i] = Lessons_model::table_list($i);
+        $lesson_data = Lessons_model::list();
+        foreach ($lesson_data as $row) {
+            $lessons_list[$row['id']] = $row['code']; 
         }
-        $data['lessons'] = $lessons_arr;
+        $data['lessons_list'] = $lessons_list;
+
         $data['sb_obj_id'] = $_POST['sb_obj_id'];
         $data['lesson_id'] = $_POST['lesson_id'];
+        $data['category_id'] = $_POST['categories_id'];
         $_SESSION['post_data'] = null;
 
         $data['form_action'] = admin_url($data['page_setting']['controller']);
@@ -71,7 +71,6 @@ class Bk_master_lesson_outline extends CI_Controller //change this
 
 
     public function ajax(){
-        // $postData = $this->input->post();
         $data['page_setting'] = $this->page_setting(array(
             'view_'. $this->scope,
         ), FALSE, TRUE);
@@ -85,7 +84,7 @@ class Bk_master_lesson_outline extends CI_Controller //change this
         $filtered_lessons = Lessons_model::list($course_id, $category_id, $sb_obj_id, $lesson_id);
         $lessons_arr = array();
         foreach ($filtered_lessons as $i =>$row) {
-            $lessons_arr[$i] = Lessons_model::table_list($i);
+            $lessons_arr[$row['id']] = Lessons_model::table_list($row['id']);
         }
 
         $result_count = count($lessons_arr);
@@ -142,7 +141,7 @@ class Bk_master_lesson_outline extends CI_Controller //change this
                 $filtered_lessons = Lessons_model::list($course_id, $category_id,$sb_obj_id, $lesson_id);
                 $lessons_arr = array();
                 foreach ($filtered_lessons as $i =>$row) {
-                    $lessons_arr[$i] = Lessons_model::table_list($i);
+                    $lessons_arr[$row['id']] = Lessons_model::table_list($row['id']);
                 }
         
                 $result_count = count($lessons_arr);
@@ -201,7 +200,11 @@ class Bk_master_lesson_outline extends CI_Controller //change this
 
         $data['action'] = __('新 增');
         $data['function'] = 'create';
-        $data['lessons_list'] = Lessons_model::list();
+        $lesson_data = Lessons_model::list();
+        foreach ($lesson_data as $row) {
+            $lessons_list[$row['id']] = $row['code']; 
+        }
+        $data['lessons_list'] = $lessons_list;        
         $data['courses_list'] = Courses_model::list();
         $data['categories_list'] = Categories_model::list(null, 0);
         $data['central_obj_list'] = Central_obj_model::list();
@@ -265,13 +268,14 @@ class Bk_master_lesson_outline extends CI_Controller //change this
         $data['page_setting'] = $this->page_setting(array(
             'view_'. $this->scope,
         ), FALSE, TRUE);
+        $lesson = Lessons_model::find($id);
 
         $data['form_action'] = admin_url($data['page_setting']['controller'] . '/preview/'. $id);
         $data['action'] = __('修 改');
         $data['function'] = 'edit';
         $data['lessons_list'] = Lessons_model::rel_list($id);
         $data['courses_list'] = Courses_model::list();
-        $data['categories_list'] = Categories_model::list();
+        $data['categories_list'] = Categories_model::list($lesson->course_id, null);
         $data['central_obj_list'] = Central_obj_model::list();
         $data['sb_obj_list'] = Sb_obj_model::list();
         $data['elements_list'] = Elements_model::list();
@@ -287,7 +291,6 @@ class Bk_master_lesson_outline extends CI_Controller //change this
             $lessons_arr[$i] = Lessons_model::table_list($i);
         }
         $data['lessons'] = $lessons_arr;
-        $lesson = Lessons_model::find($id);
 
     
         if ($_SESSION['post_data']) {
@@ -328,6 +331,9 @@ class Bk_master_lesson_outline extends CI_Controller //change this
             $data['rel_lessons'] = Lessons_relevant_model::id_list($id);
 
         }
+
+        // dump($data['categories_id']);
+        // dump($data['categories_list']);
 
         $GLOBALS["select2"] = 1;        
         $GLOBALS["datatable"] = 1;

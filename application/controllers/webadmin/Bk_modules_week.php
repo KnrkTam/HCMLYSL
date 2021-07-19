@@ -98,7 +98,6 @@ class Bk_modules_week extends CI_Controller //change this
             }
 
         }
-        
         $result_count = count($result);
 
         //rearrange data
@@ -109,7 +108,7 @@ class Bk_modules_week extends CI_Controller //change this
             foreach ($module_list as $i => $foo) {
                 $data[$num][] = '<a class="editLinkBtn" href="'.admin_url(current_controller() . '/edit/'. $row['id'] ).'"><i class="fa fa-edit"></i></a>';
                 $data[$num][] = Years_model::annual($row['year_id']);
-                $data[$num][] = Levels_model::name($row['level_id']);
+                $data[$num][] = '<span class="hidden">'.$row['level_id'].'</span>'. Levels_model::name($row['level_id']);
                 $data[$num][] = date('d/m/Y', strtotime($row['module_from_'.$i.''])).' - '. date('d/m/Y', strtotime($row['module_to_'.$i.'']));
                 $data[$num][] = $row['week_from_'.$i.''].'-'.$row['week_to_'.$i.''];
                 $data[$num][] = date('d/m/Y', strtotime($row['first_assessment_'.$i.'']));

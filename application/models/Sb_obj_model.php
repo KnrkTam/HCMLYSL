@@ -5,10 +5,12 @@
 	{
 		protected $table = "sb_obj";
 
-        public static function list()
+        public static function list($all = null)
 		{
             $result = Sb_obj_model::all();
-
+            if ($all) {
+                $list[0] = '所有學習重點';
+            }
             foreach($result as $row){
                 $list[$row['id']] = $row["name"];
             }

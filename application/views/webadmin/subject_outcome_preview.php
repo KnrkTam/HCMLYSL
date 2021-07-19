@@ -61,7 +61,7 @@
                                 <div class="tableWrap">
                                     <div class="row">
                                     <div class="col-lg-12">
-                                            <h3 class="text-blue"><b><?= $subject?></b></h5>
+                                            <h3 class="text-blue"><b><?= $subject?> - <?= $subject_category ?></b></h5>
                                     </div>
                                         <div class="col-lg-12">
                                             <h5 class="text-purple"><b>已選項目：</b></h5>
@@ -90,11 +90,14 @@
                                             </table>
 
                                             <div class="mt-4 d-flex justify-content-end">
-                                                <input type="hidden" name="subject_id" value="<?= $id?>"></input>
+                                                <input type="hidden" name="subject_lesson_id" value="<?= $subject_lesson_id?>"></input>
+                                                <input type="hidden" name="subject_id" value="<?= $subject_id ?>"></input>
+                                                <input type="hidden" name="subject_categories_id" value="<?= $subject_category_id ?> "></input>
+
                                                 <input type="hidden" name="lessons_id[]" value=<?= json_encode($added_ids, true)?>></input>
 
                                                 <button type="submit" class="btn bg-maroon mr-4 mw-100">確 定</button>
-                                                <button type="button" class="btn btn-default mw-100" onclick="location.href='<?= (admin_url($page_setting['controller'])) . '/'. $previous. '/'. $id?>';">返 回</button>
+                                                <button type="button" class="btn btn-default mw-100" onclick="location.href='<?= (admin_url($page_setting['controller'])) . '/'. $previous. '/'. $subject_lesson_id?>';">返 回</button>
                                          
                                             </div>
                                             <hr>
@@ -146,8 +149,8 @@
                 },
                 "order": [],
                 "bSort": false,
-                "pageLength": 50,
-                "pagingType": "input",
+                "pageLength": 10,
+                "pagingType": "simple",
                 //"sDom": '<"wrapper"lfptip>',
                 "processing": false,
                 "serverSide": true,
@@ -173,42 +176,6 @@
 
         });
 
-
-        function submit_form(_this) {
-            //form checking
-            var valid_data = true;
-            //.form checking
-            if (!valid_data) {
-                //alert('Invalid Data.');
-            } else {
-                ajax_submit_form(_this);
-            }
-        }
-
-        <?php /*
-//multiple image upload
-$("input.multiple_upload").fileinput({
-language: '<?=get_wlocale()?>',
-previewFileType: "image",
-showCaption: false,
-showUpload: false,
-maxFileSize: 2048,
-maxFileCount: 30,
-maxImageHeight: 2000,
-maxImageWidth: 2000,
-overwriteInitial: false,
-allowedFileExtensions: ['jpg','jpeg','png'],
-initialPreview: <?=isset($photos_preview) ? $photos_preview : "{}"?>,
-initialPreviewAsData: true,
-initialPreviewConfig: <?=isset($photos_json) ? $photos_json : "{}"?>,
-deleteUrl: "<?=admin_url('bk_news/delete_multiple_upload')?>",
-// hiddenThumbnailContent: true,
-// initialPreviewShowDelete: true,
-// removeFromPreviewOnError: true,
-}).on('filedeleted', function(event, key, jqXHR, data) {
-alertify.success("<?=__('Deleted successfully!')?>");
-});
- */ ?>
     </script>
 
 </body>

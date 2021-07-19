@@ -90,7 +90,7 @@
                                         <div class="form-group">
                                             <label class="text-nowrap required">範疇：
                                             </label>
-                                            <div style="flex: 1"><?php form_list_type('categories_id', ['type' => 'select', 'class'=> 'select2 form-control' , 'value' =>$categories_id, 'data-placeholder' => '請選擇', 'enable_value' => $categories_list, 'form_validation_rules' => 'trim|required']) ?></div>
+                                            <div style="flex: 1"><?php form_list_type('categories_id', ['type' => 'select', 'class'=> 'select2 form-control' , 'value' => $categories_id, 'data-placeholder' => '請選擇', 'enable_value' => $categories_list, 'form_validation_rules' => 'trim|required']) ?></div>
 
                                         </div>
                                     </div>
@@ -414,66 +414,31 @@
             <? } ?>
 
 
-            /*
-                        $('.searchCourseNumberCheck').change(function() {
-                            var values = [];
-                                $('.searchCourseNumberCheck:checked').each(function() {
-                                //if(values.indexOf($(this).val()) === -1){
-                                values=$(this).closest("tr").find(".courseNum").text();
-                                //  $('.inputCourseNumber').attr("value", values)
-                                // }
-                                });
-                                console.log(values);
-                        });
-            */
-
-
-
-
+            $('#course_id').change(function() {
+            ajax_choose(this.value)
+            function ajax_choose(course_id) {
+                $.ajax({
+                url: '<?= (admin_url($page_setting['controller'])) . '/select_course' ?>',
+                method:'POST',
+                data:{course_id:course_id},
+                dataType:'json',
+                beforeSend:function(){
+                    $('#categories_id').empty();
+                },
+                success:function(d){
+                    $('#categories_id').select2({
+                        data: d
+                    });
+                },
+                })
+                }
+            })
 
 
         })
 
 
 
-
-
-
-        function submit_form(_this) {
-            //form checking
-            var valid_data = true;
-            //.form checking
-            if (!valid_data) {
-                //alert('Invalid Data.');
-            } else {
-                ajax_submit_form(_this);
-            }
-        }
-
-        <?php /*
-    //multiple image upload
-    $("input.multiple_upload").fileinput({
-        language: '<?=get_wlocale()?>',
-        previewFileType: "image",
-        showCaption: false,
-        showUpload: false,
-        maxFileSize: 2048,
-        maxFileCount: 30,
-        maxImageHeight: 2000,
-        maxImageWidth: 2000,
-        overwriteInitial: false,
-        allowedFileExtensions: ['jpg','jpeg','png'],
-        initialPreview: <?=isset($photos_preview) ? $photos_preview : "{}"?>,
-        initialPreviewAsData: true,
-        initialPreviewConfig: <?=isset($photos_json) ? $photos_json : "{}"?>,
-        deleteUrl: "<?=admin_url('bk_news/delete_multiple_upload')?>",
-        // hiddenThumbnailContent: true,
-        // initialPreviewShowDelete: true,
-        // removeFromPreviewOnError: true,
-    }).on('filedeleted', function(event, key, jqXHR, data) {
-        alertify.success("<?=__('Deleted successfully!')?>");
-    });
- */ ?>
     </script>
 
 </body>

@@ -98,6 +98,12 @@
 								<div class="col-sm-8"><?php form_list_type('subject_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'enable_value' => $subjects_list, 'form_validation_rules' => 'trim|required', 'disable_please_select' => 1]) ?></div>
 								<div class="col-sm-2"><button type="button" class="btn createBtn mw-100 bg-orange mb-4" data-toggle="modal" data-target="#addOption" data-title="科目">新 增</button></div>
 							</div>
+
+                            <div class="form-group">
+								<label class="text-nowrap required col-sm-2"><span>科目範疇：</span> </label>
+								<div class="col-sm-8"><?php form_list_type('subject_categories_id', ['type' => 'select', 'class'=> 'form-control' , 'value' =>'', 'form_validation_rules' => 'trim|required', 'disable_please_select' => 1]) ?></div>
+								<div class="col-sm-2"><button type="button" class="btn createBtn mw-100 bg-orange mb-4" data-toggle="modal" data-target="#addOption" data-title="科目範疇">新 增</button></div>
+							</div>
                             <div class="form-group">
 								<label class="text-nowrap required col-sm-2"><span>年度：</span> </label>
 								<div class="col-sm-8"><?php form_list_type('year_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'enable_value' => $years_list, 'form_validation_rules' => 'trim|required', 'disable_please_select' => 1]) ?></div>
@@ -235,6 +241,18 @@
                             `;
                         $(".modal-core").html(content);
                         break;
+
+                case '科目範疇':
+                content = "";
+                content += `
+                            <label class="text-nowrap">所屬科目： </label>
+                            <?php form_list_type('modalName2', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'enable_value' => $subjects_list, 'form_validation_rules' => 'trim|required']) ?><br />
+                            <label class="text-nowrap">${title}名稱： </label>
+                            <input type="hidden" id="modalTitle" value="${title}"></input>
+                            <input type="text" class="form-control required" placeholder="輸入名稱" id="modalName" value=""></input>
+                            `;
+                        $(".modal-core").html(content);
+                        break;
                 default: 
                 
             }
@@ -273,27 +291,15 @@
             } 
         })
 
-        // let data = [{
-        //     id: 1,
-        //     text: 'Menu',
-        //     children: [{
-        //         id:2,
-        //         text: 'child1',
-        //     },
-        //     {
-        //         id:3,
-        //         text: 'child2',
-        //     }
-        //     ]
-        // }]
-        jQuery(" .select2-results__group").css("background-color", "#8e00ff ");
-
-        let data = <?php echo json_encode($categories_list)?>
-
-        console.log(data);
+        let data = <?php echo $categories_list?>;
+        let sub_data =  <?php echo $subject_categories_list?>;
 
         $('#categories_id').select2({
             data: data
+        })
+
+        $('#subject_categories_id').select2({
+            data: sub_data
         })
     })
 

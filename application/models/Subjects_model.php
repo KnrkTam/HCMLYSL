@@ -32,4 +32,10 @@
 
             return $result;
         }
+
+
+        public function cat() 
+        {
+            return $this->hasMany('Subject_categories_model', 'subject_id');
+        }
 	}

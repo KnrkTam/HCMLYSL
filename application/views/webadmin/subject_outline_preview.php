@@ -54,31 +54,36 @@
                             </div>
                         </div> -->
                             <!-- /.box-header -->
-
                             <div class="box-body">
                                 <div id="signupalert" class="alert alert-danger margin_bottom_20"></div>
-
-
                                 <div class="row">
-
                                     <div class="col-lg-4">
-
                                         <div class="form-group w-100">
                                             <label class="text-nowrap">科目 : </label>
                                             <p><?= $subject?></p>
-
                                         </div>
-
-
                                     </div>
                                     <div class="col-lg-4">
-
                                         <div class="form-group">
                                             <label class="text-nowrap"><span class="text-red">*</span>相關課程編號： </label>
                                             <p><?= $lesson?></p>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label for="remarks">科目範疇:</label>
+                                                <p> 
+                                                    <?= Subject_categories_model::name($_POST['subject_cat_id']) ?>
+                                                </p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-8">
+                                        <div class="form-group">
+                                            <label for="studyresults">預期學習成果:</label>
+                                            <p><?= $_POST['expected_outcome']?> </p>
 
                                         </div>
-
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="form-group">
@@ -86,14 +91,6 @@
                                                 <p> 
                                                     <?= implode(', ', $remark) ?>
                                                 </p>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-12">
-                                        <div class="form-group">
-                                            <label for="studyresults">預期學習成果:</label>
-                                            <p>能注意聲音的來源，對聲音作出反應 </p>
-
                                         </div>
                                     </div>
                                     <div class="col-lg-12">

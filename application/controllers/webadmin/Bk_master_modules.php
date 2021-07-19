@@ -50,14 +50,14 @@ class Bk_master_modules extends CI_Controller //change this
         $GLOBALS["datatable"] = 1;
         
         //level drop down
-        $data['level_list'] = Levels_model::list();
+        $data['level_list'] = Levels_model::list('aal');
 
 
         //modules
         $modules = Modules_model::all();
         $data['modules'] = $modules;
         $data['module_count'] = Modules_model::select('level_id', DB::raw('count(*) as count'))->groupBy('level_id')->orderBy('count','desc')->first()->count;
-        for ($i=1; $i < 6; $i++){
+        for ($i=0; $i < 5; $i++){
             $data['module_row'.$i] = Modules_model::module_row($i);
         };
 

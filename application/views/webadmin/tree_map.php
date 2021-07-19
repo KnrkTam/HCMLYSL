@@ -60,11 +60,11 @@
                                 <div class="mt-4 mb-4"><a class="link showAllBtn" href="#">全部展開</a> |　<a class="link hideAllBtn" href="#">全部隱藏</a> </div>
                             <?php foreach ($courses as $i => $course) { ?>
                                 <ul class="nav nav-list-main">
-                                    <li><label class="nav-toggle nav-header"><span class="nav-toggle-icon text-red mr-2"><i class="fa fa-fw fa-plus-square-o"></i> <?= $course?></span> <a class="link" href="#" data-toggle="modal" data-target="#newCategory">新增</a> | <a class="link" href="#" data-toggle="modal" data-target="#editCategory">修改範疇</a></label>
-                                    <?php foreach ($categories as $j => $category) { ?>
+                                    <li><label class="nav-toggle nav-header"><span class="nav-toggle-icon text-red mr-2"><i class="fa fa-fw fa-plus-square-o"></i> <?= $course->name?></span> <a class="link" href="#" data-toggle="modal" data-target="#newCategory">新增</a> | <a class="link" href="#" data-toggle="modal" data-target="#editCategory">修改範疇</a></label>
+                                    <?php foreach ($course->cat as $j => $category) { ?>
                                         <ul class="nav nav-list nav-left-ml">
-                                            <li><label class="nav-toggle nav-header"><span class="nav-toggle-icon text-green mr-2"><i class="fa fa-fw fa-plus-square-o"></i><?= $category?></span> <a class="link" href="#" data-toggle="modal" data-target="#newStudyPoint">新增</a> | <a class="link" href="#" data-toggle="modal" data-target="#editStudyPoint">修改校本課程學習重點</a></label>
-                                            <?php foreach (Lessons_model::where('course_id', $i)->where('category_id', $j)->get() as $row) {?>
+                                            <li><label class="nav-toggle nav-header"><span class="nav-toggle-icon text-green mr-2"><i class="fa fa-fw fa-plus-square-o"></i><?= $category->name?></span> <a class="link" href="#" data-toggle="modal" data-target="#newStudyPoint">新增</a> | <a class="link" href="#" data-toggle="modal" data-target="#editStudyPoint">修改校本課程學習重點</a></label>
+                                            <?php foreach (Lessons_model::where('category_id', $category->id)->get() as $row) {?>
                                                 <ul class="nav nav-list nav-left-ml">
                                                     <li><label class="nav-toggle nav-header"><span class="nav-toggle-icon text-maroon mr-2"><i class="fa fa-fw fa-plus-square-o"></i> <?= Sb_obj_model::name($row->sb_obj_id)?></span> <a class="link" href="#" data-toggle="modal" data-target="#newStudyResults">新增</a> | <a class="link" href="#" data-toggle="modal" data-target="#editStudyResults">修改預期學習成果</a></label>
                                                     <?php foreach (Lessons_model::where('course_id', $i)->where('category_id', $j)->get() as $row) {?>

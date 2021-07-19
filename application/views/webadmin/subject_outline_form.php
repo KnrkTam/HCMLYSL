@@ -39,17 +39,24 @@
                             <div class="box-body">
                                 <div id="signupalert" class="alert alert-danger margin_bottom_20"></div>
                                 <div class="row">
+                                <div class="col-lg-12">
+                                    <label class="text-nowrap">科目 : </label>
+                                    <h4 class="text-purple"><?= $subject ?></h4>
+                                    <input type="hidden" name="subject_id" value=<?= $subject_id?> />
+                                    </div>
+                                </div>
+                                <div class="row">
                                     <div class="col-lg-4">
                                         <div class="form-group w-100">
-                                            <label class="text-nowrap">科目 : </label>
-                                            <div style="flex: 1"><?php form_list_type('subject_id2', ['type' => 'select', 'class'=> 'form-control subjectSelect select2' , 'value' => $subject_id ,  'data-placeholder' => '請選擇...', 'enable_value' => $subject_list, 'form_validation_rules' => 'trim|required', 'disabled' => 1]) ?></div>
-                                            <input type="hidden" value="<?=$subject_id?>" name="subject_id" />
+                                        <label class="text-nowrap">科目範疇 : </label>
+                                            <div style="flex: 1"><?php form_list_type('subject_cat_id', ['type' => 'select', 'class'=> 'form-control subjectSelect select2' , 'value' => $subject_cat_id ,  'data-placeholder' => '請選擇...', 'enable_value' => $subject_cat_list, 'form_validation_rules' => 'trim|required']) ?></div>
+                                            <input type="hidden" name="subject_id" value=<?= $subject_id?> />
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="form-group">
                                             <label class="text-nowrap required">課程編號：</label>
-                                            <div style="width:100%"><?php form_list_type('lesson_id', ['type' => 'select', 'class'=> 'inputCourseNumber select2 form-control' , 'value' => $lessons_list, 'data-placeholder' => 'e.g.: #SC557, #BD003',  'enable_value' => $lessons_list, 'form_validation_rules' => 'trim|required']) ?></div>
+                                            <div style="width:100%"><?php form_list_type('lesson_id', ['type' => 'select', 'class'=> 'select2 form-control' , 'data-placeholder' => 'e.g.: #SC557, #BD003', 'form_validation_rules' => 'trim|required']) ?></div>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
@@ -76,11 +83,12 @@
                                     </div>
                                     <div class="col-lg-4">
                                     </div>
-                                    <div class="col-lg-12">
+                                    <div class="col-lg-12 ">
+                                        <div class="key_performance_item_group ">
                                         <div class="row align-items-center key_performance_item">
                                         <div class="col-lg-4">
                                             <div class="form-group mb-3 w-100">
-                                                <input type="text" class="form-control" id="key_performance" name="performance[0]" placeholder="輸入關鍵表現項目" value="123" required data-required-message="請填寫此資料">
+                                                <input type="text" class="form-control" id="key_performance" name="performance[0]" placeholder="輸入關鍵表現項目" value="" required data-required-message="請填寫此資料">
                                             </div>
                                         </div>
                                         <div class="col-lg-4 d-flex mt-3">
@@ -99,8 +107,10 @@
                                                 <input type="text" class="form-control" name="assessment_other_field[0]" id="other_0" data-required-message="請填寫此資料">
                                             </div>
                                         </div>
-                                            <div class="col-lg-1"> <button type="button" class="btn bg-navy deleteBtn w-100" disabled><i class="fa fa-trash-o"></i></button></div>
-                                        </div>
+                                        <div class="col-lg-1"> <button type="button" style="margin-top: 25%" class="btn bg-navy deleteBtn w-100" disabled><i class="fa fa-trash-o"></i></button></div>
+                                        </div >
+                                        </div >
+
                                         <button type="button" class="btn btn-info addBtn"><i class="fa fa-fw fa-plus"></i>增加關鍵表現項目</button>
                                     </div>
 
@@ -158,6 +168,57 @@
             }
         });
 
+        <?php if ($_SESSION['post_data']){ ?>
+            let session_data = <?= json_encode($_SESSION['post_data'])?>;
+            $('#subject_cat_id').val(session_data['subject_cat_id']).select2();   
+            subject_cat_change(session_data['subject_cat_id'])
+ 
+            setTimeout(() => {
+                lesson_change(session_data['lesson_id'])
+                $('#lesson_id').val(session_data['lesson_id']).select2();   
+
+            }, 500);
+            console.log('asdf', session_data['performance'][0]);
+            let loop_data = '';
+
+            for (i = 0; i < Object.keys(session_data['assessment_id']).length ; i++) {
+                loop_data += `
+                    <div class="row align-items-center key_performance_item">
+                    <div class="col-lg-4">
+
+                        <div class="form-group mb-3 w-100">
+                            <input type="text" class="form-control" id="key_performance" name="performance[${i}]" value="${session_data['performance'][i]}" required data-required-message="請填寫此資料">
+                        </div>
+                    </div>
+                    <div class="col-lg-4 d-flex mt-3">
+                        <?php foreach ($assessments_list as $i => $row) { ?>
+                            <div class="form-check nowrap mr-3">
+                                <label class="form-check-label" <?= $row['mode']?>><input class="form-check-input" id="ass_${i}" data-set="${i}" type="radio"  name="assessment_id[${i}]"  value="<?= $i?>" required data-required-message="請填寫此資料"><?= $row['mode']?></label>
+                            </div>
+                        <?}?>
+                    </div>
+                        <div class="col-lg-3">
+                            <div class="form-check w-100  d-flex align-items-center mb-3">
+                                <label class="form-check-label nowrap mr-4"> 
+                                    <input class="form-check-input radio" type="radio" name="assessment_id[${i}]" value="0" data-set="${i}" id="ass_${i}">
+                                    其他
+                                </label>
+                                <input type="text" class="form-control" name="assessment_other_field[${i}]" id="other_${i}" data-required-message="請填寫此資料">
+
+                            </div>
+                        </div>
+                        <div class="col-lg-1"> <button type="button" style="margin-top: 8px" class="btn bg-navy deleteBtn w-100"><i class="fa fa-trash-o"></i></button></div>
+                    </div>`
+                $('.key_performance_item_group').html(loop_data);         
+            }
+
+            let countRow = Object.keys(session_data['assessment_id']).length;
+        <?} else {?>
+            let countRow = 0;
+
+        <? } ?>
+
+
 
         $('input[type=radio][id=ass_0]').change(function () {
                 $('#other_0').attr('required', this.value == "0" ? true: false);
@@ -169,74 +230,108 @@
                 });
             })
 
+        function lesson_change(lesson_id = null) {
+            $.ajax({
+            url: '<?= (admin_url($page_setting['controller'])) . '/select_lesson' ?>',
+            method:'POST',
+            data:{lesson_id:lesson_id},
+            dataType:'json',
+            success:function(data){
+                if (!lesson_id) {
+                    data.expected_outcome = null;
+                } 
+                $('#expected_outcome').val(data.expected_outcome);
+                $('#expected_outcome_text').html(data.expected_outcome);
+            
+            
+           
 
-        $('#lesson_id').change(function() {
-            ajax_choose(this.value)
-            function ajax_choose(lesson_id) {
-                $.ajax({
-                url: '<?= (admin_url($page_setting['controller'])) . '/select_lesson' ?>',
-                method:'POST',
-                data:{lesson_id:lesson_id},
-                dataType:'json',
-                success:function(data){
-                    console.log('select_lesson');
-                    $('#expected_outcome').val(data.expected_outcome);
-                    $('#expected_outcome_text').html(data.expected_outcome);
-                },
-                })
+            },
+            error: function(e){
+                console.log(error)
             }
+            })
+        }
+         $('#lesson_id').change(function() {
+            lesson_change(this.value)
         })
 
 
-        let countRow = 0;
+        $('.addBtn').click(function() {
+            countRow++;
+            $('.key_performance_item:first').before(`
+                <div class="row align-items-center key_performance_item">
+                <div class="col-lg-4">
 
-        countRow++;
-        $('.key_performance_item:first').before(`
-            <div class="row align-items-center key_performance_item">
-            <div class="col-lg-4">
-
-                <div class="form-group mb-3 w-100">
-                    <input type="text" class="form-control" id="key_performance" name="performance[${countRow}]" value="有意識地留意及回應聲音 (${countRow})" required data-required-message="請填寫此資料">
-                </div>
-            </div>
-            <div class="col-lg-4 d-flex mt-3">
-
-                <?php foreach ($assessments_list as $i => $row) { ?>
-                    <div class="form-check nowrap mr-3">
-                        <label class="form-check-label" <?= $row['mode']?>><input class="form-check-input" id="ass_${countRow}" data-set="${countRow}" type="radio"  name="assessment_id[${countRow}]"  value="<?= $i?>" required data-required-message="請填寫此資料"><?= $row['mode']?></label>
-                    </div>
-                <?}?>
-            </div>
-                <div class="col-lg-3">
-                    <div class="form-check w-100  d-flex align-items-center mb-3">
-                        <label class="form-check-label nowrap mr-4"> 
-                            <input class="form-check-input radio" type="radio" name="assessment_id[${countRow}]" value="0" data-set="${countRow}" id="ass_${countRow}">
-                            其他
-                        </label>
-                        <input type="text" class="form-control" name="assessment_other_field[${countRow}]" id="other_${countRow}" data-required-message="請填寫此資料">
-
+                    <div class="form-group mb-3 w-100">
+                        <input type="text" class="form-control" id="key_performance" name="performance[${countRow}]" value="e.g. 有意識地留意及回應聲音 (${countRow})" required data-required-message="請填寫此資料">
                     </div>
                 </div>
-                <div class="col-lg-1"> <button type="button" class="btn bg-navy deleteBtn w-100"><i class="fa fa-trash-o"></i></button></div>
-            </div>`
-        );
+                <div class="col-lg-4 d-flex mt-3">
+                    <?php foreach ($assessments_list as $i => $row) { ?>
+                        <div class="form-check nowrap mr-3">
+                            <label class="form-check-label" <?= $row['mode']?>><input class="form-check-input" id="ass_${countRow}" data-set="${countRow}" type="radio"  name="assessment_id[${countRow}]"  value="<?= $i?>" required data-required-message="請填寫此資料"><?= $row['mode']?></label>
+                        </div>
+                    <?}?>
+                </div>
+                    <div class="col-lg-3">
+                        <div class="form-check w-100  d-flex align-items-center mb-3">
+                            <label class="form-check-label nowrap mr-4"> 
+                                <input class="form-check-input radio" type="radio" name="assessment_id[${countRow}]" value="0" data-set="${countRow}" id="ass_${countRow}">
+                                其他
+                            </label>
+                            <input type="text" class="form-control" name="assessment_other_field[${countRow}]" id="other_${countRow}" data-required-message="請填寫此資料">
 
-            $(`input[type=radio][id=ass_${countRow}]`).change(function () {
-                $(`#other_${this.dataset.set}`).attr('required', this.value == "0" ? true : false);
-                $('input[required]').on('change invalid', function() {
-                    this.setCustomValidity('');
-                    if (!this.validity.valid) {
-                        this.setCustomValidity($(this).data("required-message"));
-                    }
-                });
-            })
+                        </div>
+                    </div>
+                    <div class="col-lg-1"> <button type="button" class="btn bg-navy deleteBtn w-100"><i class="fa fa-trash-o"></i></button></div>
+                </div>`
+            );
 
 
+                $(`input[type=radio][id=ass_${countRow}]`).change(function () {
+                    $(`#other_${this.dataset.set}`).attr('required', this.value == "0" ? true : false);
+                    $('input[required]').on('change invalid', function() {
+                        this.setCustomValidity('');
+                        if (!this.validity.valid) {
+                            this.setCustomValidity($(this).data("required-message"));
+                        }
+                    });
+                })
+
+        })
 
         // remove row
         $(document).on('click', '.deleteBtn', function() {
-            $(this).closest('.performanceItem').remove();
+            $(this).closest('.key_performance_item').remove();
         });
+
+        function subject_cat_change(subject_cat_id) {
+            $.ajax({
+            url: '<?= (admin_url($page_setting['controller'])) . '/select_subject_cat' ?>',
+            method:'POST',
+            data:{subject_cat_id:subject_cat_id},
+            dataType:'json',
+            beforeSend:function(){
+                $('#lesson_id').empty();
+            },
+            success:function(d){
+                $('#lesson_id').select2({
+                    data: d
+                });
+                console.log(d.length)
+                if (d.length > 0) {
+                    lesson_change(d[0].id)
+                } else {
+                    lesson_change(null)
+
+                }
+            },
+            })
+        }
+        $("#subject_cat_id").change(function() {
+            subject_cat_change(this.value)
+        })
 
     });
 
