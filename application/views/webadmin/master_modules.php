@@ -201,18 +201,6 @@
     <!-- ./wrapper -->
     <?php include_once("script.php"); ?>
     <script>
-
-        // function submit_form(_this) {
-        //     //form checking
-        //     var valid_data = true;
-        //     //.form checking
-        //     if (!valid_data) {
-        //         //alert('Invalid Data.');
-        //     } else {
-        //         ajax_submit_form(_this);
-        //     }
-        // }
-
         $(document).on("click", ".editLinkBtn", function () {
             let myId = $(this).data('id');
             let myCode = $(this).data('code');
@@ -222,8 +210,6 @@
             $(".modal-body #modalName").val( myName );
             $(".modal-body #level_id").val( myLevel );
             $(".modal-body #modalId").val( myId );
-
-
         });
 
 
@@ -277,30 +263,7 @@
                 });
             } 
         })
-        <?php /*
-    //multiple image upload
-    $("input.multiple_upload").fileinput({
-        language: '<?=get_wlocale()?>',
-        previewFileType: "image",
-        showCaption: false,
-        showUpload: false,
-        maxFileSize: 2048,
-        maxFileCount: 30,
-        maxImageHeight: 2000,
-        maxImageWidth: 2000,
-        overwriteInitial: false,
-        allowedFileExtensions: ['jpg','jpeg','png'],
-        initialPreview: <?=isset($photos_preview) ? $photos_preview : "{}"?>,
-        initialPreviewAsData: true,
-        initialPreviewConfig: <?=isset($photos_json) ? $photos_json : "{}"?>,
-        deleteUrl: "<?=admin_url('bk_news/delete_multiple_upload')?>",
-        // hiddenThumbnailContent: true,
-        // initialPreviewShowDelete: true,
-        // removeFromPreviewOnError: true,
-    }).on('filedeleted', function(event, key, jqXHR, data) {
-        alertify.success("<?=__('Deleted successfully!')?>");
-    });
- */ ?>
+
     </script>
 
 </body>

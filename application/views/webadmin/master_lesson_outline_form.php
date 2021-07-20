@@ -82,7 +82,7 @@
                                     <div class="col-lg-4">
                                         <div class="form-group">
                                             <label class="text-nowrap required">課程： </label>
-                                            <div style="flex: 1"><?php form_list_type('course_id', ['type' => 'select', 'class'=> 'select2 form-control' , 'value' =>$course_id, 'data-placeholder' => '請選擇', 'enable_value' => $courses_list, 'form_validation_rules' => 'trim|required']) ?></div>
+                                            <div style="flex: 1"><?php form_list_type('course_id', ['type' => 'select', 'class'=> 'select2 form-control' , 'value' => $course_id, 'data-placeholder' => '請選擇', 'enable_value' => $courses_list, 'form_validation_rules' => 'trim|required']) ?></div>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
@@ -319,7 +319,7 @@
             var Ajax_datatable = $('#searchCourseNumberTable').DataTable({
                 scrollX: true,
                 "language": {
-                    "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/' . get_wlocale() . '.json') ?>"
+                   "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/Chinese-traditional.json') ?>",
                 },
                 "order": [],
                 "bSort": false,

@@ -16,7 +16,7 @@
             if ($course_id) {
                 $result = Categories_model::orderBy('course_id', 'DESC')->where('course_id', $course_id)->get();
             } else {
-                // $result = Categories_model::orderBy('id', 'DESC')->get();
+                $result = Categories_model::orderBy('id', 'ASC')->get();
             }
 
             foreach($result as $row){
@@ -59,5 +59,10 @@
             return $list;
         }
 
+
+        public function lessons() 
+        {
+            return $this->hasMany('Lessons_model', 'category_id');
+        }
 
 	}

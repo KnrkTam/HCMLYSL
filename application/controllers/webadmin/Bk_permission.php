@@ -178,7 +178,23 @@ class Bk_permission extends CI_Controller
                 'desc' => 'Can view modules_week',
                 'role' => array('super_admin', 'admin')
             ),
-
+            // 校本課程大綱樹狀圖
+            'create_courses_map' => array(
+                'desc' => 'Can create courses_map',
+                'role' => array('super_admin', 'admin')
+            ),
+            'update_courses_map' => array(
+                'desc' => 'Can update courses_map',
+                'role' => array('super_admin', 'admin')
+            ),
+            'delete_courses_map' => array(
+                'desc' => 'Can delete courses_map',
+                'role' => array('super_admin', 'admin')
+            ),
+            'view_courses_map' => array(
+                'desc' => 'Can view courses_map',
+                'role' => array('super_admin', 'admin')
+            ),
             // 設定年度教職員
             'create_annual_staff_list' => array(
             'desc' => 'Can create annual_staff_list',

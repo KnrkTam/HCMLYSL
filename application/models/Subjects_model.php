@@ -5,12 +5,26 @@
 	{
 		protected $table = "subjects";
 
-        public static function list($all = null)
+        public static function list($all = null, $subject_outcome = null)
 		{
             if ($all) {
                 $list[0] = '所有科目';
             }
             $result = Subjects_model::all();
+
+
+
+
+            if ($subject_outcome) {
+                $existing_arr = Subject_lessons_model::pluck('subject_category_id')->unique();
+                $new_arr = Subject_categories_model::whereNotIn('id', $existing_arr)->pluck('subject_id')->unique();
+                $result = Subjects_model::whereIn('id', $new_arr)->get();
+            }
+
+
+
+
+
             foreach($result as $row){
                 $list[$row['id']] = $row["name"];
             }

@@ -183,8 +183,7 @@ class Bk_subject_outline extends CI_Controller //change this
         $data['expected_outcome'] = $subject->expected_outcome;
         $data['subject_cat_list'] = Subject_categories_model::list($subject_id, null);
 
-        // array_unshift($data['courses_list'], "所有課程");
-        // array_unshift($data['categories_list'], "所有課程");
+
         $data['form_action'] = admin_url($data['page_setting']['controller'] . '/preview');
         $data['subject_id'] = $subject_id;
         $data['subject'] = Subjects_model::name($subject_id);
@@ -269,7 +268,9 @@ class Bk_subject_outline extends CI_Controller //change this
         $id = $_POST['subject_cat_id'];
         $list = array();
 
-        $cat_lessons = Subject_lessons_model::where('subject_category_id', $id)->pluck('lesson_id');
+        $existing_arr = Subject_lessons_model::where('subject_category_id', $id)->pluck('id')->unique();
+        $existing_key_performance = Key_performances_model::whereIn('subject_lesson_id', $existing_arr)->pluck('subject_lesson_id')->unique();
+        $cat_lessons = Subject_lessons_model::where('subject_category_id', $id)->whereNotIn('id', $existing_key_performance)->pluck('lesson_id')->unique();
 
 
         foreach ($cat_lessons as $i => $row) {
@@ -339,7 +340,6 @@ class Bk_subject_outline extends CI_Controller //change this
         $data['form_action'] = admin_url($data['page_setting']['controller'] . '/submit_form/'.$id);
         $_SESSION['post_data'] = $postData;
 
-        dump($_POST);
         $this->load->view('webadmin/' . $this->scope . '_preview',  $data);
     }
 

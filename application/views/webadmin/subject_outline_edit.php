@@ -45,6 +45,7 @@
                                         <div class="form-group w-100">
                                             <label class="text-nowrap">科目範疇 : </label>
                                             <div style="flex: 1"><?php form_list_type('subject_cat_id', ['type' => 'select', 'class'=> 'form-control subjectSelect select2' , 'value' => $subject_cat_id ,  'data-placeholder' => '請選擇...', 'enable_value' => $subject_cat_list, 'form_validation_rules' => 'trim|required', 'disabled' => 1]) ?></div>
+                                            <input type="hidden" name='subject_cat_id' value="<?= $subject_cat_id ?>" />
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
@@ -63,6 +64,8 @@
                                         <div class="form-group">
                                             <label for="studyresults">預期學習成果:</label>
                                             <textarea class="form-control" type="text" row="2" readonly><?= $expected_outcome?></textarea>
+                                            <input type="hidden" name='expected_outcome' value="<?= $expected_outcome ?>" />
+
                                         </div>
                                     </div>
                                     <div class="col-lg-4">

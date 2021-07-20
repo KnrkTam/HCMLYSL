@@ -131,7 +131,7 @@
             let AnnualStaffTable = $('#mainTable').DataTable({
                 scrollX: true,
                 "language": {
-                    "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/' . get_wlocale() . '.json') ?>"
+                   "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/Chinese-traditional.json') ?>",
                 },
                 "order": [],
                 "bSort": false,

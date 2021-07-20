@@ -333,10 +333,10 @@ class Bk_subject_outcome extends CI_Controller //change this
     {
         $id = $_POST['subject_id'];
         $list = array();
-        $sub_cat = Subject_categories_model::where('subject_id', $id)->get();
+        $existing_arr = Subject_lessons_model::where('subject_id', $id)->pluck('subject_category_id')->unique();
+        $sub_cat = Subject_categories_model::where('subject_id', $id)->whereNotIn('id', $existing_arr)->get();
 
         foreach ($sub_cat as $i => $row) {
-            // $list[$i] = array('id' => $row['id'], 'text' => Subjects_model::name($row['subject_id']). ' - '. $row['name']);
             $list[$i] = array('id' => $row['id'], 'text' => $row['name']);
 
         }
@@ -358,7 +358,7 @@ class Bk_subject_outcome extends CI_Controller //change this
         $data['action'] = __('新 增');
         $data['function'] = "create";
         // $data['subject_list'] = Subjects_model::newList();
-        $data['subject_list'] = Subjects_model::list();
+        $data['subject_list'] = Subjects_model::list(null, 'subject_outcome');
 
         $data['courses_list'] = Courses_model::list('All');
         $data['categories_list'] = Categories_model::list(null, 'all');

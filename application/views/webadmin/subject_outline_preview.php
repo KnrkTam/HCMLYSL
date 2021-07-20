@@ -73,7 +73,7 @@
                                         <div class="form-group">
                                             <label for="remarks">科目範疇:</label>
                                                 <p> 
-                                                    <?= Subject_categories_model::name($_POST['subject_cat_id']) ?>
+                                                    <?= Subject_categories_model::name($_POST['subject_cat_id'] ? $_POST['subject_cat_id'] : $subject_cat_id) ?>
                                                 </p>
                                         </div>
                                     </div>
