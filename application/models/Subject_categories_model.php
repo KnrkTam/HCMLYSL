@@ -59,6 +59,18 @@
             return $list;
         }
 
+        
+        public function cat() 
+        {
+            return $this->hasMany('Subject_categories_model', 'subject_id');
+        }
+
+            
+        public function lesson() 
+        {
+            return $this->belongsToMany('Lessons_model', 'subject_lessons', 'subject_category_id', 'lesson_id' )->withPivot('id');;
+        }
+
 
 
 	}

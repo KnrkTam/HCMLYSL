@@ -225,6 +225,7 @@ class Bk_subject_outline extends CI_Controller //change this
         $GLOBALS["datatable"] = 1;
 
         $subject_lesson = Subject_lessons_model::find($subject_lesson_id);
+     
         $lesson_id = $subject_lesson->lesson_id;
         $subject_id = $subject_lesson->subject_id;
         
@@ -233,6 +234,10 @@ class Bk_subject_outline extends CI_Controller //change this
 
         $performance_model = Key_performances_model::where('subject_lesson_id', $subject_lesson_id)->get();
 
+        if (!count($performance_model)) {
+            $_SESSION['error_msg'] = __('Test');
+            // redirect(admin_url('bk_'.$this->scope.'/create'));
+        }
         foreach ($performance_model as $i => $row) {
             $performance_arr[$i] = array('performance' => $row['performance'], 'assessment' => $row['assessment_id'], 'other' =>$row['assessment_other']);
         }

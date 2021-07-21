@@ -73,6 +73,12 @@
                     'access' => 'view_courses_map',
                     'icon' => 'fa-map-o',
                 ),
+                array(
+                    'main_menu' => __('科目課程大綱樹狀圖'),
+                    'url' => 'Bk_subjects_map',
+                    'access' => 'view_subjects_map',
+                    'icon' => 'fa-map',
+                ),
 
                 array(
                     'main_menu' => '教職員',

@@ -169,11 +169,11 @@ class Bk_courses_map extends CI_Controller //change this
                             'status' => '已存在相同名稱課程',
                         );
                         break;
-                    case ($course->name == $_POST['course_name']):
-                        $data = array(
-                            'status' => '名稱相同',
-                        );
-                        break;
+                    // case ($course->name == $_POST['course_name']):
+                    //     $data = array(
+                    //         'status' => '名稱相同',
+                    //     );
+                    //     break;
                     case (empty($_POST['course_name'])):
                         $data = array(
                             'status' => '請輸入新課程名稱',

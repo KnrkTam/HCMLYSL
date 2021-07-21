@@ -464,7 +464,7 @@ class Bk_subject_outcome extends CI_Controller //change this
 
     public function submit_form($subject_lesson_id = null){
         $postData = $this->input->post();
-            // Create
+        // Create
         if ($subject_lesson_id == null) {
             $subject_id = $postData['subject_id'];
             $subject_category_id = $postData['subject_categories_id']; 
@@ -479,18 +479,29 @@ class Bk_subject_outcome extends CI_Controller //change this
             } else {
                 $_SESSION['error_msg'] = __('Error');
             }  
-            // Edit      
+        // Edit      
         } else {
             $subject_lesson = Subject_lessons_model::find($subject_lesson_id);
             $subject_id = $subject_lesson->subject_id;
             $subject_category_id = $subject_lesson->subject_category_id;
-
-            Subject_lessons_model::where('subject_id', $subject_id)->where('subject_category_id', $subject_category_id)->delete();
+            $exist_lessons_id = json_decode(Subject_lessons_model::where('subject_id', $subject_id)->where('subject_category_id', $subject_category_id)->pluck('lesson_id'));
             $lessons_id = json_decode($postData['lessons_id'][0]);
+            $add_result = array_diff($lessons_id,$exist_lessons_id);
+            $delete_result = array_diff($exist_lessons_id, $lessons_id);
+
+
             if ($lessons_id[0] !== "NaN") {
-                foreach ($lessons_id as $row){
+                 foreach ($delete_result as $row){
+                    Subject_lessons_model::where('subject_id', $subject_id)->where('subject_category_id', $subject_category_id)->where('lesson_id', $row)->delete();
+                }
+                foreach ($add_result as $row){
                     $created_id = Subject_lessons_model::create(array('subject_id' => $subject_id, 'lesson_id' => $row, 'subject_category_id' =>  $subject_category_id))->id;
                 }
+                $_SESSION['success_msg'] = __('修改課程大綱成功');
+                $_SESSION['post_data'] = null;
+    
+                redirect(admin_url('bk_'.$this->scope));
+
             } else {
                     $_SESSION['error_msg'] = __('已清空課程大綱');
                     redirect(admin_url('bk_'.$this->scope));
