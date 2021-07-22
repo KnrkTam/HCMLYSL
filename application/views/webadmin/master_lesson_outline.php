@@ -115,7 +115,9 @@
                                                 <th class="nowrap">前備技能</th>
                                                 <th class="nowrap">課程編號</th>
                                                 <th class="nowrap">預期學習成果</th>
+                                                <th class="nowrap">相關課程編號</th>
                                                 <th class="nowrap">相關項目編號</th>
+
                                             </tr>
                                         </thead>
                                         <tbody>

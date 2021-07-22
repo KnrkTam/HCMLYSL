@@ -5,7 +5,7 @@
 	{
 		protected $table = "subject_categories";
 
-        public static function list($subject_id = null, $all = null)
+        public static function list($subject_id = null, $all = null, $subject_outline = null)
 		{
 
             if ($all) {
@@ -15,7 +15,16 @@
             }
             if ($subject_id) {
                 $result = Subject_categories_model::orderBy('id', 'DESC')->where('subject_id', $subject_id)->get();
+            
+                if ($subject_outline) {
+                    $existing_arr = (Key_performances_model::orderBy('subject_lesson_id', 'ASC')->pluck('subject_lesson_id')->unique());
+                    $new_arr = Subject_lessons_model::whereNotIn('id', $existing_arr)->pluck('subject_category_id');
+                    $result = Subject_categories_model::orderBy('id', 'DESC')->where('subject_id', $subject_id)->whereIn('id', $new_arr)->get();
+
+                }
             } 
+
+            
 
             foreach($result as $row){
                 $list[$row['id']] = $row["name"];

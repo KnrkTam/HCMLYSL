@@ -151,12 +151,7 @@
                                                 <tbody>
                                                 </tbody>
                                             </table>
-                                            <div class="mt-4 d-flex justify-content-end">
-                                                <input type="hidden" id="subject_lessons" name="subject_lessons[]" value=""></input>
-                                                <input type="hidden" value=<?= $function?> name="action"> </input>
-                                                <button type="submit" class="btn bg-maroon mw-100 mr-4">下一步</button>
-                                                <button type="button" class="btn btn-default mw-100" onclick="location.href='<?= (admin_url($page_setting['controller'])) ?>';">返 回</button>
-                                            </div>
+                                         
                                             <hr>
                                         </div>
                                         <div class="col-lg-12">
@@ -188,6 +183,13 @@
                                                     </script>
                                                 </tbody>
                                             </table> 
+
+                                            <div class="mt-4 d-flex justify-content-end">
+                                                <input type="hidden" id="subject_lessons" name="subject_lessons[]" value=""></input>
+                                                <input type="hidden" value=<?= $function?> name="action"> </input>
+                                                <button type="submit" class="btn bg-maroon mw-100 mr-4">下一步</button>
+                                                <button type="button" class="btn btn-default mw-100" onclick="location.href='<?= (admin_url($page_setting['controller'])) ?>';">返 回</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

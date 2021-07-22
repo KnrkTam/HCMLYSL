@@ -61,22 +61,12 @@
                                 <div id="signupalert" class="alert alert-danger margin_bottom_20"></div>
                                 <!-- <div class="col-lg-12">  -->
                                 <h5 class="text-purple"><b>搜尋科目：</b></h5>
-                                <!-- </div> -->
-                                <div class="row">
-                                    <div class="col-lg-5 d-flex">
-                                        <div class="form-group w-100">
-                                            <label class="text-nowrap required">科目 : </label>
-                                            <div style="flex: 1"><?php form_list_type('subject_id', ['type' => 'select', 'class'=> 'form-control subjectSelect  select2' , 'value' =>'',  'data-placeholder' => '請選擇...', 'enable_value' => $subject_list, 'form_validation_rules' => 'trim|required']) ?></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <hr>
                                 <div class="mb-4">
                                     <div class="row">
                                         <div class="col-lg-2">
                                             <div class="form-group ">
-                                                <label class="text-nowrap">課程 : </label>
-                                                <div style="flex: 1"><?php form_list_type('courses_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'data-placeholder' => '請選擇...', 'enable_value' => $courses_list, 'form_validation_rules' => 'trim|required']) ?></div>
+                                            <label class="text-nowrap required">科目 : </label>
+                                            <div style="flex: 1"><?php form_list_type('subject_id', ['type' => 'select', 'class'=> 'form-control subjectSelect  select2' , 'value' =>'',  'data-placeholder' => '請選擇...', 'enable_value' => $subject_list, 'form_validation_rules' => 'trim|required']) ?></div>
                                             </div>
                                         </div>
                                         <div class="col-lg-3">
@@ -101,7 +91,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <button type="button" class="btn bg-orange mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller'] . '/create') ?>'">新 增</button>
+                                <button type="button" class="btn bg-orange mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller'] . '/create') ?>'">加入課程至新科目範疇</button>
                                 <hr />
                                 <!-- <div class="col-lg-12">  -->
                                     <h5 class="text-red"><b>搜尋結果：</b></h5>

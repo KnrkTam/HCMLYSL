@@ -75,6 +75,7 @@ class Bk_subject_outline extends CI_Controller //change this
             // }
         }
         $_SESSION['post_data'] = null;
+        $_SESSION['path'] = null;
 
         $data['form_action'] = admin_url($data['page_setting']['controller']);
 
@@ -172,16 +173,15 @@ class Bk_subject_outline extends CI_Controller //change this
             $_SESSION['error_msg'] = __('找不到相關科目');
             redirect(admin_url('bk_'.$this->scope));
         }
-
         $data['action'] = __('新 增');
         $data['function'] = "create";
-        $data['subject_list'] = Subjects_model::list();
-        $data['categories_list'] = Categories_model::list();
+        // $data['subject_list'] = Subjects_model::list();
+        // $data['categories_list'] = Categories_model::list();
         $data['assessments_list'] = Assessments_model::list();
         $data['lessons_list'] = Lessons_model::newlist2($subject_id);
         $data['remarks_list'] = Remarks_model::list();
         $data['expected_outcome'] = $subject->expected_outcome;
-        $data['subject_cat_list'] = Subject_categories_model::list($subject_id, null);
+        $data['subject_cat_list'] = Subject_categories_model::list($subject_id, null, 'newlist');
 
 
         $data['form_action'] = admin_url($data['page_setting']['controller'] . '/preview');
@@ -225,7 +225,6 @@ class Bk_subject_outline extends CI_Controller //change this
         $GLOBALS["datatable"] = 1;
 
         $subject_lesson = Subject_lessons_model::find($subject_lesson_id);
-     
         $lesson_id = $subject_lesson->lesson_id;
         $subject_id = $subject_lesson->subject_id;
         
@@ -234,10 +233,6 @@ class Bk_subject_outline extends CI_Controller //change this
 
         $performance_model = Key_performances_model::where('subject_lesson_id', $subject_lesson_id)->get();
 
-        if (!count($performance_model)) {
-            $_SESSION['error_msg'] = __('Test');
-            // redirect(admin_url('bk_'.$this->scope.'/create'));
-        }
         foreach ($performance_model as $i => $row) {
             $performance_arr[$i] = array('performance' => $row['performance'], 'assessment' => $row['assessment_id'], 'other' =>$row['assessment_other']);
         }
@@ -253,7 +248,7 @@ class Bk_subject_outline extends CI_Controller //change this
         $data['lessons_list'] = $lessons_list;        
         $data['assessments_list'] = Assessments_model::list();
         $data['remarks_list'] = Remarks_model::list();
-        $data['remark_id'] =  Lessons_remarks_model::id_list($lesson_id);
+        $data['remark_id'] =  Lessons_remarks_model::id_list($subject_lesson_id);
         $data['subject'] = Subjects_model::name($subject_id);
         $data['performance_arr'] = $performance_arr;
         $data['subject_id'] = $subject_id;
@@ -342,7 +337,7 @@ class Bk_subject_outline extends CI_Controller //change this
         $data['remark_ids'] = $postData['remark_id'];
         $data['previous'] = $previous;
         $data['id'] = $id;
-        $data['form_action'] = admin_url($data['page_setting']['controller'] . '/submit_form/'.$id);
+        $data['form_action'] = admin_url($data['page_setting']['controller'] . '/submit_form/'. $id);
         $_SESSION['post_data'] = $postData;
 
         $this->load->view('webadmin/' . $this->scope . '_preview',  $data);
@@ -378,6 +373,7 @@ class Bk_subject_outline extends CI_Controller //change this
         foreach ($remark_id as $row) {
             $lessons_remarks_data =  array(
                 'lesson_id' => $lesson_id,
+                'subject_lesson_id' => $id,
                 'remark_id' => $row,
                 'created_by' => $_SESSION['sys_user_id'],
             );
@@ -386,8 +382,10 @@ class Bk_subject_outline extends CI_Controller //change this
 
 
             $_SESSION['success_msg'] = __('修改科目課程大綱成功');
+            if ($_SESSION['path'] == 'subjects_map') {
+                redirect(admin_url('bk_subjects_map'));
+            }
             redirect(admin_url('bk_'.$this->scope));
-
     }
 
 

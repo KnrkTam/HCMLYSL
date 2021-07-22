@@ -124,7 +124,7 @@ class Bk_annual_modules extends CI_Controller //change this
 
         $data['action'] = __('新 增');
         $data['years_list'] = Years_model::list();
-        $data['levels_list'] = Levels_model::list(1234);
+        $data['levels_list'] = Levels_model::list();
         $data['classes_list'] = Classes_model::list();
         // $data['modules_list'] = Modules_model::list();
         

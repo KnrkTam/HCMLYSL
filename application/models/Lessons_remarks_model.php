@@ -16,9 +16,9 @@ class Lessons_remarks_model extends BaseModel
         return implode(',', $group_arr);
     }
 
-    public static function id_list($lesson_id)
+    public static function id_list($subject_lesson_id)
     {        
-        $result = Lessons_remarks_model::where('lesson_id', $lesson_id)->get();
+        $result = Lessons_remarks_model::where('subject_lesson_id', $subject_lesson_id)->get();
 
         foreach ($result as $i => $row){
             $group_arr[$i] = $row['remark_id'];

@@ -49,10 +49,12 @@ class Bk_subjects_map extends CI_Controller //change this
         $GLOBALS["datatable"] = 1;
 
         $data['subjects_list'] = Subjects_model::list();
+        $_SESSION['path'] = $this->scope;
 
         if ($_POST) {
             $id = $_POST['subject_id'];
             $subject = Subjects_model::find($id);
+            $data['subject_id'] = $id;
             $data['subject'] = $subject->name; 
             $data['subject_cat'] = $subject->cat;
         }
@@ -61,7 +63,7 @@ class Bk_subjects_map extends CI_Controller //change this
 
         $data['form_action'] = admin_url($data['page_setting']['controller'] . '/index');
 
-        
+        // dump($_SESSION*);
 
         $this->load->view('webadmin/' . $this->scope . '', $data);
     }

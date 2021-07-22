@@ -73,11 +73,16 @@
                                 <hr>
                                 <div class="map-body">
                                 <?php foreach ($subject_cat as $i => $cat) { ?>
-                                <ul class="nav nav-list-main">
-                                    <li><label class="nav-toggle nav-header"><span class="nav-toggle-icon text-red mr-2"><i class="fa fa-fw fa-plus-square-o"></i> <?= $cat->name?></span> <a class="link" href="../Bk_subject_outcome/edit/<?= $cat->lesson[0]->pivot->id?>">修改科目範疇</a></label>
+                                <?php if (!count($cat->lesson)) { ?>
+                                    <ul class="nav nav-list-main">
+                                    <li><label class="nav-toggle nav-header"><span class="nav-toggle-icon text-red mr-2"><i class="fa fa-fw fa-plus-square-o"></i><?= $cat->name ?></span> <a class="link" href="../Bk_subject_outcome/create/<?= $subject_id?> " >新增 | 修改科目課程大綱</a></label>
+                                    <? } else {?>
+                                    <ul class="nav nav-list-main">
+                                        <li><label class="nav-toggle nav-header"><span class="nav-toggle-icon text-red mr-2"><i class="fa fa-fw fa-plus-square-o"></i> <?= $cat->name?></span> <a class="link" href="../Bk_subject_outcome/edit/<?= $cat->lesson[0]->pivot->id?>">新增 | 修改科目課程大綱 </a></label>
+                                    <? } ?>
                                     <?php foreach ($cat->lesson as $j => $lesson) { ?>
                                         <ul class="nav nav-list nav-left-ml">
-                                            <li><label class="nav-toggle nav-header"><span class="nav-toggle-icon text-green mr-2"><i class="fa fa-fw fa-plus-square-o"></i><?= $lesson->code ?> <?=$lesson->expected_outcome?></span> <a class="link" href="../Bk_subject_outline/edit/<?= $lesson->pivot->id?> " >新增 | 修改科目課程大綱</a></label>
+                                            <li><label class="nav-toggle nav-header"><span class="nav-toggle-icon text-green mr-2"><i class="fa fa-fw fa-plus-square-o"></i><?= $lesson->code ?> <?=$lesson->expected_outcome?></span> <a class="link" href="../Bk_subject_outline/edit/<?= $lesson->pivot->id?> " >新增 | 修改關鍵表現項目</a></label>
                                             <?php foreach (Key_performances_model::subject_cat_lesson($lesson->id, $cat->id) as $row) {?>
                                                 <?php foreach ($row as $foo) {?>
                                                 <ul class="nav nav-list nav-left-ml lastList">

@@ -114,6 +114,7 @@ class Bk_master_lesson_outline extends CI_Controller //change this
                     $rel_les .= '<button type="button" class="btn-xs btn btn-primary badge">' .Lessons_model::code($key).'</button> &nbsp';
                 }
                 $data[$num][] = $rel_les;
+                $data[$num][] = $row['rel_code'];
 
     
                 $num++;
@@ -180,6 +181,8 @@ class Bk_master_lesson_outline extends CI_Controller //change this
                         // }
                         // $action .= '</div>';
                         // $data[$num][] = $action;
+                        $data[$num][] = $row['rel_code'];
+
                         $num++;
                     }
                 }

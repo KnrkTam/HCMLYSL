@@ -79,6 +79,8 @@ class Bk_subject_outcome extends CI_Controller //change this
         }
 
         $_SESSION['post_data'] = null;
+        $_SESSION['path'] = null;
+
 
         $data['form_action'] = admin_url($data['page_setting']['controller']);
 
@@ -380,6 +382,7 @@ class Bk_subject_outcome extends CI_Controller //change this
         $GLOBALS["datatable"] = 1;
 
         $subject_lesson = Subject_lessons_model::find($subject_lesson_id);
+
         $id = $subject_lesson->subject_id;
 
         $subject = Subjects_model::find($id);
@@ -389,8 +392,12 @@ class Bk_subject_outcome extends CI_Controller //change this
         $data['courses_list'] = Courses_model::list('All');
         $data['categories_list'] = Categories_model::list(null, 'all');
         $data['sb_obj_list'] = Sb_obj_model::list();
-        $data['lessons_list'] = Lessons_model::list();
-    
+        $lesson_data = Lessons_model::list();
+        foreach ($lesson_data as $row) {
+            $lessons_list[$row['id']] = $row['code']; 
+        }
+
+        $data['lessons_list'] = $lessons_list;    
         $result = Subject_lessons_model::where('subject_id',$id)->where('subject_category_id',$subject_lesson->subject_category_id )->pluck('lesson_id');
         $data['added_ids'] = $result;
         $data['subject'] = Subjects_model::name($id); 
@@ -445,7 +452,6 @@ class Bk_subject_outcome extends CI_Controller //change this
             $data['subject_category_id'] = $postData['sub_category_id'];
             $data['subject_category'] = Subject_categories_model::name($postData['sub_category_id']);
 
-            // dump($data);
         }
 
         $postData['added_ids'] = explode(',', $postData['subject_lessons'][0]);
@@ -491,7 +497,7 @@ class Bk_subject_outcome extends CI_Controller //change this
 
 
             if ($lessons_id[0] !== "NaN") {
-                 foreach ($delete_result as $row){
+                foreach ($delete_result as $row){
                     Subject_lessons_model::where('subject_id', $subject_id)->where('subject_category_id', $subject_category_id)->where('lesson_id', $row)->delete();
                 }
                 foreach ($add_result as $row){
@@ -499,23 +505,21 @@ class Bk_subject_outcome extends CI_Controller //change this
                 }
                 $_SESSION['success_msg'] = __('修改課程大綱成功');
                 $_SESSION['post_data'] = null;
-    
+                
+                if ($_SESSION['path'] == 'subjects_map') {
+                    redirect(admin_url('bk_subjects_map'));
+                }
                 redirect(admin_url('bk_'.$this->scope));
 
             } else {
                     $_SESSION['error_msg'] = __('已清空課程大綱');
+                    if ($_SESSION['path'] == 'subjects_map') {
+                        redirect(admin_url('bk_subjects_map'));
+                    }
                     redirect(admin_url('bk_'.$this->scope));
-
             }
         
-                if ($created_id) {
-                    $_SESSION['success_msg'] = __('修改課程大綱成功');
-                    $_SESSION['post_data'] = null;
-        
-                    redirect(admin_url('bk_'.$this->scope));
-                } else {
-                    $_SESSION['error_msg'] = __('修改課程大綱失敗');
-            }        
+                $_SESSION['error_msg'] = __('修改課程大綱失敗');
         }
     }
 }
