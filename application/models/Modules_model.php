@@ -11,7 +11,7 @@
             $result = Modules_model::orderBy('code', 'asc')->get();
 
             if ($level_id) {
-                $result = Modules_model::orderBy('id', 'asc')->where('level_id', $level_id)->get();
+                $result = Modules_model::orderBy('level_id', 'asc')->where('level_id', $level_id)->orWhere('level_id', 0)->get();
             } 
 
             

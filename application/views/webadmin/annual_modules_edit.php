@@ -67,56 +67,56 @@
                                     <div class="col-lg-3">
                                         <div class="form-group ">
                                             <label class="text-nowrap">單元一 </label>
-                                            <?php form_list_type('module_id1', ['type' => 'select', 'class'=> 'form-control select2' , 'data-placeholder' => '請選擇...', 'value' => $module1_id, 'enable_value' => $modules_list, 'form_validation_rules' => 'trim|required']) ?>
+                                            <?php form_list_type('module_id[]', ['type' => 'select', 'class'=> 'form-control select2' , 'data-placeholder' => '請選擇...', 'value' => $module1_id, 'enable_value' => $modules_list, 'form_validation_rules' => 'trim|required']) ?>
 
                                         </div>
                                     </div>
                                     <div class="col-lg-9">
                                         <div class="form-group ">
                                             <label class="text-nowrap">備註</label>
-                                            <input type="text" class="form-control" name="remark1" value="<?= $remark1?>" placeholder="">
+                                            <input type="text" class="form-control" name="remark[]" value="<?= $remark1?>" placeholder="">
 
                                         </div>
                                     </div>
                                     <div class="col-lg-3">
                                         <div class="form-group ">
                                             <label class="text-nowrap">單元二 </label>
-                                            <?php form_list_type('module_id2', ['type' => 'select', 'class'=> 'form-control select2' , 'data-placeholder' => '請選擇...', 'value' => $module2_id, 'enable_value' => $modules_list, 'form_validation_rules' => 'trim|required']) ?>
+                                            <?php form_list_type('module_id[]', ['type' => 'select', 'class'=> 'form-control select2' , 'data-placeholder' => '請選擇...', 'value' => $module2_id, 'enable_value' => $modules_list, 'form_validation_rules' => 'trim|required']) ?>
 
                                         </div>
                                     </div>
                                     <div class="col-lg-9">
                                         <div class="form-group ">
                                             <label class="text-nowrap">備註</label>
-                                            <input type="text" class="form-control" name="remark2" value="<?= $remark2?>" placeholder="">
+                                            <input type="text" class="form-control" name="remark[]" value="<?= $remark2?>" placeholder="">
 
                                         </div>
                                     </div>
                                     <div class="col-lg-3">
                                         <div class="form-group ">
                                             <label class="text-nowrap">單元三 </label>
-                                            <?php form_list_type('module_id3', ['type' => 'select', 'class'=> 'form-control select2' , 'data-placeholder' => '請選擇...', 'value' => $module3_id, 'enable_value' => $modules_list, 'form_validation_rules' => 'trim|required']) ?>
+                                            <?php form_list_type('module_id[]', ['type' => 'select', 'class'=> 'form-control select2' , 'data-placeholder' => '請選擇...', 'value' => $module3_id, 'enable_value' => $modules_list, 'form_validation_rules' => 'trim|required']) ?>
 
                                         </div>
                                     </div>
                                     <div class="col-lg-9">
                                         <div class="form-group ">
                                             <label class="text-nowrap">備註</label>
-                                            <input type="text" class="form-control" name="remark3" value="<?= $remark3?>" placeholder="">
+                                            <input type="text" class="form-control" name="remark[]" value="<?= $remark3?>" placeholder="">
 
                                         </div>
                                     </div>
                                     <div class="col-lg-3">
                                         <div class="form-group ">
                                             <label class="text-nowrap">單元四 </label>
-                                            <?php form_list_type('module_id4', ['type' => 'select', 'class'=> 'form-control select2' , 'data-placeholder' => '請選擇...', 'value' => $module4_id, 'enable_value' => $modules_list, 'form_validation_rules' => 'trim|required']) ?>
+                                            <?php form_list_type('module_id[]', ['type' => 'select', 'class'=> 'form-control select2' , 'data-placeholder' => '請選擇...', 'value' => $module4_id, 'enable_value' => $modules_list, 'form_validation_rules' => 'trim|required']) ?>
 
                                         </div>
                                     </div>
                                     <div class="col-lg-9">
                                         <div class="form-group ">
                                             <label class="text-nowrap">備註</label>
-                                            <input type="text" class="form-control" name="remark4" value="<?= $remark4?>" placeholder="">
+                                            <input type="text" class="form-control" name="remark[]" value="<?= $remark4?>" placeholder="">
 
                                         </div>
                                     </div>

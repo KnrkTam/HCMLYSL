@@ -63,27 +63,15 @@
                                     <div class="col-lg-2">
                                         <div class="form-group ">
                                             <label class="text-nowrap"><span class="text-red">*</span>科目： </label>
-                                            <select class="form-control">
-                                                <option hidden>請選擇...</option>
-                                                <option value="語文1234">語文1234</option>
-                                                <option value="語文1234">語文1234</option>
-                                                <option value="語文1234">語文1234</option>
-                                                <option value="語文1234">語文1234</option>
+                                            <div style="flex: 1"><?php form_list_type('subject_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'data-placeholder' => '請選擇...', 'enable_value' => $subject_list, 'form_validation_rules' => 'trim|required']) ?></div>
 
-                                            </select>
                                         </div>
                                     </div>
                                     <div class="col-lg-3">
                                         <div class="form-group">
                                             <label class="text-nowrap"><span class="text-red">*</span>年度學習單元：</label>
-                                            <select class="form-control">
-                                                <option hidden>請選擇...</option>
-                                                <option value="聆聽">聆聽</option>
-                                                <option value="聆聽">聆聽</option>
-                                                <option value="聆聽">聆聽</option>
-                                                <option value="聆聽">聆聽</option>
+                                            <div style="flex: 1"><?php form_list_type('annual_module_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'data-placeholder' => '請選擇...', 'enable_value' => $annual_module_list, 'form_validation_rules' => 'trim|required']) ?></div>
 
-                                            </select>
                                         </div>
                                     </div>
                                     <div class="col-lg-3">
@@ -119,7 +107,7 @@
 
 
 
-                                <button type="button" class="btn bg-orange mw-100 mb-4" onclick="location.href='../webadmin/Bk_setting_subject_outline/create';">新 增</button>
+                                <button type="button" class="btn bg-orange mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller'].'/create')?>';">新 增</button>
 
 
                                 <div class="tableWrap hidenWrap">

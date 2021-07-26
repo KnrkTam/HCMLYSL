@@ -130,7 +130,7 @@
                 ),*/
                 array(
                     'main_menu' => __('設定單元既定教學大綱 - 檢視'),
-                    'url' => 'Bk_setting_subject_outline',
+                    'url' => 'Bk_intended_learning_outline',
                     'access' => 'view_news',
                     'icon' => 'fa-file',
                 ),
