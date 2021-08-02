@@ -7,7 +7,7 @@
 
         public static function list()
 		{
-            $result = Staff_model::all();
+            $result = Staff_model::where('status', 1)->get();
             foreach($result as $row){
                 $list[$row['id']] =  $row["name"];
             }

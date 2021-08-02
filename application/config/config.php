@@ -504,6 +504,8 @@ $config['csrf_exclude_uris'] = array(
     'webadmin/bk_(\w+)/ajax/(\w)+',
     'webadmin/bk_(\w+)/(\w)+/(\w)+',
     'webadmin/bk_(\w+)/(\w)+',
+    'webadmin/bk_options',
+    // 'http://203.198.169.212:9000/api/index.php',
 
 );
 

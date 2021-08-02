@@ -8,6 +8,114 @@ use PHPMailer\PHPMailer\Exception;
 
 /*** Common Function List ***/
 
+// Ctwo ver.
+
+function uCurl($url, $method, $params = array(), $header = array(), $type = "x-www-form-urlencoded", $username = null, $password = null)
+{
+   //activity_log('uCurl', array('url' => $url, 'method' => $method, 'params' => $params, 'header' => $header, 'type' => $type));
+    $curl = curl_init();
+    $timeout = 15;
+
+    if($method == 'GET' && $type != null){
+        $url = $url . '?' . http_build_query($params);
+    }
+
+    curl_setopt($curl, CURLOPT_URL, $url);
+    curl_setopt($curl, CURLOPT_HEADER, FALSE);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
+    curl_setopt($curl, CURLOPT_FOLLOWLOCATION, TRUE);
+
+    if($type == "x-www-form-urlencoded"){
+        /*$header = array(
+        );*/
+    }else if($type == "xml"){
+        $header = array(
+            "Content-type: application/xml",
+            "Content-length: " . strlen($params['xml']),
+            "Connection: close",
+        );
+    }else{
+        if (empty($header)) {
+            $header = array('Content-Type: application/json; charset=UTF-8');
+        }
+    }
+
+    //    activity_log('uCurl', array('url' => $url, 'method' => $method, 'params' => $params, 'header' => $header, 'type' => $type));
+
+    if($header){
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
+    }
+
+    curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, $timeout);
+
+    if ($username && $password) {
+        curl_setopt($curl, CURLOPT_USERPWD, "$username:$password");
+    }
+
+    switch ($method) {
+        case 'GET' :
+            curl_setopt($curl, CURLOPT_HTTPGET, TRUE);
+            break;
+        case 'POST':
+            curl_setopt($curl, CURLOPT_POST, TRUE);
+            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'POST');
+
+            if($type == "x-www-form-urlencoded"){
+                curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($params));
+            }else if($type == "xml"){
+                curl_setopt($curl, CURLOPT_POSTFIELDS, $params['xml']);
+            }else if($type == "json"){
+                curl_setopt($curl, CURLOPT_POSTFIELDS, $params['json']);
+            }else{
+                curl_setopt($curl, CURLOPT_POSTFIELDS, $params);
+            }
+            break;
+        case 'PUT' :
+            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PUT');
+            if($type == "xml"){
+                curl_setopt($curl, CURLOPT_POSTFIELDS, $params['xml']);
+            }else if($type == "json"){
+                curl_setopt($curl, CURLOPT_POSTFIELDS, $params['json']);
+            }else{
+                curl_setopt($curl, CURLOPT_POSTFIELDS, $params);
+            }
+            break;
+        case 'DELETE':
+            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'DELETE');
+            //curl_setopt($curl, CURLOPT_POSTFIELDS, $params);
+            break;
+    }
+
+    $data = curl_exec($curl);
+    $http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+    if (curl_error($curl)) {
+        //echo 'error:' . curl_error($curl);
+        // activity_log('utility_helper', __FUNCTION__, ['uCurl: error' => curl_error($curl)]);
+    }
+
+    curl_close($curl);
+
+    if(ENVIRONMENT == 'production'){
+        //   activity_log('utility_helper', __FUNCTION__, ['uCurl' => array('http_code' => $http_code, 'response' => 'hide')]);
+    }else{
+        //   activity_log('utility_helper', __FUNCTION__, ['uCurl' => array('http_code' => $http_code, 'response' => $data)]);
+    }
+
+    // if($type == "xml"){
+        $res = $data;
+    // }else{
+        // $res = json_decode($data, TRUE);
+    // }
+
+   //return ['http_code' => $http_code, 'response' => $res];
+   return $res;
+}
+
+   /////////   /////////   /////////   /////////   /////////   /////////   /////////   /////////   /////////   /////////   /////////   /////////
+
 if (!function_exists('_curl')) {
     function _curl($url, $postData, $post, $username = null, $password = null)
     {

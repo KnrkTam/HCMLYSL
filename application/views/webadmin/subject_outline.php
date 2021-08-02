@@ -69,12 +69,9 @@
                                         <div class="form-group">
                                             <label class="text-nowrap">科目範疇 : </label>
                                             <div style="flex: 1"><?php form_list_type('subject_category_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'data-placeholder' => '請選擇...', 'enable_value' => $sub_categories_list, 'form_validation_rules' => 'trim|required']) ?></div>
-
                                         </div>
                                     </div>
                                     <div class="col-lg-6 d-flex align-items-center">
-
-
                                         <div class="form-group w-100">
                                             <label class="text-nowrap">校本課程學習重點 : (多項選擇) </label>
                                             <div style="flex: 1"><?php form_list_type('sb_obj_id[]', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'data-placeholder' => '請選擇...', 'enable_value' => $sb_obj_list, 'form_validation_rules' => 'trim|required', 'multiple' => 1, 'disable_please_select' => 1]) ?></div>
@@ -84,23 +81,15 @@
                                         <div class="form-group w-100">
                                             <label class="text-nowrap">課程編號 : (多項選擇) </label>
                                             <div style="flex: 1"><?php form_list_type('lesson_id[]', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'data-placeholder' => '請選擇...', 'enable_value' => $lessons_list, 'form_validation_rules' => 'trim|required', 'multiple' => 1]) ?></div>
-
                                         </div>
                                     </div>
                                     <div class="col-lg-1">
                                         <button type="submit" class="btn btn-success mt-25 w-100 mb-4 searchBtn">搜 尋</button>
                                     </div>
-
                                 </div>
                                 <div id="newBtn"> </div>
-
-
-
                                 <div class="tableWrap">
                                     <table class="table table-bordered table-striped" id="subjectCourseTable">
-             
-
-
                                     </table>
                                 </div>
                             </div>

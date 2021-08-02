@@ -418,17 +418,12 @@ class Bk_subject_outcome extends CI_Controller //change this
         $postData = $this->input->post();
         $GLOBALS["select2"] = 1;
         $GLOBALS["datatable"] = 1;
-
-
-        
         if ($subject_lesson_id) {
             $subject_lesson = Subject_lessons_model::find($subject_lesson_id);
             $id = $subject_lesson->subject_id;
             $data['subject_category'] = Subject_categories_model::name($subject_lesson->subject_category_id);
 
         } 
-
-
         if (empty($id)) {
             $id = $postData['subject_id'];
             $dup_subject_lesson = Subject_lessons_model::where('subject_id', $id)->where('subject_category_id', $postData['sub_category_id'])->first();

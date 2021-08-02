@@ -267,6 +267,25 @@ class Bk_permission extends CI_Controller
                 'role' => array('super_admin', 'admin')
             ),
 
+            // 設定單元既定教學大綱
+            'create_intended_learning_outline' => array(
+            'desc' => 'Can create intended_learning_outline',
+            'role' => array('super_admin', 'admin')
+            ),
+            'update_intended_learning_outline' => array(
+                'desc' => 'Can update intended_learning_outline',
+                'role' => array('super_admin', 'admin')
+            ),
+            'delete_intended_learning_outline' => array(
+                'desc' => 'Can delete intended_learning_outline',
+                'role' => array('super_admin', 'admin')
+            ),
+            'view_intended_learning_outline' => array(
+                'desc' => 'Can view intended_learning_outline',
+                'role' => array('super_admin', 'admin')
+            ),
+
+
             //news_ajax
             'create_news_ajax' => array(
                 'desc' => 'Can create news_ajax',

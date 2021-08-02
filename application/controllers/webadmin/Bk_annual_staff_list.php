@@ -53,6 +53,7 @@ class Bk_annual_staff_list extends CI_Controller //change this
         $data['data'] = json_decode();
         $GLOBALS["select2"] = 1;
         $GLOBALS["datatable"] = 1;
+
         $this->load->view('webadmin/' . $this->scope . '', $data);
     }
 

@@ -60,6 +60,58 @@ class Bk_options extends CI_Controller //change this
         $this->load->view('webadmin/' . $this->scope . '', $data);
     }
 
+
+    public function readAPI()
+    {
+        // $params = array('user_post' => null, 'a' => "staff", "encode"  => "array");
+        $params['user_post'] = null; 
+        $params['a'] = 'staff'; 
+        $params['encode'] = 'array'; 
+        // $header = array('Set-Cookie: PHPSESSID=4b9ppf47fp7ira97vsffc2neb5; path=/');
+        // dump($_POST);
+        $header = array('Content-Type: application/x-www-form-urlencoded');
+        // $header = array('Content-Type: multipart/form-data');
+
+        
+
+        $api_response = uCurl('http://203.198.169.212:9000/api/index.php', 'POST', $params);
+        // $api_response = uCurl('http://ip.jsontest.com/', 'POST', $_POST);
+        // $api_response = uCurl('https://httpbin.org/post', 'POST', $params);
+
+        // dump(json_decode($api_response,true));
+
+        $data = json_decode(preg_replace("/\r|\n|\t/", "", substr($api_response, 82, -3)));
+
+        foreach ($data as $i => $staff) {
+            $staff_data = (array)$staff;
+            $new_data = array(
+                'id' => $staff_data['id'],
+                'username' => $staff_data['username'],
+                'name' => $staff_data['name'],
+                'name_short' => $staff_data['name_short'],
+                'user_post' => $staff_data['user_post'],
+                'status' => $staff_data['status'] == 'IN' ? 1 : 0,
+                'updated_at' => date('Y-m-d H:i:s'),
+            );
+            $staff_id = Staff_model::find($staff_data['id'])->id;
+            // dump($staff_id);
+            if ($staff_id) {
+                Staff_model::where('id', $staff_data['id'])->update($new_data);
+            } else {
+                Staff_model::create($new_data);
+            }
+            
+
+        }
+
+        $result = array('status' => 'success', 'msg' => '職員名單已更新');
+        // dump(json_encode(json_decode($data)));
+
+        echo json_encode($result);
+
+    }
+
+
     public function ajax($type = NULL)
     {
         $data['page_setting'] = $this->page_setting(array(

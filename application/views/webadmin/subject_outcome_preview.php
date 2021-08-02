@@ -34,34 +34,14 @@
                     <div class="col-md-12">
                         <!-- form start -->
                         <?= form_open_multipart($form_action, 'class="form-horizontal"'); ?>
-                        <!-- general form elements
-                    <input type="hidden" name="id" value="<?= $id ?>"/>-->
                         <div class="box box-primary">
-                            <!-- <div class="box-header">
-                            <div class="row col-md-2">
-                                <div class="btn-group" data-spy="affix" data-offset-top="2" style="z-index: 20;">
-                                    <a href="<?= admin_url($page_setting['controller']) ?>" class="btn btn-default">
-                                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
-                                        <?= __('Cancel') ?>
-                                    </a>
-
-                                    <?php if (validate_user_access(['create_news', 'update_news'])) { ?>
-                                        <button type="button" class="btn btn-primary" onclick="submit_form(this);">
-                                            <i class="fa fa-floppy-o" aria-hidden="true"></i> <?= __('Save') ?>
-                                        </button>
-                                    <?php } ?>
-                                </div>
-                            </div>
-                        </div> -->
-                            <!-- /.box-header -->
-
                             <div class="box-body">
                                 <div id="signupalert" class="alert alert-danger margin_bottom_20"></div>
 
                                 <div class="tableWrap">
                                     <div class="row">
                                     <div class="col-lg-12">
-                                            <h3 class="text-blue"><b><?= $subject?> - <?= $subject_category ?></b></h5>
+                                            <h3 class="text-blue"><b><?= $subject?> - <?= $subject_category ?></b></h3>
                                     </div>
                                         <div class="col-lg-12">
                                             <h5 class="text-purple"><b>已選項目：</b></h5>
@@ -93,9 +73,7 @@
                                                 <input type="hidden" name="subject_lesson_id" value="<?= $subject_lesson_id?>"></input>
                                                 <input type="hidden" name="subject_id" value="<?= $subject_id ?>"></input>
                                                 <input type="hidden" name="subject_categories_id" value="<?= $subject_category_id ?> "></input>
-
                                                 <input type="hidden" name="lessons_id[]" value=<?= json_encode($added_ids, true)?>></input>
-
                                                 <button type="submit" class="btn bg-maroon mr-4 mw-100">確 定</button>
                                                 <button type="button" class="btn btn-default mw-100" onclick="location.href='<?= (admin_url($page_setting['controller'])) . '/'. $previous. '/'. $subject_lesson_id?>';">返 回</button>
                                          
@@ -137,15 +115,9 @@
         $(document).ready(function() {
             $('[data-toggle="tooltip"]').tooltip();
             var subjectTable = $('#subjectTable').DataTable({
-                // data: <?php echo $table?>, 
-                // scrollX: true,
-                // scrollCollapse: true,
-                // bFilter: false,
-                // bInfo: true,
-                // bLengthChange: false,
                 scrollX: true,
                 "language": {
-                   "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/Chinese-traditional.json') ?>",
+                    "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/Chinese-traditional.json') ?>",
                 },
                 "order": [],
                 "bSort": false,
@@ -171,9 +143,6 @@
                     }
                 },
             });
-
-
-
         });
 
     </script>

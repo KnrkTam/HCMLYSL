@@ -151,55 +151,55 @@
             });
 
 
-            $(".searchBtn").click(function() {
-                Course_table.draw();
-            })
-                let Course_table = $('#courseOutlineTable').DataTable({
-                'rowsGroup': [0, 1],
+        $(".searchBtn").click(function() {
+            Course_table.draw();
+        })
+            let Course_table = $('#courseOutlineTable').DataTable({
+            'rowsGroup': [0, 1],
 
-                scrollX: true,
-                "language": {
-                    "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/Chinese-traditional.json') ?>",
+            scrollX: true,
+            "language": {
+                "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/Chinese-traditional.json') ?>",
+            },
+            "order": [],
+            "bSort": false,
+            "bPaginate": false,
+            "pageLength": 50,
+            "pagingType": "input",
+            //"sDom": '<"wrapper"lfptip>',
+            "processing": true,
+            "serverSide": false,
+            "ordering": true,
+            "searching": true,
+            // "drawType": 'none',
+            "searchDelay": 0,                    
+            "ajax": {
+                "url": "<?= admin_url($page_setting['controller'] . '/ajax') ?>",
+                "method": "get",
+                "timeout": "30000",
+                "data": function(d) {
+                    let course_id = $('#courses_id').val();
+                    let category_id = $('#subject_category_id').val();
+                    let sb_obj_id = $('#sb_obj_id').val();
+                    let lesson_id = $('#lesson_id').val();
+                    let subject_id = $('#subject_id').val();
+
+                    d.subject_search = subject_id
+                    d.course_search = course_id;
+                    d.category_search = category_id;
+                    d.sb_obj_search = sb_obj_id;
+                    d.lesson_search = lesson_id;
+                    console.log(d);
                 },
-                "order": [],
-                "bSort": false,
-                "bPaginate": false,
-                "pageLength": 50,
-                "pagingType": "input",
-                //"sDom": '<"wrapper"lfptip>',
-                "processing": true,
-                "serverSide": false,
-                "ordering": true,
-                "searching": true,
-                // "drawType": 'none',
-                "searchDelay": 0,                    
-                "ajax": {
-                    "url": "<?= admin_url($page_setting['controller'] . '/ajax') ?>",
-                    "method": "get",
-                    "timeout": "30000",
-                    "data": function(d) {
-                        let course_id = $('#courses_id').val();
-                        let category_id = $('#subject_category_id').val();
-                        let sb_obj_id = $('#sb_obj_id').val();
-                        let lesson_id = $('#lesson_id').val();
-                        let subject_id = $('#subject_id').val();
+                "complete" : function(){
+                    $('[data-toggle="tooltip"]').tooltip();
 
-                        d.subject_search = subject_id
-                        d.course_search = course_id;
-                        d.category_search = category_id;
-                        d.sb_obj_search = sb_obj_id;
-                        d.lesson_search = lesson_id;
-                        console.log(d);
-                    },
-                    "complete" : function(){
-                        $('[data-toggle="tooltip"]').tooltip();
-
-                    },
-                    "error": function(e) {
-                        console.log(e);
-                    }
                 },
-                });
+                "error": function(e) {
+                    console.log(e);
+                }
+            },
+            });
 
 
                 let data =  <?php echo $subject_categories_list?>;

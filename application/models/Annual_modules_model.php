@@ -25,4 +25,18 @@
 			
 			return $result;
 		}
+
+		public static function year_list($year_id) {
+			if ($year_id) {
+				$year_data = Annual_modules_model::where('year_id', $year_id)->pluck('module_id')->unique();
+			} 
+
+			foreach($year_data as $i => $row){
+                $list[$row] = Modules_model::name($row);
+            }
+			// dump($list);
+
+            return $list;
+			
+		}
 	}

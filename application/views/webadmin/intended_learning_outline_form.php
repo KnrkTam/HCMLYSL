@@ -3,6 +3,19 @@
 
 <head>
     <?php include_once("head.php"); ?>
+    <style>
+    .removeRow {
+        z-index: 5;
+        opacity: 1;
+        cursor: pointer;
+    }
+
+    .removeRow i {
+        z-index: -1;
+        opacity: 1;
+        cursor: pointer;
+    }
+</style>
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini">
@@ -34,57 +47,25 @@
                     <div class="col-md-12">
                         <!-- form start -->
                         <?= form_open_multipart($form_action, 'class="form-horizontal"'); ?>
-                        <!-- general form elements 
-                    <input type="hidden" name="id" value="<?= $id ?>"/>-->
                         <div class="box box-primary">
-                            <!-- <div class="box-header">
-                            <div class="row col-md-2">
-                                <div class="btn-group" data-spy="affix" data-offset-top="2" style="z-index: 20;">
-                                    <a href="<?= admin_url($page_setting['controller']) ?>" class="btn btn-default">
-                                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
-                                        <?= __('Cancel') ?>
-                                    </a>
-
-                                    <?php if (validate_user_access(['create_news', 'update_news'])) { ?>
-                                        <button type="button" class="btn btn-primary" onclick="submit_form(this);">
-                                            <i class="fa fa-floppy-o" aria-hidden="true"></i> <?= __('Save') ?>
-                                        </button>
-                                    <?php } ?>
-                                </div>
-                            </div>
-                        </div> -->
-                            <!-- /.box-header -->
-
                             <div class="box-body">
                                 <div id="signupalert" class="alert alert-danger margin_bottom_20"></div>
-
-
                                 <div class="row mb-4">
+                                <div class="col-lg-12">
+                                            <h5 class="text-red"><b>選擇科目及年度學習單元：</b></h5>
+                                        </div>
                                     <div class="col-lg-3">
                                         <div class="form-group ">
                                             <label class="text-nowrap"><span class="text-red">*</span>科目： </label>
-                                            <select class="form-control subjectSelect">
-                                                <option value="" hidden>請選擇...</option>
-                                                <option value="a">語文1234</option>
-                                                <option value="b">語文1234</option>
-                                                <option value="c">語文1234</option>
-                                                <option value="d">語文1234</option>
+                                            <div style="flex: 1"><?php form_list_type('subject_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' => $subject_id,  'data-placeholder' => '請選擇...', 'enable_value' => $subject_list, 'form_validation_rules' => 'trim|required']) ?></div>
 
-                                            </select>
                                         </div>
                                     </div>
                                     <div class="col-lg-7">
                                         <div class="d-flex">
                                             <div class="form-group w-100">
                                                 <label class="text-nowrap"><span class="text-red">*</span>年度學習單元：</label>
-                                                <select class="form-control ">
-                                                    <option hidden>請選擇...</option>
-                                                    <option value="聆聽">聆聽</option>
-                                                    <option value="聆聽">聆聽</option>
-                                                    <option value="聆聽">聆聽</option>
-                                                    <option value="聆聽">聆聽</option>
-
-                                                </select>
+                                                <div style="flex: 1"><?php form_list_type('module_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' => $module_id,  'data-placeholder' => '請選擇...', 'enable_value' => $annual_modules_list, 'form_validation_rules' => 'trim|required']) ?></div>
                                             </div>
                                             <div style="margin-top:25px" class="ml-4">
                                                 <button type="button" class="btn bg-orange mb-4" data-toggle="modal" data-target="#editDetail">新增單元名稱</button>
@@ -96,64 +77,50 @@
                                 </div>
                                 <hr>
 
-
-
-                                <div class="subject_outcomeNew">
-
+                                <div class="">
                                     <div class="row mb-4">
+                                        <div class="col-lg-12">
+                                            <h5 class="text-red"><b>搜尋課程學習重點：</b></h5>
+                                        </div>
                                         <div class="col-lg-5">
                                             <div class="form-group">
-                                                <label class="text-nowrap">範疇:</label>
-                                                <select class="form-control select2" multiple="" data-placeholder="請選擇...">
-                                                    <option hidden>請選擇...</option>
-                                                    <option value="全部/聆聽">全部/聆聽</option>
-                                                    <option value="聆聽">聆聽</option>
-                                                </select>
+                                                <label class="text-nowrap">科目範疇:</label>
+                                                <div style="flex: 1"><?php form_list_type('subject_category_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' => $subject_category_id, 'enable_value' => $subject_categories_list,  'data-placeholder' => '請選擇...', 'form_validation_rules' => 'trim|required']) ?></div>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label class="text-nowrap">校本課程學習重點:</label>
-                                                <select class="form-control select2" multiple="" data-placeholder="請選擇...">
-                                                    <option hidden>請選擇...</option>
-                                                    <option value="全部/非華語/新生入學評估">全部/非華語/新生入學評估</option>
-                                                    <option value="全部/非華語">全部/非華語</option>
-                                                    <option value="全部/新生入學評估">全部/新生入學評估</option>
-                                                    <option value="全部">全部</option>
+                                                <div style="flex: 1"><?php form_list_type('sb_obj_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' => '', 'enable_value' => $sb_obj_list, 'data-placeholder' => '請選擇...', 'form_validation_rules' => 'trim|required']) ?></div>
 
-                                                </select>
                                             </div>
                                         </div>
 
                                         <div class="col-lg-1">
                                             <button type="button" class="btn btn-success mt-25 w-100 mb-4 searchBtn">搜 尋</button>
                                         </div>
-
                                     </div>
                                 </div>
-
-
-                                <div class="tableWrap hidenWrap">
-                                    <h5 class="text-purple"><b>選擇項目：</b></h5>
+                                <div class="tableWrap">
+                                    <h5 class="text-purple"><b>選擇教學大綱項目：</b></h5>
                                     <table class="table table-bordered table-striped dataTable" id="subjectTable">
 
                                     </table>
-                                    <div class="mt-4 d-flex justify-content-end">
-                                        <button type="button" class="btn bg-maroon mw-100 mr-4" onclick="location.href='../Bk_setting_subject_outline/preview';">下一步</button>
-                                        <button type="button" class="btn btn-default mw-100">返 回</button>
-                                    </div>
+
                                     <hr>
-                                    <div class="col-lg-12">
-                                        <h5 class="text-yellow"><b>已選項目：</b></h5>
+                                    <h5 class="text-yellow"><b>已選項目：</b></h5>
 
-                                        <table class="table table-bordered table-striped" id="subjectSelectedTable">
+                                    <table class="table table-bordered table-striped" id="subjectSelectedTable">
 
-                                        </table>
+                                    </table>
+                                    <div class="mt-4 d-flex justify-content-end">
+                                    <input type="hidden" name="action" value="create"/>
+                                    <button type="submit" class="btn bg-maroon mw-100 mb-4 mr-4">下一步</button>
+                                    <button type="button" class="btn btn-default mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller']) ?>';">返 回</button>
+                                    <input type="hidden" id="subject_lessons" name="subject_lessons[]" value=""></input>
 
                                     </div>
                                 </div>
-
-
                             </div>
                             <!-- /.box-body -->
                         </div>
@@ -217,326 +184,253 @@
         $(document).ready(function() {
 
             $('[data-toggle="tooltip"]').tooltip();
-
-            var data = [{
-                    "id": "1",
-                    "subjct": "語文1234",
-                    "course": "語文",
-                    "category": "聆聽",
-                    "coursepoint": "聽力訓練",
-                    "element": "技能",
-                    "group": "初組",
-                    "lpfl": "I2",
-                    "lpfh": "I2",
-                    "poas": "IB.3",
-                    "keyskill": "IB.3",
-                    "studyresults": "能注意聲音的來源，對聲音作出反應",
-                    "performance": "有意識地留意及回應聲音 (1)",
-                    "evaluation": "A",
-                    "coursenum": "MN0155",
-                    "courserelatenum": "MN0449, MS0002",
-                    "projectnum": "",
-                    "remarks": "非華語",
-                },
-                {
-                    "id": "1",
-                    "subjct": "語文1234",
-                    "course": "語文",
-                    "category": "聆聽",
-                    "coursepoint": "聽力訓練",
-                    "element": "技能",
-                    "group": "初組",
-                    "lpfl": "I2",
-                    "lpfh": "I2",
-                    "poas": "IB.3",
-                    "keyskill": "IB.3",
-                    "studyresults": "能注意聲音的來源，對聲音作出反應",
-                    "performance": "有意識地留意及回應聲音 (2)",
-                    "evaluation": "B",
-                    "coursenum": "MN0155",
-                    "courserelatenum": "MN0449, MS0002",
-                    "projectnum": "",
-                    "remarks": "非華語",
-                },
-                {
-                    "id": "2",
-                    "subjct": "自理",
-                    "course": "語文",
-                    "category": "聆聽",
-                    "coursepoint": "聽力訓練",
-                    "element": "技能",
-                    "group": "中組",
-                    "lpfl": "I2",
-                    "lpfh": "I2",
-                    "poas": "IB.3",
-                    "keyskill": "IB.3",
-                    "studyresults": "能注意聲音的來源，對聲音作出反應",
-                    "performance": "有意識地留意及回應聲音 (1)",
-                    "evaluation": "A",
-                    "coursenum": "MN0155",
-                    "courserelatenum": "MN0449, MS0002",
-                    "projectnum": "",
-                    "remarks": "非華語",
-                },
-                {
-                    "id": "2",
-                    "subjct": "自理",
-                    "course": "語文",
-                    "category": "聆聽",
-                    "coursepoint": "聽力訓練",
-                    "element": "技能",
-                    "group": "中組",
-                    "lpfl": "I2",
-                    "lpfh": "I2",
-                    "poas": "IB.3",
-                    "keyskill": "IB.3",
-                    "studyresults": "能注意聲音的來源，對聲音作出反應",
-                    "performance": "有意識地留意及回應聲音 (2)",
-                    "evaluation": "B",
-                    "coursenum": "MN0155",
-                    "courserelatenum": "MN0449, MS0002",
-                    "projectnum": "",
-                    "remarks": "非華語",
-                },
-                {
-                    "id": "2",
-                    "subjct": "自理",
-                    "course": "語文",
-                    "category": "聆聽",
-                    "coursepoint": "聽力訓練",
-                    "element": "技能",
-                    "group": "中組",
-                    "lpfl": "I2",
-                    "lpfh": "I2",
-                    "poas": "IB.3",
-                    "keyskill": "IB.3",
-                    "studyresults": "能注意聲音的來源，對聲音作出反應",
-                    "performance": "有意識地留意及回應聲音 (3)",
-                    "evaluation": "c",
-                    "coursenum": "MN0155",
-                    "courserelatenum": "MN0449, MS0002",
-                    "projectnum": "",
-                    "remarks": "非華語",
-                },
-                {
-                    "id": "3",
-                    "subjct": "生活常規",
-                    "course": "語文",
-                    "category": "聆聽",
-                    "coursepoint": "聽力訓練",
-                    "element": "技能",
-                    "group": "初組",
-                    "lpfl": "I2",
-                    "lpfh": "I2",
-                    "poas": "IB.3",
-                    "keyskill": "IB.3",
-                    "studyresults": "能注意聲音的來源，對聲音作出反應",
-                    "performance": "有意識地留意及回應聲音 (1)",
-                    "evaluation": "A",
-                    "coursenum": "MN0155",
-                    "courserelatenum": "MN0449, MS0002",
-                    "projectnum": "",
-                    "remarks": "非華語",
-                }
-            ];
-
-
-
-            var columnDefs = [{
-                    render: function(data, type, row) {
-
-                        var getId = $("table").attr("id");
-
-                        if (getId == "subjectTable") {
-                            var result = '<input type="checkbox" name="subjectCheck" class="subjectCheck" />';
-                            return result;
-                        } else {
-                            var result = '<a class="editLinkBtn text-red" href="#"><i class="fa fa-fw fa-trash-o"></i></a>';
-                            return result;
-
-                        }
-                        // alert(row.id);
-                        // data: null,
-                        // title: "操作",
-                        // defaultContent:
-                        // '<a href="#"  class="editor_edit"  data-toggle="modal" data-id="editId" data-target="#itemEdit">Edit</a> / <a href="#" class="editor_remove" rdata-toggle="modal" data-target=".bd-example-modal-lg">Delete</a>'
-                        // defaultContent: '<a href="#" class="button moreBtn" data-toggle="modal" data-target=".bd-example-modal-lg">Edit Btn</a>'
-
-                    },
-                    data: "id",
+            let columnDefs = [{
                     name: 'zore',
                     title: "",
                     class: "no-sort"
                 },
                 {
+                    data: "1",
+                    title: "科目",
                     name: 'first',
-                    data: "subjct",
-                    title: "課程",
-                    class: ""
-                },
+                },         
                 {
+                    data: "2",
+                    title: "科目範疇",
                     name: 'first',
-                    data: "course",
-                    title: "課程",
-                    class: "",
-                },
+                },    
                 {
-                    name: 'first',
-                    data: "category",
-                    title: "範疇",
-                    class: ""
-                },
-                {
-                    name: 'first',
-                    data: "coursepoint",
-                    title: "校本課程學習重點",
-                    class: ""
-                },
-                {
-                    name: 'first',
-                    data: "element",
-                    title: "學習元素",
-                    class: ""
-                },
-                {
-                    name: 'first',
-                    data: "group",
-                    title: "組別",
-                    class: ""
-                },
-                {
-                    name: 'first',
-                    data: "lpfl",
-                    title: "LPF(基礎)",
-                    class: ""
-                },
-                {
-                    name: 'first',
-                    data: "lpfh",
-                    title: "LPF(高中)",
-                    class: ""
-                },
-                {
-
-                    render: function(data, type, row) {
-                        var result = row.poas + ' <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span>';
-                        return result;
-                    },
-
-                    name: 'first',
-                    data: "poas",
-                    title: "POAS",
-                    class: ""
-                },
-                {
-                    render: function(data, type, row) {
-                        var result = row.poas + ' <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span>';
-                        return result;
-                    },
-
-                    name: 'first',
-                    data: "keyskill",
-                    title: "Key Skill",
-                    class: ""
-                },
-                {
-
-
-                    name: 'first',
-                    data: "studyresults",
-                    title: "預期學習成果",
-                    class: ""
-                },
-                {
-                    data: "performance",
-                    title: "關鍵表現項目",
-                    class: ""
-                },
-                {
-                    data: "evaluation",
-                    title: "評估模式",
-                    class: ""
-                },
-                {
-                    name: 'first',
-                    data: "coursenum",
+                    data: "3",
                     title: "課程編號",
-                    class: ""
-                },
-                {
                     name: 'first',
-                    data: "courserelatenum",
+                },        
+                {
+                    data: "4",
+                    title: "課程",
+                    name: 'first',
+                },                
+                {
+                    data: "5",
+                    title: "範疇",
+                    name: 'first',
+                },                
+                {
+                    data: "6",
+                    title: "校本課程學習重點",
+                    name: 'first',
+                },                
+                {
+                    data: "7",
+                    title: "學習元素",
+                    name: 'first',
+                },                
+                {
+                    data: "8",
+                    title: "組別",
+                    name: 'first',
+                },                
+                {
+                    data: "9",
+                    title: "LPF(基礎)",
+                    name: 'first',
+                },                
+                {
+                    data: "10",
+                    title: "LPF(高中)",
+                    name: 'first',
+                },                
+                {
+                    data: "11",
+                    title: "POAS",
+                    name: 'first',
+                },                
+                {
+                    data: "12",
+                    title: "Key Skill",
+                    name: 'first',
+                },                
+                {
+                    data: "13",
+                    title: "預期學習成果",
+                    name: 'first',
+                },                
+                {
+                    data: "14",
+                    title: "關鍵表現項目",
+                    name: 'double',
+                },                
+                {
+                    data: "15",
+                    title: "評估模式",
+                    name: 'double',
+                },                
+                {
+                    data: "16",
                     title: "相關課程編號",
-                    class: ""
-                },
-                {
                     name: 'first',
-                    data: "projectnum",
+                },                
+                {
+                    data: "17",
                     title: "相關項目編號",
-                    class: ""
-                },
-                {
                     name: 'first',
-                    data: "remarks",
+                },                
+                {
+                    data: "18",
                     title: "備註",
-                    class: ""
-                }
+                    name: 'first',
+                },              
             ];
 
 
-
-
             $(".searchBtn").click(function() {
-
                 $(".tableWrap").fadeIn();
+                Subject_dataTable.draw()
 
-                $('#subjectTable').DataTable({
-                    data: data,
-                    columns: columnDefs,
+            });
+            let added_ids = new Set();
 
-                    scrollY: "400px",
-                    rowsGroup: [
-                        'zore:name',
-                        'first:name',
-                    ],
-                    scrollX: true,
-                    scrollCollapse: true,
-                    drawCallback: function(settings) {
+            $('input[id=subject_lessons]').val(Array.from(added_ids));
+
+            var  Subject_dataTable = $('#subjectTable').DataTable({
+                scrollX: true,
+                rowsGroup: [
+                    'zore:name',
+                    'first:name',
+                ],
+                "language": {
+                    "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/Chinese-traditional.json') ?>",
+                },
+                "order": [],
+                "bInfo": true,
+                // "bSort": false,
+                "bPaginate": true,
+                // "paging": true,
+                "pageLength": 10,
+                "processing": true,
+                "serverSide": true,
+                "ordering": false,
+                "searching": false,
+                "searchDelay": 0,
+                "columns": columnDefs,            
+
+                "ajax": {
+                    "url": "<?= admin_url($page_setting['controller'] . '/search_ajax') ?>",
+                    "method": "get",
+                    "timeout": "30000",
+                    "data": function(d) {
+                        let subject_id = $('#subject_id').val();
+                        let annual_module_id = $('#annual_module_id').val();
+                        let category_id = $('#subject_category_id').val();
+                        let sb_obj_id = $('#sb_obj_id').val();
+
+                        d.annual_module_search = annual_module_id;
+                        d.subject_category_search = category_id;
+                        d.sb_obj_search = sb_obj_id;
+                        d.subject_search = subject_id;
+                    },
+                    "complete": function(e){
+                        console.log(e);  
                         $('[data-toggle="tooltip"]').tooltip();
+                        $(".addLesson").change(function(e) {
+                            console.log('clicked', this.value)
+                            if ($(this).is(':checked')) {
+                                added_ids.add(this.value)
 
+                                e.stopPropagation();
+                                $(".tableWrap").fadeIn();
+
+                                subjectSelectedTable.draw();
+                            } else {
+                                added_ids.delete(this.value)
+                                $(".tableWrap").fadeIn();
+
+                                subjectSelectedTable.draw();
+
+                            }
+                            console.log(added_ids);
+
+                        });
+                        let old_arr = Array.from(added_ids)
+                        for (let i = 0; i < old_arr.length; i++) {
+                            $(`input[type=checkbox][class=addLesson][value=${old_arr[i]}]`).prop('checked', true)
+                        }
+
+                        $(".removeRow").click(function() {
+                            added_ids.delete(this.attributes.value.value);
+                            $('#subjectSelectedTable').DataTable().draw();
+                            $('#subjectTable').DataTable().draw();
+
+                        });
+                        $('input[id=subject_lessons]').val(Array.from(added_ids));
+
+                    },
+                    "error": function(e) {
+                        console.log(e);
                     }
+                },
+            });
 
-                });
+            let subjectSelectedTable = $('#subjectSelectedTable').DataTable({
+                scrollX: true,
+                rowsGroup: [
+                    'zore:name',
+                    'first:name',
+                ],
+                "language": {
+                    "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/Chinese-traditional.json') ?>",
+                },
+                "order": [],
+                "bSort": false,
+                "pageLength": 50,
+                "pagingType": "input",
+                //"sDom": '<"wrapper"lfptip>',
+                "processing": true,
+                "serverSide": true,
+                "ordering": false,
+                "searching": false,
+                "searchDelay": 0, 
+                "columns": columnDefs,            
+                "bPaginate": true,
+                "ajax": {
+                    "url": "<?= admin_url($page_setting['controller'] . '/select_ajax') ?>",
+                    "method": "get",
+                    "timeout": "30000",
+                    "data": function(d) {
+                        d.added_ids = Array.from(added_ids)
+                    },
+                    "complete": function(e){
+                        $(".addLesson").change(function() {
+                            if ($(this).is(':checked')) {
+                                added_ids.add(this.value)
+                                // console.log(Array.from(added_ids));
+                            } else {
+                                added_ids.delete(this.value)
+                                // console.log(Array.from(added_ids));
+                            }
+                        });
 
+                        
+                        $(".removeRow").click(function() {
+                            added_ids.delete(this.attributes.value.value);
 
-                $('#subjectSelectedTable').DataTable({
-                    data: data,
-                    columns: columnDefs,
-                    rowsGroup: [
-                        'zore:name',
-                        'first:name',
+                            console.log(Array.from(added_ids))
+                            // console.log(JSON.stringify(this));
+                            // console.log(this.attributes.value.value)
+                            $('#subjectSelectedTable').DataTable().draw();
+                            $('#subjectTable').DataTable().draw();
 
-                    ],
-                    scrollX: true,
-                    scrollCollapse: true,
-                    drawCallback: function(settings) {
-                        $('[data-toggle="tooltip"]').tooltip();
+                        });
+                        $('input[id=subject_lessons]').val(Array.from(added_ids));
 
+                    },
+                    "error": function(e) {
+                        console.log(e);
                     }
-
-                });
+                },
             });
 
 
-
-
-
             $(".controlSearchBtn").click(function() {
-
-
-                // $(".subject_outcomeNew").slideToggle("active");
-
-                // Animation complete.
 
                 $(".subject_outcomeNew").slideToggle('slow', function() {
                     $('.controlSearchBtn').toggleClass('active', $(this).is(':visible'));
@@ -549,52 +443,41 @@
 
 
             });
-            $(".subjectSelect").change(function() {
-                if ($(this).val() != "") {
-                    $(".subject_outcomeNew").fadeIn();
-                    $(".controlSearchBtn").fadeIn();
-                    $(".controlSearchBtn").text("隱藏搜尋");
-                } else {
-                    $(".subject_outcomeNew").hide();
-                }
+        
 
-            });
-
-            function submit_form(_this) {
-                //form checking
-                var valid_data = true;
-                //.form checking
-                if (!valid_data) {
-                    //alert('Invalid Data.');
-                } else {
-                    ajax_submit_form(_this);
-                }
+            
+            function ajax_choose(subject_id) {
+                $.ajax({
+                url: '<?= (admin_url($page_setting['controller'])) . '/select_subject' ?>',
+                method:'POST',
+                data:{subject_id:subject_id},
+                dataType:'json',
+                beforeSend:function(){
+                    $('#subject_category_id').empty();
+                    },
+                success:function(d){
+                    $('#subject_category_id').select2({
+                        data: d
+                    });
+                    $('#subejct_category_id').val(<?= $_POST['subject_category_id']?>)
+                    console.log(<?= $_POST['subject_category_id']?>)
+                    },
+                })
             }
+
+            $("#subject_id").change(function() {
+                ajax_choose(this.value)
+                $(".controlSearchBtn").fadeIn();
+                $(".controlSearchBtn").text("隱藏搜尋");
+            })
+
+            <?php if ($_SESSION['post_data']['subject_id']) { ?>
+                ajax_choose(<?= $_SESSION['post_data']['subject_id'] ?>)
+
+            <? } ?>
         });
-        <?php /*
-    //multiple image upload
-    $("input.multiple_upload").fileinput({
-        language: '<?=get_wlocale()?>',
-        previewFileType: "image",
-        showCaption: false,
-        showUpload: false,
-        maxFileSize: 2048,
-        maxFileCount: 30,
-        maxImageHeight: 2000,
-        maxImageWidth: 2000,
-        overwriteInitial: false,
-        allowedFileExtensions: ['jpg','jpeg','png'],
-        initialPreview: <?=isset($photos_preview) ? $photos_preview : "{}"?>,
-        initialPreviewAsData: true,
-        initialPreviewConfig: <?=isset($photos_json) ? $photos_json : "{}"?>,
-        deleteUrl: "<?=admin_url('bk_news/delete_multiple_upload')?>",
-        // hiddenThumbnailContent: true,
-        // initialPreviewShowDelete: true,
-        // removeFromPreviewOnError: true,
-    }).on('filedeleted', function(event, key, jqXHR, data) {
-        alertify.success("<?=__('Deleted successfully!')?>");
-    });
- */ ?>
+
+        
     </script>
 
 </body>

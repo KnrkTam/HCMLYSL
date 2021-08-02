@@ -38,7 +38,7 @@ class Bk_annual_modules extends CI_Controller //change this
 
         return $page_setting;
     }
-
+    
     public function index()
     {
         $data['page_setting'] = $this->page_setting(array(

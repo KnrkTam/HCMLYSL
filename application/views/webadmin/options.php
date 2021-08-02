@@ -259,10 +259,35 @@
         });
 
         $(document).on("click", ".updateBtn", function () {
-            let confirmUpdate = confirm('更新職員名單')
-            if (confirmUpdate) {
-                alertify.log('TBC');
-            }
+            console.log(data)
+
+            // let confirmUpdate = confirm('更新職員名單')
+            // if (confirmUpdate) {
+                updateStaff();
+                function updateStaff(){
+                    $.ajax({
+                    url: `<?= (admin_url($page_setting['controller'])) . '/readAPI' ?>`,
+                    method:'POST',
+                    data:{user_post: null, a :'staff', encode: 'array'},
+                    dataType:'json',     
+                    success:function(data){
+                        if (data.status == 'success') {
+                            window.location.reload();
+                            alertify.success(data.msg)
+
+                        } else {
+                            alertify.error(data.status)
+                        }
+                        console.log(data)
+                    },
+                    error: function(error){
+                        console.log(error)
+
+                        alert('error');
+                    }
+                    });
+                }          
+            // }
         })
 
         let addBtn = document.querySelector('#add-btn');

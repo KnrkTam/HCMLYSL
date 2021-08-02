@@ -8,7 +8,7 @@ class Lessons_model extends BaseModel
     public static function table_list($id)
     {   
         //export data as in table list format
-        $lesson= Lessons_model::find($id);
+        $lesson = Lessons_model::find($id);
 
         $table_list = array(
             'id' => $lesson['id'],
@@ -27,7 +27,7 @@ class Lessons_model extends BaseModel
             'preliminary_skill' => $lesson['preliminary_skills'],
             'expected_outcome' => $lesson['expected_outcome'],
             'code' => $lesson['code'],
-
+            'lesson_remark' => Lessons_remarks_model::list($lesson['id']),
 
         );
         return $table_list;
@@ -83,21 +83,16 @@ class Lessons_model extends BaseModel
         return $list;
     }
 
-    public static function subjectList($course_id = null, $subject_category_id = null, $sb_obj_id = array(), $id = array(), $subject_id)
+    public static function subjectList( $subject_category_id = null, $sb_obj_id = null, $id = array(), $subject_id)
     {
         if ($subject_id) {
             $subject_arr = Subject_lessons_model::id_list($subject_id, $subject_category_id);
+            // dump($subject_arr);
             if ($id) {
                 $result = Lessons_model::whereIn('id', $id)->get();
             } else if ($sb_obj_id) {
-                if ($course_id !== "0") {
-                    foreach ($subject_arr as $i => $sub) {
-                        $result[$i] = array('subject_lesson_id' => $sub['id'],'lesson' => Lessons_model::whereIn('sb_obj_id', $sb_obj_id)->where('id', $sub['lesson_id'])->where('course_id', $course_id)->get());
-                    }
-                } else {
-                    foreach ($subject_arr as $i => $sub) {
-                        $result[$i] = array('subject_lesson_id' => $sub['id'],'lesson' => Lessons_model::whereIn('sb_obj_id', $sb_obj_id)->where('id', $sub['lesson_id'])->get());
-                    }
+                foreach ($subject_arr as $i => $sub) {
+                    $result[$i] = array('subject_lesson_id' => $sub['id'],'lesson' => Lessons_model::where('sb_obj_id', $sb_obj_id)->where('id', $sub['lesson_id'])->get());
                 }
             } else if (!$course_id && !$category_id || $course_id == 0 && $category_id == 0) {
                 foreach ($subject_arr as $i => $sub) {
@@ -112,10 +107,11 @@ class Lessons_model extends BaseModel
             }  
         }
     
-
+        // dump($result);
         foreach($result as  $i => $row){
-            if (count($row['lesson'][0])) {
+            if (count($row['lesson'])) {
                 $list[$i] = array('name' => $row['lesson'][0]["code"].'  (' .$row['lesson'][0]['expected_outcome'].')', 'id' => $row['lesson'][0]['id'], 'sub_lesson_id' => $row['subject_lesson_id']);
+
             }
         }
 
@@ -163,4 +159,8 @@ class Lessons_model extends BaseModel
         return $list;
     }
 
+    public static function remark()
+    {
+        return $this->hasMany('Remarks_model', 'lessons_remarks', 'lesson_id', 'remarks_id' );
+    }
 };

@@ -208,7 +208,7 @@
             // $(".tableWrap").hide();
 
             $(".searchBtn").click(function() {
-                Course_datatable.draw()
+                Subject_dataTable.draw()
             });
 
             let added_ids = new Set();
@@ -231,7 +231,7 @@
             
             $('input[id=subject_lessons]').val(Array.from(added_ids));
 
-            var  Course_datatable = $('#subjectTable').DataTable({
+            var  Subject_dataTable = $('#subjectTable').DataTable({
                 // scrollY: '500px',
                 scrollX: true,
                 "language": {
@@ -387,12 +387,7 @@
                 // alertify.error(this.value);
                 ajax_choose(this.value)
             })
-
-
         });
-
-
-
 
     </script>
 

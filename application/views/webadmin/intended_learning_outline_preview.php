@@ -34,41 +34,19 @@
                     <div class="col-md-12">
                         <!-- form start -->
                         <?= form_open_multipart($form_action, 'class="form-horizontal"'); ?>
-                        <!-- general form elements 
-                    <input type="hidden" name="id" value="<?= $id ?>"/>-->
                         <div class="box box-primary">
-                            <!-- <div class="box-header">
-                            <div class="row col-md-2">
-                                <div class="btn-group" data-spy="affix" data-offset-top="2" style="z-index: 20;">
-                                    <a href="<?= admin_url($page_setting['controller']) ?>" class="btn btn-default">
-                                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
-                                        <?= __('Cancel') ?>
-                                    </a>
-
-                                    <?php if (validate_user_access(['create_news', 'update_news'])) { ?>
-                                        <button type="button" class="btn btn-primary" onclick="submit_form(this);">
-                                            <i class="fa fa-floppy-o" aria-hidden="true"></i> <?= __('Save') ?>
-                                        </button>
-                                    <?php } ?>
-                                </div>
-                            </div>
-                        </div> -->
-                            <!-- /.box-header -->
-
                             <div class="box-body">
                                 <div id="signupalert" class="alert alert-danger margin_bottom_20"></div>
-
-
                                 <div class="row mb-4">
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label class="text-nowrap">科目：</label>
-                                            <p>語文1234</p>
+                                            <h3 class="text-blue"><b><?= $subject?></b></h3>
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <label class="text-nowrap">年度學習單元： </label>
-                                        <p>1.1 我的學校</p>
+                                        <h3 class="text-blue"><b><?= $annual_module ?></b></h3>
                                     </div>
                                     <div class="col-lg-12">
                                         <hr>
@@ -79,8 +57,12 @@
 
                                         </table>
                                         <div class="mt-4 d-flex justify-content-end">
-                                            <button type="button" class="btn bg-maroon mr-4 mw-100">確 定</button>
-                                            <button type="button" class="btn btn-default mw-100" onclick="location.href='../Bk_setting_subject_outline/create';">返 回</button>
+                                            <input type="hidden" name="subject_id" value="<?= $subject_id ?>"></input>
+                                            <input type="hidden" name="module_id" value="<?= $module_id?>"></input>
+                                            <input type="hidden" name="year_id" value="<?= $year_id ?>"></input>
+                                            <input type="hidden" name="lessons_id[]" value=<?= json_encode($added_ids, true)?>></input>
+                                            <button type="submit" class="btn bg-maroon mr-4 mw-100">確 定</button>
+                                            <button type="button" class="btn btn-default mw-100" onclick="location.href='<?= (admin_url($page_setting['controller'])) . '/'. $previous. '/'. $subject_lesson_id?>';">返 回</button>
                                         </div>
                                     </div>
 
@@ -121,306 +103,133 @@
 
     <script>
         $(document).ready(function() {
-
             $('[data-toggle="tooltip"]').tooltip();
-            var data = [{
-                    "id": "1",
-                    "subjct": "語文1234",
-                    "course": "語文",
-                    "category": "聆聽",
-                    "coursepoint": "聽力訓練",
-                    "element": "技能",
-                    "group": "初組",
-                    "lpfl": "I2",
-                    "lpfh": "I2",
-                    "poas": "IB.3",
-                    "keyskill": "IB.3",
-                    "studyresults": "能注意聲音的來源，對聲音作出反應",
-                    "performance": "有意識地留意及回應聲音 (1)",
-                    "evaluation": "A",
-                    "coursenum": "MN0155",
-                    "courserelatenum": "MN0449, MS0002",
-                    "projectnum": "",
-                    "remarks": "非華語",
-                },
-                {
-                    "id": "1",
-                    "subjct": "語文1234",
-                    "course": "語文",
-                    "category": "聆聽",
-                    "coursepoint": "聽力訓練",
-                    "element": "技能",
-                    "group": "初組",
-                    "lpfl": "I2",
-                    "lpfh": "I2",
-                    "poas": "IB.3",
-                    "keyskill": "IB.3",
-                    "studyresults": "能注意聲音的來源，對聲音作出反應",
-                    "performance": "有意識地留意及回應聲音 (2)",
-                    "evaluation": "B",
-                    "coursenum": "MN0155",
-                    "courserelatenum": "MN0449, MS0002",
-                    "projectnum": "",
-                    "remarks": "非華語",
-                },
-                {
-                    "id": "2",
-                    "subjct": "自理",
-                    "course": "語文",
-                    "category": "聆聽",
-                    "coursepoint": "聽力訓練",
-                    "element": "技能",
-                    "group": "中組",
-                    "lpfl": "I2",
-                    "lpfh": "I2",
-                    "poas": "IB.3",
-                    "keyskill": "IB.3",
-                    "studyresults": "能注意聲音的來源，對聲音作出反應",
-                    "performance": "有意識地留意及回應聲音 (1)",
-                    "evaluation": "A",
-                    "coursenum": "MN0155",
-                    "courserelatenum": "MN0449, MS0002",
-                    "projectnum": "",
-                    "remarks": "非華語",
-                },
-                {
-                    "id": "2",
-                    "subjct": "自理",
-                    "course": "語文",
-                    "category": "聆聽",
-                    "coursepoint": "聽力訓練",
-                    "element": "技能",
-                    "group": "中組",
-                    "lpfl": "I2",
-                    "lpfh": "I2",
-                    "poas": "IB.3",
-                    "keyskill": "IB.3",
-                    "studyresults": "能注意聲音的來源，對聲音作出反應",
-                    "performance": "有意識地留意及回應聲音 (2)",
-                    "evaluation": "B",
-                    "coursenum": "MN0155",
-                    "courserelatenum": "MN0449, MS0002",
-                    "projectnum": "",
-                    "remarks": "非華語",
-                },
-                {
-                    "id": "2",
-                    "subjct": "自理",
-                    "course": "語文",
-                    "category": "聆聽",
-                    "coursepoint": "聽力訓練",
-                    "element": "技能",
-                    "group": "中組",
-                    "lpfl": "I2",
-                    "lpfh": "I2",
-                    "poas": "IB.3",
-                    "keyskill": "IB.3",
-                    "studyresults": "能注意聲音的來源，對聲音作出反應",
-                    "performance": "有意識地留意及回應聲音 (3)",
-                    "evaluation": "c",
-                    "coursenum": "MN0155",
-                    "courserelatenum": "MN0449, MS0002",
-                    "projectnum": "",
-                    "remarks": "非華語",
-                },
-                {
-                    "id": "3",
-                    "subjct": "生活常規",
-                    "course": "語文",
-                    "category": "聆聽",
-                    "coursepoint": "聽力訓練",
-                    "element": "技能",
-                    "group": "初組",
-                    "lpfl": "I2",
-                    "lpfh": "I2",
-                    "poas": "IB.3",
-                    "keyskill": "IB.3",
-                    "studyresults": "能注意聲音的來源，對聲音作出反應",
-                    "performance": "有意識地留意及回應聲音 (1)",
-                    "evaluation": "A",
-                    "coursenum": "MN0155",
-                    "courserelatenum": "MN0449, MS0002",
-                    "projectnum": "",
-                    "remarks": "非華語",
-                }
-            ];
 
-
-
-            var columnDefs = [{
+            let columnDefs = [{
+                    data: "0",
+                    title: "科目",
                     name: 'first',
-                    data: "subjct",
-                    title: "課程",
-                    class: ""
-                },
+                },     
                 {
+                    data: "1",
+                    title: "科目範疇",
                     name: 'first',
-                    data: "course",
-                    title: "課程",
-                    class: "",
-                },
+                },               
                 {
-                    name: 'first',
-                    data: "category",
-                    title: "範疇",
-                    class: ""
-                },
-                {
-                    name: 'first',
-                    data: "coursepoint",
-                    title: "校本課程學習重點",
-                    class: ""
-                },
-                {
-                    name: 'first',
-                    data: "element",
-                    title: "學習元素",
-                    class: ""
-                },
-                {
-                    name: 'first',
-                    data: "group",
-                    title: "組別",
-                    class: ""
-                },
-                {
-                    name: 'first',
-                    data: "lpfl",
-                    title: "LPF(基礎)",
-                    class: ""
-                },
-                {
-                    name: 'first',
-                    data: "lpfh",
-                    title: "LPF(高中)",
-                    class: ""
-                },
-                {
-
-                    render: function(data, type, row) {
-                        var result = row.poas + ' <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span>';
-                        return result;
-                    },
-
-                    name: 'first',
-                    data: "poas",
-                    title: "POAS",
-                    class: ""
-                },
-                {
-                    render: function(data, type, row) {
-                        var result = row.poas + ' <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span>';
-                        return result;
-                    },
-
-                    name: 'first',
-                    data: "keyskill",
-                    title: "Key Skill",
-                    class: ""
-                },
-                {
-
-
-                    name: 'first',
-                    data: "studyresults",
-                    title: "預期學習成果",
-                    class: ""
-                },
-                {
-                    data: "performance",
-                    title: "關鍵表現項目",
-                    class: ""
-                },
-                {
-                    data: "evaluation",
-                    title: "評估模式",
-                    class: ""
-                },
-                {
-                    name: 'first',
-                    data: "coursenum",
+                    data: "2",
                     title: "課程編號",
-                    class: ""
-                },
-                {
                     name: 'first',
-                    data: "courserelatenum",
+                },        
+                {
+                    data: "3",
+                    title: "課程",
+                    name: 'first',
+                },                
+                {
+                    data: "4",
+                    title: "範疇",
+                    name: 'first',
+                },                
+                {
+                    data: "5",
+                    title: "校本課程學習重點",
+                    name: 'first',
+                },                
+                {
+                    data: "6",
+                    title: "學習元素",
+                    name: 'first',
+                },                
+                {
+                    data: "7",
+                    title: "組別",
+                    name: 'first',
+                },                
+                {
+                    data: "8",
+                    title: "LPF(基礎)",
+                    name: 'first',
+                },                
+                {
+                    data: "9",
+                    title: "LPF(高中)",
+                    name: 'first',
+                },                
+                {
+                    data: "10",
+                    title: "POAS",
+                    name: 'first',
+                },                
+                {
+                    data: "11",
+                    title: "Key Skill",
+                    name: 'first',
+                },                
+                {
+                    data: "12",
+                    title: "預期學習成果",
+                    name: 'first',
+                },                
+                {
+                    data: "13",
+                    title: "關鍵表現項目",
+                    name: 'double',
+                },                
+                {
+                    data: "14",
+                    title: "評估模式",
+                    name: 'double',
+                },                
+                {
+                    data: "15",
                     title: "相關課程編號",
-                    class: ""
-                },
-                {
                     name: 'first',
-                    data: "projectnum",
+                },                
+                {
+                    data: "16",
                     title: "相關項目編號",
-                    class: ""
-                },
-                {
                     name: 'first',
-                    data: "remarks",
+                },                
+                {
+                    data: "17",
                     title: "備註",
-                    class: ""
-                }
+                    name: 'first',
+                },              
             ];
 
-
-
-            $('#previewTable').DataTable({
-                data: data,
-                columns: columnDefs,
+            var subjectTable = $('#previewTable').DataTable({
+                scrollX: true,
                 rowsGroup: [
-                    'zore:name',
                     'first:name',
                 ],
-                scrollX: true,
-                scrollCollapse: true,
-                drawCallback: function(settings) {
-                    $('[data-toggle="tooltip"]').tooltip();
-
-                }
-
+                "language": {
+                    "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/Chinese-traditional.json') ?>",
+                },
+                "order": [],
+                "bSort": false,
+                "pageLength": 10,
+                "pagingType": "simple",
+                "processing": false,
+                "serverSide": true,
+                "ordering": false,
+                "searching": false,
+                "searchDelay": 0,
+                "columns": columnDefs,            
+                "ajax": {
+                    "url": "<?= admin_url($page_setting['controller'] . '/preview_ajax') ?>",
+                    "method": "get",
+                    "timeout": "30000",
+                    "data": function(d) {
+                        let added_arr = <?= json_encode($added_ids)?>;
+                        // console.log(typeof(added_arr))
+                        d.added_ids = added_arr;
+                    },
+                    "error": function(e) {
+                        console.log(e);
+                    }
+                },
             });
-
-
-
-
-
-
-
-            function submit_form(_this) {
-                //form checking
-                var valid_data = true;
-                //.form checking
-                if (!valid_data) {
-                    //alert('Invalid Data.');
-                } else {
-                    ajax_submit_form(_this);
-                }
-            }
         });
-        <?php /*
-    //multiple image upload
-    $("input.multiple_upload").fileinput({
-        language: '<?=get_wlocale()?>',
-        previewFileType: "image",
-        showCaption: false,
-        showUpload: false,
-        maxFileSize: 2048,
-        maxFileCount: 30,
-        maxImageHeight: 2000,
-        maxImageWidth: 2000,
-        overwriteInitial: false,
-        allowedFileExtensions: ['jpg','jpeg','png'],
-        initialPreview: <?=isset($photos_preview) ? $photos_preview : "{}"?>,
-        initialPreviewAsData: true,
-        initialPreviewConfig: <?=isset($photos_json) ? $photos_json : "{}"?>,
-        deleteUrl: "<?=admin_url('bk_news/delete_multiple_upload')?>",
-        // hiddenThumbnailContent: true,
-        // initialPreviewShowDelete: true,
-        // removeFromPreviewOnError: true,
-    }).on('filedeleted', function(event, key, jqXHR, data) {
-        alertify.success("<?=__('Deleted successfully!')?>");
-    });
- */ ?>
     </script>
 
 </body>

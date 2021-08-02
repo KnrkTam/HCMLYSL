@@ -175,15 +175,11 @@ class Bk_subject_outline extends CI_Controller //change this
         }
         $data['action'] = __('新 增');
         $data['function'] = "create";
-        // $data['subject_list'] = Subjects_model::list();
-        // $data['categories_list'] = Categories_model::list();
         $data['assessments_list'] = Assessments_model::list();
         $data['lessons_list'] = Lessons_model::newlist2($subject_id);
         $data['remarks_list'] = Remarks_model::list();
         $data['expected_outcome'] = $subject->expected_outcome;
         $data['subject_cat_list'] = Subject_categories_model::list($subject_id, null, 'newlist');
-
-
         $data['form_action'] = admin_url($data['page_setting']['controller'] . '/preview');
         $data['subject_id'] = $subject_id;
         $data['subject'] = Subjects_model::name($subject_id);

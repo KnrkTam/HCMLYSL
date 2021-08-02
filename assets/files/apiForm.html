@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+</head>
+<body>
+
+<div class='eachTable'>
+<form method='post' action='http://203.198.169.212:9000/api/index.php' target='_blank'>
+<div class='title'>職員資料</div>
+<div>
+	<select name='user_post' id='user_post'>
+		<option value=''>全部</option>
+		<option value='教師'>教師</option>
+		<option value='專業人員'>專業人員</option>
+		<option value='言語治療師'>言語治療師</option>
+		<option value='職業治療師'>職業治療師</option>
+		<option value='社工'>社工</option>
+		<option value='助理'>助理</option>
+		<option value='工友'>工友</option>
+		<option value='校務處職員'>校務處職員</option>
+		<option value='校長'>校長</option>
+		<option value='副校長'>副校長</option>
+	</select>
+	<input type='submit' value='查詢教職員名單'>
+	<input type='hidden' name='a' value='staff'>
+	<input type='hidden' name='encode' value='array' placeholder =' array / json '>
+</div>
+<div>
+<textarea style='width:300px; height:150px;'>
+回傳資料：
+'{
+"id" : "職員系統編號", 
+"username" : "登入戶口",
+"name" : "職員名稱",
+"name_eng" : "職員英文名稱",
+"name_short" : "職員簡稱",
+"user_post" : "職位",
+"last_updated" : "最後更新日期"
+}'</textarea>
+</div>
+</form>
+</div>
+
+
+<div class='eachTable'>
+	<form method='post' action='http://203.198.169.212:9000/api/index.php' target='_blank'>
+		<div class='title'>職位名稱</div>
+		<input type='submit' value='查詢'>
+		<input type='hidden' name='a' value='post'>
+		<input type='hidden' name='encode' value='array' placeholder =' array / json '>
+	</form>
+
+	<div><textarea style='width:350px; height:50px;'>
+	回傳資料：
+	{ "post" : "職位名稱"}</textarea>
+	</div>
+
+</div>
+
+
+<div class='eachTable'>
+	<form method='post' action='http://203.198.169.212:9000/api/index.php' target='_blank'>
+	<div class='title'>學生資料</div>
+	<div><span>年度</span><input type='text' name='year' value='2020'></div>
+	
+	<div><span>學階</span><select name='class_level' id='class_level'>
+		<option value=''>全部學階</option>
+		<option value='小一'>小一</option>
+		<option value='小二'>小二</option>
+		<option value='小三'>小三</option>
+		<option value='小四'>小四</option>
+		<option value='小五'>小五</option>
+		<option value='小六'>小六</option>
+		<option value='中一'>中一</option>
+		<option value='中二'>中二</option>
+		<option value='中三'>中三</option>
+		<option value='中四'>中四</option>
+		<option value='中五'>中五</option>
+		<option value='中六'>中六</option>
+	</select></div>
+	<div><span>班名</span><input type='text' name='class' value='德'></div>
+	<div><span>學生編號</span><input type='text' name='sid' value=''>例如：0376</div>
+	<div><span>國籍</span><input type='text' name='lineage' value='中國'> 例如： 菲律賓 泰國..</div>
+	<input type='submit' value='查詢'>
+
+	<input type='hidden' name='a' value='students'>
+	<input type='hidden' name='encode' value='array' placeholder =' array / json '>
+	</form>
+
+	<div><textarea style='width:300px; height:190px;'>
+	回傳資料：
+	{
+	"id" : "學生系統編號", 
+	"sid" : "學生學號",
+	"chinese_name" : "學生中文名",
+	"english_name" : "學生英文名",
+	"class" : "班別",
+	"dob" : "出生日期",
+	"class_level" : "學階",
+	"lineage" : "國籍",
+	"study_status" : "狀態",
+	"last_updated" : "最後更新日期"
+	}</textarea>
+	</div>
+</div>
+
+
+
+
+
+<div class='eachTable'>
+	<form method='post' action='http://203.198.169.212:9000/api/index.php' target='_blank'>
+		<div class='title'>課堂資料</div>
+		<div><span>年度</span><input type='text' name='year' value='2020'></div>
+		<div><span>班名</span><input type='text' name='class' value='德'></div>
+		<input type='submit' value='查詢'>
+	
+		<input type='hidden' name='a' value='class'>
+		<input type='hidden' name='encode' value='array' placeholder =' array / json '>
+	</form>
+
+	<div><textarea style='width:350px; height:120px;'>
+	回傳資料：
+	{
+	"year" : "年度",
+	"class_name" : "班名",
+	"teacherID_1" : "班主任系統編號 1",
+	"teacherID_2" : "班主任系統編號 2"
+	}</textarea>
+	</div>
+
+</div>
+
+
+<div class='eachTable'>
+	<div class='title'>獎項資料</div>
+	<div>
+		<div><span>年度</span><input type='text' name='year' class='seach_year' value='2018' readonly></div>
+		<div><span>學生編號</span><input type='text' name='sid' class='search_student_id' value='0390' readonly></div>
+		<div><span>連結組成</span> http://203.198.169.212:9000/award/Api/getAwardStudentByYear/<font style='color:red'>學生編號</font>/<font style='color:red'>年度</font>/main</div>
+		<div><iframe src="http://203.198.169.212:9000/award/Api/getAwardStudentByYear/0390/2018/main" style='width:800px;'></iframe></div>
+	</div>
+</div>
+
+
+<div class='eachTable'>
+
+	<div class='title'>支援服務評語傳送至IEP系統</div>
+	告知本校，本校會在IEP系統>設定>讀取單元資料，更新連結位置<br>
+	而資料是需要用GET來傳送，內容必需有 annual（年度） 及 sid(學生編號)<br>
+	連結組成 http://203.198.169.212:20000/stdpf/api.php?action=unit_comment&annual=<font style='color:red'>年度</font>&sid=<font style='color:red'>學生編號</font>
+	<div><iframe src="http://203.198.169.212:20000/stdpf/api.php?action=unit_comment&annual=2018&sid=0407&unit=4" style='width:800px;height:80px;'></iframe></div>
+
+</div>
+
+
+
+<div class='eachTable'>
+
+	<div class='title'>POAS資料</div>
+	<div><span>回傳種類</span><select><option>array</option><option>json</option></select></div>
+	<div><span>POAS編號</span><input type='text'  value='533' readonly></div>
+	<div><span>連結組成</span> http://203.198.169.212:9000/iep/Api/getSkill/poas/<font style='color:red'>回傳種類</font>/<font style='color:red'>POAS編號</font></div>
+	<div><iframe src="http://203.198.169.212:9000/iep/Api/getSkill/poas/array/533" style='width:800px;height:100px;'></iframe></div>
+
+</div>
+
+
+<div class='eachTable'>
+
+	<div class='title'>Key Skills資料</div>
+	<div><span>回傳種類</span><select><option>array</option><option>json</option></select></div>
+	<div><span>Key Skills編號</span><input type='text'  value='2' readonly></div>
+	<div><span>連結組成</span> http://203.198.169.212:9000/iep/Api/getSkill/keySkills/<font style='color:red'>回傳種類</font>/<font style='color:red'>Key Skills編號</font></div>
+	<div><iframe src="http://203.198.169.212:9000/iep/Api/getSkill/keySkills/array/2" style='width:800px;height:100px;'></iframe></div>
+
+</div>
+
+
+</body>
+<style>
+.eachTable{ margin:15px; padding:10px; border-style: groove}
+.eachTable div{line-height:30px;}
+.eachTable div span{font-weight: bold; width:130px; display: inline-block;}
+.title{ background-color: #92a8d1; font-weight: bold; padding:5px;}
+</style>
+</html>
+
+<script>
+$( document ).ready(function() {
+	
+	});
+</script>
