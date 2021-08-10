@@ -126,6 +126,10 @@
                                     <div class="row">
 
                                         <div class="col-lg-12">
+                                            <div class="alert alert-info alert-dismissible fade in" role="alert" id="alert-add-item" style="display:none">
+                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                                <p> 已選擇 <strong id="item-count"></strong> 個項目</p>
+                                            </div>
                                             <h5 class="text-purple"><b>選擇項目：</b></h5>
 
                                             <table class="table table-bordered table-striped" id="subjectTable">
@@ -282,9 +286,7 @@
                         d.sb_obj_search = sb_obj_id;
                         d.lesson_search = lesson_id;
                         d.subject_search = subject_id;
-                        // var filter_type = $('#filter_type').val();
-                        // d.search_filter_type = filter_type;
-                        // d.search_filter_para = $('#filter_' + filter_type + '_para').val();
+            
                     },
                     "complete": function(e){
                         $('[data-toggle="tooltip"]').tooltip();
@@ -365,6 +367,7 @@
 
                         });
                         $('input[id=subject_lessons]').val(Array.from(added_ids));
+                        show_status()
 
                     },
                     "error": function(e) {
@@ -372,13 +375,17 @@
                     }
                 },
             });
-     
-            $("#subject_id").change(function() {
-                // alertify.error(this.value);
 
-                    ajax_choose(this.value)
-                function ajax_choose(subject_id) {
-                    $.ajax({
+
+            function show_status() {
+                let count = added_ids.size;
+                $('#item-count').html(count);
+                $('#alert-add-item').fadeIn( 300 ).delay( 1500 ).fadeOut( 400 );
+            }
+
+
+            function ajax_choose(subject_id) {
+                $.ajax({
                     url: '<?= (admin_url($page_setting['controller'])) . '/select_subject' ?>',
                     method:'POST',
                     data:{subject_id:subject_id},
@@ -391,8 +398,11 @@
                             data: d
                         });
                     },
-                    })
-                    }
+                })
+            }
+
+            $("#subject_id").change(function() {
+                ajax_choose(this.value)
             })
         });
 

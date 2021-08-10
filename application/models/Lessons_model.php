@@ -35,44 +35,27 @@ class Lessons_model extends BaseModel
 
     public static function list($course_id = null, $category_id = null, $sb_obj_id = array(), $id = array(), $subject_id = null)
     {
-        if (!$subject_id) {
-            if ($id) {
-                $result = Lessons_model::whereIn('id', $id)->get();
-            } else if ($sb_obj_id) {
-                if ($course_id) {
-                    $result = Lessons_model::whereIn('sb_obj_id', $sb_obj_id)->where('course_id', $course_id)->get();
-                } else {
-                    $result = Lessons_model::whereIn('sb_obj_id', $sb_obj_id)->get();
-                }
-            } else if (!$course_id && !$category_id) {
-                $result = Lessons_model::get();
-            } else if ($course_id && !$category_id) {
-                $result = Lessons_model::where('course_id', $course_id)->get();
-            } else if ($category_id && !$course_id) {
-                $result = Lessons_model::where('category_id', $category_id)->get();
-            } else if ($course_id && $category_id) {
-                $result = Lessons_model::where('course_id', $course_id)->where('category_id', $category_id)->get();
-            }  
-        } else if ($subject_id) {
+        if ($subject_id) {
             $subject_arr = Subject_lessons_model::id_list($subject_id);
-            if ($id) {
-                $result = Lessons_model::whereIn('id', $id)->get();
-            } else if ($sb_obj_id) {
-                if ($course_id) {
-                    $result = Lessons_model::whereIn('sb_obj_id', $sb_obj_id)->whereIn('id', $subject_arr)->where('course_id', $course_id)->get();
-                } else {
-                    $result = Lessons_model::whereIn('sb_obj_id', $sb_obj_id)->whereIn('id', $subject_arr)->get();
-                }
-            } else if (!$course_id && !$category_id) {
-                $result = Lessons_model::whereIn('id', $subject_arr)->get();
-            } else if ($course_id && !$category_id) {
-                $result = Lessons_model::whereIn('id', $subject_arr)->where('course_id', $course_id)->get();
-            } else if ($category_id && !$course_id) {
-                $result = Lessons_model::whereIn('id', $subject_arr)->where('category_id', $category_id)->get();
-            } else if ($course_id && $category_id) {
-                $result = Lessons_model::whereIn('id', $subject_arr)->where('course_id', $course_id)->where('category_id', $category_id)->get();
-            }  
         }
+        
+        $result = Lessons_model::when($course_id, function($query, $course_id){
+            return $query->where('course_id', $course_id);
+        })
+        ->when($category_id, function($query, $category_id) {
+            return $query->where('category_id', $category_id);
+        })
+        ->when($subject_id, function($query, $subject_id) {
+            return $query->whereIn('id', $subject_arr);
+        })
+        ->when($sb_obj_id, function($query, $sb_obj_id) {
+            return $query->whereIn('sb_obj_id', $sb_obj_id);
+        })
+        ->when($id, function($query, $id) {
+            return $query->whereIn('id', $id);
+        })
+        ->get();
+
 
         foreach($result as $i => $row){
             // $list[$row['id']] = $row["code"].'  (' .$row['expected_outcome'].')';  old version
@@ -85,38 +68,33 @@ class Lessons_model extends BaseModel
 
     public static function subjectList( $subject_category_id = null, $sb_obj_id = null, $id = array(), $subject_id)
     {
-        if ($subject_id) {
-            $subject_arr = Subject_lessons_model::id_list($subject_id, $subject_category_id);
-            // dump($subject_arr);
-            if ($id) {
-                $result = Lessons_model::whereIn('id', $id)->get();
-            } else if ($sb_obj_id) {
-                foreach ($subject_arr as $i => $sub) {
-                    $result[$i] = array('subject_lesson_id' => $sub['id'],'lesson' => Lessons_model::where('sb_obj_id', $sb_obj_id)->where('id', $sub['lesson_id'])->get());
-                }
-            } else if (!$course_id && !$category_id || $course_id == 0 && $category_id == 0) {
-                foreach ($subject_arr as $i => $sub) {
-                    $result[$i] = array('subject_lesson_id' => $sub['id'], 'lesson' => Lessons_model::where('id', $sub['lesson_id'])->get());
-                }
-            } else if ($course_id && !$category_id) {
-                $result = Lessons_model::whereIn('id', $subject_arr)->where('course_id', $course_id)->get();
-            } else if ($category_id && !$course_id) {
-                $result = Lessons_model::whereIn('id', $subject_arr)->where('category_id', $category_id)->get();
-            } else if ($course_id && $category_id) {
-                $result = Lessons_model::whereIn('id', $subject_arr)->where('course_id', $course_id)->where('category_id', $category_id)->get();
-            }  
-        }
-    
-        // dump($result);
+
+
+        $subject_arr = Subject_lessons_model::id_list($subject_id, $subject_category_id, $id);
+
+        if ($sb_obj_id) {
+            foreach ($subject_arr as $i => $sub) {
+                $result[$i] = array('subject_lesson_id' => $sub['id'],'lesson' => Lessons_model::whereIn('sb_obj_id', $sb_obj_id)->where('id', $sub['lesson_id'])->get());
+            }
+        } else if (!$course_id && !$category_id || $course_id == 0 && $category_id == 0) {
+            foreach ($subject_arr as $i => $sub) {
+                $result[$i] = array('subject_lesson_id' => $sub['id'], 'lesson' => Lessons_model::where('id', $sub['lesson_id'])->get());
+            }
+        } else if ($course_id && !$category_id) {
+            $result = Lessons_model::whereIn('id', $subject_arr)->where('course_id', $course_id)->get();
+        } else if ($category_id && !$course_id) {
+            $result = Lessons_model::whereIn('id', $subject_arr)->where('category_id', $category_id)->get();
+        } else if ($course_id && $category_id) {
+            $result = Lessons_model::whereIn('id', $subject_arr)->where('course_id', $course_id)->where('category_id', $category_id)->get();
+        }  
+
+
+
         foreach($result as  $i => $row){
             if (count($row['lesson'])) {
                 $list[$i] = array('name' => $row['lesson'][0]["code"].'  (' .$row['lesson'][0]['expected_outcome'].')', 'id' => $row['lesson'][0]['id'], 'sub_lesson_id' => $row['subject_lesson_id']);
-
             }
         }
-
-        // dump($list);
-
         return $list;
         
     }

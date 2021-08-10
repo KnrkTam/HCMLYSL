@@ -61,6 +61,8 @@ class Bk_subject_outcome extends CI_Controller //change this
 
         $data['lessons_list'] = $lessons_list;
 
+        // dump($lessons_list);
+
         // dump(Lessons_model::list());
         if (count($_POST)) {
             if (!$_POST['subject_id']) {
@@ -96,15 +98,15 @@ class Bk_subject_outcome extends CI_Controller //change this
         ), FALSE, TRUE);
 
         $subject_id = $_GET['subject_search'];
-        $course_id = $_GET['course_search'];
         $category_id = $_GET['category_search'];
         $sb_obj_id = $_GET['sb_obj_search'];
         $lesson_id = $_GET['lesson_search'];
-        // dump($category_id);
+        // dump($_GET);
 
         $lessons_arr = array();
         if ($subject_id) {
-            $filtered_lessons = Lessons_model::subjectList($course_id, $category_id, $sb_obj_id, $lesson_id, $subject_id);
+            $filtered_lessons = Lessons_model::subjectList($category_id, $sb_obj_id, $lesson_id, $subject_id);
+            // dump($filtered_lessons);
             foreach ($filtered_lessons as $i => $row) {
                 $lessons_arr[$i]  = array('lesson' => Lessons_model::table_list($row['id']), 'subject_lesson_id' => $row['sub_lesson_id'], 'subject_cat_id' => Subject_lessons_model::find($row['sub_lesson_id'])->subject_category_id);
             }
@@ -117,7 +119,7 @@ class Bk_subject_outcome extends CI_Controller //change this
         if (!empty( $lessons_arr)) {
             foreach ($lessons_arr as $row) {
                 // dump($row); 
-                $data[$num][] = '<a class="editLinkBtn" href="'.admin_url(current_controller() . '/edit/'. Subject_lessons_model::where('subject_category_id',$row['subject_cat_id'] )->first()->id).'"><i class="fa fa-edit"></i></a>';
+                $data[$num][] = '<a class="editLinkBtn" href="'.admin_url(current_controller() . '/edit/'. Subject_lessons_model::where('subject_category_id',$row['subject_cat_id'] )->first()->id).'"><i class="fa fa-exchange"></i></a>';
                 $data[$num][] = Subject_categories_model::name($row['subject_cat_id']);
                 $data[$num][] = $row['lesson']['course'];
                 $data[$num][] = $row['lesson']['central_obj'];

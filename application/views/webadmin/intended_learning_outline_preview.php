@@ -197,6 +197,9 @@
                 },              
             ];
 
+            $("#previewTable").fadeIn();
+
+
             var subjectTable = $('#previewTable').DataTable({
                 scrollX: true,
                 rowsGroup: [
@@ -209,7 +212,8 @@
                 "bSort": false,
                 "pageLength": 10,
                 "pagingType": "simple",
-                "processing": false,
+                "processing": true,
+                "bProcessing": true,
                 "serverSide": true,
                 "ordering": false,
                 "searching": false,

@@ -131,13 +131,13 @@
                 array(
                     'main_menu' => __('設定單元既定教學大綱 - 檢視'),
                     'url' => 'Bk_intended_learning_outline',
-                    'access' => 'view_news',
+                    'access' => 'view_intended_learning_outline',
                     'icon' => 'fa-file',
                 ),
                 array(
                     'main_menu' => __('補充內容 - 檢視'),
-                    'url' => 'Bk_addon',
-                    'access' => 'view_news',
+                    'url' => 'Bk_additional_content',
+                    'access' => 'view_additional_content',
                     'icon' => 'fa-plus',
                 ),
 

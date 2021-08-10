@@ -286,6 +286,24 @@ class Bk_permission extends CI_Controller
             ),
 
 
+            // 補充內容 
+            'create_additional_content' => array(
+            'desc' => 'Can create additional_content',
+            'role' => array('super_admin', 'admin')
+            ),
+            'update_additional_content' => array(
+                'desc' => 'Can update additional_content',
+                'role' => array('super_admin', 'admin')
+            ),
+            'delete_additional_content' => array(
+                'desc' => 'Can delete additional_content',
+                'role' => array('super_admin', 'admin')
+            ),
+            'view_additional_content' => array(
+                'desc' => 'Can view additional_content',
+                'role' => array('super_admin', 'admin')
+            ),
+
             //news_ajax
             'create_news_ajax' => array(
                 'desc' => 'Can create news_ajax',

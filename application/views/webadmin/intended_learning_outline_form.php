@@ -46,10 +46,12 @@
                     <!-- column -->
                     <div class="col-md-12">
                         <!-- form start -->
-                        <?= form_open_multipart($form_action, 'class="form-horizontal"'); ?>
+                        <?= form_open_multipart($form_action, 'id="myForm" class="form-horizontal"'); ?>
                         <div class="box box-primary">
                             <div class="box-body">
                                 <div id="signupalert" class="alert alert-danger margin_bottom_20"></div>
+                                <!-- Alert -->
+                                
                                 <div class="row mb-4">
                                 <div class="col-lg-12">
                                             <h5 class="text-red"><b>選擇科目及年度學習單元：</b></h5>
@@ -77,7 +79,8 @@
                                 </div>
                                 <hr>
 
-                                <div class="">
+                                <div class="subject_outcomeNew">
+                                
                                     <div class="row mb-4">
                                         <div class="col-lg-12">
                                             <h5 class="text-red"><b>搜尋課程學習重點：</b></h5>
@@ -91,7 +94,7 @@
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <label class="text-nowrap">校本課程學習重點:</label>
-                                                <div style="flex: 1"><?php form_list_type('sb_obj_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' => '', 'enable_value' => $sb_obj_list, 'data-placeholder' => '請選擇...', 'form_validation_rules' => 'trim|required']) ?></div>
+                                                <div style="flex: 1"><?php form_list_type('sb_obj_id[]', ['type' => 'select', 'class'=> 'form-control select2' , 'value' => '', 'enable_value' => $sb_obj_list, 'data-placeholder' => '請選擇...', 'form_validation_rules' => 'trim|required', 'multiple' => 1]) ?></div>
 
                                             </div>
                                         </div>
@@ -101,7 +104,11 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="tableWrap">
+                                <div class="tableWrap" style="display:none">
+                                    <div class="alert alert-info alert-dismissible fade in" role="alert" id="alert-add-item" style="display:none">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                        <p> 已選擇 <strong id="item-count"></strong> 個項目</p>
+                                    </div>
                                     <h5 class="text-purple"><b>選擇教學大綱項目：</b></h5>
                                     <table class="table table-bordered table-striped dataTable" id="subjectTable">
 
@@ -115,7 +122,7 @@
                                     </table>
                                     <div class="mt-4 d-flex justify-content-end">
                                     <input type="hidden" name="action" value="create"/>
-                                    <button type="submit" class="btn bg-maroon mw-100 mb-4 mr-4">下一步</button>
+                                    <button type="button" id="submit-btn" class="btn bg-maroon mw-100 mb-4 mr-4">下一步</button>
                                     <button type="button" class="btn btn-default mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller']) ?>';">返 回</button>
                                     <input type="hidden" id="subject_lessons" name="subject_lessons[]" value=""></input>
 
@@ -182,7 +189,6 @@
 
     <script>
         $(document).ready(function() {
-
             $('[data-toggle="tooltip"]').tooltip();
             let columnDefs = [{
                     name: 'zore',
@@ -289,9 +295,11 @@
             });
             let added_ids = new Set();
 
+       
+
             $('input[id=subject_lessons]').val(Array.from(added_ids));
 
-            var  Subject_dataTable = $('#subjectTable').DataTable({
+            let Subject_dataTable = $('#subjectTable').DataTable({
                 scrollX: true,
                 rowsGroup: [
                     'zore:name',
@@ -302,9 +310,7 @@
                 },
                 "order": [],
                 "bInfo": true,
-                // "bSort": false,
                 "bPaginate": true,
-                // "paging": true,
                 "pageLength": 10,
                 "processing": true,
                 "serverSide": true,
@@ -312,7 +318,6 @@
                 "searching": false,
                 "searchDelay": 0,
                 "columns": columnDefs,            
-
                 "ajax": {
                     "url": "<?= admin_url($page_setting['controller'] . '/search_ajax') ?>",
                     "method": "get",
@@ -329,27 +334,20 @@
                         d.subject_search = subject_id;
                     },
                     "complete": function(e){
-                        console.log(e);  
                         $('[data-toggle="tooltip"]').tooltip();
                         $(".addLesson").change(function(e) {
-                            console.log('clicked', this.value)
                             if ($(this).is(':checked')) {
                                 added_ids.add(this.value)
-
                                 e.stopPropagation();
-                                $(".tableWrap").fadeIn();
 
                                 subjectSelectedTable.draw();
                             } else {
                                 added_ids.delete(this.value)
-                                $(".tableWrap").fadeIn();
-
                                 subjectSelectedTable.draw();
 
                             }
-                            console.log(added_ids);
-
                         });
+
                         let old_arr = Array.from(added_ids)
                         for (let i = 0; i < old_arr.length; i++) {
                             $(`input[type=checkbox][class=addLesson][value=${old_arr[i]}]`).prop('checked', true)
@@ -357,8 +355,8 @@
 
                         $(".removeRow").click(function() {
                             added_ids.delete(this.attributes.value.value);
-                            $('#subjectSelectedTable').DataTable().draw();
-                            $('#subjectTable').DataTable().draw();
+                            subjectSelectedTable.draw();
+                            Subject_dataTable.draw();
 
                         });
                         $('input[id=subject_lessons]').val(Array.from(added_ids));
@@ -402,36 +400,28 @@
                         $(".addLesson").change(function() {
                             if ($(this).is(':checked')) {
                                 added_ids.add(this.value)
-                                // console.log(Array.from(added_ids));
                             } else {
-                                added_ids.delete(this.value)
-                                // console.log(Array.from(added_ids));
+                                added_ids.delete(this.value)    
                             }
                         });
 
                         
                         $(".removeRow").click(function() {
                             added_ids.delete(this.attributes.value.value);
-
-                            console.log(Array.from(added_ids))
-                            // console.log(JSON.stringify(this));
-                            // console.log(this.attributes.value.value)
-                            $('#subjectSelectedTable').DataTable().draw();
-                            $('#subjectTable').DataTable().draw();
+                            subjectSelectedTable.draw();
+                            Subject_dataTable.draw();
 
                         });
                         $('input[id=subject_lessons]').val(Array.from(added_ids));
-
+                        show_status()
                     },
                     "error": function(e) {
-                        console.log(e);
                     }
                 },
             });
 
 
             $(".controlSearchBtn").click(function() {
-
                 $(".subject_outcomeNew").slideToggle('slow', function() {
                     $('.controlSearchBtn').toggleClass('active', $(this).is(':visible'));
                     if ($('.controlSearchBtn').hasClass("active")) {
@@ -440,11 +430,14 @@
                         $(".controlSearchBtn").text("顯示搜尋");
                     }
                 });
-
-
             });
         
 
+            function show_status () {
+                let count = added_ids.size;
+                $('#item-count').html(count);
+                $('#alert-add-item').fadeIn( 300 ).delay( 1500 ).fadeOut( 400 );
+            }
             
             function ajax_choose(subject_id) {
                 $.ajax({
@@ -459,22 +452,58 @@
                     $('#subject_category_id').select2({
                         data: d
                     });
-                    $('#subejct_category_id').val(<?= $_POST['subject_category_id']?>)
-                    console.log(<?= $_POST['subject_category_id']?>)
+                    Subject_dataTable.draw();
+
                     },
                 })
             }
 
             $("#subject_id").change(function() {
+                $(".subject_outcomeNew").fadeIn();
+
                 ajax_choose(this.value)
                 $(".controlSearchBtn").fadeIn();
                 $(".controlSearchBtn").text("隱藏搜尋");
+
+                added_ids.clear();
+                subjectSelectedTable.draw();
+
             })
 
             <?php if ($_SESSION['post_data']['subject_id']) { ?>
+                $(".tableWrap").fadeIn();
                 ajax_choose(<?= $_SESSION['post_data']['subject_id'] ?>)
-
+                let strArr = <?= json_encode($_SESSION['post_data']['subject_lessons']) ?>;
+                let arr = strArr[0].split(",");
+                arr.forEach(item => added_ids.add(item));
             <? } ?>
+
+        
+
+
+            // form validation
+            let submitBtn = document.querySelector('#submit-btn');
+            submitBtn.addEventListener("click",function(){
+                validateForm(subject_id.value, module_id.value, subject_lessons.value);
+                function validateForm(subject_id, module_id, subject_lessons){
+                    $.ajax({
+                    url: '<?= (admin_url($page_setting['controller'])) . '/validate' ?>',
+                    method:'POST',
+                    data:{subject_id:subject_id,module_id: module_id, subject_lessons},
+                    dataType:'json',     
+                    success:function(data){
+                        if (data.status == 'success') {
+                            document.getElementById('myForm').submit();
+                        } else {
+                            alertify.error(data.status)
+                        }
+                    },
+                    error: function(error){
+                        alert('error');
+                    }
+                    });
+                } 
+            })      
         });
 
         

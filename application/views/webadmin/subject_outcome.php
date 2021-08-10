@@ -37,29 +37,14 @@
                     <div class="col-md-12">
                         <!-- form start -->
                         <?= form_open_multipart($form_action, 'class="form-horizontal"'); ?>
-                        <!-- general form elements 
-                    <input type="hidden" name="id" value="<?= $id ?>"/>-->
                         <div class="box box-primary">
-                            <!-- <div class="box-header">
-                            <div class="row col-md-2">
-                                <div class="btn-group" data-spy="affix" data-offset-top="2" style="z-index: 20;">
-                                    <a href="<?= admin_url($page_setting['controller']) ?>" class="btn btn-default">
-                                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
-                                        <?= __('Cancel') ?>
-                                    </a>
-
-                                    <?php if (validate_user_access(['create_news', 'update_news'])) { ?>
-                                        <button type="button" class="btn btn-primary" onclick="submit_form(this);">
-                                            <i class="fa fa-floppy-o" aria-hidden="true"></i> <?= __('Save') ?>
-                                        </button>
-                                    <?php } ?>
-                                </div>
-                            </div>
-                        </div> -->
-                            <!-- /.box-header -->
                             <div class="box-body">
                                 <div id="signupalert" class="alert alert-danger margin_bottom_20"></div>
                                 <!-- <div class="col-lg-12">  -->
+                                <div class="alert alert-info alert-dismissible fade in" role="alert" id="subject-select-notice">
+                                    <button type="button" id="close-btn" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                    <p> 請先選擇科目</p>
+                                </div>
                                 <h5 class="text-purple"><b>搜尋科目：</b></h5>
                                 <div class="mb-4">
                                     <div class="row">
@@ -93,7 +78,6 @@
                                 </div>
                                 <button type="button" class="btn bg-orange mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller'] . '/create') ?>'">加入課程至新科目範疇</button>
                                 <hr />
-                                <!-- <div class="col-lg-12">  -->
                                     <h5 class="text-red"><b>搜尋結果：</b></h5>
                                 <!-- </div> -->
                                 <div class="tableWrap">
@@ -166,7 +150,6 @@
             "bPaginate": false,
             "pageLength": 50,
             "pagingType": "input",
-            //"sDom": '<"wrapper"lfptip>',
             "processing": true,
             "serverSide": false,
             "ordering": true,
@@ -202,21 +185,27 @@
             });
 
 
-                let data =  <?php echo $subject_categories_list?>;
+            let data =  <?php echo $subject_categories_list?>;
 
-                $('#subject_category_id').select2({
-                    data: data
-                })
+            $('#subject_category_id').select2({
+                data: data
+            })
 
-        
-                let sub_id = <?php echo $subject_categories_id ?  $subject_categories_id : 0?>;
-                let sb_obj_id = <?php echo $sb_obj_id ?  $sb_obj_id : 0?>;
-                let lesson_id = <?php echo $lesson_id ?  $lesson_id : 0?>;
-                $("#subject_category_id").val(sub_id);
-                $("#sb_obj_id").val(sb_obj_id);
-                $("#lesson_id").val(lesson_id);
-                
-                $(".select2").trigger('change');
+    
+            let sub_id = <?php echo $subject_categories_id ?  $subject_categories_id : 0?>;
+            let sb_obj_id = <?php echo $sb_obj_id ?  $sb_obj_id : 0?>;
+            let lesson_id = <?php echo $lesson_id ?  $lesson_id : 0?>;
+            $("#subject_category_id").val(sub_id);
+            $("#sb_obj_id").val(sb_obj_id);
+            $("#lesson_id").val(lesson_id);
+            
+            $(".select2").trigger('change');
+        });
+
+        $('#subject_id').on('change', function(){
+            if (this.value.length !== 0) {
+                $('#subject-select-notice').fadeOut();
+            }
         });
 
 

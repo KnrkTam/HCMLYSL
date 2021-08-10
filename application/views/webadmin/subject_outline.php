@@ -34,35 +34,19 @@
                     <div class="col-md-12">
                         <!-- form start -->
                         <?= form_open_multipart($form_action, 'class="form-horizontal"'); ?>
-                        <!-- general form elements
-                    <input type="hidden" name="id" value="<?= $id ?>"/>-->
+            
                         <div class="box box-primary">
-                            <!-- <div class="box-header">
-                            <div class="row col-md-2">
-                                <div class="btn-group" data-spy="affix" data-offset-top="2" style="z-index: 20;">
-                                    <a href="<?= admin_url($page_setting['controller']) ?>" class="btn btn-default">
-                                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
-                                        <?= __('Cancel') ?>
-                                    </a>
-
-                                    <?php if (validate_user_access(['create_news', 'update_news'])) { ?>
-                                        <button type="button" class="btn btn-primary" onclick="submit_form(this);">
-                                            <i class="fa fa-floppy-o" aria-hidden="true"></i> <?= __('Save') ?>
-                                        </button>
-                                    <?php } ?>
-                                </div>
-                            </div>
-                        </div> -->
-                            <!-- /.box-header -->
-
                             <div class="box-body">
                                 <div id="signupalert" class="alert alert-danger margin_bottom_20"></div>
+                                <div class="alert alert-info alert-dismissible fade in" role="alert" id="subject-select-notice">
+                                    <button type="button" id="close-btn" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                    <p> 請先選擇科目</p>
+                                </div>
                                 <div class="row mb-4">
                                     <div class="col-lg-3">
                                         <div class="form-group ">
                                             <label class="text-nowrap">科目 : </label>
                                             <div style="flex: 1"><?php form_list_type('subject_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'data-placeholder' => '請選擇...', 'enable_value' => $subject_list, 'form_validation_rules' => 'trim|required']) ?></div>
-
                                         </div>
                                     </div>
                                     <div class="col-lg-2">
@@ -113,20 +97,17 @@
     </div>
 
 
-
-
     <!-- ./wrapper -->
     <?php include_once "script.php"; ?>
 
 
 
-
-
     <script>
-        $(document).ready(function() {
-
-
-            $('#subject_id').change(function() {
+    $(document).ready(function() {
+        $('#subject_id').change(function() {
+            if (this.value.length !== 0) {
+                $('#subject-select-notice').fadeOut();
+            }
             ajax_choose(this.value)
             function ajax_choose(subject_id) {
                 $.ajax({
@@ -137,14 +118,12 @@
                 success:function(data){
                     $('#newBtn').fadeIn("slow", function() {});
                     $('#newBtn').html(`<button type="button" class="btn bg-orange mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller'] . '/create/') ?>${data.id}'">加入關建表現項目至新科目課程</button>`)
-                    // $('#expected_outcome').val(data.expected_outcome);
-                    // $('#expected_outcome_text').html(data.expected_outcome);
-                    // console.log(data)
+        
                 }
                 })
             }
         })
-            $('[data-toggle="tooltip"]').tooltip();
+        $('[data-toggle="tooltip"]').tooltip();
 
 
             let columnDefs = [{

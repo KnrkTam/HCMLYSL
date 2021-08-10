@@ -3,6 +3,25 @@
 
 <head>
     <?php include_once("head.php"); ?>
+    <style>
+        .big-col {
+            width: 400px !important;
+            position: relative;
+        }
+        .col {
+            width: 100px;
+            position: relative;
+
+        }
+        table {
+            table-layout:fixed;
+        } 
+        .highlight{
+            position:absolute;
+            right: 5%;
+            bottom: 5%;
+        }
+    </style>
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini">
@@ -66,7 +85,7 @@
                                     </div>
 
                                     <div class="col-lg-1">
-                                        <button type="submit" class="btn btn-success mt-25 w-100 mb-4 searchBtn">搜 尋</button>
+                                        <button type="button" class="btn btn-success mt-25 w-100 mb-4 searchBtn">搜 尋</button>
                                     </div>
 
                                 </div>
@@ -78,35 +97,12 @@
 
 
                                 <div class="">
-
                                     <ul class="colorMapList inlinelist mb-4">
                                         <li class="text-aqua bold">非華語</li>
                                         <li class="text-green bold">新生入學評估</li>
                                     </ul>
+                                    <table class="table table-bordered table-striped" id="mainTable">
 
-
-                                    <table class="table table-bordered table-striped dataTable" id="dataTable">
-                                        <thead>
-                                            <tr class="bg-light-blue color-palette">
-                                                <th class="no-sort" style="min-width: 4px;"></th>
-                                                <th class="nowrap">科目</th>
-                                                <th class="nowrap">課程</th>
-                                                <th class="nowrap">科目範疇</th>
-                                                <th class="nowrap">校本課程學習重點</th>
-                                                <th class="nowrap">學習元素</th>
-                                                <th class="nowrap">組別</th>
-                                                <th class="nowrap">LPF(基礎)</th>
-                                                <th class="nowrap">LPF(高中)</th>
-                                                <th class="nowrap">POAS <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></th>
-                                                <th class="nowrap">Key Skill</th>
-                                                <th class="nowrap">預期學習成果</th>
-                                                <th class="nowrap">單元</th>
-                                                <th class="nowrap">關鍵表現項目</th>
-                                                <th class="nowrap">備註</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        </tbody>
                                     </table>
                                 </div>
 
@@ -139,27 +135,152 @@
         $(document).ready(function() {
 
             $('[data-toggle="tooltip"]').tooltip();
+            let columnDefs = [{
+                    width: '10px',
+                    data: "0",
+                    name: 'first',
+                    class: 'no-sort',
+                },     
+                {
+                    width: '60px',
+                    data: "1",
+                    title: "科目",
+                    name: 'first',
+                },               
+                {
+                    class: 'col',
+                    data: "2",
+                    title: "科目範疇",
+                    name: 'first',
+                },               
+                {
+                    class: 'col',
+                    data: "3",
+                    title: "課程編號",
+                    name: 'first',
+                },        
+                {
+                    class: 'col',
+
+                    data: "4",
+                    title: "課程",
+                    name: 'first',
+                },                
+                {
+                    class: 'col',
+
+                    data: "5",
+                    title: "範疇",
+                    name: 'first',
+                },                
+                {
+                    width: '120px',
+                    data: "6",
+                    title: "校本課程學習重點",
+                    name: 'first',
+                },                
+                {
+                    width: '100px',
+                    data: "7",
+                    title: "學習元素",
+                    name: 'first',
+                },                
+                {
+                    class: 'col',
+                    data: "8",
+                    title: "組別",
+                    name: 'first',
+                },                
+                {
+                    class: 'col',
+                    data: "9",
+                    title: "LPF(基礎)",
+                    name: 'first',
+                },                
+                {
+                    class: 'col',
+
+                    data: "10",
+                    title: "LPF(高中)",
+                    name: 'first',
+                },                
+                {
+                    class: 'col',
+
+                    data: "11",
+                    title: "POAS",
+                    name: 'first',
+                },                
+                {
+                    class: 'col',
+                    data: "12",
+                    title: "Key Skill",
+                    name: 'first',
+                },                
+                {
+                    class: 'big-col',
+                    data: "13",
+                    title: "預期學習成果",
+                    name: 'first',
+                },        
+                {
+                    class: 'col',
+                    data: "14",
+                    title: "單元",
+                    name: 'first',
+
+                },          
+                {
+                    class: 'big-col',
+                    data: "15",
+                    title: "關鍵表現項目",
+                    name: 'double',
+                },                
+                // {
+                //     data: "16",
+                //     title: "相關課程編號",
+                //     name: 'first',
+                // },                
+                // {
+
+                //     data: "17",
+                //     title: "相關項目編號",
+                //     name: 'first',
+                // },                
+                {
+                    
+                    class: 'col',
+                    data: "16",
+                    title: "備註",
+                    name: 'first',
+                },              
+            ];
 
 
-            let IntendLOtable = $('#dataTable').DataTable({
-            'rowsGroup': [0, 1],
-
+            let mainTable = $('#mainTable').DataTable({
+            rowsGroup: [
+                'first:name',
+            ],
             scrollX: true,
             "language": {
                 "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/Chinese-traditional.json') ?>",
             },
             "order": [],
+            'autoWidth': false,
+            // "sScrollX": "100%",
+            // "sScrollXInner": "110%",
+            // "bScrollCollapse": true,
+            // "colReorder": true
             "bSort": false,
             "bPaginate": false,
-            "pageLength": 50,
+            "pageLength": 10,
             "pagingType": "input",
-            //"sDom": '<"wrapper"lfptip>',
+            "bProcessing": true,
             "processing": true,
-            "serverSide": false,
-            "ordering": true,
-            "searching": true,
-            // "drawType": 'none',
-            "searchDelay": 0,                    
+            "serverSide": true,
+            'searching': false,
+            "ordering": false,
+            "columns": columnDefs,   
             "ajax": {
                 "url": "<?= admin_url($page_setting['controller'] . '/ajax') ?>",
                 "method": "get",
@@ -168,7 +289,7 @@
                     let subject_id = $('#subject_id').val();
                     let category_id = $('#subject_category_id').val();
                     let module_id = $('#annual_module_id').val();
-                    let remark_id = $('#remark_id[]').val();
+                    let remark_id = $('#remark_id').val();
 
                     d.subject_search = subject_id
                     d.category_search = category_id;
@@ -178,10 +299,12 @@
                 },
                 "complete" : function(){
                     $('[data-toggle="tooltip"]').tooltip();
+
+                    // setTimeout(() => {
+                    // $($.fn.dataTable.tables(true)).DataTable()
+                    //     .columns.adjust()
+                    // }, 500);
                 },
-                "error": function(e) {
-                    console.log(e);
-                }
             },
             }); 
 
@@ -210,7 +333,7 @@
 
 
             $(".searchBtn").click(function() {
-                IntendLOtable.draw();
+                mainTable.draw();
 
             });
         });
