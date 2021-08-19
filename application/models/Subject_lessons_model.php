@@ -69,6 +69,14 @@ class Subject_lessons_model extends BaseModel
         return $subject_lessons_arr;
     }
 
+        public function lesson() 
+        {
+            return $this->belongsTo('Lessons_model', 'lesson_id');
+        }
 
+        public function subject() 
+        {
+            return $this->belongsTo('Subjects_model', 'subject_id');
+        }
 
 }

@@ -21,6 +21,13 @@
             right: 5%;
             bottom: 5%;
         }
+        span.select2-selection__choice__remove {
+            display: none;
+        }
+        .select2-selection__choice__remove {
+            display: none;
+        }
+
     </style>
 </head>
 
@@ -85,7 +92,7 @@
                                     </div>
 
                                     <div class="col-lg-1">
-                                        <button type="button" class="btn btn-success mt-25 w-100 mb-4 searchBtn">搜 尋</button>
+                                        <button type="submit" class="btn btn-success mt-25 w-100 mb-4 searchBtn">搜 尋</button>
                                     </div>
 
                                 </div>
@@ -93,7 +100,7 @@
 
 
 
-                                <button type="button" class="btn bg-orange mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller'].'/create')?>';">新 增</button>
+                                <button type="button" class="btn bg-orange mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller'].'/create')?>';">新增課程至年度學習單元 </button>
 
 
                                 <div class="">
@@ -112,7 +119,38 @@
                         </div>
                         <!-- /.box -->
                         <?= form_close() ?>
+                        <div class="modal fade in" tabindex="-1" role="dialog" id="editDetail">
+                        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h3 class="modal-title bold"><span id="modal-title">Title</span> <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button></h3>
+                                    </div>
+                                <div class="modal-body">
 
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="text-nowrap">年度學習單元： </label>
+                                                <div style="flex: 1"><?php form_list_type('module_id[]', ['type' => 'select', 'class'=> 'select2 form-control' , 'value' =>'',  'enable_value' => $select_list, 'form_validation_rules' => 'trim|required', 'disable_please_select' => 1, 'multiple' => 1]) ?></div>
+                                                <input type="text" class="form-control hidden"  id="modalId" value="">
+                                                <input type="text" class="form-control hidden"  id="subjectLesson" value="">
+
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" id="edit-btn" class="btn btn-primary">確 定</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">關 閉</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     </div>
                     <!--/.col -->
                 </div>
@@ -134,123 +172,152 @@
     <script>
         $(document).ready(function() {
 
+
+            $(document).on("click", ".editLinkBtn", function () {
+            let myId = $(this).data('id');
+            let mySubject = $(this).data('subject');
+            let mySubjectLesson = $(this).data('subject_lesson')
+            let mySubjectCat = $(this).data('subject_cat');
+            let myModule = $(this).data('modules');
+            let myLesson = $(this).data('lesson');
+
+            console.log(myModule);
+            $(".modal-body #module_id").val(myModule).trigger('change');;
+            $(".modal-body #subjectLesson").val( mySubjectLesson );
+            // $(".modal-body #level_id").val( myLevel );
+            $(".modal-body #modalId").val( myId );
+            $(".modal-header #modal-title").html(mySubject+'   '+ mySubjectCat + '    ' +myLesson);
+
+        });
+
+        let editBtn = document.querySelector('#edit-btn');
+        editBtn.addEventListener("click",function(){
+            let module_arr = $('#module_id').val();
+            editModule(module_arr, modalId.value, subjectLesson.value);
+            function editModule(module_arr, id, subject_lesson_id){
+                $.ajax({
+                url: `<?= (admin_url($page_setting['controller'])) . '/edit/'?>${id}`,
+                method:'POST',
+                data:{module_arr: module_arr, id: id, subject_lesson_id:subject_lesson_id},
+                dataType:'json',     
+                success:function(data){
+                    if (data.status == 'success') {
+                        window.location.reload();
+                    } else if (data.status == 'no_change') {
+                        $('#editDetail').modal('hide');
+                    }else {
+                        alertify.error(data.status)
+                    }
+                },
+                error: function(error){
+                    alert('error');
+                }
+                });
+            } 
+        })
+
+
             $('[data-toggle="tooltip"]').tooltip();
             let columnDefs = [{
                     width: '10px',
-                    data: "0",
+                    data: "edit",
                     name: 'first',
                     class: 'no-sort',
                 },     
                 {
                     width: '60px',
-                    data: "1",
+                    data: "subject",
                     title: "科目",
                     name: 'first',
                 },               
                 {
                     class: 'col',
-                    data: "2",
+                    data: "subject_category",
                     title: "科目範疇",
                     name: 'first',
                 },               
                 {
                     class: 'col',
-                    data: "3",
+                    data: "lesson",
                     title: "課程編號",
                     name: 'first',
                 },        
                 {
                     class: 'col',
-
-                    data: "4",
+                    data: "course",
                     title: "課程",
                     name: 'first',
                 },                
                 {
                     class: 'col',
-
-                    data: "5",
+                    data: "category",
                     title: "範疇",
                     name: 'first',
                 },                
                 {
                     width: '120px',
-                    data: "6",
+                    data: "sb_obj",
                     title: "校本課程學習重點",
                     name: 'first',
                 },                
                 {
                     width: '100px',
-                    data: "7",
+                    data: "element",
                     title: "學習元素",
                     name: 'first',
                 },                
                 {
                     class: 'col',
-                    data: "8",
+                    data: "groups",
                     title: "組別",
                     name: 'first',
                 },                
                 {
                     class: 'col',
-                    data: "9",
+                    data: "lpf_basic",
                     title: "LPF(基礎)",
                     name: 'first',
                 },                
                 {
                     class: 'col',
-
-                    data: "10",
+                    data: "lpf_advanced",
                     title: "LPF(高中)",
                     name: 'first',
                 },                
                 {
                     class: 'col',
-
-                    data: "11",
+                    data: "poas",
                     title: "POAS",
                     name: 'first',
                 },                
                 {
                     class: 'col',
-                    data: "12",
+                    data: "skills",
                     title: "Key Skill",
                     name: 'first',
                 },                
                 {
                     class: 'big-col',
-                    data: "13",
+                    data: "expected_outcome",
                     title: "預期學習成果",
                     name: 'first',
                 },        
                 {
                     class: 'col',
-                    data: "14",
+                    data: "modules",
                     title: "單元",
                     name: 'first',
 
                 },          
                 {
                     class: 'big-col',
-                    data: "15",
+                    data: "performance",
                     title: "關鍵表現項目",
                     name: 'double',
-                },                
-                // {
-                //     data: "16",
-                //     title: "相關課程編號",
-                //     name: 'first',
-                // },                
-                // {
-
-                //     data: "17",
-                //     title: "相關項目編號",
-                //     name: 'first',
-                // },                
+                },                               
                 {
-                    
                     class: 'col',
-                    data: "16",
+                    data: "remarks",
                     title: "備註",
                     name: 'first',
                 },              
@@ -267,12 +334,9 @@
             },
             "order": [],
             'autoWidth': false,
-            // "sScrollX": "100%",
-            // "sScrollXInner": "110%",
-            // "bScrollCollapse": true,
-            // "colReorder": true
             "bSort": false,
-            "bPaginate": false,
+            "info": false,
+            "bPaginate": true,
             "pageLength": 10,
             "pagingType": "input",
             "bProcessing": true,
@@ -295,7 +359,6 @@
                     d.category_search = category_id;
                     d.module_search = module_id;
                     d.remark_search = remark_id;
-                    console.log(d);
                 },
                 "complete" : function(){
                     $('[data-toggle="tooltip"]').tooltip();

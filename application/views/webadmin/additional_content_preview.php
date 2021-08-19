@@ -34,27 +34,7 @@
                     <div class="col-md-12">
                         <!-- form start -->
                         <?= form_open_multipart($form_action, 'class="form-horizontal"'); ?>
-                        <!-- general form elements 
-                    <input type="hidden" name="id" value="<?= $id ?>"/>-->
                         <div class="box box-primary">
-                            <!-- <div class="box-header">
-                            <div class="row col-md-2">
-                                <div class="btn-group" data-spy="affix" data-offset-top="2" style="z-index: 20;">
-                                    <a href="<?= admin_url($page_setting['controller']) ?>" class="btn btn-default">
-                                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
-                                        <?= __('Cancel') ?>
-                                    </a>
-
-                                    <?php if (validate_user_access(['create_news', 'update_news'])) { ?>
-                                        <button type="button" class="btn btn-primary" onclick="submit_form(this);">
-                                            <i class="fa fa-floppy-o" aria-hidden="true"></i> <?= __('Save') ?>
-                                        </button>
-                                    <?php } ?>
-                                </div>
-                            </div>
-                        </div> -->
-                            <!-- /.box-header -->
-
                             <div class="box-body">
                                 <div id="signupalert" class="alert alert-danger margin_bottom_20"></div>
 
@@ -63,25 +43,24 @@
                                     <div class="col-lg-4">
                                         <div class="form-group mb-0">
                                             <label class="text-nowrap">科目：</label>
-                                            <p>語文科1234</p>
+                                            <p><?= $subject->name?></p>
 
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="form-group mb-0">
-                                            <label class="text-nowrap">範疇：</label>
-                                            <p>聆聽</p>
+                                            <label class="text-nowrap">科目範疇：</label>
+                                            <p><?= $sub_category ?></p>
 
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="form-group mb-0">
                                             <label class="text-nowrap">校本課程學習重點：</label>
-                                            <p>聽力訓練</p>
+                                            <p><?= $sb_obj ?></p>
 
                                         </div>
                                     </div>
-
                                 </div>
                                 <hr>
                                 <h3>搜尋結果：</h3>
@@ -89,73 +68,51 @@
                                     <div class="col-lg-4">
                                         <div class="form-group ">
                                             <label class="text-nowrap">預期學習成果：</label>
-                                            <p>聽懂初階單元動詞及形容詞</p>
-
+                                            <p><?= $lesson->expected_outcome?></p>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
-                                        <p class="bold">關鍵表現項目：</p>
-                                        <p>有意識地留意及回應聲音 (1)</p>
-                                        <p>有意識地留意及回應聲音 (2)</p>
-                                        <p>有意識地留意及回應聲音 (3)</p>
-                                        <p>有意識地留意及回應聲音 (4)</p>
+                                    <p class="bold">關鍵表現項目：</p>
+                                        <?php foreach ($key_performance as $i => $row) {?>
+                                            <p value="<?= $i?>" > <?= $row->performance ?></p>
+                                        <? } ?>
                                     </div>
-
                                 </div>
                                 <div class="row d-flex list-row-header mb-2">
                                     <div class="col-3 bold">
                                         組別：
                                     </div>
-                                    <div class="col-3 bold">
-                                        初組
+                                    <? foreach ($groups as $group) {?>
+                                        <div class="col-3 bold">
+                                        <?= Groups_model::name($group) ?>
                                     </div>
-                                    <div class="col-3 bold">
-                                        中組
-                                    </div>
-                                    <div class="col-3 bold">
-                                        高組
-                                    </div>
+                                    <? } ?>
                                 </div>
+                                <? $num = 0?>
+                                <? foreach ($modules as $i => $module) {?>
                                 <div class="row mb-4">
                                     <div class="col-lg-3 bold">
-                                        <p class="mt-2">1.1 我的學校</p>
-
+                                        <p class="mt-2"><?= $module?> </p>
                                     </div>
+                                    <? foreach ($groups as $y => $group) {?>
                                     <div class="col-lg-3 bold lowLevel d-flex nowrap align-items-center">
-
-                                        <p>初 - 去、坐</p>
+                                        <input type="hidden" name="content[]" value="<?= $_POST['content'][$num]?>"></input>
+                                        <input type="hidden" name="group[]" value="<?= $group?>"></input>
+                                        <input type="hidden" name="module[]" value="<?= $i?>"></input>
+                                        <input type="hidden" name="id" value="<?= $id?>"> </input>
+                                        <p><?= $_POST['content'][$num]?></p>
                                     </div>
-                                    <div class="col-lg-3 bold middleLevel d-flex nowrap align-items-center">
+                                    <? $num++?>
 
-                                        <p>中 - 去、坐</p>
-                                    </div>
-                                    <div class="col-lg-3 bold hightLevel d-flex nowrap align-items-center">
-
-                                        <p>高 - 去、坐</p>
-                                    </div>
+                                    <?}?>
                                 </div>
-                                <div class="row mb-4">
-                                    <div class="col-lg-3 bold">
-                                        <p class="mt-2">1.3 我的家</p>
 
-                                    </div>
-                                    <div class="col-lg-3 bold lowLevel d-flex nowrap align-items-center">
+                                <? } ?>
 
-                                        <p>初 - 去、坐</p>
-                                    </div>
-                                    <div class="col-lg-3 bold middleLevel d-flex nowrap align-items-center">
-
-                                        <p>中 - 去、坐</p>
-                                    </div>
-                                    <div class="col-lg-3 bold hightLevel d-flex nowrap align-items-center">
-
-                                        <p>高 - 去、坐</p>
-                                    </div>
-                                </div>
                                 <div class="mt-4 d-flex justify-content-end">
-                                    <button type="button" class="btn bg-maroon mw-100 mb-4 mr-4" onclick="location.href='../Bk_addon';">確 定</button>
+                                    <button type="submit" class="btn bg-maroon mw-100 mb-4 mr-4" >確 定</button>
 
-                                    <button type="button" class="btn btn-default mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller']) ?>';">返 回</button>
+                                    <button type="button" class="btn btn-default mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller']. '/edit/'. $id) ?>';">返 回</button>
 
                                 </div>
                             </div>

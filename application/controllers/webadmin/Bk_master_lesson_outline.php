@@ -80,7 +80,7 @@ class Bk_master_lesson_outline extends CI_Controller //change this
         $sb_obj_id = $_GET['sb_obj_search'];
         $lesson_id = $_GET['lesson_search'];
 
-
+        // dump($_GET);
         $filtered_lessons = Lessons_model::list($course_id, $category_id, $sb_obj_id, $lesson_id);
         $lessons_arr = array();
         foreach ($filtered_lessons as $i =>$row) {
@@ -100,7 +100,6 @@ class Bk_master_lesson_outline extends CI_Controller //change this
                 $data[$num][] = $row['central_obj'];
                 $data[$num][] = $row['sb_obj'];
                 $data[$num][] = $row['element'];
-                // $data[$num][] = '<span class="hidden">'.Groups_model::value($row['group']).'</span>'.$row['group']; 
                 $data[$num][] = $row['groups'];
                 $data[$num][] = $row['lpf_basic'];
                 $data[$num][] = $row['lpf_advanced'];
@@ -122,8 +121,6 @@ class Bk_master_lesson_outline extends CI_Controller //change this
         }
         $return = json_encode(array("draw" => $_GET["draw"], "data" => $data, "get" => $_GET, "recordsTotal" => $result_count, "recordsFiltered" => $result_count));
         echo $return;
-        // echo json_encode($data);
-
     }
 
     public function search_ajax() 

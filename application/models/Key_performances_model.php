@@ -17,4 +17,14 @@
 			return $list;
         }
 
+		public static function list($subject_lesson_id)
+		{
+			$result = Key_performances_model::where('subject_lesson_id', $subject_lesson_id)->get();
+
+			foreach ($result as $row) {
+				$list[$row['id']] = $row;
+			}
+
+			return $list;
+		}
 	}

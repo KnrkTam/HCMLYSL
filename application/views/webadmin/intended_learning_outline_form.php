@@ -69,10 +69,10 @@
                                                 <label class="text-nowrap"><span class="text-red">*</span>年度學習單元：</label>
                                                 <div style="flex: 1"><?php form_list_type('module_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' => $module_id,  'data-placeholder' => '請選擇...', 'enable_value' => $annual_modules_list, 'form_validation_rules' => 'trim|required']) ?></div>
                                             </div>
-                                            <div style="margin-top:25px" class="ml-4">
+                                            <!-- <div style="margin-top:25px" class="ml-4">
                                                 <button type="button" class="btn bg-orange mb-4" data-toggle="modal" data-target="#editDetail">新增單元名稱</button>
-                                            </div>
-                                            <a href="#" class="link nowrap mt-30 ml-2 controlSearchBtn">隱藏搜尋</a>
+                                            </div> -->
+                                            <a href="#" class="link nowrap mt-30 ml-2 controlSearchBtn">隱藏搜尋</a> 
                                         </div>
                                     </div>
 
@@ -189,6 +189,9 @@
 
     <script>
         $(document).ready(function() {
+            $(".controlSearchBtn").fadeIn();
+            $(".controlSearchBtn").text("顯示搜尋");
+
             $('[data-toggle="tooltip"]').tooltip();
             let columnDefs = [{
                     name: 'zore',
@@ -462,7 +465,6 @@
                 $(".subject_outcomeNew").fadeIn();
 
                 ajax_choose(this.value)
-                $(".controlSearchBtn").fadeIn();
                 $(".controlSearchBtn").text("隱藏搜尋");
 
                 added_ids.clear();

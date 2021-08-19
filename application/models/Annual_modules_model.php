@@ -27,12 +27,15 @@
 			return $result;
 		}
 
-		public static function year_list($year_id) {
+		public static function year_list($year_id, $all = null) {
 			if ($year_id) {
 				$year_data = Annual_modules_model::where('year_id', $year_id)->pluck('module_id')->unique();
 			} 
 
-			$list[0] = '所有年度學習單元';
+			if ($all) {
+				$list[0] = '所有年度學習單元';
+
+			}
 			foreach($year_data as $i => $row){
                 $list[$row] = Modules_model::name($row);
             }

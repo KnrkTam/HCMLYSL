@@ -22,6 +22,7 @@
             right: 5%;
             bottom: 5%;
         }
+        
     </style>
 </head>
 
@@ -70,7 +71,7 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-1">
-                                        <button type="button" class="btn btn-success mt-25 w-100 mb-4 searchBtn">搜 尋</button>
+                                        <button type="submit" class="btn btn-success mt-25 w-100 mb-4 searchBtn">搜 尋</button>
                                     </div>
                                 </div>
                                 <!-- <div class="tableWrap hidenWrap"> -->
@@ -110,50 +111,50 @@
 
             var columnDefs = [{
                     name: 'first',
-                    data: "0",
+                    data: "subject",
                     title: "科目",
                     width: "40px",
                     // class: 'col',
                 },
                 {
                     name: 'first',
-                    data: "1",
+                    data: "course",
                     title: "課程",
                     width: "40px",
                 },
                 {
                     name: 'first',
-                    data: "2",
-                    title: "範疇",
-                    width: "40px",
+                    data: "sub_category",
+                    title: "科目範疇",
+                    width: "60px",
                 },
                 {
                     name: 'first',
-                    data: "3",
+                    data: "sb_obj",
                     title: "校本課程學習重點",
                     width: '130px',
                 },
                 {
                     name: 'first',
-                    data: "4",
+                    data: "element",
                     title: "學習元素",
                     class: 'col',
                 },
                 {
                     name: 'first',
-                    data: "5",
+                    data: "group",
                     title: "組別",
                     width: "40px",
                 },
                 {
                     name: 'first',
-                    data: "6",
+                    data: "lpf1",
                     title: "LPF(基礎)",
                     class: 'col',
                 },
                 {
                     name: 'first',
-                    data: "7",
+                    data: "lpf2",
                     title: "LPF(高中)",
                     class: 'col',
                 },
@@ -163,7 +164,7 @@
                     //     return result;
                     // },
                     name: 'first',
-                    data: "8",
+                    data: "poas",
                     title: "POAS",
                     class: 'col',
                 },
@@ -173,42 +174,43 @@
                         return result;
                     },
                     name: 'first',
-                    data: "9",
+                    data: "skill",
                     title: "Key Skill",
                     class: 'col',
                 },
                 {
                     name: 'first',
-                    data: "10",
+                    data: "expected_outcome",
                     title: "預期學習成果",
                     class: 'big-col',
                 },
                 {
 
                     render: function(data, type, row) {
-                        if (row.addon == "") {
-                            var result =  '<a class="small addonNewBtn" href="Bk_additional_content/create">新增</a>';
+                        if (row.add_content == "" || !row.add_content) {
+                            let result =  '<a class="small addonNewBtn" href="<?= admin_url($page_setting['controller'].'/edit/')?>' + row.id + ' ">新增</a>';
                             return result;
 
                         } else {
-                            var result =  '<div class="d-flex justify-content-between addonRow"><a href="#" class="small addonDispalyBtn"><i class="fa fa-fw  fa-minus-square-o"></i><span>隱藏</span></a><a class="small addonEditBtn" href="Bk_addon/edit">修改</a></div><div class="addonDetail">' + data + '</div>';
+                            console.log(row.add_content);
+                            let result =  '<div class="d-flex justify-content-between addonRow"><a href="#" class="small addonDispalyBtn"><i class="fa fa-fw  fa-minus-square-o"></i><span>隱藏</span></a><a class="small addonEditBtn" href="<?= admin_url($page_setting['controller'].'/edit/')?>' + row.id + ' ">修改</a></div><div class="addonDetail">' + data + '</div>';
                             return result;
                         }
                     },
                     name: 'first',
-                    data: "11",
+                    data: "add_content",
                     title: "補充內容",
                     class: 'big-col',
 
                 },
                 {
-                    data: "12",
+                    data: "performance",
                     title: "關鍵表現項目",
                     class: "big-col"
                 },
                 {
                     name: 'first',
-                    data: "13",
+                    data: "module",
                     title: "單元",
                     class: 'col',
                 }
@@ -216,27 +218,6 @@
 
 
             $(".searchBtn").click(function() {
-
-                // $(".tableWrap").fadeIn();
-                // $('#studyUnitTable').DataTable({
-                //     data: data,
-                //     columns: columnDefs,
-                //     rowsGroup: [
-                //         'first:name',
-                //     ],
-                //     select: {
-                //         style: 'os',
-                //         selector: 'td:not(:first-child)'
-                //     },
-                //     scrollX: true,
-                //     scrollCollapse: true,
-                //     drawCallback: function(settings) {
-                //         $('[data-toggle="tooltip"]').tooltip();
-
-
-                //     }
-
-                // });
                 mainTable.draw();
 
             });
@@ -252,17 +233,15 @@
             },
             "order": [],
             'autoWidth': false,
-            // "sScrollX": "100%",
-            // "sScrollXInner": "110%",
-            // "bScrollCollapse": true,
-            // "colReorder": true
             "bSort": false,
-            "bPaginate": false,
+            // "bPaginate": false,
+            "info": false,
             "pageLength": 10,
             "pagingType": "input",
+            "bPaginate": true,
             "bProcessing": true,
             "processing": true,
-            "serverSide": true,
+            "serverSide": false,
             'searching': false,
             "ordering": false,
             "columns": columnDefs,   
@@ -272,28 +251,17 @@
                 "timeout": "30000",
                 "data": function(d) {
                     let subject_id = $('#subject_id').val();
-                    // let category_id = $('#subject_category_id').val();
                     let module_id = $('#module_id').val();
-                    // let remark_id = $('#remark_id').val();
 
                     d.subject_search = subject_id
-                    // d.category_search = category_id;
                     d.module_search = module_id;
-                    // d.remark_search = remark_id;
-                    console.log(d);
+          
                 },
                 "complete" : function(){
                     $('[data-toggle="tooltip"]').tooltip();
-                    // setTimeout(() => {
-                    // $($.fn.dataTable.tables(true)).DataTable()
-                    //     .columns.adjust()
-                    // }, 500);
                 },
             },
         }); 
-
-
-
 
 
             $(document).on("click", ".addonDispalyBtn", function() {

@@ -34,27 +34,8 @@
                     <div class="col-md-12">
                         <!-- form start -->
                         <?= form_open_multipart($form_action, 'class="form-horizontal"'); ?>
-                        <!-- general form elements 
-                    <input type="hidden" name="id" value="<?= $id ?>"/>-->
+                    
                         <div class="box box-primary">
-                            <!-- <div class="box-header">
-                            <div class="row col-md-2">
-                                <div class="btn-group" data-spy="affix" data-offset-top="2" style="z-index: 20;">
-                                    <a href="<?= admin_url($page_setting['controller']) ?>" class="btn btn-default">
-                                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
-                                        <?= __('Cancel') ?>
-                                    </a>
-
-                                    <?php if (validate_user_access(['create_'.$page_setting['scope_code'], 'update_'.$page_setting['scope_code']])) { ?>
-                                        <button type="button" class="btn btn-primary" onclick="submit_form(this);">
-                                            <i class="fa fa-floppy-o" aria-hidden="true"></i> <?= __('Save') ?>
-                                        </button>
-                                    <?php } ?>
-                                </div>
-                            </div>
-                        </div> -->
-                            <!-- /.box-header -->
-
                             <div class="box-body">
                                 <div id="signupalert" class="alert alert-danger margin_bottom_20"></div>
 
@@ -90,12 +71,7 @@
                                     <div class="col-lg-1">
                                         <button type="submit" class="btn btn-success mt-25 w-100 mb-4 searchBtn" >搜 尋</button>
                                     </div>
-
                                 </div>
-
-
-
-
                                 <button type="button" class="btn bg-orange mw-100 mb-4" onclick="location.href='<?= (admin_url($page_setting['controller'])) . '/create'?>';">新 增</button>
                                 <div class="tableWrap">
                                     <table class="table table-bordered table-striped" id="Course_datatable">
@@ -117,22 +93,17 @@
                                                 <th class="nowrap">預期學習成果</th>
                                                 <th class="nowrap">相關課程編號</th>
                                                 <th class="nowrap">相關項目編號</th>
-
                                             </tr>
                                         </thead>
                                         <tbody>
-                                    
                                         </tbody>
                                     </table>
                                 </div>
-
-
                             </div>
                             <!-- /.box-body -->
                         </div>
                         <!-- /.box -->
                         <?= form_close() ?>
-
                     </div>
                     <!--/.col -->
                 </div>
@@ -140,15 +111,11 @@
             </section>
             <!-- /.content -->
         </div>
-
         <!-- /.content-wrapper -->
-
         <?php include_once("footer.php"); ?>
-
     </div>
     <!-- ./wrapper -->
     <?php include_once("script.php"); ?>
-
 
 
     <script>
@@ -157,18 +124,10 @@
                 container: 'body'
             });
 
-            // <?php if ($sb_obj_id) {?>
-            //     let sb_value =  <?= json_encode($sb_obj_id)?>;
-            // <?}?>
-
-            // <?php if ($lesson_id) {?>
-            //     let lesson_value = <?= json_encode($lesson_id) ?>
-            // <?}?>
-
             let Course_datatable = $('#Course_datatable').DataTable({
                 scrollX: true,
                 "language": {
-                   "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/Chinese-traditional.json') ?>",
+                    "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/Chinese-traditional.json') ?>",
                 },
                 "order": [],
                 "bSort": false,
@@ -206,9 +165,6 @@
                         d.sb_obj_search = sb_obj_id;
                         d.lesson_search = lesson_id;
 
-                        // var filter_type = $('#filter_type').val();
-                        // d.search_filter_type = filter_type;
-                        // d.search_filter_para = $('#filter_' + filter_type + '_para').val();
                     },
                     "error": function(e) {
                         console.log(e);

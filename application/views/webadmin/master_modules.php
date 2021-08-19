@@ -32,28 +32,7 @@
                 <div class="row">
                     <!-- column -->
                     <div class="col-md-12">
-                     
-                        <!-- general form elements 
-                    <input type="hidden" name="id" value="<?= $id ?>"/>-->
                         <div class="box box-primary">
-                            <!-- <div class="box-header">
-                            <div class="row col-md-2">
-                                <div class="btn-group" data-spy="affix" data-offset-top="2" style="z-index: 20;">
-                                    <a href="<?= admin_url($page_setting['controller']) ?>" class="btn btn-default">
-                                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
-                                        <?= __('Cancel') ?>
-                                    </a>
-
-                                    <?php if (validate_user_access(['create_news', 'update_news'])) { ?>
-                                        <button type="button" class="btn btn-primary" onclick="submit_form(this);">
-                                            <i class="fa fa-floppy-o" aria-hidden="true"></i> <?= __('Save') ?>
-                                        </button>
-                                    <?php } ?>
-                                </div>
-                            </div>
-                        </div> -->
-                            <!-- /.box-header -->
-
                             <div class="box-body">
                                 <div id="signupalert" class="alert alert-danger margin_bottom_20"></div>
                                 <?php if (validate_user_access(['create_'.$scope_code])) { ?>
@@ -87,8 +66,6 @@
                             </div>
                             <!-- /.box-body -->
                         </div>
-                 
-
                     </div>
                     <!--/.col -->
                 </div>
@@ -96,9 +73,7 @@
             </section>
             <!-- /.content -->
         </div>
-
         <!-- /.content-wrapper -->
-
         <?php include_once("footer.php"); ?>
 
 
