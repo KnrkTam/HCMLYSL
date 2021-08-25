@@ -120,8 +120,8 @@
                                             </div>
                                             <h5 class="text-purple"><b>選擇項目：</b></h5>
                                             <table class="table table-bordered table-striped" id="subjectTable">
-                                                <thead>
-                                                    <tr class="bg-light-blue color-palette">
+                                                <!-- <thead> -->
+                                                    <!-- <tr class="bg-light-blue color-palette">
                                                         <th class="no-sort"></th>
                                                         <th class="nowrap">課程</th>
                                                         <th class="nowrap">範疇</th>
@@ -137,8 +137,8 @@
                                                         <th class="nowrap">課程編號</th>
                                                         <th class="nowrap">預期學習成果</th>
                                                         <th class="nowrap">相關項目編號</th>
-                                                    </tr>
-                                                </thead>
+                                                    </tr> -->
+                                                <!-- </thead> -->
                                                 <tbody>
                                                 </tbody>
                                             </table>
@@ -149,8 +149,8 @@
                                         <div class="col-lg-12">
                                             <h5 class="text-yellow"><b>已選項目：</b></h5>
                                             <table class="table table-bordered table-striped" id="subjectSelectedTable">
-                                                <thead>
-                                                    <tr class="bg-light-blue color-palette">
+                                                <!-- <thead> -->
+                                                    <!-- <tr class="bg-light-blue color-palette">
                                                         <th class="no-sort" style="min-width: 10px;"></th>
                                                         <th class="nowrap">課程</th>
                                                         <th class="nowrap">範疇</th>
@@ -166,8 +166,8 @@
                                                         <th class="nowrap">預期學習成果</th>
                                                         <th class="nowrap">課程編號</th>
                                                         <th class="nowrap">相關項目編號</th>
-                                                    </tr>
-                                                </thead>
+                                                    </tr> -->
+                                                <!-- </thead> -->
                                                 <tbody>
                                                 </tbody>
                                             </table> 
@@ -229,9 +229,86 @@
                 };
             <?}?>
 
-            // $('#sub_category_id').change(function(){
-            //     alertify.error(this.value)
-            // })
+            let columnDefs = [{
+                width: '10px',
+                data: "edit",
+                name: 'first',
+                class: 'no-sort',
+            },     
+            {
+                width: '60px',
+                data: "category",
+                title: "課程範疇",
+                name: 'first',
+            },               
+            {
+                class: 'col',
+                data: "course",
+                title: "課程",
+                name: 'first',
+            },               
+            {
+                class: 'col',
+                data: "sb_obj",
+                title: "校本課程學習重點",
+                name: 'first',
+            },        
+            {
+                width: '100px',
+                data: "element",
+                title: "學習元素",
+                name: 'first',
+            },              
+            {
+                class: 'col',
+                data: "groups",
+                title: "組別",
+                name: 'first',
+            },                
+            {
+                class: 'big-col',
+                data: "expected_outcome",
+                title: "預期學習成果",
+                name: 'first',
+            },        
+            {
+                class: 'col',
+                data: "pre-skills",
+                title: "前備技能",
+                name: 'first',
+
+            },  
+            {
+                class: 'col',
+                data: "lpf_basic",
+                title: "LPF(基礎)",
+                name: 'first',
+            },                
+            {
+                class: 'col',
+                data: "lpf_advanced",
+                title: "LPF(高中)",
+                name: 'first',
+            },                
+            {
+                class: 'col',
+                data: "poas",
+                title: "POAS",
+                name: 'first',
+            },                
+            {
+                class: 'col',
+                data: "skills",
+                title: "Key Skill",
+                name: 'first',
+            },                                  
+            {
+                class: 'col',
+                data: "rel_les",
+                title: "相關項目編號",
+                name: 'first',
+            },              
+        ];
             
             $('input[id=subject_lessons]').val(Array.from(added_ids));
 
@@ -251,6 +328,8 @@
                 "serverSide": true,
                 "ordering": false,
                 "searching": false,
+                "columns": columnDefs,   
+
                 "searchDelay": 0,
                 "ajax": {
                     "url": "<?= admin_url($page_setting['controller'] . '/search_ajax') ?>",
@@ -329,6 +408,8 @@
                 "searchDelay": 0, 
                 "bPaginate": false,
                 "bAutoWidth": false,
+                "columns": columnDefs,   
+
                 "ajax": {
                     "url": "<?= admin_url($page_setting['controller'] . '/select_ajax') ?>",
                     "method": "get",

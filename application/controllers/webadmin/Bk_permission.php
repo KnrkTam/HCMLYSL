@@ -304,6 +304,45 @@ class Bk_permission extends CI_Controller
                 'role' => array('super_admin', 'admin')
             ),
 
+            
+
+                    // 補充內容 
+            'create_annual_subject_group' => array(
+                'desc' => 'Can create annual_subject_group',
+                'role' => array('super_admin', 'admin')
+            ),
+                'update_annual_subject_group' => array(
+                    'desc' => 'Can update annual_subject_group',
+                    'role' => array('super_admin', 'admin')
+            ),
+                'delete_annual_subject_group' => array(
+                    'desc' => 'Can delete annual_subject_group',
+                    'role' => array('super_admin', 'admin')
+            ),
+                'view_annual_subject_group' => array(
+                    'desc' => 'Can view annual_subject_group',
+                    'role' => array('super_admin', 'admin')
+            ),
+
+            
+            'create_annual_service_group' => array(
+                'desc' => 'Can create annual_service_group',
+                'role' => array('super_admin', 'admin')
+            ),
+            'update_annual_service_group' => array(
+                'desc' => 'Can update annual_service_group',
+                'role' => array('super_admin', 'admin')
+            ),
+            'delete_annual_service_group' => array(
+                'desc' => 'Can delete annual_service_group',
+                'role' => array('super_admin', 'admin')
+            ),
+            'view_annual_service_group' => array(
+                'desc' => 'Can view annual_service_group',
+                'role' => array('super_admin', 'admin')
+            ),
+
+
             //news_ajax
             'create_news_ajax' => array(
                 'desc' => 'Can create news_ajax',

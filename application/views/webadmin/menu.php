@@ -149,31 +149,18 @@
                     'sub_menu' => array(
                         array(
                             'title' => __('年度科目分組 - 檢視'),
-                            'url' => 'Bk_group_subject',
-                            'access' => 'view_news',
+                            'url' => 'Bk_annual_subject_group',
+                            'access' => 'view_annual_subject_group',
                             'icon' => 'fa-users',
                         ),
                         array(
                             'title' => __('年度服務分組 - 檢視'),
-                            'url' => 'Bk_group_service',
-                            'access' => 'view_news',
+                            'url' => 'Bk_annual_service_group',
+                            'access' => 'view_annual_service_group',
                             'icon' => 'fa-users',
                         )
                     )
                 ),
-                /*
-                array(
-                    'main_menu' => __('年度科目分組 - 檢視'),
-                    'url' => 'Bk_group_subject',
-                    'access' => 'view_news',
-                    'icon' => 'fa-user-plus',
-                ),
-                array(
-                    'main_menu' => __('年度服務分組 - 檢視'),
-                    'url' => 'Bk_group_service',
-                    'access' => 'view_news',
-                    'icon' => 'fa-user-plus',
-                ),*/
                 array(
                     'main_menu' => __('年度教學大綱 - 檢視'),
                     'url' => 'Bk_teach_outline',
@@ -225,25 +212,6 @@
                         )
                     )
                 ),
-                /*
-                array(
-                    'main_menu' => __('單元評估表 - 檢視'),
-                    'url' => 'Bk_unit_eva',
-                    'access' => 'view_news',
-                    'icon' => 'fa-file-powerpoint-o',
-                ),
-                array(
-                    'main_menu' => __('單元學行行為表現 - 檢視'),
-                    'url' => 'Bk_unit_perform',
-                    'access' => 'view_news',
-                    'icon' => 'fa-signal',
-                ),
-                array(
-                    'main_menu' => __('單元出席紀錄 - 檢視'),
-                    'url' => 'Bk_unit_attendance',
-                    'access' => 'view_news',
-                    'icon' => 'fa-book',
-                ),*/
                 array(
                     'main_menu' => __('全年學行評語 - 檢視'),
                     'url' => 'Bk_year_comments',

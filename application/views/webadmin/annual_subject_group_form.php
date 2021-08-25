@@ -9,13 +9,11 @@
     <div class="wrapper">
 
         <?php include_once("header.php"); ?>
-        <link href="<?= assets_url('webadmin/css/jquery.transfer.css') ?>" rel="stylesheet">
+        <!-- <link href="<?= assets_url('webadmin/css/jquery.transfer.css') ?>" rel="stylesheet">
 
-        <link rel="stylesheet" type="text/css" href="<?= assets_url('webadmin/icon_font/css/icon_font.css') ?>" />
+        <link rel="stylesheet" type="text/css" href="<?= assets_url('webadmin/icon_font/css/icon_font.css') ?>" /> -->
 
         <?php include_once("menu.php"); ?>
-
-
 
         <!-- Content Wrapper. Contains page content -->
 
@@ -39,77 +37,39 @@
                     <div class="col-md-12">
                         <!-- form start -->
                         <?= form_open_multipart($form_action, 'class="form-horizontal"'); ?>
-                        <!-- general form elements 
-                    <input type="hidden" name="id" value="<?= $id ?>"/>-->
                         <div class="box box-primary">
-                            <!-- <div class="box-header">
-                            <div class="row col-md-2">
-                                <div class="btn-group" data-spy="affix" data-offset-top="2" style="z-index: 20;">
-                                    <a href="<?= admin_url($page_setting['controller']) ?>" class="btn btn-default">
-                                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
-                                        <?= __('Cancel') ?>
-                                    </a>
-
-                                    <?php if (validate_user_access(['create_news', 'update_news'])) { ?>
-                                        <button type="button" class="btn btn-primary" onclick="submit_form(this);">
-                                            <i class="fa fa-floppy-o" aria-hidden="true"></i> <?= __('Save') ?>
-                                        </button>
-                                    <?php } ?>
-                                </div>
-                            </div>
-                        </div> -->
                             <!-- /.box-header -->
 
                             <div class="box-body">
                                 <div id="signupalert" class="alert alert-danger margin_bottom_20"></div>
-
-
                                 <div class="row mb-4">
                                     <div class="col-lg-6">
                                         <div class="form-group ">
                                             <label class="text-nowrap">年度：</label>
-                                            <select class="form-control">
-                                                <option hidden>請選擇...</option>
-                                                <option value="19/20">2019/2020</option>
-                                                <option value="20/21">2021/2022</option>
-                                            </select>
+                                            <?php form_list_type('year_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' => $year_id, 'data-placeholder' => '請選擇...', 'enable_value' => $years_list, 'form_validation_rules' => 'trim|required']) ?>
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group ">
                                             <label class="text-nowrap">科目：</label>
-                                            <select class="form-control">
-                                                <option hidden>請選擇...</option>
-                                                <option value="語文科1234">語文科1234</option>
-                                                <option value="語文科1234">語文科1234</option>
-                                            </select>
+                                            <div style="flex: 1"><?php form_list_type('subject_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' => $subject_id,  'data-placeholder' => '請選擇...', 'enable_value' => $subject_list, 'form_validation_rules' => 'trim|required']) ?></div>
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label class="text-nowrap">主教老師：</label>
                                             <div class="d-flex">
-                                                <select class="form-control">
-                                                    <option hidden>請選擇...</option>
-                                                    <option value="xxx">xxx</option>
-                                                    <option value="xxx">xxx</option>
-                                                </select>
-                                                <select class="form-control">
-                                                    <option hidden>請選擇...</option>
-                                                    <option value="xxx">xxx</option>
-                                                    <option value="xxx">xxx</option>
-                                                </select>
+                                            <div style="flex: 1"><?php form_list_type('staff1_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' => $subject_id,  'data-placeholder' => '請選擇...', 'enable_value' => $staff_list, 'form_validation_rules' => 'trim|required']) ?></div>
+                                            <div style="flex: 1"><?php form_list_type('staff2_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' => $subject_id,  'data-placeholder' => '請選擇...', 'enable_value' => $staff_list, 'form_validation_rules' => 'trim|required']) ?></div>
+
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label class="text-nowrap">其他任教：</label>
-                                            <select class="form-control select2" multiple="" data-placeholder="請選擇...">
-                                                <option hidden>請選擇...</option>
-                                                <option value="語文科1234">語文科1234</option>
-                                                <option value="語文科1234">語文科1234</option>
-                                            </select>
+                                            <div style="flex: 1"><?php form_list_type('other_staff_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' => $subject_id,  'data-placeholder' => '請選擇...', 'enable_value' => $staff_list, 'form_validation_rules' => 'trim|required', 'multiple' => 1]) ?></div>
+
                                         </div>
                                     </div>
 

@@ -3,7 +3,32 @@
 
 <head>
     <?php include_once("head.php"); ?>
- 
+    <style>
+        .big-col {
+            width: 400px !important;
+            position: relative;
+        }
+        .col {
+            width: 100px;
+            position: relative;
+
+        }
+        table {
+            table-layout:fixed;
+        } 
+        .highlight{
+            position:absolute;
+            right: 5%;
+            bottom: 5%;
+        }
+        span.select2-selection__choice__remove {
+            display: none;
+        }
+        .select2-selection__choice__remove {
+            display: none;
+        }
+
+    </style>
 </head>
 
 
@@ -82,25 +107,6 @@
                                 <!-- </div> -->
                                 <div class="tableWrap">
                                     <table class="table table-bordered table-striped dataTable" id="courseOutlineTable">
-                                        <thead>
-                                            <tr class="bg-light-blue color-palette">
-                                                <th class="no-sort" style="min-width: 4px;"></th>
-                                                <th class="nowrap">科目範疇</th>
-                                                <th class="nowrap">課程</th>
-                                                <th class="nowrap">中央課程學習重點</th>
-                                                <th class="nowrap">校本課程學習重點</th>
-                                                <th class="nowrap">學習元素</th>
-                                                <th class="nowrap">組別</th>
-                                                <th class="nowrap">LPF(基礎)</th>
-                                                <th class="nowrap">LPF(高中)</th>
-                                                <th class="nowrap">POAS <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span></th>
-                                                <th class="nowrap">Key Skill</th>
-                                                <th class="nowrap">前備技能</th>
-                                                <th class="nowrap">預期學習成果</th>
-                                                <th class="nowrap">課程編號</th>
-                                                <th class="nowrap">相關項目編號</th>
-                                            </tr>
-                                        </thead>
                                         <tbody>
                                         </tbody>
                                     </table>
@@ -129,77 +135,158 @@
 
 
     <script>
-        $(document).ready(function() {
-            $('[data-toggle="tooltip"]').tooltip({
-                container: 'body'
-            });
+    $(document).ready(function() {
+        $('[data-toggle="tooltip"]').tooltip({
+            container: 'body'
+        });
 
 
         $(".searchBtn").click(function() {
             Course_table.draw();
         })
-            let Course_table = $('#courseOutlineTable').DataTable({
-            'rowsGroup': [0, 1],
 
-            scrollX: true,
-            "language": {
-                "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/Chinese-traditional.json') ?>",
+        let columnDefs = [{
+                width: '10px',
+                data: "edit",
+                name: 'first',
+                class: 'no-sort',
+            },     
+            {
+                width: '60px',
+                data: "sub_cat",
+                title: "科目",
+                name: 'first',
+            },               
+            {
+                class: 'col',
+                data: "course",
+                title: "課程",
+                name: 'first',
+            },               
+            {
+                class: 'col',
+                data: "sb_obj",
+                title: "校本課程學習重點",
+                name: 'first',
+            },        
+            {
+                width: '100px',
+                data: "element",
+                title: "學習元素",
+                name: 'first',
+            },              
+            {
+                class: 'col',
+                data: "groups",
+                title: "組別",
+                name: 'first',
+            },                
+            {
+                class: 'big-col',
+                data: "expected_outcome",
+                title: "預期學習成果",
+                name: 'first',
+            },        
+            {
+                class: 'col',
+                data: "pre-skills",
+                title: "前備技能",
+                name: 'first',
+
+            },  
+            {
+                class: 'col',
+                data: "lpf_basic",
+                title: "LPF(基礎)",
+                name: 'first',
+            },                
+            {
+                class: 'col',
+                data: "lpf_advanced",
+                title: "LPF(高中)",
+                name: 'first',
+            },                
+            {
+                class: 'col',
+                data: "poas",
+                title: "POAS",
+                name: 'first',
+            },                
+            {
+                class: 'col',
+                data: "skills",
+                title: "Key Skill",
+                name: 'first',
+            },                                  
+            {
+                class: 'col',
+                data: "rel_les",
+                title: "相關項目編號",
+                name: 'first',
+            },              
+        ];
+
+        let Course_table = $('#courseOutlineTable').DataTable({
+        'rowsGroup': [0, 1],
+        scrollX: true,
+        "language": {
+            "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/Chinese-traditional.json') ?>",
+        },
+        "order": [],
+        "bSort": false,
+        "bPaginate": false,
+        "pageLength": 50,
+        "pagingType": "input",
+        "processing": true,
+        "serverSide": false,
+        "ordering": true,
+        "searching": true,
+        "columns": columnDefs,   
+        "searchDelay": 0,                    
+        "ajax": {
+            "url": "<?= admin_url($page_setting['controller'] . '/ajax') ?>",
+            "method": "get",
+            "timeout": "30000",
+            "data": function(d) {
+                let course_id = $('#courses_id').val();
+                let category_id = $('#subject_category_id').val();
+                let sb_obj_id = $('#sb_obj_id').val();
+                let lesson_id = $('#lesson_id').val();
+                let subject_id = $('#subject_id').val();
+
+                d.subject_search = subject_id
+                d.course_search = course_id;
+                d.category_search = category_id;
+                d.sb_obj_search = sb_obj_id;
+                d.lesson_search = lesson_id;
+                console.log(d);
             },
-            "order": [],
-            "bSort": false,
-            "bPaginate": false,
-            "pageLength": 50,
-            "pagingType": "input",
-            "processing": true,
-            "serverSide": false,
-            "ordering": true,
-            "searching": true,
-            // "drawType": 'none',
-            "searchDelay": 0,                    
-            "ajax": {
-                "url": "<?= admin_url($page_setting['controller'] . '/ajax') ?>",
-                "method": "get",
-                "timeout": "30000",
-                "data": function(d) {
-                    let course_id = $('#courses_id').val();
-                    let category_id = $('#subject_category_id').val();
-                    let sb_obj_id = $('#sb_obj_id').val();
-                    let lesson_id = $('#lesson_id').val();
-                    let subject_id = $('#subject_id').val();
+            "complete" : function(){
+                $('[data-toggle="tooltip"]').tooltip();
 
-                    d.subject_search = subject_id
-                    d.course_search = course_id;
-                    d.category_search = category_id;
-                    d.sb_obj_search = sb_obj_id;
-                    d.lesson_search = lesson_id;
-                    console.log(d);
-                },
-                "complete" : function(){
-                    $('[data-toggle="tooltip"]').tooltip();
-
-                },
-                "error": function(e) {
-                    console.log(e);
-                }
             },
-            });
+            "error": function(e) {
+                console.log(e);
+            }
+        },
+        });
 
 
-            let data =  <?php echo $subject_categories_list?>;
+        let data =  <?php echo $subject_categories_list?>;
 
-            $('#subject_category_id').select2({
-                data: data
-            })
+        $('#subject_category_id').select2({
+            data: data
+        })
 
-    
-            let sub_id = <?php echo $subject_categories_id ?  $subject_categories_id : 0?>;
-            let sb_obj_id = <?php echo $sb_obj_id ?  $sb_obj_id : 0?>;
-            let lesson_id = <?php echo $lesson_id ?  $lesson_id : 0?>;
-            $("#subject_category_id").val(sub_id);
-            $("#sb_obj_id").val(sb_obj_id);
-            $("#lesson_id").val(lesson_id);
-            
-            $(".select2").trigger('change');
+
+        let sub_id = <?php echo $subject_categories_id ?  $subject_categories_id : 0?>;
+        let sb_obj_id = <?php echo $sb_obj_id ?  $sb_obj_id : 0?>;
+        let lesson_id = <?php echo $lesson_id ?  $lesson_id : 0?>;
+        $("#subject_category_id").val(sub_id);
+        $("#sb_obj_id").val(sb_obj_id);
+        $("#lesson_id").val(lesson_id);
+        
+        $(".select2").trigger('change');
         });
 
         $('#subject_id').on('change', function(){

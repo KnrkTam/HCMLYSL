@@ -71,6 +71,7 @@
                             <div class="box-body">
                                 <div id="signupalert" class="alert alert-danger margin_bottom_20"></div>
 
+                                <h5 class="text-red"><b>正在修改：</b></h5>
 
                                 <div class="row">
 
@@ -80,12 +81,11 @@
                                             <h3 class="text-blue"><b><?= $subject?> - <?= $subject_category ?></b></h5>
                                         </div>
                                         <a href="#" class="link nowrap mt-30 ml-2 controlSearchBtn">隱藏搜尋</a>
-
                                     </div>
-
                                 </div>
                                 <hr>
                                 <!-- <div class="subject_outcomeNew"> -->
+                                    <h5 class="text-red"><b>搜尋課程：</b></h5>
 
                                     <div class="row">
                                         <div class="col-lg-2">
@@ -133,7 +133,7 @@
                                             <h5 class="text-purple"><b>選擇項目：</b></h5>
 
                                             <table class="table table-bordered table-striped" id="subjectTable">
-                                                <thead>
+                                                <!-- <thead>
                                                     <tr class="bg-light-blue color-palette">
                                                         <th class="no-sort"></th>
                                                         <th class="nowrap">課程</th>
@@ -151,7 +151,7 @@
                                                         <th class="nowrap">課程編號</th>
                                                         <th class="nowrap">相關項目編號</th>
                                                     </tr>
-                                                </thead>
+                                                </thead> -->
                                                 <tbody>
                                                 </tbody>
                                             </table>
@@ -161,7 +161,7 @@
                                         <div class="col-lg-12">
                                             <h5 class="text-yellow"><b>已選項目：</b></h5>
                                             <table class="table table-bordered table-striped" id="subjectSelectedTable">
-                                                <thead>
+                                                <!-- <thead>
                                                     <tr class="bg-light-blue color-palette">
                                                         <th class="no-sort" style="min-width: 10px;"></th>
                                                         <th class="nowrap">課程</th>
@@ -179,7 +179,7 @@
                                                         <th class="nowrap">課程編號</th>
                                                         <th class="nowrap">相關項目編號</th>
                                                     </tr>
-                                                </thead>
+                                                </thead> -->
                                                 <tbody>
                                                     <script>
                                                                 
@@ -192,7 +192,7 @@
                                                 <input type="hidden" id="subject_lessons" name="subject_lessons[]" value=""></input>
                                                 <input type="hidden" value=<?= $function?> name="action"> </input>
                                                 <button type="submit" class="btn bg-maroon mw-100 mr-4">下一步</button>
-                                                <button type="button" class="btn btn-default mw-100" onclick="location.href='<?= (admin_url($page_setting['controller'])) ?>';">返 回</button>
+                                                <button type="button" class="btn btn-default mw-100" onclick="location.href='<?= $return ?>';">返 回</button>
                                             </div>
                                         </div>
                                     </div>
@@ -248,7 +248,86 @@
             <? } ?>
 
             $('input[id=subject_lessons]').val(Array.from(added_ids));
+            let columnDefs = [{
+                width: '10px',
+                data: "edit",
+                name: 'first',
+                class: 'no-sort',
+            },     
+            {
+                width: '60px',
+                data: "category",
+                title: "課程範疇",
+                name: 'first',
+            },               
+            {
+                class: 'col',
+                data: "course",
+                title: "課程",
+                name: 'first',
+            },               
+            {
+                class: 'col',
+                data: "sb_obj",
+                title: "校本課程學習重點",
+                name: 'first',
+            },        
+            {
+                width: '100px',
+                data: "element",
+                title: "學習元素",
+                name: 'first',
+            },              
+            {
+                class: 'col',
+                data: "groups",
+                title: "組別",
+                name: 'first',
+            },                
+            {
+                class: 'big-col',
+                data: "expected_outcome",
+                title: "預期學習成果",
+                name: 'first',
+            },        
+            {
+                class: 'col',
+                data: "pre-skills",
+                title: "前備技能",
+                name: 'first',
 
+            },  
+            {
+                class: 'col',
+                data: "lpf_basic",
+                title: "LPF(基礎)",
+                name: 'first',
+            },                
+            {
+                class: 'col',
+                data: "lpf_advanced",
+                title: "LPF(高中)",
+                name: 'first',
+            },                
+            {
+                class: 'col',
+                data: "poas",
+                title: "POAS",
+                name: 'first',
+            },                
+            {
+                class: 'col',
+                data: "skills",
+                title: "Key Skill",
+                name: 'first',
+            },                                  
+            {
+                class: 'col',
+                data: "rel_les",
+                title: "相關項目編號",
+                name: 'first',
+            },              
+        ];
 
             let  SubjectTable = $('#subjectTable').DataTable({
                 // scrollY: '300px',
@@ -264,7 +343,7 @@
                 "pageLength": 10,
                 // "lengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
                 // "pagingType": "simple",
-                //"sDom": '<"wrapper"lfptip>',
+                "columns": columnDefs,   
                 "processing": true,
                 "serverSide": true,
                 "ordering": false,
@@ -340,6 +419,8 @@
                 "searchDelay": 0, 
                 "bPaginate": false,
                 "bAutoWidth": false,
+                "columns": columnDefs,   
+
                 "ajax": {
                     "url": "<?= admin_url($page_setting['controller'] . '/select_ajax') ?>",
                     "method": "get",

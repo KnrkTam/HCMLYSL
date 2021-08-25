@@ -34,51 +34,24 @@
                     <div class="col-md-12">
                         <!-- form start -->
                         <?= form_open_multipart($form_action, 'class="form-horizontal"'); ?>
-                        <!-- general form elements 
-                    <input type="hidden" name="id" value="<?= $id ?>"/>-->
                         <div class="box box-primary">
-                            <!-- <div class="box-header">
-                            <div class="row col-md-2">
-                                <div class="btn-group" data-spy="affix" data-offset-top="2" style="z-index: 20;">
-                                    <a href="<?= admin_url($page_setting['controller']) ?>" class="btn btn-default">
-                                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
-                                        <?= __('Cancel') ?>
-                                    </a>
-
-                                    <?php if (validate_user_access(['create_news', 'update_news'])) { ?>
-                                        <button type="button" class="btn btn-primary" onclick="submit_form(this);">
-                                            <i class="fa fa-floppy-o" aria-hidden="true"></i> <?= __('Save') ?>
-                                        </button>
-                                    <?php } ?>
-                                </div>
-                            </div>
-                        </div> -->
                             <!-- /.box-header -->
-
                             <div class="box-body">
                                 <div id="signupalert" class="alert alert-danger margin_bottom_20"></div>
-
-
                                 <div class="row mb-4">
                                     <div class="col-lg-3">
                                         <div class="form-group ">
                                             <label class="text-nowrap">年度： </label>
-                                            <select class="form-control">
-                                                <option hidden>請選擇...</option>
-                                                <option value="19/20">2019/2020</option>
-                                                <option value="20/21">2021/2022</option>
-
-
-                                            </select>
+                                            <?php form_list_type('year_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' => $year_id, 'data-placeholder' => '請選擇...', 'enable_value' => $years_list, 'form_validation_rules' => 'trim|required']) ?>
                                         </div>
                                     </div>
 
                                     <div class="col-lg-1">
-                                        <button type="button" class="btn btn-success mt-25 w-100 mb-4 searchBtn">搜 尋</button>
+                                    <button type="button" class="btn btn-success mt-25 w-100 mb-4 searchBtn">搜 尋</button>
                                     </div>
 
                                 </div>
-                                <button type="button" class="btn bg-orange mw-100 mb-4" onclick="location.href='../webadmin/Bk_group_subject/create';">新 增</button>
+                                <button type="button" class="btn bg-orange mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller'].'/create')?>';">新 增</button>
 
                                 <div class="tableWrap hidenWrap">
                                     <table class="table table-bordered table-striped w-100" id="settingTable">
@@ -93,55 +66,7 @@
                                                 <th class="nowrap">學生名單</th>
                                             </tr>
                                         </thead>
-
                                         <tbody>
-                                            <tr>
-                                                <td><a class="editLinkBtn" href="../webadmin/Bk_group_subject/edit"><i class="fa fa-edit"></i></a></td>
-                                                <td>語文科1234</td>
-                                                <td>xxx, xxx</td>
-                                                <td></td>
-                                                <td>單元一</td>
-                                                <td>忠1</td>
-                                                <td>陳xx(善), 陳xx(善),</td>
-                                            </tr>
-                                            <tr>
-
-                                                <td><a class="editLinkBtn" href="../webadmin/Bk_group_subject/edit"><i class="fa fa-edit"></i></a></td>
-                                                <td>語文科1234</td>
-                                                <td>xxx, xxx</td>
-                                                <td>xxx, xxx</td>
-                                                <td>單元三</td>
-                                                <td>忠1</td>
-                                                <td>陳xx(善), 陳xx(德),</td>
-
-                                            </tr>
-                                            <tr>
-
-                                                <td><a class="editLinkBtn" href="../webadmin/Bk_group_subject/edit"><i class="fa fa-edit"></i></a></td>
-                                                <td>語文科1234</td>
-                                                <td>xxx, xxx</td>
-                                                <td>xxx, xxx</td>
-                                                <td>單元一</td>
-                                                <td>仁</td>
-                                                <td>陳xx(信), 陳xx(德),</td>
-
-
-                                            </tr>
-
-                                            <tr>
-
-                                                <td><a class="editLinkBtn" href="../webadmin/Bk_group_subject/edit"><i class="fa fa-edit"></i></a></td>
-                                                <td>語文科1234</td>
-                                                <td>xxx, xxx</td>
-                                                <td>xxx, xxx</td>
-                                                <td>單元二</td>
-                                                <td>仁</td>
-                                                <td>陳xx(信), 陳xx(德),</td>
-
-
-
-                                            </tr>
-
                                         </tbody>
                                     </table>
                                 </div>

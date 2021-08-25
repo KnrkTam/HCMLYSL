@@ -125,7 +125,7 @@
         $(document).ready(function() {
 
             $(".searchBtn").click(function() {
-                AnnualStaffTable.draw();
+                $('#mainTable').DataTable.draw();
             });
 
             let AnnualStaffTable = $('#mainTable').DataTable({

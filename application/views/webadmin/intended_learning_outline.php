@@ -9,7 +9,7 @@
             position: relative;
         }
         .col {
-            width: 100px;
+            width: 50px;
             position: relative;
 
         }
@@ -27,6 +27,11 @@
         .select2-selection__choice__remove {
             display: none;
         }
+
+        /* .moduleBox {
+            height: 2px;
+            overflow: hidden;
+        } */
 
     </style>
 </head>
@@ -242,18 +247,18 @@
                     title: "課程編號",
                     name: 'first',
                 },        
-                {
-                    class: 'col',
-                    data: "course",
-                    title: "課程",
-                    name: 'first',
-                },                
-                {
-                    class: 'col',
-                    data: "category",
-                    title: "範疇",
-                    name: 'first',
-                },                
+                // {
+                //     class: 'col',
+                //     data: "course",
+                //     title: "課程",
+                //     name: 'first',
+                // },                
+                // {
+                //     class: 'col',
+                //     data: "category",
+                //     title: "範疇",
+                //     name: 'first',
+                // },                
                 {
                     width: '120px',
                     data: "sb_obj",
@@ -261,7 +266,7 @@
                     name: 'first',
                 },                
                 {
-                    width: '100px',
+                    class: 'col',
                     data: "element",
                     title: "學習元素",
                     name: 'first',
@@ -272,6 +277,43 @@
                     title: "組別",
                     name: 'first',
                 },                
+                {
+                    class: 'big-col',
+                    data: "expected_outcome",
+                    title: "預期學習成果",
+                    name: 'first',
+                },        
+                {
+
+                    //
+                    //. 
+                    render: function(data, type, row) {
+                        // console.log(row.modules)
+                        let result = [];
+
+                        for (i = 0; i < row.modules.length; i++) {
+                            result += '<button type="button" class="btn-xs btn btn-success badge">' + row.modules[i] + '</button> &nbsp</br>';
+                        }
+
+                        if (row.modules.length < 3) {
+                            // console.log (result)
+                            return result;
+                        } else {
+                            return  result[0] + result[1] + '<div class="d-flex justify-content-between moduleBox"><a href="#" class="small showMoreBtn"><i class="fa fa-fw  fa-plus-square-o"></i><span>顥示更多</span></a></div>';
+                        }
+                        // var result = row.modules
+                    },
+                    width: 100,
+                    data: "modules",
+                    title: "單元",
+                    name: 'first',
+                },          
+                {
+                    class: 'big-col',
+                    data: "performance",
+                    title: "關鍵表現項目",
+                    name: 'double',
+                },                      
                 {
                     class: 'col',
                     data: "lpf_basic",
@@ -295,26 +337,7 @@
                     data: "skills",
                     title: "Key Skill",
                     name: 'first',
-                },                
-                {
-                    class: 'big-col',
-                    data: "expected_outcome",
-                    title: "預期學習成果",
-                    name: 'first',
-                },        
-                {
-                    class: 'col',
-                    data: "modules",
-                    title: "單元",
-                    name: 'first',
-
-                },          
-                {
-                    class: 'big-col',
-                    data: "performance",
-                    title: "關鍵表現項目",
-                    name: 'double',
-                },                               
+                },                         
                 {
                     class: 'col',
                     data: "remarks",

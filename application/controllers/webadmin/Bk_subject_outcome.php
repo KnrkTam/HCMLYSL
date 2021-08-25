@@ -43,7 +43,6 @@ class Bk_subject_outcome extends CI_Controller //change this
     {
         $data['page_setting'] = $this->page_setting(array(
             'view_' . $this->scope
-            // 'view_news'
         ), FALSE, TRUE);
 
         $GLOBALS["select2"] = 1;
@@ -119,29 +118,29 @@ class Bk_subject_outcome extends CI_Controller //change this
         if (!empty( $lessons_arr)) {
             foreach ($lessons_arr as $row) {
                 // dump($row); 
-                $data[$num][] = '<a class="editLinkBtn" href="'.admin_url(current_controller() . '/edit/'. Subject_lessons_model::where('subject_category_id',$row['subject_cat_id'] )->first()->id).'"><i class="fa fa-exchange"></i></a>';
-                $data[$num][] = Subject_categories_model::name($row['subject_cat_id']);
-                $data[$num][] = $row['lesson']['course'];
-                $data[$num][] = $row['lesson']['central_obj'];
-                $data[$num][] = $row['lesson']['sb_obj'];
-                $data[$num][] = $row['lesson']['element'];
-                $data[$num][] = $row['lesson']['groups'];
-                $data[$num][] = $row['lesson']['lpf_basic'];
-                $data[$num][] = $row['lesson']['lpf_advanced'];
-                $data[$num][] = $row['lesson']['poas'] ? $row['lesson']['poas'].'<span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span>': "&nbsp";
-                $data[$num][] = $row['lesson']['skills'] ? $row['lesson']['skills'].'<span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span>': "&nbsp";
+                $data[$num]['edit'] = '<a class="editLinkBtn" href="'.admin_url(current_controller() . '/edit/'. Subject_lessons_model::where('subject_category_id',$row['subject_cat_id'] )->first()->id).'"><i class="fa fa-exchange"></i></a>';
+                $data[$num]['sub_cat'] = Subject_categories_model::name($row['subject_cat_id']);
+                $data[$num]['course'] = $row['lesson']['course'];
+                // $data[$num][] = $row['lesson']['central_obj'];
+                $data[$num]['sb_obj'] = $row['lesson']['sb_obj'];
+                $data[$num]['element'] = $row['lesson']['element'];
+                $data[$num]['groups'] = $row['lesson']['groups'];
+                $data[$num]['lpf_basic'] = $row['lesson']['lpf_basic'];
+                $data[$num]['lpf_advanced'] = $row['lesson']['lpf_advanced'];
+                $data[$num]['poas'] = $row['lesson']['poas'] ? $row['lesson']['poas'].'<span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span>': "&nbsp";
+                $data[$num]['skills'] = $row['lesson']['skills'] ? $row['lesson']['skills'].'<span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span>': "&nbsp";
                 if ($row['lesson']['preliminary_skill'] == "1") { 
-                    $data[$num][] = '<p><span class="text-green"><i class="fa fa-check"></i></span></p>';
+                    $data[$num]['pre-skills'] = '<p><span class="text-green"><i class="fa fa-check"></i></span></p>';
                 } else {
-                    $data[$num][] = '<p><span class="text-red"><i class="fa fa-close"></i></span></p>';
+                    $data[$num]['pre-skills'] = '<p><span class="text-red"><i class="fa fa-close"></i></span></p>';
                 }
-                $data[$num][] = $row['lesson']['expected_outcome'];
-                $data[$num][] = $row['lesson']['code'];
+                $data[$num]['expected_outcome'] = $row['lesson']['expected_outcome'];
+                $data[$num]['code'] = $row['lesson']['code'];
                 $rel_les = '';
                 foreach ($row['lesson']['rel_lessons'] as $foo) {
                     $rel_les .= '<button type="button" class="btn-xs btn btn-primary badge">' .Lessons_model::code($foo).'</button> &nbsp';
                 }
-                $data[$num][] = $rel_les;
+                $data[$num]['rel_les'] = $rel_les;
 
                 $num++;
             }
@@ -187,29 +186,28 @@ class Bk_subject_outcome extends CI_Controller //change this
                 $num = 0;
                 if (!empty( $lessons_arr)) {
                     foreach ($lessons_arr as $key => $row) {
-                        $data[$num][] = '<input type="checkbox" class="addLesson" value="'.$row['id'].'"/>';
-                        $data[$num][] = $row['course'];
-                        $data[$num][] = $row['category'];
-                        $data[$num][] = $row['central_obj'];
-                        $data[$num][] = $row['sb_obj'];
-                        $data[$num][] = $row['element'];
-                        $data[$num][] = $row['groups'];
-                        $data[$num][] = $row['lpf_basic'];
-                        $data[$num][] = $row['lpf_advanced'];
-                        $data[$num][] = $row['poas'].'<span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span>';
-                        $data[$num][] = $row['skills'].'<span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span>';
+                        $data[$num]['edit'] = '<input type="checkbox" class="addLesson" value="'.$row['id'].'"/>';
+                        $data[$num]['course'] = $row['course'];
+                        $data[$num]['category'] = $row['category'];
+                        $data[$num]['sb_obj'] = $row['sb_obj'];
+                        $data[$num]['element'] = $row['element'];
+                        $data[$num]['groups'] = $row['groups'];
+                        $data[$num]['lpf_basic'] = $row['lpf_basic'];
+                        $data[$num]['lpf_advanced'] = $row['lpf_advanced'];
+                        $data[$num]['poas'] = $row['poas'] ? $row['poas'].'<span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span>': null ;
+                        $data[$num]['skills'] = $row['skills'] ? $row['skills'].'<span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span>': null;
                         if ($row['preliminary_skill'] == "1") { 
-                            $data[$num][] = '<p><span class="text-green"><i class="fa fa-check"></i></span></p>';
+                            $data[$num]['pre-skills'] = '<p><span class="text-green"><i class="fa fa-check"></i></span></p>';
                         } else {
-                            $data[$num][] = '<p><span class="text-red"><i class="fa fa-close"></i></span></p>';
-                        }                        $data[$num][] = $row['code'];
-                        $data[$num][] = $row['expected_outcome'];
+                            $data[$num]['pre-skills'] = '<p><span class="text-red"><i class="fa fa-close"></i></span></p>';
+                        }                        
+                        $data[$num]['code'] = $row['code'];
+                        $data[$num]['expected_outcome'] = $row['expected_outcome'];
                         $rel_les = '';
                         foreach ($row['rel_lessons'] as $key) {
                             $rel_les .= '<button type="button" class="btn-xs btn btn-primary badge">' .Lessons_model::code($key).'</button> &nbsp';
                         }
-                        $data[$num][] = $rel_les;                        
-    
+                        $data[$num]['rel_les'] = $rel_les;                        
                         $num++;
                     }
                 }
@@ -239,29 +237,28 @@ class Bk_subject_outcome extends CI_Controller //change this
                 $num = 0;
                 if (!empty( $lessons_arr)) {
                     foreach ( $lessons_arr as $key => $row) {
-                        $data[$num][] = '<a class="removeRow text-red" name="subject_lessons['.$key.']" value="'.$row['id'] .'"><i class="fa fa-fw fa-trash-o"></i></a>';
-                        $data[$num][] = $row['course'];
-                        $data[$num][] = $row['category'];
-                        $data[$num][] = $row['central_obj'];
-                        $data[$num][] = $row['sb_obj'];
-                        $data[$num][] = $row['element'];
-                        $data[$num][] = $row['groups'];
-                        $data[$num][] = $row['lpf_basic'];
-                        $data[$num][] = $row['lpf_advanced'];
-                        $data[$num][] = $row['poas'].'<span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span>';
-                        $data[$num][] = $row['skills'].'<span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span>';
+                        $data[$num]['edit'] = '<a class="removeRow text-red" name="subject_lessons['.$key.']" value="'.$row['id'] .'"><i class="fa fa-fw fa-trash-o"></i></a>';
+                        $data[$num]['course'] = $row['course'];
+                        $data[$num]['category'] = $row['category'];
+                        $data[$num]['sb_obj'] = $row['sb_obj'];
+                        $data[$num]['element'] = $row['element'];
+                        $data[$num]['groups'] = $row['groups'];
+                        $data[$num]['lpf_basic'] = $row['lpf_basic'];
+                        $data[$num]['lpf_advanced'] = $row['lpf_advanced'];
+                        $data[$num]['poas'] = $row['poas'] ? $row['poas'].'<span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span>': null ;
+                        $data[$num]['skills'] = $row['skills'] ? $row['skills'].'<span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span>': null;
                         if ($row['preliminary_skill'] == "1") { 
-                            $data[$num][] = '<p><span class="text-green"><i class="fa fa-check"></i></span></p>';
+                            $data[$num]['pre-skills'] = '<p><span class="text-green"><i class="fa fa-check"></i></span></p>';
                         } else {
-                            $data[$num][] = '<p><span class="text-red"><i class="fa fa-close"></i></span></p>';
-                        }                        $data[$num][] = $row['code'];
-                        $data[$num][] = $row['expected_outcome'];
+                            $data[$num]['pre-skills'] = '<p><span class="text-red"><i class="fa fa-close"></i></span></p>';
+                        }                        
+                        $data[$num]['code'] = $row['code'];
+                        $data[$num]['expected_outcome'] = $row['expected_outcome'];
                         $rel_les = '';
                         foreach ($row['rel_lessons'] as $key) {
                             $rel_les .= '<button type="button" class="btn-xs btn btn-primary badge">' .Lessons_model::code($key).'</button> &nbsp';
                         }
-                        $data[$num][] = $rel_les;                        
-    
+                        $data[$num]['rel_les'] = $rel_les;                        
                         $num++;
                     }
                 }
@@ -302,28 +299,27 @@ class Bk_subject_outcome extends CI_Controller //change this
         if (!empty( $lessons_arr)) {
             foreach ( $lessons_arr as $key => $row) {
                 // $data[$num][] = '<a class="removeRow text-red" name="subject_lessons['.$key.']" value="'.$row['id'] .'"><i class="fa fa-fw fa-trash-o"></i></a>';
-                $data[$num][] = $row['course'];
-                $data[$num][] = $row['category'];
-                $data[$num][] = $row['central_obj'];
-                $data[$num][] = $row['sb_obj'];
-                $data[$num][] = $row['element'];
-                $data[$num][] = $row['groups'];
-                $data[$num][] = $row['lpf_basic'];
-                $data[$num][] = $row['lpf_advanced'];
-                $data[$num][] = $row['poas'].'<span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span>';
-                $data[$num][] = $row['skills'].'<span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span>';
+                $data[$num]['course'] = $row['course'];
+                $data[$num]['category'] = $row['category'];
+                $data[$num]['sb_obj'] = $row['sb_obj'];
+                $data[$num]['element'] = $row['element'];
+                $data[$num]['groups'] = $row['groups'];
+                $data[$num]['lpf_basic'] = $row['lpf_basic'];
+                $data[$num]['lpf_advanced'] = $row['lpf_advanced'];
+                $data[$num]['poas'] = $row['poas'] ? $row['poas'].'<span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span>': null ;
+                $data[$num]['skills'] = $row['skills'] ? $row['skills'].'<span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span>': null;
                 if ($row['preliminary_skill'] == "1") { 
-                    $data[$num][] = '<p><span class="text-green"><i class="fa fa-check"></i></span></p>';
+                    $data[$num]['pre-skills'] = '<p><span class="text-green"><i class="fa fa-check"></i></span></p>';
                 } else {
-                    $data[$num][] = '<p><span class="text-red"><i class="fa fa-close"></i></span></p>';
-                }                        $data[$num][] = $row['code'];
-                $data[$num][] = $row['expected_outcome'];
+                    $data[$num]['pre-skills'] = '<p><span class="text-red"><i class="fa fa-close"></i></span></p>';
+                }                        
+                $data[$num]['code'] = $row['code'];
+                $data[$num]['expected_outcome'] = $row['expected_outcome'];
                 $rel_les = '';
                 foreach ($row['rel_lessons'] as $key) {
                     $rel_les .= '<button type="button" class="btn-xs btn btn-primary badge">' .Lessons_model::code($key).'</button> &nbsp';
                 }
-                $data[$num][] = $rel_les;                        
-
+                $data[$num]['rel_les'] = $rel_les;                        
                 $num++;
             }
         }
@@ -384,7 +380,6 @@ class Bk_subject_outcome extends CI_Controller //change this
         $GLOBALS["datatable"] = 1;
 
         $subject_lesson = Subject_lessons_model::find($subject_lesson_id);
-
         $id = $subject_lesson->subject_id;
 
         $subject = Subjects_model::find($id);
@@ -406,6 +401,7 @@ class Bk_subject_outcome extends CI_Controller //change this
         $data['subject_category'] = Subject_categories_model::name($subject_lesson->subject_category_id);
         $data['subject_id'] = $id; 
         $data['form_action'] = admin_url($data['page_setting']['controller'] . '/preview/'. $subject_lesson_id);
+        $data['return'] = $_SERVER['HTTP_REFERER'];
 
         $this->load->view('webadmin/' . $this->scope . '_edit',  $data);
     }
@@ -430,21 +426,21 @@ class Bk_subject_outcome extends CI_Controller //change this
             $id = $postData['subject_id'];
             $dup_subject_lesson = Subject_lessons_model::where('subject_id', $id)->where('subject_category_id', $postData['sub_category_id'])->first();
 
+            switch (true) {
+                case (empty($postData['subject_id'])):
+                    $_SESSION['error_msg'] = __('請選擇科目');
+                    redirect(admin_url($data['page_setting']['controller']. '/'. $postData['action']));
+                    break;
+                case (empty($postData['sub_category_id'])):
 
-            if (empty($postData['subject_id'])) {
-                $_SESSION['error_msg'] = __('請選擇科目');
-                redirect(admin_url($data['page_setting']['controller']. '/'. $postData['action']));
-            }
+                    break;
+                case ($dup_subject_lesson):
+                    $_SESSION['error_msg'] = __('已存在科目範疇');
+                    redirect(admin_url($data['page_setting']['controller']. '/'. $postData['action']));
+                    break;
+                
+            };
 
-            if (empty($postData['sub_category_id'])) {
-                $_SESSION['error_msg'] = __('請選擇科目範疇');
-                redirect(admin_url($data['page_setting']['controller']. '/'. $postData['action']));
-            }
-
-            if ($dup_subject_lesson) {
-                $_SESSION['error_msg'] = __('已存在科目範疇');
-                redirect(admin_url($data['page_setting']['controller']. '/'. $postData['action']));
-            }
             $data['subject_id'] = $postData['subject_id'];
             $data['subject_category_id'] = $postData['sub_category_id'];
             $data['subject_category'] = Subject_categories_model::name($postData['sub_category_id']);
@@ -467,6 +463,7 @@ class Bk_subject_outcome extends CI_Controller //change this
 
     public function submit_form($subject_lesson_id = null){
         $postData = $this->input->post();
+        // dump($_SESSION['referrer']);
         // Create
         if ($subject_lesson_id == null) {
             $subject_id = $postData['subject_id'];

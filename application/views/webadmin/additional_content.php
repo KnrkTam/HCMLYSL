@@ -10,7 +10,7 @@
             position: relative;
         }
         .col {
-            width: 100px;
+            width: 50px;
             position: relative;
 
         }
@@ -109,30 +109,18 @@
 
 
 
-            var columnDefs = [{
-                    name: 'first',
-                    data: "subject",
-                    title: "科目",
-                    width: "40px",
-                    // class: 'col',
-                },
-                {
-                    name: 'first',
-                    data: "course",
-                    title: "課程",
-                    width: "40px",
-                },
+            var columnDefs = [
                 {
                     name: 'first',
                     data: "sub_category",
                     title: "科目範疇",
-                    width: "60px",
+                    class: 'col',
                 },
                 {
                     name: 'first',
                     data: "sb_obj",
                     title: "校本課程學習重點",
-                    width: '130px',
+                    width: '100px',
                 },
                 {
                     name: 'first',
@@ -145,6 +133,39 @@
                     data: "group",
                     title: "組別",
                     width: "40px",
+                },
+                {
+                    name: 'first',
+                    data: "expected_outcome",
+                    title: "預期學習成果",
+                    class: 'big-col',
+                },
+                {
+                    render: function(data, type, row) {
+                        if (row.add_content == "" || !row.add_content) {
+                            let result =  '<a class="small addonNewBtn" href="<?= admin_url($page_setting['controller'].'/edit/')?>' + row.id + ' ">新增</a>';
+                            return result;
+                        } else {
+                            console.log(row.add_content);
+                            let result =  '<div class="d-flex justify-content-between addonRow"><a href="#" class="small addonDispalyBtn"><i class="fa fa-fw  fa-minus-square-o"></i><span>隱藏</span></a><a class="small addonEditBtn" href="<?= admin_url($page_setting['controller'].'/edit/')?>' + row.id + ' ">修改</a></div><div class="addonDetail">' + data + '</div>';
+                            return result;
+                        }
+                    },
+                    name: 'first',
+                    data: "add_content",
+                    title: "補充內容",
+                    class: 'big-col',
+                },
+                {
+                    data: "performance",
+                    title: "關鍵表現項目",
+                    class: "big-col"
+                },
+                {
+                    name: 'first',
+                    data: "module",
+                    title: "單元",
+                    width: '100px',
                 },
                 {
                     name: 'first',
@@ -178,42 +199,6 @@
                     title: "Key Skill",
                     class: 'col',
                 },
-                {
-                    name: 'first',
-                    data: "expected_outcome",
-                    title: "預期學習成果",
-                    class: 'big-col',
-                },
-                {
-
-                    render: function(data, type, row) {
-                        if (row.add_content == "" || !row.add_content) {
-                            let result =  '<a class="small addonNewBtn" href="<?= admin_url($page_setting['controller'].'/edit/')?>' + row.id + ' ">新增</a>';
-                            return result;
-
-                        } else {
-                            console.log(row.add_content);
-                            let result =  '<div class="d-flex justify-content-between addonRow"><a href="#" class="small addonDispalyBtn"><i class="fa fa-fw  fa-minus-square-o"></i><span>隱藏</span></a><a class="small addonEditBtn" href="<?= admin_url($page_setting['controller'].'/edit/')?>' + row.id + ' ">修改</a></div><div class="addonDetail">' + data + '</div>';
-                            return result;
-                        }
-                    },
-                    name: 'first',
-                    data: "add_content",
-                    title: "補充內容",
-                    class: 'big-col',
-
-                },
-                {
-                    data: "performance",
-                    title: "關鍵表現項目",
-                    class: "big-col"
-                },
-                {
-                    name: 'first',
-                    data: "module",
-                    title: "單元",
-                    class: 'col',
-                }
             ];
 
 

@@ -130,89 +130,90 @@
                     name: 'zore',
                     title: "",
                     class: "no-sort"
+                    // data: "edit"
                 },
                 {
-                    data: "1",
+                    data: "subject_cat",
                     title: "科目範疇",
                     name: 'first',
                 },          
                 {
-                    data: "2",
+                    data: "code",
                     title: "課程編號",
                     name: 'first',
                 },        
                 {
-                    data: "3",
+                    data: "course",
                     title: "課程",
                     name: 'first',
                 },                
                 {
-                    data: "4",
+                    data: "category",
                     title: "範疇",
                     name: 'first',
                 },                
                 {
-                    data: "5",
+                    data: "sb_obj",
                     title: "校本課程學習重點",
                     name: 'first',
                 },                
                 {
-                    data: "6",
+                    data: "element",
                     title: "學習元素",
                     name: 'first',
                 },                
                 {
-                    data: "7",
+                    data: "group",
                     title: "組別",
                     name: 'first',
                 },                
                 {
-                    data: "8",
-                    title: "LPF(基礎)",
-                    name: 'first',
-                },                
-                {
-                    data: "9",
-                    title: "LPF(高中)",
-                    name: 'first',
-                },                
-                {
-                    data: "10",
-                    title: "POAS",
-                    name: 'first',
-                },                
-                {
-                    data: "11",
-                    title: "Key Skill",
-                    name: 'first',
-                },                
-                {
-                    data: "12",
+                    data: "expected_outcome",
                     title: "預期學習成果",
                     name: 'first',
                 },                
                 {
-                    data: "13",
+                    data: "expected_outcome",
                     title: "關鍵表現項目",
                     name: 'double',
                 },                
                 {
-                    data: "14",
+                    data: "assessment",
                     title: "評估模式",
                     name: 'double',
+                },    
+                {
+                    data: "lpf_basic",
+                    title: "LPF(基礎)",
+                    name: 'first',
                 },                
                 {
-                    data: "15",
+                    data: "lpf_advanced",
+                    title: "LPF(高中)",
+                    name: 'first',
+                },                
+                {
+                    data: "poas",
+                    title: "POAS",
+                    name: 'first',
+                },                
+                {
+                    data: "skill",
+                    title: "Key Skill",
+                    name: 'first',
+                },                            
+                {
+                    data: "relevant_lessons",
                     title: "相關課程編號",
                     name: 'first',
                 },                
                 {
-                    data: "16",
+                    data: "relevant_code",
                     title: "相關項目編號",
                     name: 'first',
                 },                
                 {
-                    data: "17",
+                    data: "remarks",
                     title: "備註",
                     name: 'first',
                 },              

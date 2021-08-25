@@ -89,7 +89,7 @@ class Bk_subject_outline extends CI_Controller //change this
         if ($subject_id) {
             $filtered_lessons = Lessons_model::subjectList($sub_category_id,$sb_obj_id, $lesson_id, $subject_id);
             foreach ($filtered_lessons as $i =>$row) {
-                $lessons_arr[$i] = array('lesson' => Lessons_model::table_list($row['id']), 'subject_lesson_id' => $row['sub_lesson_id'], 'subject_cat_id' => Subject_lessons_model::find($row['sub_lesson_id'])->subject_category_id);
+                $lessons_arr[$i] = array('lesson' => Lessons_model::table_list($row['id']), 'subject_lesson_id' => $row['sub_lesson_id'], 'subject_cat_id' => Subject_lessons_model::find($row['sub_lesson_id'])->subject_category_id,  'remarks' => Lessons_remarks_model::id_list($row['sub_lesson_id']));
             }
         }
 
@@ -110,27 +110,31 @@ class Bk_subject_outline extends CI_Controller //change this
                 $lesson_performance = Key_performances_model::where('subject_lesson_id', $subject_lesson_id)->get();
                 foreach ($lesson_performance as $foo ) {
                     $data[$num][] = '<a class="editLinkBtn" href="'.admin_url(current_controller() . '/edit/'. $subject_lesson_id) .'"><i class="fa fa-edit"></i></a>';
-                    $data[$num][] = $row['subject_cat_id'] ? Subject_categories_model::name($row['subject_cat_id']) : "not yet assigned";
-                    $data[$num][] = $row['lesson']['code'];
-                    $data[$num][] = $row['lesson']['course'];
-                    $data[$num][] = $row['lesson']['category'];
-                    $data[$num][] = $row['lesson']['sb_obj'];
-                    $data[$num][] = $row['lesson']['element'];
-                    $data[$num][] = $row['lesson']['groups'];
-                    $data[$num][] = $row['lesson']['lpf_basic'];
-                    $data[$num][] = $row['lesson']['lpf_advanced'];
-                    $data[$num][] = $row['lesson']['poas'].'<span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span>';
-                    $data[$num][] = $row['lesson']['skills'].'<span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span>';
-                    $data[$num][] = $row['lesson']['expected_outcome'];
-                    $data[$num][] = $foo['performance'];
-                    $data[$num][] = Assessments_model::mode($foo['assessment_id']);
+                    $data[$num]['subject_cat'] = $row['subject_cat_id'] ? Subject_categories_model::name($row['subject_cat_id']) : "not yet assigned";
+                    $data[$num]['code'] = $row['lesson']['code'];
+                    $data[$num]['course'] = $row['lesson']['course'];
+                    $data[$num]['category'] = $row['lesson']['category'];
+                    $data[$num]['sb_obj'] = $row['lesson']['sb_obj'];
+                    $data[$num]['element'] = $row['lesson']['element'];
+                    $data[$num]['group'] = $row['lesson']['groups'];
+                    $data[$num]['lpf_basic'] = $row['lesson']['lpf_basic'];
+                    $data[$num]['lpf_advanced'] = $row['lesson']['lpf_advanced'];
+                    $data[$num]['poas'] = $row['lesson']['poas'].'<span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span>';
+                    $data[$num]['skill'] = $row['lesson']['skills'].'<span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span>';
+                    $data[$num]['expected_outcome'] = $row['lesson']['expected_outcome'];
+                    $data[$num]['performance'] = $foo['performance'];
+                    $data[$num]['assessment'] = Assessments_model::mode($foo['assessment_id']);
                     $rel_les = '';
                     foreach ($row['lesson']['rel_lessons'] as $key) {
                         $rel_les .= '<button type="button" class="btn-xs btn btn-primary badge">' .Lessons_model::code($key).'</button> &nbsp';
                     }
-                    $data[$num][] = $rel_les;
-                    $data[$num][] = '相關項目編號';
-                    $data[$num][] = 'remark';
+                    $data[$num]['relevant_lessons'] = $rel_les;
+                    $data[$num]['relevant_code'] = '相關項目編號';
+                    $remarks = '';
+                    foreach ($row['remarks'] as $remark) {
+                        $remarks .=  '<button type="button" class="btn-xs btn btn-primary badge">' .Remarks_model::name($remark).'</button> &nbsp';
+                    }
+                    $data[$num]['remarks'] = $remarks;
                     $num++;
                 }
             }
@@ -230,6 +234,7 @@ class Bk_subject_outline extends CI_Controller //change this
         $data['subject_cat_id'] = $subject_cat_id;
         $data['lesson_id'] = $lesson_id ;
         $data['expected_outcome'] = $lesson->expected_outcome;
+        $data['return'] = $_SERVER['HTTP_REFERER'];
 
         $data['form_action'] = admin_url($data['page_setting']['controller'] . '/preview/'. $subject_lesson_id);
 

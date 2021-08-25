@@ -57,16 +57,18 @@ class Bk_options extends CI_Controller //change this
         $data['subjects_list'] = Subjects_model::list('All');
         $data['years_list'] = Years_model::list();
         $data['staff_list'] = Staff_model::list();
+        $data['students_list'] = Students_model::list();
         $this->load->view('webadmin/' . $this->scope . '', $data);
     }
 
 
     public function readAPI()
     {
+        // dump($_POST);
         // $params = array('user_post' => null, 'a' => "staff", "encode"  => "array");
         $params['user_post'] = null; 
-        $params['a'] = 'staff'; 
-        $params['encode'] = 'array'; 
+        $params['a'] = $_POST['a']; 
+        $params['encode'] = $_POST['encode']; 
         // $header = array('Set-Cookie: PHPSESSID=4b9ppf47fp7ira97vsffc2neb5; path=/');
         // dump($_POST);
         $header = array('Content-Type: application/x-www-form-urlencoded');
@@ -82,31 +84,46 @@ class Bk_options extends CI_Controller //change this
 
         $data = json_decode(preg_replace("/\r|\n|\t/", "", substr($api_response, 82, -3)));
 
-        foreach ($data as $i => $staff) {
-            $staff_data = (array)$staff;
-            $new_data = array(
-                'id' => $staff_data['id'],
-                'username' => $staff_data['username'],
-                'name' => $staff_data['name'],
-                'name_short' => $staff_data['name_short'],
-                'user_post' => $staff_data['user_post'],
-                'status' => $staff_data['status'] == 'IN' ? 1 : 0,
-                'updated_at' => date('Y-m-d H:i:s'),
-            );
-            $staff_id = Staff_model::find($staff_data['id'])->id;
-            // dump($staff_id);
-            if ($staff_id) {
-                Staff_model::where('id', $staff_data['id'])->update($new_data);
-            } else {
-                Staff_model::create($new_data);
-            }
-            
+        switch (true) {
+            case($_POST['a'] == "staff"):
+
+                foreach ($data as $i => $staff) {
+                    $staff_data = (array)$staff;
+                    $info_data = array(
+                        'id' => $staff_data['id'],
+                        'username' => $staff_data['username'],
+                        'name' => $staff_data['name'],
+                        'name_short' => $staff_data['name_short'],
+                        'user_post' => $staff_data['user_post'],
+                    );
+                    $staff_id = Staff_model::updateOrCreate($info_data, array('status' => $staff_data['status'] == 'IN' ? 1 : 0, 'updated_at' => date('Y-m-d H:i:s'),))->$id;
+                }
+        
+                $result = array('status' => 'success', 'msg' => '職員名單已更新');
+                break;
+            case ($_POST['a'] == "students"):
+                foreach ($data as $student) {
+                    $student_data = (array)$student;
+                    $info_data = array(
+                        'id' => $student_data['id'],
+                        'sid' => $student_data['sid'],
+                        'chinese_name' => $student_data['chinese_name'],
+                        'english_name' => $student_data['english_name'],
+                        'class' => $student_data['class'],
+                        'dob' => $student_data['dob'],
+                        'class_level' => $student_data['class_level'],
+                        'lineage' => $student_data['lineage'],
+                    );
+
+                    $update_data = array('study_status' => $student_data['study_status'], 'status' => $student_data['study_status'] == '在學' ? 1 : 0, 'updated_at' => date('Y-m-d H:i:s'));
+                    Students_model::updateOrCreate($info_data, $update_data);
+                }
+
+                $result = array('status' => 'success', 'msg' => '學生名單已更新');
+
+                break;
 
         }
-
-        $result = array('status' => 'success', 'msg' => '職員名單已更新');
-        // dump(json_encode(json_decode($data)));
-
         echo json_encode($result);
 
     }
@@ -120,7 +137,6 @@ class Bk_options extends CI_Controller //change this
 
         // POST
         $postData = $this->input->post();
-
         $type = $postData['type'];
         $name = $postData['name'];
         $name2 = $postData['name2'];

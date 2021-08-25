@@ -146,7 +146,7 @@
                                     <input type="hidden" name="action" value="edit"/>
                                     <button type="submit" class="btn bg-maroon mw-100 mb-4 mr-4" >下一步</button>
 
-                                    <button type="button" class="btn btn-default mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller']) ?>';">返 回</button>
+                                    <button type="button" class="btn btn-default mw-100 mb-4" onclick="location.href='<?= $return?>';">返 回</button>
 
                                 </div>
 

@@ -2,6 +2,8 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 
 use Illuminate\Database\Capsule\Manager as DB;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 
 class Bk_additional_content extends CI_Controller //change this
 {
@@ -270,15 +272,38 @@ class Bk_additional_content extends CI_Controller //change this
         ), FALSE, TRUE);
 
         foreach ($_POST['module'] as $i => $module_id) {
+            // $test_data = array(
+            //     'group_id' => $_POST['group'][$i],
+            //     'module_id' => $module_id,
+            //     'subject_lessons_module_id' => $_POST['id'],
+
+            // );
+
+            
+            // dump($test_data);
+            // // dump($_POST['id']);
+            // $primary_key = Additional_contents_model::where('group_id', $_POST['group'][$i])->where('module_id', $module_id)->where('subject_lessons_module_id', $_POST['id'])->whereNotNull('deleted')->toSQL();
+            //     dump($primary_key);
             $data = array(
+                'id' => $primary_key,
                 'group_id' => $_POST['group'][$i],
                 'module_id' => $module_id,
                 'subject_lessons_module_id' => $_POST['id'],
-            );
-            $add_content = array(
-                'content' => $_POST['content'][$i],
+
             );
 
+            if ($_POST['content'][$i]) {
+                $add_content = array(
+                    'content' => $_POST['content'][$i],
+                    'deleted' => 0
+                );
+            } else {
+                $add_content = array(
+                    'content' => null,
+                    'deleted' => 1
+                );
+            }
+        
             Additional_contents_model::updateOrCreate($data, $add_content);
         }
 

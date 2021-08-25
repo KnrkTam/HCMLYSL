@@ -47,7 +47,7 @@
                                             <h5 class="text-purple"><b>已選項目：</b></h5>
 
                                             <table class="table table-bordered table-striped" id="subjectTable">
-                                                <thead>
+                                                <!-- <thead>
                                                     <tr class="bg-light-blue color-palette">
                                                         <th class="nowrap">課程</th>
                                                         <th class="nowrap">範疇</th>
@@ -64,7 +64,7 @@
                                                         <th class="nowrap">課程編號</th>
                                                         <th class="nowrap">相關項目編號</th>
                                                     </tr>
-                                                </thead>
+                                                </thead> -->
                                                 <tbody>
                                                 </tbody>
                                             </table>
@@ -113,6 +113,81 @@
 
     <script>
         $(document).ready(function() {
+                let columnDefs = [{
+                    width: '60px',
+                    data: "category",
+                    title: "課程範疇",
+                    name: 'first',
+                },               
+                {
+                    class: 'col',
+                    data: "course",
+                    title: "課程",
+                    name: 'first',
+                },               
+                {
+                    class: 'col',
+                    data: "sb_obj",
+                    title: "校本課程學習重點",
+                    name: 'first',
+                },        
+                {
+                    width: '100px',
+                    data: "element",
+                    title: "學習元素",
+                    name: 'first',
+                },              
+                {
+                    class: 'col',
+                    data: "groups",
+                    title: "組別",
+                    name: 'first',
+                },                
+                {
+                    class: 'big-col',
+                    data: "expected_outcome",
+                    title: "預期學習成果",
+                    name: 'first',
+                },        
+                {
+                    class: 'col',
+                    data: "pre-skills",
+                    title: "前備技能",
+                    name: 'first',
+
+                },  
+                {
+                    class: 'col',
+                    data: "lpf_basic",
+                    title: "LPF(基礎)",
+                    name: 'first',
+                },                
+                {
+                    class: 'col',
+                    data: "lpf_advanced",
+                    title: "LPF(高中)",
+                    name: 'first',
+                },                
+                {
+                    class: 'col',
+                    data: "poas",
+                    title: "POAS",
+                    name: 'first',
+                },                
+                {
+                    class: 'col',
+                    data: "skills",
+                    title: "Key Skill",
+                    name: 'first',
+                },                                  
+                {
+                    class: 'col',
+                    data: "rel_les",
+                    title: "相關項目編號",
+                    name: 'first',
+                },              
+            ];
+            
             $('[data-toggle="tooltip"]').tooltip();
             var subjectTable = $('#subjectTable').DataTable({
                 scrollX: true,
@@ -129,6 +204,7 @@
                 "ordering": false,
                 "searching": false,
                 "searchDelay": 0,
+                "columns": columnDefs,   
                 "ajax": {
                     "url": "<?= admin_url($page_setting['controller'] . '/preview_ajax') ?>",
                     "method": "get",

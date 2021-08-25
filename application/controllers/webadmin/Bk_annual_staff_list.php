@@ -39,7 +39,7 @@ class Bk_annual_staff_list extends CI_Controller //change this
         return $page_setting;
     }
 
-    public function index($filter_type = NULL, $filter_para = NULL, $filter_para2 = NULL)
+    public function index()
     {
         $data['page_setting'] = $this->page_setting(array(
             'view_' . $this->scope

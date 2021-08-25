@@ -118,7 +118,7 @@ class Bk_intended_learning_outline extends CI_Controller //change this
                 foreach ($lesson_performance as $foo ) {
                     $modules_arr = Subject_lessons_modules_model::where('subject_lessons_id', $row['subject_lesson_id'])->pluck('module_id')->toArray();
 
-                    $data[$num]['edit'] = '<a class="editLinkBtn" href="#" data-id="'.$row['id'].'" data-subject_lesson="'.$row['subject_lesson_id'].'" data-subject="'.Subjects_model::name($row['subject_id']).'" data-subject_cat="'.Subject_categories_model::name($row['subject_cat_id']).'" data-modules="'.json_encode($modules_arr) .'"  data-lesson="'.$row['lesson']['code'].'" data-toggle="modal" data-target="#editDetail" ><i class="fa  fa-search"></i></a>';
+                    $data[$num]['edit'] = '<a class="editLinkBtn" href="#" data-id="'.$row['id'].'" data-subject_lesson="'.$row['subject_lesson_id'].'" data-subject="'.Subjects_model::name($row['subject_id']).'" data-subject_cat="'.Subject_categories_model::name($row['subject_cat_id']).'" data-modules="'.json_encode($modules_arr) .'"  data-lesson="'.$row['lesson']['code'].'" data-toggle="modal" data-target="#editDetail" ><i class="fa  fa-edit"></i></a>';
                     $data[$num]['subject'] = Subjects_model::name($row['subject_id']);
                     $data[$num]['subject_category'] = Subject_categories_model::name($row['subject_cat_id']);
                     $data[$num]['lesson'] = $row['lesson']['code'];
@@ -132,9 +132,9 @@ class Bk_intended_learning_outline extends CI_Controller //change this
                     $data[$num]['poas'] = $row['lesson']['poas'].'<span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span>';
                     $data[$num]['skills'] = $row['lesson']['skills'].'<span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span>';
                     $data[$num]['expected_outcome'] = in_array('1', $row['remarks']) ? $row['lesson']['expected_outcome'] . '<span class="highlight text-aqua"><i class="fa fa-circle"/><span>' : $row['lesson']['expected_outcome'];
-                    $modules = '';
+                    $modules = [];
                     foreach ($row['modules'] as $module) {
-                        $modules .=  '<button type="button" class="btn-xs btn btn-success badge">' .$module. '</button> &nbsp</br>';
+                        $modules[] =  $module;
                     }
                     $data[$num]['modules'] = $modules;
                     $data[$num]['performance'] = $foo['performance'];

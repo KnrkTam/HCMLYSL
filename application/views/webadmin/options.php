@@ -114,6 +114,11 @@
 								<div class="col-sm-8"><?php form_list_type('staff_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'enable_value' => $staff_list, 'form_validation_rules' => 'trim|required', 'disable_please_select' => 1]) ?></div>
 								<div class="col-sm-2"><button type="button" class="btn updateBtn mw-100 btn-info mb-4" data-toggle="modal" >更 新 </button></div>
 							</div>
+                            <div class="form-group">
+								<label class="text-nowrap required col-sm-2"><span>學生：</span> </label>
+								<div class="col-sm-8"><?php form_list_type('student_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'enable_value' => $students_list, 'form_validation_rules' => 'trim|required', 'disable_please_select' => 1]) ?></div>
+								<div class="col-sm-2"><button type="button" class="btn updateStudentBtn mw-100 btn-info mb-4" data-toggle="modal" >更 新 </button></div>
+							</div>
                         </div>
                         <!-- /.box-body -->
                     </div>
@@ -259,16 +264,12 @@
         });
 
         $(document).on("click", ".updateBtn", function () {
-            console.log(data)
-
-            // let confirmUpdate = confirm('更新職員名單')
-            // if (confirmUpdate) {
                 updateStaff();
                 function updateStaff(){
                     $.ajax({
                     url: `<?= (admin_url($page_setting['controller'])) . '/readAPI' ?>`,
                     method:'POST',
-                    data:{user_post: null, a :'staff', encode: 'array'},
+                    data:{a :'staff', encode: 'array'},
                     dataType:'json',     
                     success:function(data){
                         if (data.status == 'success') {
@@ -287,7 +288,33 @@
                     }
                     });
                 }          
-            // }
+        })
+
+        $(document).on("click", ".updateStudentBtn", function () {
+                updateStudent();
+                function updateStudent(){
+                    $.ajax({
+                    url: `<?= (admin_url($page_setting['controller'])) . '/readAPI' ?>`,
+                    method:'POST',
+                    data:{a :'students', encode: 'array'},
+                    dataType:'json',     
+                    success:function(data){
+                        if (data.status == 'success') {
+                            window.location.reload();
+                            alertify.success(data.msg)
+
+                        } else {
+                            alertify.error(data.status)
+                        }
+                        console.log(data)
+                    },
+                    error: function(error){
+                        console.log(error)
+
+                        alert('error');
+                    }
+                    });
+                }          
         })
 
         let addBtn = document.querySelector('#add-btn');
