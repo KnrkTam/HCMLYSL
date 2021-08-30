@@ -53,7 +53,8 @@ class Bk_intended_learning_outline extends CI_Controller //change this
         $data['annual_modules_list'] = Annual_modules_model::year_list($year_id, 'all');
         $data['select_list'] = Annual_modules_model::year_list($year_id);
         $data['remarks_list'] = Remarks_model::list();
-        
+        $data['subject_categories_list'] = json_encode(Subject_categories_model::optionList('All')); 
+
 
         if ($_POST) {
             $sub_cat= Subject_categories_model::where('subject_id', $_POST['subject_id'])->get();
@@ -66,7 +67,7 @@ class Bk_intended_learning_outline extends CI_Controller //change this
             $data['annual_module_id'] = $_POST['annual_module_id'];
             $data['subject_category_id'] = $_POST['subject_category_id'];
             $data['remark_id'] = $_POST['remark_id'];
-            $data['subject_categories_list'] = $list;
+            // $data['subject_categories_list'] = $list;
         }
 
 
@@ -96,6 +97,7 @@ class Bk_intended_learning_outline extends CI_Controller //change this
 
             foreach ($intended_learning_outline as $y => $subject_lesson_module_id) {
                 $sub_ann_module = Subject_lessons_modules_model::find($subject_lesson_module_id);
+                $subject_id = $sub_ann_module->subject_id;
                 $subject_lesson = $sub_ann_module->subject_lesson;
                 $lesson = Lessons_model::find($subject_lesson->lesson_id);
                 $lesson_id = $lesson->id;
@@ -103,8 +105,8 @@ class Bk_intended_learning_outline extends CI_Controller //change this
                 $subject_lesson_id = $subject_lesson->id;
 
                 $group_id = $group_count;
-                // dump($group_id);
-                $lessons_arr[$y] = array('id' => $subject_lesson_module_id, 'lesson' => Lessons_model::table_list($lesson_id), 'subject_lesson_id' =>  $subject_lesson_id, 'subject_cat_id' => $subject_lesson->subject_category_id, 'subject_id' => $subject_lesson->subject_id, 'count' => $y, 'modules' => Subject_lessons_modules_model::moduleList($subject_lesson_id, $year_id), 'remarks' => Lessons_remarks_model::id_list($subject_lesson_id), 'group_id' => $group_id);
+
+                $lessons_arr[$y] = array('id' => $subject_lesson_module_id, 'lesson' => Lessons_model::table_list($lesson_id), 'subject_lesson_id' =>  $subject_lesson_id, 'subject_cat_id' => $subject_lesson->subject_category_id, 'subject_id' => $subject_id, 'count' => $y, 'modules' => Subject_lessons_modules_model::moduleList($subject_lesson_id, $year_id), 'remarks' => Lessons_remarks_model::id_list($subject_lesson_id), 'group_id' => $group_id);
             }
 
         }
@@ -132,9 +134,9 @@ class Bk_intended_learning_outline extends CI_Controller //change this
                     $data[$num]['poas'] = $row['lesson']['poas'].'<span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span>';
                     $data[$num]['skills'] = $row['lesson']['skills'].'<span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span>';
                     $data[$num]['expected_outcome'] = in_array('1', $row['remarks']) ? $row['lesson']['expected_outcome'] . '<span class="highlight text-aqua"><i class="fa fa-circle"/><span>' : $row['lesson']['expected_outcome'];
-                    $modules = [];
+                    $modules = "";
                     foreach ($row['modules'] as $module) {
-                        $modules[] =  $module;
+                        $modules .=  $module. '&nbsp';
                     }
                     $data[$num]['modules'] = $modules;
                     $data[$num]['performance'] = $foo['performance'];
@@ -171,13 +173,7 @@ class Bk_intended_learning_outline extends CI_Controller //change this
 
         $list[0] = array ('id' => 'undefined','text' => '所有科目範疇');
         sort($list);
-        // dump($list);
-
-        // if ($id == 0) {
-        //     $list[0] = array('id' => '', 'text' => '所有科目範疇');
-
-        // }
-        // dump($list);
+    
         echo json_encode($list);
     }
 
@@ -190,7 +186,8 @@ class Bk_intended_learning_outline extends CI_Controller //change this
         $data['form_action'] = admin_url($data['page_setting']['controller'] . '/preview');
         $data['action'] = __('新 增');
         $year_id = Years_model::orderBy('year_to', 'DESC')->first()->id;
-        // dump(Lessons_model::with('remarks')->get());
+        $data['subject_categories_list'] = json_encode(Subject_categories_model::optionList('All')); 
+        // dump( $data['subject_categories_list']);
         if ($_SESSION['post_data']) {
             $data['subject_id'] = $_SESSION['post_data']['subject_id'];
             $data['module_id'] = $_SESSION['post_data']['module_id'];
@@ -219,17 +216,13 @@ class Bk_intended_learning_outline extends CI_Controller //change this
         $module_id = $postData['module_id'];
 
         foreach ($subject_lessons as $i => $row) {
-            $duplicated_sub = Subject_lessons_modules_model::where('year_id', $year_id)->where('module_id', $module_id)->where('subject_lessons_id', $row)->first()->subject_lessons_id;
+            $duplicated_sub = Subject_lessons_modules_model::where('year_id', $year_id)->where('module_id', $module_id)->where('subject_lessons_id', $row)->where('subject_id', $subject_id)->first()->subject_lessons_id;
             $duplicated = Subject_lessons_model::find($duplicated_sub)->lesson_id;
 
             if ($duplicated) {
                 $check[] = $duplicated;
             }
         }
-        // dump($check);
-        // dump(count($subject_lessons));
-        // dump($subject_lessons);
-
 
         switch(true) {
             case (!$subject_id);
@@ -273,24 +266,32 @@ class Bk_intended_learning_outline extends CI_Controller //change this
         
         $sb_obj_id = $_GET['sb_obj_search'];
         $annual_module_id = $_GET['annual_module_search'];
-        $subject_id = $_GET['subject_search'];
         $sub_category_id = $_GET['subject_category_search'];
+
+        // $subject_id = $_GET['subject_search'];
+        $subject_id = Subject_categories_model::find($sub_category_id)->subject_id;
+        // dump($_GET);
+
+        // dump($sub_category_id);
+        // dump($subject_id);
+
         $offset = (int)$_GET['start'];
         $pagination = (int)$_GET['length'];
-        // dump($_GET);
         if ($_GET['subject_category_search'] == 'undefined') {
             $sub_category_id = 0;
         }
         // dump($sub_category_id);
+        // dump($subject_id);
+        // dump($lesson_id);
+        // dump($sb_obj_id);
 
-        if ($subject_id) {
-            $filtered_lessons = Lessons_model::subjectList($sub_category_id,$sb_obj_id, $lesson_id, $subject_id);
-            // dump($filtered_lessons);
-            foreach ($filtered_lessons as $i =>$row) {  
-                // dump($row);   
-                $lessons_arr[$i] = array('lesson' => Lessons_model::table_list($row['id']), 'subject_lesson_id' => $row['sub_lesson_id'], 'subject_cat_id' => Subject_lessons_model::find($row['sub_lesson_id'])->subject_category_id, 'remarks' => Lessons_remarks_model::id_list( $row['sub_lesson_id']));
-            }
+        // if ($subject_id) {
+        $filtered_lessons = Lessons_model::subjectList($sub_category_id,$sb_obj_id, $lesson_id, $subject_id);
+        // dump($filtered_lessons);
+        foreach ($filtered_lessons as $i =>$row) {  
+            $lessons_arr[$i] = array('lesson' => Lessons_model::table_list($row['id']), 'subject_lesson_id' => $row['sub_lesson_id'], 'subject_cat_id' => Subject_lessons_model::find($row['sub_lesson_id'])->subject_category_id, 'remarks' => Lessons_remarks_model::id_list( $row['sub_lesson_id']));
         }
+        // }
         // dump($lessons_arr);
         
         $result_count = count($lessons_arr);
@@ -304,15 +305,17 @@ class Bk_intended_learning_outline extends CI_Controller //change this
             // dump($lessons_arr);  
             foreach ( $lessons_arr as $key => $row) {
                 // dump($row);
-                if ($subject_id) {
-                    $subject_lesson_id = Subject_lessons_model::find($row['subject_lesson_id'])->id;
+                // if ($subject_id) {
+                    // $subject_lesson_id = Subject_lessons_model::find($row['subject_lesson_id'])->id;
 
                     // dump($subject_lesson_id);
-
-                } else {
-                    $subject_lesson_id = Subject_lessons_model::where('lesson_id', $row['id'])->first()->id;
-                    $subject_id = Subject_lessons_model::where('lesson_id', $row['id'])->first()->subject_id;
-                }
+                // } else {
+                    $subject_lesson = Subject_lessons_model::find($row['subject_lesson_id']);
+                    $subject_lesson_id = $subject_lesson->id;
+                    // dump($subject_lesson_id);
+                    $subject_id =  $subject_lesson->subject_id;
+                    // dump($subject_id);
+                // }
 
                 $lesson_performance = Key_performances_model::where('subject_lesson_id', $subject_lesson_id)->get();
                 foreach ($lesson_performance as $foo ) {
@@ -433,14 +436,6 @@ class Bk_intended_learning_outline extends CI_Controller //change this
                 $lesson_id = $subject_lesson->lesson_id;
                 $lessons_arr[$i] = array('lesson' => Lessons_model::table_list($lesson_id), 'subject_lesson_id' => $subject_lesson_id, 'subject_cat_id' => $subject_lesson->subject_category_id, 'subject_id' => $subject_lesson->subject_id, 'remarks' => Lessons_remarks_model::id_list($subject_lesson_id), 'count' => $i);
             }
-            // $searched_lessons = Lessons_model::list(null, null, null, $added_ids);        
-
-            // $selected_lessons = array_slice($searched_lessons, $offset, $pagination);
-
-            // $lessons_arr = array();
-            // foreach ($selected_lessons as $i =>$row) {
-            //     $lessons_arr[$row['id']] = Lessons_model::table_list($row['id']);
-            // }
             $result_count = count($lessons_arr);
         }
 
@@ -493,9 +488,6 @@ class Bk_intended_learning_outline extends CI_Controller //change this
             'update_' . $this->scope
         ), FALSE, TRUE);
 
-        // POST
-        // $postData = $this->input->post();
-        // $dup_code = Modules_model::where('id', '!=', $id)->where('code',$postData['code'])->first()->name;
         $year_id = Years_model::orderBy('year_to', 'DESC')->first()->id;
         $subject_lesson_id = $_POST['subject_lesson_id'];
         $new_module_arr = $_POST['module_arr'];
@@ -546,26 +538,6 @@ class Bk_intended_learning_outline extends CI_Controller //change this
         echo json_encode($data);
 
     }
-
-    // public function check($id)
-    // {
-    //     $data['page_setting'] = $this->page_setting(array(
-    //         'view_news'
-    //     ), FALSE, TRUE);
-
-    //     $subject_lesson = Subject_lessons_model::find($id);
-
-    //     $data['subject_id'] =$subject_lesson->subject_id;
-    //     $data['subject'] = Subjects_model::name($subject_lesson->subject_id);
-
-
-    //     $data['action'] = __('修 改');
-    //     dump($data);
-
-    //     $GLOBALS["select2"] = 1;
-    //     $GLOBALS["datatable"] = 1;
-    //     $this->load->view('webadmin/' . $this->scope . '_edit',  $data);
-    // }
 
     public function preview()
     {
@@ -618,26 +590,19 @@ class Bk_intended_learning_outline extends CI_Controller //change this
             $lesson = Lessons_model::find($lesson_id);
 
             $groups_arr = Lessons_group_model::where('lesson_id', $lesson->id)->pluck('group_id')->toArray();
-            // dump($subject_lessons_id);
-
-            // dump($lesson_id);
-
-            // dump($lesson);
-            // dump($groups_arr);
             foreach ($groups_arr as $group_id) {
                 $data = array(
                     'year_id' => $year_id,
                     'module_id' => $module_id,
                     'subject_lessons_id' => $subject_lessons_id,
+                    'subject_id' => $subject_id,
                 );
                 Subject_lessons_modules_model::create($data); 
             }
         }
 
         $_SESSION['success_msg'] = __('新增既定單元大綱成功');
-        // if ($_SESSION['path'] == 'subjects_map') {
-        //     redirect(admin_url('bk_subjects_map'));
-        // }
+
         redirect(admin_url('bk_'.$this->scope));
         
     }

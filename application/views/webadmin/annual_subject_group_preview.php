@@ -66,14 +66,14 @@
                                     <div class="col-lg-6">
                                         <div class="form-group ">
                                             <label class="text-nowrap">年度：</label>
-                                            <p>2019/2020</p>
+                                            <p><?= $preview_year?></p>
 
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group ">
                                             <label class="text-nowrap">科目：</label>
-                                            <p>語文科1234</p>
+                                            <p><?= $preview_subject?></p>
 
                                         </div>
                                     </div>
@@ -82,8 +82,8 @@
                                             <label class="text-nowrap">主教老師：</label>
 
                                             <div class="d-flex">
-                                                <P>xxx</P>
-                                                <P>主教老師</P>
+                                            <p><?= $preview_staff1?></p>
+
 
                                             </div>
                                         </div>
@@ -93,8 +93,8 @@
                                             <label class="text-nowrap">其他任教：</label>
 
                                             <div class="d-flex">
-                                                <P>xxx</P>
-                                                <P>主教老師</P>
+                                            <p><?= $preview_staff2?></p>
+
 
                                             </div>
                                         </div>
@@ -106,7 +106,7 @@
                                     <div class="col-lg-6">
                                         <div class="form-group ">
                                             <label class="text-nowrap">單元：</label>
-                                            <p>全部/單元一/單元二/單元三/單元四</p>
+                                            <p><?= $preview_modules?></p>
 
                                         </div>
                                     </div>

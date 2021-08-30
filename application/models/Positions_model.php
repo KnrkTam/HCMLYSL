@@ -15,7 +15,13 @@
         }
 
         public static function name($id){
-            $result = Positions_model::where('id', $id)->first()->name;
+            $result = Positions_model::find($id)->name;
+
+            return $result;
+        }
+
+        public static function idByName($name){
+            $result = Positions_model::where('name', $name)->first()->id;
 
             return $result;
         }

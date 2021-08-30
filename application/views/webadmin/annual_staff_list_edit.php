@@ -33,7 +33,7 @@
                     <!-- column -->
                     <div class="col-md-12">
                         <!-- form start -->
-                        <?= form_open_multipart($form_action, 'class="form-horizontal"'); ?>
+                        <?= form_open_multipart($form_action, 'id="myForm" class="form-horizontal"'); ?>
 
                         <div class="box box-primary">
                             <div class="box-body">
@@ -67,7 +67,7 @@
                                 <div class="mt-4 d-flex justify-content-end">
                                     <input type="hidden" name="action" value="edit"/>
 
-                                    <button type="submit" class="btn btn-primary mw-100 mb-4 mr-4" >確 定</button>
+                                    <button type="button" id="editBtn"  class="btn btn-primary mw-100 mb-4 mr-4" >確 定</button>
 
                                     <button type="button" class="btn btn-default mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller']) ?>';">返 回</button>
 
@@ -130,16 +130,29 @@
 
 
 
-        function submit_form(_this) {
-            //form checking
-            var valid_data = true;
-            //.form checking
-            if (!valid_data) {
-                //alert('Invalid Data.');
-            } else {
-                ajax_submit_form(_this);
-            }
-        }
+        let editBtn = document.querySelector('#editBtn');
+            editBtn.addEventListener("click",function(){
+                createModule(year_id.value, position_id.value, staff_id.value);
+                function createModule(year_id, position_id, staff_id){
+                    $.ajax({
+                    url: '<?= (admin_url($page_setting['controller'])) . '/validate/'. $id ?>',
+                    method:'POST',
+                    data:{year_id:year_id,position_id: position_id, staff_id: staff_id},
+                    dataType:'json',     
+                    success:function(data){
+                        if (data.status == 'success') {
+                            document.getElementById('myForm').submit();
+                        } else {
+                            alertify.error(data.status)
+                        }
+                    },
+                    error: function(error){
+                        alert('error');
+                    
+                    }
+                    });
+                } 
+            })    
 
 
     </script>

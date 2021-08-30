@@ -292,7 +292,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary comfirmSelectCourseNumber">選擇課程編號</button>
+                    <button type="button" class="btn btn-primary confirmSelectCourseNumber">選擇課程編號</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">關 閉</button>
                 </div>
             </div>
@@ -384,7 +384,7 @@
 
             })
 
-            $(".comfirmSelectCourseNumber").click(function() {
+            $(".confirmSelectCourseNumber").click(function() {
                 var courseNumberCount = new Array();
                 // $("input[name='searchCourseNumberCheck']:checked").each(function() {
                 //     courseNumberCount.push($(this).closest("tr").find(".courseNum").text());

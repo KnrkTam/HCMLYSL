@@ -28,6 +28,8 @@
             display: none;
         }
 
+ 
+
     </style>
 </head>
 
@@ -149,7 +151,7 @@
                 width: '10px',
                 data: "edit",
                 name: 'first',
-                class: 'no-sort',
+                class: 'no-sort noVis',
             },     
             {
                 width: '60px',
@@ -229,6 +231,15 @@
         let Course_table = $('#courseOutlineTable').DataTable({
         'rowsGroup': [0, 1],
         scrollX: true,
+        dom: 'Bfrtip',
+            "buttons": [ {
+            extend: 'colvis',
+            text: '選擇顯示項目',
+            columns: ':not(.noVis)',
+            columnText: function ( dt, idx, title ) {
+                return title;
+            }
+        }],
         "language": {
             "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/Chinese-traditional.json') ?>",
         },
@@ -277,7 +288,6 @@
         $('#subject_category_id').select2({
             data: data
         })
-
 
         let sub_id = <?php echo $subject_categories_id ?  $subject_categories_id : 0?>;
         let sb_obj_id = <?php echo $sb_obj_id ?  $sb_obj_id : 0?>;

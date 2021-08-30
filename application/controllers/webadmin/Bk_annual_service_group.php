@@ -3,9 +3,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 use Illuminate\Database\Capsule\Manager as DB;
 
-class Bk_group_service extends CI_Controller //change this
+class Bk_annual_service_group extends CI_Controller //change this
 {
-    private $scope = 'group_service'; //change this
+    private $scope = 'annual_service_group'; //change this
 
     public function __construct()
     {

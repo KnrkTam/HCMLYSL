@@ -16,25 +16,36 @@ class Subject_lessons_model extends BaseModel
         return implode(',', $subject_lessons_arr);
     }
 
-    public static function id_list($subject_id, $subject_category_id = null, $lessons_id = array())
+    public static function id_list($subject_id = null, $subject_category_id = null, $lessons_id = array())
     {        
-        $result = Subject_lessons_model::where('subject_id', $subject_id)
-        ->when($subject_category_id, function($query, $subject_category_id) {
-            return $query->where('subject_category_id', $subject_category_id);
-        })
-        ->when($lessons_id, function($query, $lessons_id) {
-            return $query->whereIn('lesson_id', $lessons_id);
-        })
-        ->get();
+
+        if ($subject_id == null && $subject_category_id == 0) {
+            $result = Subject_lessons_model::all();
+            // $result = 'all';
+        } else {
+            $result = Subject_lessons_model::where('subject_id', $subject_id)
+            ->when($subject_category_id, function($query, $subject_category_id) {
+                return $query->where('subject_category_id', $subject_category_id);
+            })
+            ->when($lessons_id, function($query, $lessons_id) {
+                return $query->whereIn('lesson_id', $lessons_id);
+            })
+            ->get();
+        }
+      
     
         foreach ($result as $i => $row){
             if ($row['subject_id'] == $subject_id) {
                 $subject_lessons_arr[$i] = array('id' => $row['id'], 'lesson_id' => $row['lesson_id']);
             } else if ($row['lesson_id'] == $subject_id) {
                 $subject_lessons_arr[$i] = array('id' => $row['id'], 'lesson_id' => $row['subject_id']);;
+            } else {
+                $subject_lessons_arr[$i] = array('id' => $row['id'], 'lesson_id' => $row['lesson_id']);;
+
             }
         }; 
     
+        // return $result;
         return $subject_lessons_arr;
     }
 

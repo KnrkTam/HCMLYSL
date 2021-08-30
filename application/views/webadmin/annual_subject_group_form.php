@@ -3,15 +3,21 @@
 
 <head>
     <?php include_once("head.php"); ?>
+    <style>
+        input[type="checkbox"]{
+            cursor: pointer;
+        }
+
+        input[type="radio"]{
+            cursor: pointer;
+        }
+    </style>
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini">
     <div class="wrapper">
 
         <?php include_once("header.php"); ?>
-        <!-- <link href="<?= assets_url('webadmin/css/jquery.transfer.css') ?>" rel="stylesheet">
-
-        <link rel="stylesheet" type="text/css" href="<?= assets_url('webadmin/icon_font/css/icon_font.css') ?>" /> -->
 
         <?php include_once("menu.php"); ?>
 
@@ -36,7 +42,7 @@
                     <!-- column -->
                     <div class="col-md-12">
                         <!-- form start -->
-                        <?= form_open_multipart($form_action, 'class="form-horizontal"'); ?>
+                        <?= form_open_multipart($form_action, 'id="myForm" class="form-horizontal"'); ?>
                         <div class="box box-primary">
                             <!-- /.box-header -->
 
@@ -68,7 +74,7 @@
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label class="text-nowrap">其他任教：</label>
-                                            <div style="flex: 1"><?php form_list_type('other_staff_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' => $subject_id,  'data-placeholder' => '請選擇...', 'enable_value' => $staff_list, 'form_validation_rules' => 'trim|required', 'multiple' => 1]) ?></div>
+                                            <div style="flex: 1"><?php form_list_type('other_staff_id[]', ['type' => 'select', 'class'=> 'form-control select2' , 'value' => $subject_id,  'data-placeholder' => '請選擇...', 'enable_value' => $staff_list, 'form_validation_rules' => 'trim|required', 'multiple' => 1]) ?></div>
 
                                         </div>
                                     </div>
@@ -79,11 +85,9 @@
                                     <div class="col-lg-6">
                                         <div class="form-group ">
                                             <label class="text-nowrap">單元：</label>
-                                            <select class="form-control">
-                                                <option hidden>請選擇...</option>
-                                                <option value="全部/單元一/單元二/單元三/單元四">全部/單元一/單元二/單元三/單元四</option>
-                                                <option value="全部/單元一/單元二/單元三/單元四">全部/單元一/單元二/單元三/單元四</option>
-                                            </select>
+                                            <label style="cursor: pointer" href="#"><input type="checkbox" id="selectAll" >全選</input></label>
+                                            <div style="flex: 1"><?php form_list_type('module_id[]', ['type' => 'select', 'class'=> 'form-control select2' , 'value' => $subject_id, 'disable_please_select' => 1, 'data-placeholder' => '請選擇...', 'enable_value' => $modules_list, 'form_validation_rules' => 'trim|required', 'multiple' => 1]) ?></div>
+
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
@@ -92,41 +96,34 @@
 
                                             <div class="d-flex align-items-center">
                                                 <div class="form-check d-flex align-items-center w-100 mr-4">
-                                                    <input class="form-check-input" type="radio" name="teahGroup" value="option1">
-                                                    <select class="form-control teahGroupSelect">
-                                                        <option hidden>請選擇...</option>
-                                                        <option value="語文科1234">忠</option>
-                                                        <option value="語文科1234">忠</option>
-                                                    </select>
+                                                    <input class="form-check-input" type="radio" name="group_name" value="option1" id="group_name_class">
+                                                    <div style="flex: 1"><?php form_list_type('class_id', ['type' => 'select', 'class'=> 'form-control select2' , 'data-placeholder' => '請選擇...', 'enable_value' => $classes_list, 'form_validation_rules' => 'trim|required']) ?></div>
+
                                                 </div>
 
 
                                                 <div class="form-check w-100">
-                                                    <input class="form-check-input" type="radio" name="teahGroup" id="teahOther" value="other">
-                                                    <label class="form-check-label" for="teahOther">
+                                                    <label class="form-check-label" for="group_name_other"> 
+                                                        <input class="form-check-input" type="radio" name="group_name" id="group_name_other" value="other">
                                                         其他
                                                     </label>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-12 teachGorupControl">
+                                    <div class="col-lg-12 custom_group" style="display:none">
                                         <hr>
                                         <p class="bold">選擇學生名單</p>
                                         <div class="form-group w-50">
-                                            <label class="text-nowrap">班名：</label>
-                                            <select class="form-control">
-                                                <option hidden value="">請選擇...</option>
-                                                <option value="忠">忠</option>
-                                                <option value="忠">忠</option>
-                                            </select>
+                                            <label class="text-nowrap">班別：</label>
+                                            <div style="flex: 1"><?php form_list_type('select_class_id', ['type' => 'select', 'class'=> 'form-control select2' , 'data-placeholder' => '請選擇...', 'enable_value' => $classes_list, 'form_validation_rules' => 'trim|required']) ?></div>
                                         </div>
                                         <div id="transfer1" class="transfer-demo"></div>
                                     </div>
                                 </div>
 
                                 <div class="mt-4 d-flex justify-content-end">
-                                    <button type="button" class="btn bg-orange mw-100 mb-4 mr-4" onclick="location.href='../Bk_group_subject/preview';">確 定</button>
+                                    <button type="button" id="submit-btn" class="btn bg-orange mw-100 mb-4 mr-4">確 定</button>
 
                                     <button type="button" class="btn btn-default mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller']) ?>';">返 回</button>
 
@@ -228,16 +225,24 @@
 
     <script>
         $(document).ready(function() {
+            $("#other_staff_id").select2({
+                maximumSelectionLength: 2
+            });
 
+            $("#class_id").change(function(){
+                $("#group_name_class").prop("checked", true);
+                $(".custom_group").hide();
 
-            $('input[type=radio][name=teahGroup]').change(function() {
+            })
+            
+            $('input[type=radio][name=group_name]').change(function() {
                 if (this.value == 'other') {
-                    $(".teachGorupControl").fadeIn();
-                    $(".teahGroupSelect").val("");
-                    $(".teahGroupSelect").prop("disabled", true);
+                    $(".custom_group").fadeIn();
+                    $(".custom_group_select").val("");
+                    $(".custom_group_select").prop("disabled", true);
                 } else {
-                    $(".teachGorupControl").hide();
-                    $(".teahGroupSelect").prop("disabled", false);
+                    $(".custom_group").hide();
+                    $(".custom_group_select").prop("disabled", false);
                 }
             });
 
@@ -308,43 +313,40 @@
 
         });
 
+    
 
-
-        function submit_form(_this) {
-            //form checking
-            var valid_data = true;
-            //.form checking
-            if (!valid_data) {
-                //alert('Invalid Data.');
-            } else {
-                ajax_submit_form(_this);
+        $("#selectAll").click(function(){
+            if($("#selectAll").is(':checked') ){
+                $("#module_id > option").prop("selected","selected");
+                $("#module_id").trigger("change");
+            }else{
+                $("#module_id").val(null).trigger("change");
             }
-        }
+        });
 
-        <?php /*
-    //multiple image upload
-    $("input.multiple_upload").fileinput({
-        language: '<?=get_wlocale()?>',
-        previewFileType: "image",
-        showCaption: false,
-        showUpload: false,
-        maxFileSize: 2048,
-        maxFileCount: 30,
-        maxImageHeight: 2000,
-        maxImageWidth: 2000,
-        overwriteInitial: false,
-        allowedFileExtensions: ['jpg','jpeg','png'],
-        initialPreview: <?=isset($photos_preview) ? $photos_preview : "{}"?>,
-        initialPreviewAsData: true,
-        initialPreviewConfig: <?=isset($photos_json) ? $photos_json : "{}"?>,
-        deleteUrl: "<?=admin_url('bk_news/delete_multiple_upload')?>",
-        // hiddenThumbnailContent: true,
-        // initialPreviewShowDelete: true,
-        // removeFromPreviewOnError: true,
-    }).on('filedeleted', function(event, key, jqXHR, data) {
-        alertify.success("<?=__('Deleted successfully!')?>");
-    });
- */ ?>
+        // form validation
+        let submitBtn = document.querySelector('#submit-btn');
+        submitBtn.addEventListener("click",function(){
+            validateForm(year_id.value, subject_id.value, $("#module_id").select2("val"), staff1_id.value, staff2_id.value, $("#other_staff_id").select2("val"));
+            function validateForm(year_id, subject_id, module_id, staff1_id, staff2_id, other_staff_id){
+                $.ajax({
+                url: '<?= (admin_url($page_setting['controller'])) . '/validate' ?>',
+                method:'POST',
+                data:{year_id:year_id, subject_id:subject_id, module_id:module_id, staff1_id:staff1_id, staff2_id:staff2_id, other_staff_id:other_staff_id},
+                dataType:'json',     
+                success:function(data){
+                    if (data.status == 'success') {
+                        document.getElementById('myForm').submit();
+                    } else {
+                        alertify.error(data.status)
+                    }
+                },
+                error: function(error){
+                    alert('error');
+                }
+                });
+            } 
+        })      
     </script>
 
 </body>

@@ -22,6 +22,9 @@
             right: 5%;
             bottom: 5%;
         }
+        .showMoreBtn {
+            cursor: pointer;
+        }
         
     </style>
 </head>
@@ -162,10 +165,31 @@
                     class: "big-col"
                 },
                 {
+                    render: function(data, type, row) {
+                        let result = "";
+                        let preview = "";
+                        console.log(row.modules)
+                        let modules_arr = row.modules.split("&nbsp");
+
+                            for (i = 0; i < modules_arr.length; i++) {
+                                result += '<button type="button" class="btn-xs btn btn-success badge">' + modules_arr[i] + '</button>';
+                            }
+                            for (i = 0; i < 3; i++) {
+                                preview += '<button type="button" class="btn-xs btn btn-success badge">' + modules_arr[i] + '</button>';
+
+                            }
+                        if (modules_arr.length < 4) {
+                            return result;
+                        } else {
+                            return  '<div class="previewBox">'+ preview + '</div>'+ '<div class="moduleBox" style="display: none">' +  result  + '</div><a class="small showMoreBtn"><i class="fa fa-fw fa-plus-square-o"></i><span>顥示更多</span></a>';
+                            
+                        }
+                    },
                     name: 'first',
-                    data: "module",
+                    data: "modules",
                     title: "單元",
                     width: '100px',
+                    
                 },
                 {
                     name: 'first',
@@ -180,10 +204,6 @@
                     class: 'col',
                 },
                 {
-                    // render: function(data, type, row) {
-                    //     var result = row.poas + ' <span data-toggle="tooltip" title="Hooray!"><i class="fa fa-info-circle"></i></span>';
-                    //     return result;
-                    // },
                     name: 'first',
                     data: "poas",
                     title: "POAS",
@@ -212,6 +232,15 @@
             rowsGroup: [
                 'first:name',
             ],
+            dom: 'Bfrtip',
+                    "buttons": [ {
+                    extend: 'colvis',
+                    text: '選擇顯示項目',
+                    columnText: function ( dt, idx, title ) {
+                        // return '<button class="btn btn-success">'+title+'</button>';
+                        return title;
+                    }
+                }],
             scrollX: true,
             "language": {
                 "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/Chinese-traditional.json') ?>",
@@ -242,8 +271,9 @@
                     d.module_search = module_id;
           
                 },
-                "complete" : function(){
+                "complete" : function(data){
                     $('[data-toggle="tooltip"]').tooltip();
+                    console.log(data);
                 },
             },
         }); 
@@ -257,9 +287,26 @@
                         $(this).parent().find(".addonDispalyBtn i").attr("class", "fa fa-fw fa-minus-square-o");
                     } else {
                         $(this).parent().find(".addonDispalyBtn span").text("顯示");
-                        $(this).parent().find(".addonDispalyBtn i").attr("class", "fa fa-fw  fa-plus-square-o");
+                        $(this).parent().find(".addonDispalyBtn i").attr("class", "fa fa-fw fa-plus-square-o");
                     }
                 });
+            });
+
+            
+            $(document).on("click", ".showMoreBtn", function() {
+                $(this).parent().parent().find(".moduleBox").slideToggle('slow', function() {
+                    $(this).parent().find(".showMoreBtn").toggleClass('active', $(this).is(':visible'));
+                    $(this).parent().parent().find(".previewBox").remove();
+
+                    if ($(this).parent().find(".showMoreBtn").hasClass("active")){
+                        $(this).parent().find(".showMoreBtn span").text("隱藏");
+                        $(this).parent().find(".showMoreBtn i").attr("class", "fa fa-fw fa-minus-square-o");
+                    } else {
+                        // $(this).parent().parent().find(".previewBox").show();
+                        $(this).parent().find(".showMoreBtn span").text("顯示更多");
+                        $(this).parent().find(".showMoreBtn i").attr("class", "fa fa-fw  fa-plus-square-o");
+                    }
+                })
             });
         });
         

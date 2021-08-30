@@ -129,7 +129,7 @@
             let columnDefs = [{
                     name: 'zore',
                     title: "",
-                    class: "no-sort"
+                    class: "no-sort noVis"
                     // data: "edit"
                 },
                 {
@@ -228,7 +228,15 @@
                         'zore:name',
                         'first:name',
                     ],
-                // 'rowsGroup': [],
+                dom: 'Bfrtip',
+                    "buttons": [ {
+                    extend: 'colvis',
+                    text: '選擇顯示項目',
+                    columns: ':not(.noVis)',
+                    columnText: function ( dt, idx, title ) {
+                        return title;
+                    }
+                }],
                 "language": {
                     "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/Chinese-traditional.json') ?>",
                 },

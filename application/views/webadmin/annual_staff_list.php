@@ -53,7 +53,7 @@
 
                                 </div>
 
-                                <button type="button" class="btn btn-info mw-100 mb-4" id="read-btn" data-toggle="modal" data-target="#cloneList">複製上年度</button>
+                                <button type="button" class="btn btn-info mw-100 mb-4" id="read-btn" data-toggle="modal" data-target="#cloneList">複製年度教職員</button>
                                 <button type="button" class="btn bg-orange mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller'].'/create')?>';">新 增</button>
 
 
@@ -90,21 +90,21 @@
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h3 class="modal-title bold">複製上年度教職員 <span id="title"></span> <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <h3 class="modal-title bold">複製本年度教職員 <span id="title"></span> <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button></h3>
 
                     </div>
                     <div class="modal-body">
-                        <div class="row mb-4">
-                            <div class="col-md-6">
-                                <div class="form-group modal-core" >
-                                </div>
-                            </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                    <table class="table table-bordered table-striped w-100" id="renderTable">
+                                    </table>
+                            </div> 
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" id="clone-btn" class="btn btn-primary">確 定</button>
+                        <button type="button" id="clone-btn" class="btn btn-success">確 定</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">關 閉</button>
                     </div>
                 </div>
@@ -131,24 +131,21 @@
             let AnnualStaffTable = $('#mainTable').DataTable({
                 scrollX: true,
                 "language": {
-                   "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/Chinese-traditional.json') ?>",
+                    "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/Chinese-traditional.json') ?>",
                 },
+          
                 "order": [],
                 "bSort": false,
-                "bPaginate": false,
-                "pageLength": 50,
+                "bPaginate": true,
+                "pageLength": 10,
                 "pagingType": "input",
-                "columnDefs": [ {
-                    "targets": 0,
-                    "orderable": false
-                } ] ,
+                // "columns": columnDefs,   
                 "processing": true,
                 "serverSide": false,
                 "ordering": true,
                 "searching": false,
-                dom: "rtiS",
-                deferRender: true,
-                // "drawType": 'none',
+                // dom: "rtiS",
+                // deferRender: true,
                 "searchDelay": 0,     
                 "ajax": {
                     "url": "<?= admin_url($page_setting['controller'] . '/ajax') ?>",
@@ -157,9 +154,7 @@
                     "data": function(d) {
                         console.log('ajax')
                         let year_id = $('#year_id').val();
-
                         d.year_search = year_id;
-
                     },
                     "complete" : function(){
                         $('[data-toggle="tooltip"]').tooltip();
@@ -168,44 +163,132 @@
                     "error": function(e) {
                         alertify.error('error')
                     },
-               
                 },
             });
 
-     
+            var columnDefs = [
+                // {
+                //     render: function(data, type, row) {
+                //         let result = '<input class="staff_id[]" value="' + row.id +'"></input>';
+                //         return result;
+                //     },
+                //     name: 'first',
+                //     data: "id",
+                //     class: 'hidden',
+                // },
+                // {
+                //     render: function(data, type, row) {
+                //         let result = '<input class="position_id[]" value="' + row.position_id+'"></input>';
+                //         console.log(row);
+                //         return result;
+                //     },
+                //     name: 'first',
+                //     data: "position_id",
+                //     class: 'hidden',
+                // },
+                {
+                    name: 'first',
+                    data: "year",
+                    title: "年度",
+                    class: 'col',
+                },
+                {
+                    name: 'first',
+                    data: "position",
+                    title: "職位",
+                    width: '100px',
+                },
+                {
+                    name: 'first',
+                    data: "name",
+                    title: "姓名",
+                    class: 'col',
+                },
+            ]
 
-            // let arrayData = [{"id" : "0001", "username" : "admin", "name" : "管理員", "name_eng" : "", "name_short" : "Admin", "user_post" : "管理員" },{"id" : "0053", "username" : "teacher60", "name" : "盧思忍", "name_eng" : "", "name_short" : "盧", "user_post" : "教師" },{"id" : "0054", "username" : "teacher06", "name" : "李淑秋", "name_eng" : "", "name_short" : "秋", "user_post" : "校長" },{"id" : "0058", "username" : "teacher19", "name" : "梁祖偉", "name_eng" : "", "name_short" : "梁", "user_post" : "教師" },{"id" : "0059", "username" : "teacher20", "name" : "高家音", "name_eng" : "", "name_short" : "高", "user_post" : "教師" },{"id" : "0060", "username" : "teacher21", "name" : "黃永康", "name_eng" : "", "name_short" : "康", "user_post" : "副校長" },{"id" : "0061", "username" : "teacher22", "name" : "黎健佩", "name_eng" : "", "name_short" : "佩", "user_post" : "教師" },{"id" : "0063", "username" : "teacher25", "name" : "周潔靜", "name_eng" : "", "name_short" : "潔", "user_post" : "教師" },{"id" : "0066", "username" : "teacher32", "name" : "黃少文", "name_eng" : "", "name_short" : "文", "user_post" : "教師" },{"id" : "0067", "username" : "teacher38", "name" : "雷尚慈", "name_eng" : "", "name_short" : "慈", "user_post" : "教師" },{"id" : "0068", "username" : "teacher39", "name" : "文雪琴", "name_eng" : "", "name_short" : "琴", "user_post" : "教師" },{"id" : "0069", "username" : "teacher40", "name" : "吳穎琳", "name_eng" : "", "name_short" : "穎", "user_post" : "教師" },{"id" : "0070", "username" : "teacher41", "name" : "樊潔瑩", "name_eng" : "", "name_short" : "瑩", "user_post" : "教師" },{"id" : "0071", "username" : "teacher43", "name" : "陳敬峰", "name_eng" : "", "name_short" : "峰", "user_post" : "教師" },{"id" : "0072", "username" : "teacher44", "name" : "李文慧", "name_eng" : "", "name_short" : "慧", "user_post" : "教師" },{"id" : "0073", "username" : "teacher47", "name" : "杜健聰", "name_eng" : "", "name_short" : "聰", "user_post" : "教師" },{"id" : "0074", "username" : "teacher48", "name" : "麥穎怡", "name_eng" : "", "name_short" : "麥", "user_post" : "教師" },{"id" : "0076", "username" : "teacher59", "name" : "許世源", "name_eng" : "", "name_short" : "許", "user_post" : "教師" },{"id" : "0078", "username" : "Staff01", "name" : "馮細芳", "name_eng" : "", "name_short" : "馮", "user_post" : "專業人員" },{"id" : "0079", "username" : "Staff03", "name" : "劉麗韻", "name_eng" : "", "name_short" : "韻", "user_post" : "專業人員" },{"id" : "0081", "username" : "Staff18", "name" : "羅敏儀", "name_eng" : "", "name_short" : "儀", "user_post" : "專業人員" },{"id" : "0082", "username" : "Staff28", "name" : "李宗元", "name_eng" : "", "name_short" : "元", "user_post" : "專業人員" },{"id" : "0083", "username" : "Staff43", "name" : "何桂英", "name_eng" : "", "name_short" : "Yuki", "user_post" : "校務處職員" },{"id" : "0085", "username" : "Staff49", "name" : "丘廣蓮", "name_eng" : "", "name_short" : "丘", "user_post" : "專業人員" },{"id" : "0088", "username" : "Staff60", "name" : "何慧美", "name_eng" : "", "name_short" : "May", "user_post" : "助理" },{"id" : "0098", "username" : "teacher54", "name" : "劉嘉文", "name_eng" : "", "name_short" : "嘉", "user_post" : "教師" },{"id" : "0104", "username" : "teacher62", "name" : "陳慧海", "name_eng" : "", "name_short" : "海", "user_post" : "教師" },{"id" : "0107", "username" : "teacher65", "name" : "廖樞婷", "name_eng" : "", "name_short" : "婷", "user_post" : "教師" },{"id" : "0113", "username" : "staff85", "name" : "何詠欣", "name_eng" : "", "name_short" : "何", "user_post" : "專業人員" },{"id" : "0114", "username" : "teacher67", "name" : "卓子詢", "name_eng" : "churk", "name_short" : "卓", "user_post" : "教師" },{"id" : "0118", "username" : "teacher70", "name" : "鍾嘉雯", "name_eng" : "", "name_short" : "鍾", "user_post" : "教師" },{"id" : "0119", "username" : "teacher71", "name" : "陳詠思", "name_eng" : "", "name_short" : "思", "user_post" : "教師" },{"id" : "0120", "username" : "teacher72", "name" : "伍永翠", "name_eng" : "", "name_short" : "翠", "user_post" : "教師" },{"id" : "0121", "username" : "teacher73", "name" : "林志明", "name_eng" : "", "name_short" : "林", "user_post" : "教師" },{"id" : "0122", "username" : "teacher74", "name" : "黃健豪", "name_eng" : "", "name_short" : "豪", "user_post" : "教師" },{"id" : "0125", "username" : "teacher77", "name" : "蕭浩群", "name_eng" : "", "name_short" : "群", "user_post" : "教師" },{"id" : "0127", "username" : "staff99", "name" : "梁穎欣", "name_eng" : "", "name_short" : "欣", "user_post" : "專業人員" },{"id" : "0128", "username" : "staff98", "name" : "區瑞琛", "name_eng" : "", "name_short" : "區", "user_post" : "專業人員" },{"id" : "0129", "username" : "staff100", "name" : "何永恩", "name_eng" : "", "name_short" : "恩", "user_post" : "助理" },{"id" : "0131", "username" : "staff103", "name" : "盧雅欣", "name_eng" : "", "name_short" : "雅", "user_post" : "專業人員" },{"id" : "0133", "username" : "staff92", "name" : "陳煜霖", "name_eng" : "", "name_short" : "Tim", "user_post" : "助理" },{"id" : "0135", "username" : "Staff86", "name" : "黃惠敏", "name_eng" : "", "name_short" : "敏", "user_post" : "助理" },{"id" : "0137", "username" : "teacher79", "name" : "陳君盛", "name_eng" : "", "name_short" : "君", "user_post" : "教師" },{"id" : "0138", "username" : "teacher80", "name" : "蔡少君", "name_eng" : "", "name_short" : "蔡", "user_post" : "教師" },{"id" : "0141", "username" : "teacher83", "name" : "黃芷欣", "name_eng" : "", "name_short" : "芷", "user_post" : "教師" },{"id" : "0143", "username" : "staff68", "name" : "教育心理學家", "name_eng" : "", "name_short" : "EP", "user_post" : "專業人員" },{"id" : "0147", "username" : "teacher85", "name" : "岑晉琳", "name_eng" : "", "name_short" : "岑", "user_post" : "教師" },{"id" : "0148", "username" : "teacher86", "name" : "葉金枝", "name_eng" : "", "name_short" : "枝", "user_post" : "教師" },{"id" : "0149", "username" : "teacher87", "name" : "蔡佳怡", "name_eng" : "", "name_short" : "佳", "user_post" : "教師" },{"id" : "0150", "username" : "teacher88", "name" : "余昕寧", "name_eng" : "", "name_short" : "余", "user_post" : "教師" },{"id" : "0151", "username" : "teacher89", "name" : "蔡笑珊", "name_eng" : "", "name_short" : "珊", "user_post" : "教師" },{"id" : "0152", "username" : "teacher90", "name" : "陳秋媚", "name_eng" : "", "name_short" : "媚", "user_post" : "教師" },{"id" : "0153", "username" : "staff125", "name" : "張煱嫘", "name_eng" : "", "name_short" : "煱", "user_post" : "職業治療師" },{"id" : "0154", "username" : "staff120", "name" : "楊欣琪", "name_eng" : "", "name_short" : "琪", "user_post" : "校務處職員" },{"id" : "0155", "username" : "staff121", "name" : "朱俊民", "name_eng" : "", "name_short" : "朱", "user_post" : "校務處職員" },{"id" : "0156", "username" : "teacher16", "name" : "黃思溢", "name_eng" : "", "name_short" : "溢", "user_post" : "教師" }];
+            let renderTable = $('#renderTable').DataTable({
+                scrollX: true,
+                "language": {
+                    "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/Chinese-traditional.json') ?>",
+                },
+                "order": [],
+                "bSort": false,
+                "bPaginate": true,
+                "pageLength": 10,
+                "pagingType": "input",
+                "columnDefs": [{
+                    "targets": 0,
+                    "orderable": false
+                }] ,
+                "autoWidth": true,
+
+                "processing": true,
+                "serverSide": false,
+                "ordering": true,
+                "searching": false,
+                "columns": columnDefs,   
+                "searchDelay": 0,     
+                "ajax": {
+                    "url": "<?= admin_url($page_setting['controller'] . '/render_staff') ?>",
+                    "method": "get",
+                    "timeout": "30000",
+                    "data": function(d) {
+        
+
+                    },
+                    "complete" : function(){
+                        $('[data-toggle="tooltip"]').tooltip();
+                        console.log('rendered');
+
+                    },
+                    "error": function(e) {
+                        alertify.error('error')
+                    },
+                },
+            });
+
+            
             let jsonData = {};
-            // for (let i = 0; i < arrayData.length; i++) {
-            //     jsonData[i] = arrayData[i];
-            // }
-            // console.log(arrayData);
-            // console.log(jsonData)
-            // let arraydata = jsondata.map(element => element.username):
+
             let cloneBtn = document.querySelector('#clone-btn');
             cloneBtn.addEventListener("click",function(){
-                let confirmCopy = confirm('確定複製上年度?')
-                if (confirmCopy) {
-                    alertify.log('Tbc');
+                // let staff_id = [];
+                // let position_id =[];
+                createModule();
+                function createModule(){
+                    $.ajax({
+                    url: '<?= (admin_url($page_setting['controller'])) . '/cloneAPI' ?>',
+                    method:'POST',
+                    data: jsonData,
+                    dataType:'json',     
+                    success:function(data){
+                        alertify.success(data.msg)
+                        location.reload();
 
-                }
-            // createModule();
-            // function createModule(){
-            //     $.ajax({
-            //     url: '<?= (admin_url($page_setting['controller'])) . '/readAPI' ?>',
-            //     method:'POST',
-            //     data: jsonData,
-            //     dataType:'json',     
-            //     success:function(data){
-            //         console.log((data))
-            //     },
-            //     error: function(error){
-            //         alertify.error('error');
-                    
-            //     }
-            //     });
-            // } 
+                    },
+                    error: function(error){
+                        alertify.error(error);
+
+                        
+                    }
+                    });
+                } 
             })
+
+            function checkClone(year_id) {
+                let this_year = <?= $year_id?>;                
+                if (year_id == this_year){
+                    $('#read-btn').show();
+                } else if (year_id !== this_year) {
+                    $('#read-btn').hide();
+                };
+            }
+            checkClone($('#year_id').val())
+
+            $('#year_id').on('change', function () {
+                checkClone(this.value)
+
+            });
 
         });
 

@@ -298,7 +298,6 @@ class Bk_subject_outcome extends CI_Controller //change this
         $num = 0;
         if (!empty( $lessons_arr)) {
             foreach ( $lessons_arr as $key => $row) {
-                // $data[$num][] = '<a class="removeRow text-red" name="subject_lessons['.$key.']" value="'.$row['id'] .'"><i class="fa fa-fw fa-trash-o"></i></a>';
                 $data[$num]['course'] = $row['course'];
                 $data[$num]['category'] = $row['category'];
                 $data[$num]['sb_obj'] = $row['sb_obj'];

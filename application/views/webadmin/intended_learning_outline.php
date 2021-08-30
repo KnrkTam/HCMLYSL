@@ -28,10 +28,19 @@
             display: none;
         }
 
-        /* .moduleBox {
-            height: 2px;
+        .showMoreBtn {
+            cursor: pointer;
+        }
+
+        .moduleBox {
             overflow: hidden;
-        } */
+            display: flex;
+            flex-direction: column;
+            /* height: 60px; */
+            align-items: baseline;
+            justify-content: flex-start;
+        }
+
 
     </style>
 </head>
@@ -97,7 +106,7 @@
                                     </div>
 
                                     <div class="col-lg-1">
-                                        <button type="submit" class="btn btn-success mt-25 w-100 mb-4 searchBtn">搜 尋</button>
+                                        <button type="button" class="btn btn-success mt-25 w-100 mb-4 searchBtn">搜 尋</button>
                                     </div>
 
                                 </div>
@@ -114,7 +123,6 @@
                                         <li class="text-green bold">新生入學評估</li>
                                     </ul>
                                     <table class="table table-bordered table-striped" id="mainTable">
-
                                     </table>
                                 </div>
 
@@ -227,13 +235,15 @@
                     width: '10px',
                     data: "edit",
                     name: 'first',
-                    class: 'no-sort',
+                    class: 'no-sort noVis',
                 },     
                 {
                     width: '60px',
                     data: "subject",
                     title: "科目",
                     name: 'first',
+                    buttons: [ 'columnsVisibility' ],
+                    visibility: true
                 },               
                 {
                     class: 'col',
@@ -284,29 +294,31 @@
                     name: 'first',
                 },        
                 {
-
-                    //
-                    //. 
                     render: function(data, type, row) {
-                        // console.log(row.modules)
-                        let result = [];
+                        let result = "";
+                        let preview = "";
+                        console.log(row.modules)
+                        let modules_arr = row.modules.split("&nbsp");
 
-                        for (i = 0; i < row.modules.length; i++) {
-                            result += '<button type="button" class="btn-xs btn btn-success badge">' + row.modules[i] + '</button> &nbsp</br>';
-                        }
+                            for (i = 0; i < modules_arr.length; i++) {
+                                result += '<button type="button" class="btn-xs btn btn-success badge">' + modules_arr[i] + '</button>';
+                            }
+                            for (i = 0; i < 3; i++) {
+                                preview += '<button type="button" class="btn-xs btn btn-success badge">' + modules_arr[i] + '</button>';
 
-                        if (row.modules.length < 3) {
-                            // console.log (result)
+                            }
+                        if (modules_arr.length < 4) {
                             return result;
                         } else {
-                            return  result[0] + result[1] + '<div class="d-flex justify-content-between moduleBox"><a href="#" class="small showMoreBtn"><i class="fa fa-fw  fa-plus-square-o"></i><span>顥示更多</span></a></div>';
+                            return  '<div class="previewBox">'+ preview + '</div>'+ '<div class="moduleBox" style="display: none">' +  result  + '</div><a class="small showMoreBtn"><i class="fa fa-fw fa-plus-square-o"></i><span>顥示更多</span></a>';
+                            
                         }
-                        // var result = row.modules
                     },
-                    width: 100,
+                    name: 'first',
                     data: "modules",
                     title: "單元",
-                    name: 'first',
+                    width: '100px',
+                    
                 },          
                 {
                     class: 'big-col',
@@ -346,6 +358,7 @@
                 },              
             ];
 
+          
 
             let mainTable = $('#mainTable').DataTable({
             rowsGroup: [
@@ -355,6 +368,15 @@
             "language": {
                 "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/Chinese-traditional.json') ?>",
             },
+            dom: 'Bfrtip',
+            "buttons": [{
+                extend: 'colvis',
+                text: '選擇顯示項目',
+                columns: ':not(.noVis)',
+                columnText: function ( dt, idx, title ) {
+                    return title;
+                }
+            }],
             "order": [],
             'autoWidth': false,
             "bSort": false,
@@ -386,6 +408,15 @@
                 "complete" : function(){
                     $('[data-toggle="tooltip"]').tooltip();
 
+                    // $(document).ready(function() {
+                    //     $('#mainTable').DataTable( {
+                    //         dom: 'Bfrtip',
+                    //         buttons: [
+                    //             'colvis'
+                    //         ]
+                    //     });
+                    // });
+
                     // setTimeout(() => {
                     // $($.fn.dataTable.tables(true)).DataTable()
                     //     .columns.adjust()
@@ -395,27 +426,49 @@
             }); 
 
 
-            function ajax_choose(subject_id) {
-                $.ajax({
-                url: '<?= (admin_url($page_setting['controller'])) . '/select_subject' ?>',
-                method:'POST',
-                data:{subject_id:subject_id},
-                dataType:'json',
-                beforeSend:function(){
-                    $('#subject_category_id').empty();
-                    },
-                success:function(d){
-                    $('#subject_category_id').select2({
-                        data: d
-                    });
-                    $('#subject_category_id').val(<?= $_POST['subject_category_id']?>)
-                    },
-                })
-            }
+            // function ajax_choose(subject_id) {
+            //     $.ajax({
+            //     url: '<?= (admin_url($page_setting['controller'])) . '/select_subject' ?>',
+            //     method:'POST',
+            //     data:{subject_id:subject_id},
+            //     dataType:'json',
+            //     beforeSend:function(){
+            //         $('#subject_category_id').empty();
+            //         },
+            //     success:function(d){
+            //         $('#subject_category_id').select2({
+            //             data: d
+            //         });
+            //         $('#subject_category_id').val(<?= $_POST['subject_category_id']?>)
+            //         },
+            //     })
+            // }
 
-            $("#subject_id").change(function() {
-                ajax_choose(this.value)
-            })
+            $(document).on("click", ".showMoreBtn", function() {
+                $(this).parent().parent().find(".moduleBox").slideToggle('slow', function() {
+                    $(this).parent().find(".showMoreBtn").toggleClass('active', $(this).is(':visible'));
+                    $(this).parent().parent().find(".previewBox").remove();
+
+                    if ($(this).parent().find(".showMoreBtn").hasClass("active")){
+                        $(this).parent().find(".showMoreBtn span").text("隱藏");
+                        $(this).parent().find(".showMoreBtn i").attr("class", "fa fa-fw fa-minus-square-o");
+                    } else {
+                        // $(this).parent().parent().find(".previewBox").show();
+                        $(this).parent().find(".showMoreBtn span").text("顯示更多");
+                        $(this).parent().find(".showMoreBtn i").attr("class", "fa fa-fw  fa-plus-square-o");
+                    }
+                })
+            });
+
+            let sub_cat_data =  <?php echo $subject_categories_list?>;
+
+            $('#subject_category_id').select2({
+                data: sub_cat_data
+            });
+
+            // $("#subject_id").change(function() {
+            //     ajax_choose(this.value)
+            // })
 
 
             $(".searchBtn").click(function() {

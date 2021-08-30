@@ -39,6 +39,8 @@
     <script src="<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/js/input.js') ?>"></script>
     <script src="<?= assets_url('webadmin/admin_lte/bower_components/boostrap-datatable/js/dataTables.rowsGroup.js') ?>"></script>
     <script src="<?= assets_url('webadmin/admin_lte/bower_components/boostrap-datatable/js/dataTables.fixedColumns.min.js') ?>"></script>
+    <script src="<?= assets_url('webadmin/admin_lte/bower_components/boostrap-datatable/js/buttons.colVis.min.js') ?>"></script>
+    <script src="<?= assets_url('webadmin/admin_lte/bower_components/boostrap-datatable/js/dataTables.buttons.min.js') ?>"></script>
 
 
     <script src="<?= assets_url('webadmin/js/jquery.dragtable.js') ?>"></script>

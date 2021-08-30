@@ -67,13 +67,26 @@ class Bk_annual_staff_list extends CI_Controller //change this
         $postData = $this->input->post();
         if (!$id){
             $dup_annual_staff = Annual_staff_model::where('year_id', $postData['year_id'])->where('staff_id', $postData['staff_id'])->first();
-        }
+        } else {
+            $dup_annual_staff = Annual_staff_model::where('id', '!=', $id)->where('year_id', $postData['year_id'])->where('staff_id', $postData['staff_id'])->first();
+            $existing_staff = Annual_staff_model::find($id);
+            $existing_data = array(
+                'year_id' => $existing_staff->year_id,
+                'staff_id' => $existing_staff->staff_id,
+                'position_id' => $existing_staff->position_id
+            );
+        };
 
-
+    
         switch(true) {
+            case ($postData == $existing_data);
+            $data = array(
+                'status' => '請作出改動或返回',
+            );
+            break;
             case ($dup_annual_staff);
             $data = array(
-                'status' => '已加入職員名單',
+                'status' => '此職員已存在',
             );
             break;
 
@@ -139,20 +152,68 @@ class Bk_annual_staff_list extends CI_Controller //change this
 
     }
 
+    public function render_staff(){
+        // $postData = $this->input->post();
+        $data['page_setting'] = $this->page_setting(array(
+            'view_'. $this->scope,
+        ), FALSE, TRUE);
 
-    public function readAPI()
-    {
-        $postData = $this->input->post();
+        $year_id = Years_model::orderBy('year_to', 'DESC')->first()->id;
+        $result = Staff_model::where('status', 1)->get();
 
-        dump($postData);
+        // if ($year_id) {
+        //     $result = Annual_staff_model::where('year_id', 2)->get();
+
+        // }
         
-        foreach ($postData as $i =>  $row) {
-            // dump($row);
-            // Staff_model::create($row);
+        $result_count = count($result);
+
+        //rearrange data
+        $data = array();
+        $num = 0;
+
+        foreach ($result as $row) {
+            $data[$num]['id'] = $row['id'];
+            $data[$num]['position_id'] = Positions_model::idByName($row['user_post']);
+            $data[$num]['year'] = Years_model::annual($year_id);
+            $data[$num]['position'] = $row['user_post'];
+            $data[$num]['name'] = $row['name'];
+            $num++; 
+        }  
+
+        $return = json_encode(array("draw" => $_GET["draw"], "data" => $data, "get" => $_GET, "recordsTotal" => $result_count, "recordsFiltered" => $result_count));
+
+        echo $return;
+
+    }
+
+    public function cloneAPI()
+    {
+        $year_id = Years_model::orderBy('year_to', 'DESC')->first()->id;
+        $staff_data = Staff_model::where('status', 1)->get();
+
+        foreach ($staff_data as $staff) {
+            if (!empty($staff->user_post)) {
+                $annual_staff_list_data = array(
+                    'year_id' => $year_id,
+                    'staff_id' => $staff->id,
+                );
+
+                $update = array(
+                    'position_id' => Positions_model::idByName($staff->user_post),
+                    'updated_at' => date('Y-m-d H:i:s'),
+                );
+            $created_id = Annual_staff_model::updateOrCreate($annual_staff_list_data, $update)->id;
         }
 
+        }
 
-        $data = $postData['username'];
+        if ($created_id) {
+            $data['msg'] = $_SESSION["success_msg"] = __('複製年度職員成功');
+            // redirect(admin_url($data['page_setting']['controller']));
+        } else {
+            $data['msg'] = $_SESSION["error_msg"] = __('Clone error');
+        } 
 
         echo json_encode($data);
 
@@ -193,7 +254,7 @@ class Bk_annual_staff_list extends CI_Controller //change this
             redirect(admin_url('bk_'.$this->scope));
 
         }
-
+        $data['id'] = $id;
 
         $data['action'] = __('修 改');
         $data['years_list'] = Years_model::list();
@@ -241,24 +302,25 @@ class Bk_annual_staff_list extends CI_Controller //change this
             'staff_id' => $postData->staff_id,
             'position_id' => $postData->position_id,
         );
-        if (!$id) {
-            $created_id = Annual_staff_model::create($annual_staff_list_data)->id;
-        } else {
-            $created_id = Annual_staff_model::find($id)->update($annual_staff_list_data);
+        $update_data = array(
+            'updated_at' => date('Y-m-d H:i:s'),
+        );
 
-            $_SESSION['success_msg'] = __('修改設定年度教職員成功');
-            redirect(admin_url('bk_'.$this->scope));
 
+        $created_id = Annual_staff_model::updateOrCreate($annual_staff_list_data, $update_data)->id;
+
+        switch (true) {
+            case (empty($id)):
+                $_SESSION['success_msg'] = __('新增年度教職員成功');
+                break;
+            case ($id):
+                $_SESSION['success_msg'] = __('修改設定年度教職員成功');
+                break;
+            default:
+                $_SESSION['error_msg'] = __('Error');
+                break;
         };
 
-        if ($created_id) {
-            $_SESSION['success_msg'] = __('新增年度教職員成功');
-            redirect(admin_url('bk_'.$this->scope));
-        } else {
-            $_SESSION['error_msg'] = __('Error');
-
-        }
-
-
+        redirect(admin_url('bk_'.$this->scope));
     }
 }

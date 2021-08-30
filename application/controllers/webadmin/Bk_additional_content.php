@@ -85,11 +85,11 @@ class Bk_additional_content extends CI_Controller //change this
                 // $group_id = $sub_ann_module->group_id;
                 $subject_lesson_id = $subject_lesson->id;
                 $lesson_id = $subject_lesson->lesson_id;
-                $modules = Subject_lessons_modules_model::moduleList($subject_lesson_id, $year_id);
+                // $modules = Subject_lessons_modules_model::moduleList($subject_lesson_id, $year_id);
                 // dump($sub_ann_module);
                 // dump($modules);
                 foreach ($group_count as $group_id => $group) {
-                    $lessons_arr[] = array('lesson' => Lessons_model::table_list($lesson_id), 'subject_lesson_id' =>  $subject_lesson_id, 'subject_cat_id' => $subject_lesson->subject_category_id, 'subject_id' => $subject_lesson->subject_id, 'count' => $y, 'modules' => $modules, 'remarks' => Lessons_remarks_model::id_list($subject_lesson_id), 'group_id' => $group_id, 'additional_content' => $add_content, 'subject_lesson_module_id' => $subject_lesson_module_id);
+                    $lessons_arr[] = array('lesson' => Lessons_model::table_list($lesson_id), 'subject_lesson_id' =>  $subject_lesson_id, 'subject_cat_id' => $subject_lesson->subject_category_id, 'subject_id' => $subject_lesson->subject_id, 'count' => $y, 'modules' =>  Subject_lessons_modules_model::moduleList($subject_lesson_id, $year_id), 'remarks' => Lessons_remarks_model::id_list($subject_lesson_id), 'group_id' => $group_id, 'additional_content' => $add_content, 'subject_lesson_module_id' => $subject_lesson_module_id);
                 }
             }
         }
@@ -130,7 +130,11 @@ class Bk_additional_content extends CI_Controller //change this
                     $module_add_content = Additional_contents_model::where('subject_lessons_module_id', $row['subject_lesson_module_id'])->first();
                     $data[$num]['add_content'] =   $module_add_content ? $add_box : null;
                     $data[$num]['performance'] = $foo['performance'];
-                    $data[$num]['module'] = $modules;
+                    $module_arr = "";
+                    foreach ($row['modules'] as $myModule) {
+                        $module_arr .= $myModule. '&nbsp';
+                    }
+                    $data[$num]['modules'] = $module_arr;
                     $data[$num]['id'] = $row['subject_lesson_module_id'];
 
                     $num++;

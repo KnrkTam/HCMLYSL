@@ -88,7 +88,7 @@
                                         <div class="col-lg-5">
                                             <div class="form-group">
                                                 <label class="text-nowrap">科目範疇:</label>
-                                                <div style="flex: 1"><?php form_list_type('subject_category_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' => $subject_category_id, 'enable_value' => $subject_categories_list,  'data-placeholder' => '請選擇...', 'form_validation_rules' => 'trim|required']) ?></div>
+                                                <div style="flex: 1"><?php form_list_type('subject_category_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' => $subject_category_id,  'data-placeholder' => '請選擇...', 'form_validation_rules' => 'trim|required']) ?></div>
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
@@ -326,7 +326,7 @@
                     "method": "get",
                     "timeout": "30000",
                     "data": function(d) {
-                        let subject_id = $('#subject_id').val();
+                        // let subject_id = $('#subject_id').val();
                         let annual_module_id = $('#annual_module_id').val();
                         let category_id = $('#subject_category_id').val();
                         let sb_obj_id = $('#sb_obj_id').val();
@@ -334,7 +334,7 @@
                         d.annual_module_search = annual_module_id;
                         d.subject_category_search = category_id;
                         d.sb_obj_search = sb_obj_id;
-                        d.subject_search = subject_id;
+                        // d.subject_search = subject_id;
                     },
                     "complete": function(e){
                         $('[data-toggle="tooltip"]').tooltip();
@@ -449,7 +449,7 @@
                 data:{subject_id:subject_id},
                 dataType:'json',
                 beforeSend:function(){
-                    $('#subject_category_id').empty();
+                    // $('#subject_category_id').empty();
                     },
                 success:function(d){
                     $('#subject_category_id').select2({
@@ -460,15 +460,20 @@
                     },
                 })
             }
+            let sub_cat_data =  <?php echo $subject_categories_list ?> 
+                $('#subject_category_id').select2({
+                    data: sub_cat_data
+                });
+
 
             $("#subject_id").change(function() {
                 $(".subject_outcomeNew").fadeIn();
 
-                ajax_choose(this.value)
+                // ajax_choose(this.value)
                 $(".controlSearchBtn").text("隱藏搜尋");
-
-                added_ids.clear();
-                subjectSelectedTable.draw();
+                // Subject_dataTable.draw();
+                // added_ids.clear();
+                // subjectSelectedTable.draw();
 
             })
 
