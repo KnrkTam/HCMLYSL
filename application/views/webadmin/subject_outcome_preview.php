@@ -47,24 +47,6 @@
                                             <h5 class="text-purple"><b>已選項目：</b></h5>
 
                                             <table class="table table-bordered table-striped" id="subjectTable">
-                                                <!-- <thead>
-                                                    <tr class="bg-light-blue color-palette">
-                                                        <th class="nowrap">課程</th>
-                                                        <th class="nowrap">範疇</th>
-                                                        <th class="nowrap">中央課程學習重點</th>
-                                                        <th class="nowrap">校本課程學習重點</th>
-                                                        <th class="nowrap">學習元素</th>
-                                                        <th class="nowrap">組別</th>
-                                                        <th class="nowrap">LPF(基礎)</th>
-                                                        <th class="nowrap">LPF(高中)</th>
-                                                        <th class="nowrap">POAS</th>
-                                                        <th class="nowrap">Key Skill</th>
-                                                        <th class="nowrap">前備技能</th>
-                                                        <th class="nowrap">預期學習成果</th>
-                                                        <th class="nowrap">課程編號</th>
-                                                        <th class="nowrap">相關項目編號</th>
-                                                    </tr>
-                                                </thead> -->
                                                 <tbody>
                                                 </tbody>
                                             </table>

@@ -86,7 +86,6 @@ class Bk_intended_learning_outline extends CI_Controller //change this
         $module_id = $_GET['module_search'];
         $category_id = $_GET['category_search'];
         $remark_ids = $_GET['remark_search'];
-        // dump($subject_id);
 
         if ($category_id == 'undefined') {
             $category_id = null;
@@ -94,7 +93,6 @@ class Bk_intended_learning_outline extends CI_Controller //change this
         $intended_learning_outline = Subject_lessons_modules_model::search($year_id, $subject_id, $module_id, $category_id, $remark_ids);
 
         if ($intended_learning_outline) {
-
             foreach ($intended_learning_outline as $y => $subject_lesson_module_id) {
                 $sub_ann_module = Subject_lessons_modules_model::find($subject_lesson_module_id);
                 $subject_id = $sub_ann_module->subject_id;
@@ -108,8 +106,8 @@ class Bk_intended_learning_outline extends CI_Controller //change this
 
                 $lessons_arr[$y] = array('id' => $subject_lesson_module_id, 'lesson' => Lessons_model::table_list($lesson_id), 'subject_lesson_id' =>  $subject_lesson_id, 'subject_cat_id' => $subject_lesson->subject_category_id, 'subject_id' => $subject_id, 'count' => $y, 'modules' => Subject_lessons_modules_model::moduleList($subject_lesson_id, $year_id), 'remarks' => Lessons_remarks_model::id_list($subject_lesson_id), 'group_id' => $group_id);
             }
-
         }
+
         $result_count = count($lessons_arr);
         // dump($result_count);
         $data = array();
@@ -493,7 +491,7 @@ class Bk_intended_learning_outline extends CI_Controller //change this
         $new_module_arr = $_POST['module_arr'];
         $old_module_arr = Subject_lessons_modules_model::where('subject_lessons_id', $_POST['subject_lesson_id'])->pluck('module_id')->toArray();
 
-        sort( $new_module_arr );
+        sort($new_module_arr);
         sort($old_module_arr);
         $delete_result = array_diff($old_module_arr,  $new_module_arr );
         $add_result = array_diff( $new_module_arr ,$old_module_arr);

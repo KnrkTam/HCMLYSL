@@ -425,7 +425,7 @@ $config['encryption_key'] = 'mQ&LsjE:bdH?x&+U!,K7Tyef?buE<p$N8G$[d"acbPw5PC4TS6p
 */
 $config['sess_driver'] = 'files';
 $config['sess_cookie_name'] = 'ci_session';
-$config['sess_expiration'] = 7200;
+$config['sess_expiration'] = 12*60*60;
 $config['sess_save_path'] = NULL;
 $config['sess_match_ip'] = false;
 $config['sess_time_to_update'] = 300;

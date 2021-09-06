@@ -119,6 +119,11 @@
 								<div class="col-sm-8"><?php form_list_type('student_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'enable_value' => $students_list, 'form_validation_rules' => 'trim|required', 'disable_please_select' => 1]) ?></div>
 								<div class="col-sm-2"><button type="button" class="btn updateStudentBtn mw-100 btn-info mb-4" data-toggle="modal" >更 新 </button></div>
 							</div>
+                            <div class="form-group">
+								<label class="text-nowrap required col-sm-2"><span>班別：</span> </label>
+								<div class="col-sm-8"><?php form_list_type('class_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' =>'',  'enable_value' => $classes_list, 'form_validation_rules' => 'trim|required', 'disable_please_select' => 1]) ?></div>
+								<div class="col-sm-2"><button type="button" class="btn updateClassBtn mw-100 btn-info mb-4" data-toggle="modal" >更 新 </button></div>
+							</div>
                         </div>
                         <!-- /.box-body -->
                     </div>
@@ -291,6 +296,34 @@
         })
 
         $(document).on("click", ".updateStudentBtn", function () {
+                updateStudent();
+                function updateStudent(){
+                    $.ajax({
+                    url: `<?= (admin_url($page_setting['controller'])) . '/readAPI' ?>`,
+                    method:'POST',
+                    data:{a :'students', encode: 'array'},
+                    dataType:'json',     
+                    success:function(data){
+                        if (data.status == 'success') {
+                            window.location.reload();
+                            alertify.success(data.msg)
+
+                        } else {
+                            alertify.error(data.status)
+                        }
+                        console.log(data)
+                    },
+                    error: function(error){
+                        console.log(error)
+
+                        alert('error');
+                    }
+                    });
+                }          
+        })
+
+
+        $(document).on("click", ".updateClassBtn", function () {
                 updateStudent();
                 function updateStudent(){
                     $.ajax({

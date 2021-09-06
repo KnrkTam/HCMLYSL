@@ -42,4 +42,20 @@
 
             return $result;
         }
-	}
+        public static function order_list($order = array()){
+            $arr = array(
+                1 => "單元一",
+                2 => "單元二",
+                3 => "單元三",
+                4 => "單元四",
+            );
+
+            $result = $arr;
+            if ($order) {
+                $result = $arr[$order];
+
+            };
+
+            return $result;
+        }
+    }

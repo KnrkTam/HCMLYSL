@@ -66,14 +66,14 @@
                                     <div class="col-lg-6">
                                         <div class="form-group ">
                                             <label class="text-nowrap">年度：</label>
-                                            <p>2019/2020</p>
+                                            <p><?= $preview_year?></p>
 
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group ">
                                             <label class="text-nowrap">服務：</label>
-                                            <p>個別化學習計劃及支援性教學</p>
+                                            <p><?= $preview_service?></p>
 
                                         </div>
                                     </div>
@@ -82,8 +82,10 @@
                                             <label class="text-nowrap">負責人：</label>
 
                                             <div class="d-flex">
-                                                <P>xxx</P>
-                                                <P>主教老師</P>
+                                            <p><?= $preview_staff1?></p>
+                                            <p><?= $preview_staff2 ?', '. $preview_staff2: null?></p>
+
+
 
                                             </div>
                                         </div>
@@ -93,8 +95,8 @@
                                             <label class="text-nowrap">其他人員：</label>
 
                                             <div class="d-flex">
-                                                <P>xxx</P>
-                                                <P>主教老師</P>
+                                            <ul><?= $preview_other_staff?></ul>
+
 
                                             </div>
                                         </div>
@@ -106,32 +108,32 @@
                                     <div class="col-lg-6">
                                         <div class="form-group ">
                                             <label class="text-nowrap">單元：</label>
-                                            <p>全部/單元一/單元二/單元三/單元四</p>
-
+                                            <div class="d-flex">
+                                            <p><?= $preview_modules?></p>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <label class="text-nowrap">支援服務名稱：</label>
-                                            <p>忠</p>
+                                            <label class="text-nowrap">施教組別名稱：</label>
+                                            <p><?= $preview_group_name ?></p>
 
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
                                         <hr>
                                         <p class="bold">已選擇學生名單</p>
-                                        <p>關 xx</p>
-                                        <p>楊 x</p>
+                                        <p><?= $preview_students ?></p>
 
                                     </div>
                                 </div>
 
 
                                 <div class="mt-4 d-flex justify-content-end">
-                                    <button type="button" class="btn bg-maroon mw-100 mb-4 mr-4" onclick="location.href='../Bk_group_subject/';">確 定</button>
-
-                                    <button type="button" class="btn btn-default mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller']) ?>';">返 回</button>
-
+                                    <button type="submit" class="btn bg-maroon mw-100 mb-4 mr-4">確 定</button>
+                                    <input type="hidden" name="post_data" value=<?= json_encode($post_data, true)?>></input>
+                                    <button type="button" class="btn btn-default mw-100 mb-4 mr-4" onclick="location.href='<?= (admin_url($page_setting['controller'])).'/' .$previous.'/'.$id ?>' ">返 回</button>
+                                    <input type="hidden" name="id" value="<?= $id?>"></input>
                                 </div>
 
                             </div>
@@ -163,41 +165,8 @@
 
 
     <script>
-        function submit_form(_this) {
-            //form checking
-            var valid_data = true;
-            //.form checking
-            if (!valid_data) {
-                //alert('Invalid Data.');
-            } else {
-                ajax_submit_form(_this);
-            }
-        }
 
-        <?php /*
-    //multiple image upload
-    $("input.multiple_upload").fileinput({
-        language: '<?=get_wlocale()?>',
-        previewFileType: "image",
-        showCaption: false,
-        showUpload: false,
-        maxFileSize: 2048,
-        maxFileCount: 30,
-        maxImageHeight: 2000,
-        maxImageWidth: 2000,
-        overwriteInitial: false,
-        allowedFileExtensions: ['jpg','jpeg','png'],
-        initialPreview: <?=isset($photos_preview) ? $photos_preview : "{}"?>,
-        initialPreviewAsData: true,
-        initialPreviewConfig: <?=isset($photos_json) ? $photos_json : "{}"?>,
-        deleteUrl: "<?=admin_url('bk_news/delete_multiple_upload')?>",
-        // hiddenThumbnailContent: true,
-        // initialPreviewShowDelete: true,
-        // removeFromPreviewOnError: true,
-    }).on('filedeleted', function(event, key, jqXHR, data) {
-        alertify.success("<?=__('Deleted successfully!')?>");
-    });
- */ ?>
+
     </script>
 
 </body>

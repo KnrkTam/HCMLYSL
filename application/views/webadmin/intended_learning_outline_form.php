@@ -460,6 +460,8 @@
                     },
                 })
             }
+
+            
             let sub_cat_data =  <?php echo $subject_categories_list ?> 
                 $('#subject_category_id').select2({
                     data: sub_cat_data

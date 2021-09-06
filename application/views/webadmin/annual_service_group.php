@@ -63,25 +63,21 @@
                                     <div class="col-lg-3">
                                         <div class="form-group ">
                                             <label class="text-nowrap">年度： </label>
-                                            <select class="form-control">
-                                                <option hidden>請選擇...</option>
-                                                <option value="19/20">2019/2020</option>
-                                                <option value="20/21">2021/2022</option>
-
-
-                                            </select>
+                                            <?php form_list_type('year_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' => $year_id, 'data-placeholder' => '請選擇...', 'enable_value' => $years_list, 'form_validation_rules' => 'trim|required']) ?>
                                         </div>
                                     </div>
 
                                     <div class="col-lg-1">
-                                        <button type="button" class="btn btn-success mt-25 w-100 mb-4 searchBtn">搜 尋</button>
+                                    <button type="submit" class="btn btn-success mt-25 w-100 mb-4 searchBtn">搜 尋</button>
                                     </div>
 
                                 </div>
-                                <button type="button" class="btn bg-orange mw-100 mb-4" onclick="location.href='../webadmin/Bk_group_service/create';">新 增</button>
+                                <button type="button" class="btn bg-orange mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller'].'/create')?>';">新 增</button>
 
-                                <div class="tableWrap hidenWrap">
-                                    <table class="table table-bordered table-striped w-100" id="settingTable">
+                                <div class="">
+                                    <table class="table table-bordered table-striped w-100" id="mainTable">
+                                    </table>
+                                    <!-- <table class="table table-bordered table-striped w-100" id="settingTable">
                                         <thead>
                                             <tr class="bg-light-blue color-palette">
                                                 <th class="no-sort" style="min-width: 4px;  max-width:15px"></th>
@@ -143,7 +139,7 @@
                                             </tr>
 
                                         </tbody>
-                                    </table>
+                                    </table> -->
                                 </div>
                             </div>
                             <!-- /.box-body -->
@@ -172,69 +168,92 @@
     <?php include_once("script.php"); ?>
     <script>
         $(document).ready(function() {
-
+            let columnDefs = [{
+                    width: '10px',
+                    data: "edit",
+                    name: 'first',
+                    class: 'no-sort noVis',
+                },     
+                {
+                    width: '60px',
+                    data: "subject",
+                    title: "服務",
+                    name: 'first',
+                },               
+                {
+                    class: 'col',
+                    data: "staff",
+                    title: "負責人",
+                    name: 'first',
+                },               
+                {
+                    class: 'col',
+                    data: "other_staff",
+                    title: "其他人員",
+                    name: 'first',
+                },        
+                {
+                    width: '120px',
+                    data: "module",
+                    title: "單元",
+                    name: 'first',
+                },                
+                {
+                    class: 'col',
+                    data: "group",
+                    title: "施教組別名稱",
+                    name: 'first',
+                },                
+                {
+                    class: 'col',
+                    data: "students",
+                    title: "學生名單",
+                    name: 'first',
+                },                
+            ]
             //  table.columns.adjust();
-            $(".searchBtn").click(function() {
+            let mainTable = $('#mainTable').DataTable({
+            // rowsGroup: [
+            //     'first:name',
+            // ],
+            scrollX: true,
+            "language": {
+                "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/Chinese-traditional.json') ?>",
+            },
+            dom: 'Bfrtip',
+            "buttons": [{
+                extend: 'colvis',
+                text: '選擇顯示項目',
+                columns: ':not(.noVis)',
+                columnText: function ( dt, idx, title ) {
+                    return title;
+                }
+            }],
+            "order": [],
+            'autoWidth': false,
+            "bSort": true,
+            "info": false,
+            "bPaginate": true,
+            "pageLength": 10,
+            "pagingType": "input",
+            "bProcessing": true,
+            "processing": true,
+            "serverSide": false,
+            'searching': false,
+            "ordering": true,
+            "columns": columnDefs,   
+            "ajax": {
+                "url": "<?= admin_url($page_setting['controller'] . '/ajax') ?>",
+                "method": "get",
+                "timeout": "30000",
+                "data": function(d) {
+                    let year_id = $('#year_id').val();
+                    d.year_id = year_id
+                },
 
-                $(".tableWrap").fadeIn();
-
-                $('#settingTable').DataTable({
-                    scrollX: true,
-                    scrollCollapse: true,
-                    bFilter: false,
-                    bInfo: true,
-                    sScrollXInner: "100%",
-                    bLengthChange: true,
-                    columnDefs: [{
-                        targets: 'no-sort',
-                        orderable: false,
-
-                    }]
-
-
-                }).columns.adjust();
-
-            });
-
+            },
+            }); 
         });
-
-
-
-        function submit_form(_this) {
-            //form checking
-            var valid_data = true;
-            //.form checking
-            if (!valid_data) {
-                //alert('Invalid Data.');
-            } else {
-                ajax_submit_form(_this);
-            }
-        }
-
-        <?php /*
-    //multiple image upload
-    $("input.multiple_upload").fileinput({
-        language: '<?=get_wlocale()?>',
-        previewFileType: "image",
-        showCaption: false,
-        showUpload: false,
-        maxFileSize: 2048,
-        maxFileCount: 30,
-        maxImageHeight: 2000,
-        maxImageWidth: 2000,
-        overwriteInitial: false,
-        allowedFileExtensions: ['jpg','jpeg','png'],
-        initialPreview: <?=isset($photos_preview) ? $photos_preview : "{}"?>,
-        initialPreviewAsData: true,
-        initialPreviewConfig: <?=isset($photos_json) ? $photos_json : "{}"?>,
-        deleteUrl: "<?=admin_url('bk_news/delete_multiple_upload')?>",
-        // hiddenThumbnailContent: true,
-        // initialPreviewShowDelete: true,
-        // removeFromPreviewOnError: true,
-    }).on('filedeleted', function(event, key, jqXHR, data) {
-        alertify.success("<?=__('Deleted successfully!')?>");
-    });
- */ ?>
     </script>
 
 </body>

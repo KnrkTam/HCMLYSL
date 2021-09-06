@@ -11,6 +11,9 @@
         input[type="radio"]{
             cursor: pointer;
         }
+        label {
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -58,15 +61,15 @@
                                     <div class="col-lg-6">
                                         <div class="form-group ">
                                             <label class="text-nowrap">科目：</label>
-                                            <div style="flex: 1"><?php form_list_type('subject_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' => $subject_id,  'data-placeholder' => '請選擇...', 'enable_value' => $subject_list, 'form_validation_rules' => 'trim|required']) ?></div>
+                                            <div style="flex: 1"><?php form_list_type('subject_id', ['type' => 'select', 'class'=> 'form-control select2' ,  'data-placeholder' => '請選擇...', 'enable_value' => $subject_list, 'form_validation_rules' => 'trim|required']) ?></div>
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label class="text-nowrap">主教老師：</label>
                                             <div class="d-flex">
-                                            <div style="flex: 1"><?php form_list_type('staff1_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' => $subject_id,  'data-placeholder' => '請選擇...', 'enable_value' => $staff_list, 'form_validation_rules' => 'trim|required']) ?></div>
-                                            <div style="flex: 1"><?php form_list_type('staff2_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' => $subject_id,  'data-placeholder' => '請選擇...', 'enable_value' => $staff_list, 'form_validation_rules' => 'trim|required']) ?></div>
+                                            <div style="flex: 1"><?php form_list_type('staff1_id', ['type' => 'select', 'class'=> 'form-control select2' ,  'data-placeholder' => '請選擇...', 'enable_value' => $staff_list, 'form_validation_rules' => 'trim|required']) ?></div>
+                                            <div style="flex: 1"><?php form_list_type('staff2_id', ['type' => 'select', 'class'=> 'form-control select2' ,  'data-placeholder' => '請選擇...', 'enable_value' => $staff_list, 'form_validation_rules' => 'trim|required']) ?></div>
 
                                             </div>
                                         </div>
@@ -74,7 +77,7 @@
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label class="text-nowrap">其他任教：</label>
-                                            <div style="flex: 1"><?php form_list_type('other_staff_id[]', ['type' => 'select', 'class'=> 'form-control select2' , 'value' => $subject_id,  'data-placeholder' => '請選擇...', 'enable_value' => $staff_list, 'form_validation_rules' => 'trim|required', 'multiple' => 1]) ?></div>
+                                            <div style="flex: 1"><?php form_list_type('other_staff_id[]', ['type' => 'select', 'class'=> 'form-control select2' , 'data-placeholder' => '請選擇...', 'enable_value' => $staff_list, 'form_validation_rules' => 'trim|required', 'multiple' => 1]) ?></div>
 
                                         </div>
                                     </div>
@@ -86,7 +89,7 @@
                                         <div class="form-group ">
                                             <label class="text-nowrap">單元：</label>
                                             <label style="cursor: pointer" href="#"><input type="checkbox" id="selectAll" >全選</input></label>
-                                            <div style="flex: 1"><?php form_list_type('module_id[]', ['type' => 'select', 'class'=> 'form-control select2' , 'value' => $subject_id, 'disable_please_select' => 1, 'data-placeholder' => '請選擇...', 'enable_value' => $modules_list, 'form_validation_rules' => 'trim|required', 'multiple' => 1]) ?></div>
+                                            <div style="flex: 1"><?php form_list_type('module_id[]', ['type' => 'select', 'class'=> 'form-control select2' , 'disable_please_select' => 1, 'data-placeholder' => '請選擇...', 'enable_value' => $module_order_list, 'form_validation_rules' => 'trim|required', 'multiple' => 1]) ?></div>
 
                                         </div>
                                     </div>
@@ -96,8 +99,8 @@
 
                                             <div class="d-flex align-items-center">
                                                 <div class="form-check d-flex align-items-center w-100 mr-4">
-                                                    <input class="form-check-input" type="radio" name="group_name" value="option1" id="group_name_class">
-                                                    <div style="flex: 1"><?php form_list_type('class_id', ['type' => 'select', 'class'=> 'form-control select2' , 'data-placeholder' => '請選擇...', 'enable_value' => $classes_list, 'form_validation_rules' => 'trim|required']) ?></div>
+                                                    <input class="form-check-input" type="radio" name="group_name" value="class" id="group_name_class">
+                                                    <div style="flex: 1"><?php form_list_type('class_id', ['type' => 'select', 'class'=> 'form-control select2' , 'enable_value' => $classes_list, 'form_validation_rules' => 'trim|required']) ?></div>
 
                                                 </div>
 
@@ -113,89 +116,38 @@
                                     </div>
                                     <div class="col-lg-12 custom_group" style="display:none">
                                         <hr>
-                                        <p class="bold">選擇學生名單</p>
-                                        <div class="form-group w-50">
-                                            <label class="text-nowrap">班別：</label>
-                                            <div style="flex: 1"><?php form_list_type('select_class_id', ['type' => 'select', 'class'=> 'form-control select2' , 'data-placeholder' => '請選擇...', 'enable_value' => $classes_list, 'form_validation_rules' => 'trim|required']) ?></div>
+                                        <label class="form-check-label"> 
+                                            自訂組別名稱
+                                            <input class="form-control" type="text" name="custom_group_name" id="custom_group_name">
+
+                                        </label>
+                                        <div class="row mb-4">
+                                            <div class="col-lg-6">
+                                                <p class="bold text-maroon">選擇學生名單</p>
+                                                <div class="form-group w-50">
+                                                    <label class="text-nowrap">班別：</label>
+                                                    <div style="flex: 1"><?php form_list_type('select_class_id', ['type' => 'select', 'class'=> 'form-control select2' , 'data-placeholder' => '請選擇...', 'enable_value' => $classes_list, 'form_validation_rules' => 'trim|required']) ?></div>
+                                                </div>
+                                                <div class="form-group w-50">
+                                                    <label class="text-nowrap">學生姓名：</label>
+                                                    <div style="flex: 1"><?php form_list_type('select_student_id', ['type' => 'select', 'class'=> 'form-control select2' , 'form_validation_rules' => 'trim|required', 'multiple' => 1]) ?></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group w-50">
+                                                    <label class="text-nowrap text-green">已選擇學生名單：</label>
+                                                    <div style="flex: 1"><?php form_list_type('student_id[]', ['type' => 'select', 'class'=> 'form-control select2' , 'enable_value' => $students_list, 'form_validation_rules' => 'trim|required', 'multiple' => 1]) ?></div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div id="transfer1" class="transfer-demo"></div>
                                     </div>
                                 </div>
 
                                 <div class="mt-4 d-flex justify-content-end">
                                     <button type="button" id="submit-btn" class="btn bg-orange mw-100 mb-4 mr-4">確 定</button>
-
+                                    <input type="hidden" value=<?= $function?> name="action"> </input>
                                     <button type="button" class="btn btn-default mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller']) ?>';">返 回</button>
-
                                 </div>
-
-
-                                <div class="tableWrap hidenWrap">
-                                    <table class="table table-bordered table-striped w-100" id="settingTable">
-                                        <thead>
-                                            <tr class="bg-light-blue color-palette">
-                                                <th class="no-sort" style="min-width: 4px;  max-width:15px"></th>
-                                                <th class="nowrap">科目/服務</th>
-                                                <th class="nowrap">主要任教</th>
-                                                <th class="nowrap">其他任教</th>
-                                                <th class="nowrap">單元</th>
-                                                <th class="nowrap">施教組別名稱</th>
-                                                <th class="nowrap">學生名單</th>
-                                            </tr>
-                                        </thead>
-
-                                        <tbody>
-                                            <tr>
-                                                <td><a class="editLinkBtn" href="../webadmin/Bk_group_subject/edit"><i class="fa fa-edit"></i></a></td>
-                                                <td>語文科1234</td>
-                                                <td>xxx, xxx</td>
-                                                <td></td>
-                                                <td>單元一</td>
-                                                <td>忠1</td>
-                                                <td>陳xx(善), 陳xx(善),</td>
-                                            </tr>
-                                            <tr>
-
-                                                <td><a class="editLinkBtn" href="../webadmin/Bk_group_subject/edit"><i class="fa fa-edit"></i></a></td>
-                                                <td>語文科1234</td>
-                                                <td>xxx, xxx</td>
-                                                <td>xxx, xxx</td>
-                                                <td>單元三</td>
-                                                <td>忠1</td>
-                                                <td>陳xx(善), 陳xx(德),</td>
-
-                                            </tr>
-                                            <tr>
-
-                                                <td><a class="editLinkBtn" href="../webadmin/Bk_group_subject/edit"><i class="fa fa-edit"></i></a></td>
-                                                <td>語文科1234</td>
-                                                <td>xxx, xxx</td>
-                                                <td>xxx, xxx</td>
-                                                <td>單元一</td>
-                                                <td>仁</td>
-                                                <td>陳xx(信), 陳xx(德),</td>
-
-
-                                            </tr>
-
-                                            <tr>
-
-                                                <td><a class="editLinkBtn" href="../webadmin/Bk_group_subject/edit"><i class="fa fa-edit"></i></a></td>
-                                                <td>語文科1234</td>
-                                                <td>xxx, xxx</td>
-                                                <td>xxx, xxx</td>
-                                                <td>單元二</td>
-                                                <td>仁</td>
-                                                <td>陳xx(信), 陳xx(德),</td>
-
-
-
-                                            </tr>
-
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
                             <!-- /.box-body -->
                         </div>
                         <!-- /.box -->
@@ -221,99 +173,32 @@
     <!-- ./wrapper -->
     <?php include_once("script.php"); ?>
 
-    <script src="<?= assets_url('webadmin/js/jquery.transfer.js') ?>"></script>
+    <!-- <script src="<?= assets_url('webadmin/js/jquery.transfer.js') ?>"></script> -->
 
     <script>
-        $(document).ready(function() {
-            $("#other_staff_id").select2({
-                maximumSelectionLength: 2
-            });
-
-            $("#class_id").change(function(){
-                $("#group_name_class").prop("checked", true);
-                $(".custom_group").hide();
-
-            })
-            
-            $('input[type=radio][name=group_name]').change(function() {
-                if (this.value == 'other') {
-                    $(".custom_group").fadeIn();
-                    $(".custom_group_select").val("");
-                    $(".custom_group_select").prop("disabled", true);
-                } else {
-                    $(".custom_group").hide();
-                    $(".custom_group_select").prop("disabled", false);
-                }
-            });
-
-
-            var dataArray1 = [{
-                    "name": "關 xx",
-                    "value": 132
-                },
-                {
-                    "name": "方 xx",
-                    "value": 422
-                },
-                {
-                    "name": "楊 x",
-                    "value": 232
-                },
-                {
-                    "name": "黎 xx",
-                    "value": 765
-                },
-                {
-                    "name": "張 xx",
-                    "value": 876
-                },
-                {
-                    "name": "黃 xx",
-                    "value": 453
-                }
-            ];
-
-            var settings1 = {
-                "dataArray": dataArray1,
-                "itemName": "name",
-                "valueName": "value",
-                "callable": function(items) {
-                    console.dir(items)
-                }
-            };
-
-            $("#transfer1").transfer(settings1);
-
-            $(".transfer-double-content-left .param-item").text("學生姓名");
-
-            $(".transfer-double-content-right .param-item").text("已選擇學生名單");
-
-            //  table.columns.adjust();
-            $(".searchBtn").click(function() {
-
-                $(".tableWrap").fadeIn();
-
-                $('#settingTable').DataTable({
-                    scrollX: true,
-                    scrollCollapse: true,
-                    bFilter: false,
-                    bInfo: true,
-                    sScrollXInner: "100%",
-                    bLengthChange: true,
-                    columnDefs: [{
-                        targets: 'no-sort',
-                        orderable: false,
-
-                    }]
-
-
-                }).columns.adjust();
-
-            });
-
+    $(document).ready(function() {
+        $("#other_staff_id").select2({
+            maximumSelectionLength: 2
         });
 
-    
+        $("#class_id").change(function(){
+            $("#group_name_class").prop("checked", true);
+            $(".custom_group").hide();
+
+        })
+        
+        $('input[type=radio][name=group_name]').change(function() {
+            if (this.value == 'other') {
+                $(".custom_group").fadeIn();
+                $(".custom_group_select").val("");
+                $(".custom_group_select").prop("disabled", true);
+                $("#class_id").val(null)
+            } else {
+                $(".custom_group").hide();
+                $(".custom_group_select").prop("disabled", false);
+            }
+        });
+
 
         $("#selectAll").click(function(){
             if($("#selectAll").is(':checked') ){
@@ -327,12 +212,23 @@
         // form validation
         let submitBtn = document.querySelector('#submit-btn');
         submitBtn.addEventListener("click",function(){
-            validateForm(year_id.value, subject_id.value, $("#module_id").select2("val"), staff1_id.value, staff2_id.value, $("#other_staff_id").select2("val"));
-            function validateForm(year_id, subject_id, module_id, staff1_id, staff2_id, other_staff_id){
+            validateForm(year_id.value, subject_id.value, $("#module_id").select2("val"), staff1_id.value, staff2_id.value, $("#other_staff_id").select2("val"), $("input[type='radio'][name='group_name']:checked").val(), class_id.value, custom_group_name.value,$("#student_id").select2("val"),);
+            function validateForm(year_id, subject_id, module_id, staff1_id, staff2_id, other_staff_id, group_name, class_id, custom_group_name, student_id){
                 $.ajax({
                 url: '<?= (admin_url($page_setting['controller'])) . '/validate' ?>',
                 method:'POST',
-                data:{year_id:year_id, subject_id:subject_id, module_id:module_id, staff1_id:staff1_id, staff2_id:staff2_id, other_staff_id:other_staff_id},
+                data:{
+                    year_id:year_id,
+                    subject_id:subject_id,
+                    module_id:module_id, 
+                    staff1_id:staff1_id, 
+                    staff2_id:staff2_id, 
+                    other_staff_id:other_staff_id, 
+                    group_name:group_name, 
+                    class_id: class_id, 
+                    custom_group_name:custom_group_name, 
+                    student_id:student_id
+                },
                 dataType:'json',     
                 success:function(data){
                     if (data.status == 'success') {
@@ -347,6 +243,60 @@
                 });
             } 
         })      
+
+        let added_ids = new Set();
+
+        function render_class_student(class_id) {
+            $.ajax({
+            url: '<?= (admin_url($page_setting['controller'])) . '/select_student/' ?>' + class_id,
+            method:'GET',
+            dataType:'json',
+            beforeSend:function(){
+                $('#select_student_id').empty();
+            }, 
+            success:function(d){
+                $('#select_student_id').select2({
+                    data: d
+                })
+                $('#select_student_id').val(Array.from(added_ids)).trigger('change');
+
+            },
+            })
+        }
+
+
+
+        $("#select_class_id").change(function() {
+            render_class_student(this.value)
+        })
+
+        $("#select_student_id").change(function() {
+            $("#select_student_id").on("select2:unselect", function (e) { 
+                added_ids.delete(e.params.data.id)
+                $('#student_id').val(Array.from(added_ids)).trigger('change');
+            });
+
+            $("#select_student_id").on("select2:select", function (e) { 
+                added_ids.add(e.params.data.id)
+                $('#student_id').val(Array.from(added_ids)).trigger('change');
+            });
+        })
+
+
+        $("#student_id").change(function() {
+            $("#student_id").on("select2:unselect", function (e) { 
+                added_ids.delete(e.params.data.id)
+                $('#select_student_id').val(Array.from(added_ids)).trigger('change');
+            });
+
+            $("#student_id").on("select2:select", function (e) { 
+                added_ids.add(e.params.data.id)
+                $('#select_student_id').val(Array.from(added_ids)).trigger('change');
+            });
+        })
+
+    });
+
     </script>
 
 </body>

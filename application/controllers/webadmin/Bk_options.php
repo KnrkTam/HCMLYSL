@@ -58,6 +58,8 @@ class Bk_options extends CI_Controller //change this
         $data['years_list'] = Years_model::list();
         $data['staff_list'] = Staff_model::list();
         $data['students_list'] = Students_model::list();
+        $data['classes_list'] = Classes_model::list();
+
         $this->load->view('webadmin/' . $this->scope . '', $data);
     }
 
@@ -69,6 +71,16 @@ class Bk_options extends CI_Controller //change this
         $params['user_post'] = null; 
         $params['a'] = $_POST['a']; 
         $params['encode'] = $_POST['encode']; 
+        $params['year'] = date("Y");
+        $year_id = Years_model::where('year_to', date("Y"))->first()->id;
+
+        if (!$year_id) {
+            $year_id = Years_model::create(array(
+                'year_from' => date("Y")-1,
+                'year_to' => date("Y"),
+            ))->id;
+        }
+        // dump($year_id);
         // $header = array('Set-Cookie: PHPSESSID=4b9ppf47fp7ira97vsffc2neb5; path=/');
         // dump($_POST);
         $header = array('Content-Type: application/x-www-form-urlencoded');
@@ -77,8 +89,6 @@ class Bk_options extends CI_Controller //change this
         
 
         $api_response = uCurl('http://203.198.169.212:9000/api/index.php', 'POST', $params);
-        // $api_response = uCurl('http://ip.jsontest.com/', 'POST', $_POST);
-        // $api_response = uCurl('https://httpbin.org/post', 'POST', $params);
 
         // dump(json_decode($api_response,true));
 
@@ -114,9 +124,28 @@ class Bk_options extends CI_Controller //change this
                         'class_level' => $student_data['class_level'],
                         'lineage' => $student_data['lineage'],
                     );
+                
 
-                    $update_data = array('study_status' => $student_data['study_status'], 'status' => $student_data['study_status'] == '在學' ? 1 : 0, 'updated_at' => date('Y-m-d H:i:s'));
+                    $update_data = array(
+                        'study_status' => $student_data['study_status'], 
+                        'status' => $student_data['study_status'] == '在學' ? 1 : 0, 
+                        'updated_at' => date('Y-m-d H:i:s'),
+                        'year_id' => $year_id
+
+                    );
+
+                    $class_data = array(
+                        'name' => $student_data['class'],
+                        'year_id' => 1,
+                        'teacher1_id' => 0,
+                        'teacher2_id' => 0,
+                    );
+
+                    $class_update_data = array(
+                        'updated_at' => date('Y-m-d H:i:s')
+                    );
                     Students_model::updateOrCreate($info_data, $update_data);
+                    Classes_model::updateOrCreate($class_data, $class_update_data);
                 }
 
                 $result = array('status' => 'success', 'msg' => '學生名單已更新');
