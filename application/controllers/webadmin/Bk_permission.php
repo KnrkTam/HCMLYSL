@@ -306,7 +306,7 @@ class Bk_permission extends CI_Controller
 
             
 
-                    // 補充內容 
+            // 年度科目分組
             'create_annual_subject_group' => array(
                 'desc' => 'Can create annual_subject_group',
                 'role' => array('super_admin', 'admin')
@@ -324,7 +324,7 @@ class Bk_permission extends CI_Controller
                     'role' => array('super_admin', 'admin')
             ),
 
-            
+            // 年度服務分組 
             'create_annual_service_group' => array(
                 'desc' => 'Can create annual_service_group',
                 'role' => array('super_admin', 'admin')
@@ -342,6 +342,23 @@ class Bk_permission extends CI_Controller
                 'role' => array('super_admin', 'admin')
             ),
 
+            // 年度教學大綱 
+            'create_annual_teaching_outline' => array(
+                'desc' => 'Can create annual_teaching_outline',
+                'role' => array('super_admin', 'admin')
+            ),
+            'update_annual_teaching_outline' => array(
+                'desc' => 'Can update annual_teaching_outline',
+                'role' => array('super_admin', 'admin')
+            ),
+            'delete_annual_teaching_outline' => array(
+                'desc' => 'Can delete annual_teaching_outline',
+                'role' => array('super_admin', 'admin')
+            ),
+            'view_annual_teaching_outline' => array(
+                'desc' => 'Can view annual_teaching_outline',
+                'role' => array('super_admin', 'admin')
+            ),
 
             //news_ajax
             'create_news_ajax' => array(

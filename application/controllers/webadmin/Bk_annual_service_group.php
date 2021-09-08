@@ -115,6 +115,8 @@ class Bk_annual_service_group extends CI_Controller //change this
         $data['staff_list'] = Staff_model::list();
         $data['module_order_list'] = Modules_model::order_list();
         $data['classes_list'] = Classes_model::list();
+        $data['level_list'] = Levels_model::list();
+
         $data['students_list'] = Students_model::list('class');
         $data['action'] = __('新 增');
 
@@ -140,6 +142,7 @@ class Bk_annual_service_group extends CI_Controller //change this
         $data['module_order_list'] = Modules_model::order_list();
         $data['classes_list'] = Classes_model::list();
         $data['students_list'] = Students_model::list('class');
+        $data['level_list'] = Levels_model::list();
 
         $asg = Annual_service_groups_model::find($id);
 
@@ -147,6 +150,8 @@ class Bk_annual_service_group extends CI_Controller //change this
             $_SESSION['error_msg'] = __('找不到頁面');
             redirect(admin_url('bk_'.$this->scope));
         }
+        $data['level'] = Levels_model::name($asg->level_id);
+
         $data['year'] = Years_model::annual($asg->year_id);
         $data['subject'] = Subjects_model::name($asg->service_id);
         $data['module_order'] = Modules_model::order_list($asg->module_order);
@@ -154,6 +159,7 @@ class Bk_annual_service_group extends CI_Controller //change this
         $data['staff1_id'] = $asg->staff1_id;
         $data['staff2_id'] = $asg->staff2_id;
         $data['class_id'] = $asg->class_id;
+        $data['level_id'] = $asg->level_id;
         $data['group_name_option'] = $asg->group_name ? "other" : "class";
         $other_staff_result = Annual_service_groups_other_staff_model::where('annual_service_group_id', $id)->pluck('staff_id')->toArray();
         $student_result = Annual_service_groups_students_model::where('annual_service_group_id', $id)->pluck('student_id')->toArray();
@@ -188,8 +194,28 @@ class Bk_annual_service_group extends CI_Controller //change this
         $class_id = $_POST['class_id'];
         $custom_group_name = $_POST['custom_group_name'];
         
+
+        switch(true) {
+            case (empty($staff1_id) || empty($staff2_id));
+            $data = array(
+                'status' => '請選擇主教老師',
+            );
+            break;
+            case ($staff1_id == $staff2_id);
+            $data = array(
+                'status' => '主教老師重複',
+            );
+            break;
+            default;
+            $data = array(
+                'status' => 'success',
+            );
+        } 
+
         // Create
         if (!$id) {
+            // dump(empty($service_id));
+            // dump($id);
             switch(true) {
                 case (empty($service_id));
                 $data = array(
@@ -223,26 +249,15 @@ class Bk_annual_service_group extends CI_Controller //change this
                         break;
                     }
                 }
+                default;
+                $data = array(
+                    'status' => 'success',
+                );
             }
 
         }
 
-        switch(true) {
-            case (empty($staff1_id) || empty($staff2_id));
-            $data = array(
-                'status' => '請選擇主教老師',
-            );
-            break;
-            case ($staff1_id == $staff2_id);
-            $data = array(
-                'status' => '主教老師重複',
-            );
-            break;
-            default;
-            $data = array(
-                'status' => 'success',
-            );
-        } 
+
         
         echo json_encode($data);
 
@@ -265,7 +280,7 @@ class Bk_annual_service_group extends CI_Controller //change this
             $service_id = $asg->service_id;
             $module_id = array($asg->module_order);
         }
-
+        // dump($_POST);
         $staff1_id = $_POST['staff1_id'];
         $staff2_id = $_POST['staff2_id'];
         $other_staff_id = $_POST['other_staff_id'];
@@ -273,6 +288,7 @@ class Bk_annual_service_group extends CI_Controller //change this
         $custom_group_name = $_POST['custom_group_name'];
         $group_name = $_POST['group_name'];
         $student_id = $_POST['student_id'];
+        $level_id = $_POST['level_id'] ? $_POST['level_id']: Classes_model::level($class_id);
         $previous = $_POST['action'];
         
 
@@ -288,6 +304,7 @@ class Bk_annual_service_group extends CI_Controller //change this
         $data['preview_service'] =Services_model::name($service_id);
         $data['preview_staff1'] = Staff_model::name($staff1_id);
         $data['preview_staff2'] = Staff_model::name($staff2_id);
+        $data['preview_level'] = Levels_model::name($level_id);
         if ($id) {
             $asg = Annual_service_groups_model::find($id);
             $data['preview_group_name'] = $asg->group_name?$asg->group_name : Classes_model::name($asg->class_id);
@@ -332,7 +349,8 @@ class Bk_annual_service_group extends CI_Controller //change this
             $list[] = array('id' => $student['id'], 'text' => $student->chinese_name);
         }
     
-        echo json_encode($list);
+        $data = array('list' => $list, 'level' => Classes_model::level($class_id));
+        echo json_encode($data);
 
     }
 
@@ -353,6 +371,7 @@ class Bk_annual_service_group extends CI_Controller //change this
         $class_id = $postData->class_id;
         $group_name = $class_id ? null : $postData->custom_group_name;
         $student_id = $postData->student_id;
+        $level_id = $postData->level_id;
 
         if ($id) {
             $asg = Annual_service_groups_model::find($id);
@@ -371,6 +390,7 @@ class Bk_annual_service_group extends CI_Controller //change this
                 'module_order' => $row,
                 'class_id' => $class_id ? $class_id : null,
                 'group_name' => $group_name ? $group_name: null,
+                'level_id' => $level_id ? $level_id : Classes_model::level($class_id),
 
             );
             $add_content = array (

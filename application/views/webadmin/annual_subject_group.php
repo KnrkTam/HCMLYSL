@@ -91,7 +91,7 @@
                     class: 'no-sort noVis',
                 },     
                 {
-                    width: '60px',
+                    class: 'col',
                     data: "subject",
                     title: "科目/服務",
                     name: 'first',
@@ -109,13 +109,13 @@
                     name: 'first',
                 },        
                 {
-                    width: '120px',
+                    width: '60px',
                     data: "module",
                     title: "單元",
                     name: 'first',
                 },                
                 {
-                    class: 'col',
+                    width: '60px',
                     data: "group",
                     title: "施教組別名稱",
                     name: 'first',

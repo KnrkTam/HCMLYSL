@@ -21,7 +21,13 @@
         }
 
         public static function name($id){
-            $result = Classes_model::where('id', $id)->first()->name;
+            $result = Classes_model::find($id)->name;
+
+            return $result;
+        }
+
+        public static function level($id){
+            $result = Classes_model::find($id)->level_id;
 
             return $result;
         }

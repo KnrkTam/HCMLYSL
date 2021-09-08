@@ -63,39 +63,30 @@
                                     <div class="col-lg-3">
                                         <div class="form-group ">
                                             <label class="text-nowrap">年度： </label>
-                                            <p>2019/2020</p>
+                                            <p><?= $year?></p>
 
                                         </div>
                                     </div>
                                     <div class="col-lg-2">
                                         <div class="form-group ">
                                             <label class="text-nowrap">科目： </label>
-                                            <p>語文科1234</p>
+                                            <p><?= $subject?></p>
                                         </div>
                                     </div>
                                     <div class="col-lg-7">
                                         <div class="form-group ">
                                             <label class="text-nowrap">施教組別名稱： </label>
-                                            <select class="form-control select2" multiple="" data-placeholder="請選擇...">
-                                                <option hidden>請選擇...</option>
-                                                <option value="忠班">忠班</option>
-                                                <option value="信班">信班</option>
-
-
-                                            </select>
+                                            <p><?= $group_name?></p>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="row mb-4">
                                     <div class="col-lg-5 d-flex">
 
                                         <div class="form-group w-100">
                                             <label class="text-nowrap">年度學習單元: </label>
-                                            <select class="form-control subjectSelect">
-                                                <option hidden>請選擇...</option>
-                                                <option value="認識自己">認識自己</option>
-                                                <option value="認識自己">認識自己</option>
-                                                <option value="認識自己">認識自己</option>
-                                                <option value="認識自己">認識自己</option>
-                                            </select>
+                                            <?php form_list_type('annual_module_id', ['type' => 'select', 'class'=> 'form-control select2' , 'data-placeholder' => '請選擇...', 'enable_value' => $annual_modules_list, 'form_validation_rules' => 'trim|required']) ?>
+
                                         </div>
                                         <a href="#" class="link nowrap mt-30 ml-2 controlSearchBtn">檢視各級單元及備註內容</a>
 
@@ -103,17 +94,17 @@
                                     <div class="col-lg-2">
                                         <div class="form-group ">
                                             <label class="text-nowrap">單元： </label>
-                                            <p class="mt-2">單元一</p>
+                                            <p class="mt-2"><?= $module?></p>
 
                                         </div>
                                     </div>
                                     <div class="col-lg-3">
                                         <div class="form-group ">
                                             <label class="text-nowrap">週次： </label>
-                                            <p class="mt-2">1 至 10</p>
-
+                                            <p class="mt-2"><?= $week?></p>
                                         </div>
                                     </div>
+                                </div>
                                     <div class="col-lg-12">
                                         <h4 class="bold">搜尋單元：</h4>
                                         <ul class="nav nav-tabs tabselector">

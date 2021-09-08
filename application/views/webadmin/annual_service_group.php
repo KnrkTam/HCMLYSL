@@ -175,10 +175,12 @@
                     class: 'no-sort noVis',
                 },     
                 {
-                    width: '60px',
+                    // width: '60px',
                     data: "subject",
                     title: "服務",
                     name: 'first',
+                    class: 'col',
+
                 },               
                 {
                     class: 'col',
@@ -193,13 +195,15 @@
                     name: 'first',
                 },        
                 {
-                    width: '120px',
+                    width: '60px',
                     data: "module",
                     title: "單元",
                     name: 'first',
                 },                
                 {
-                    class: 'col',
+                    // class: 'col',
+                    width: '60px',
+
                     data: "group",
                     title: "施教組別名稱",
                     name: 'first',

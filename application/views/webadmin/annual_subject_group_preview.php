@@ -117,7 +117,10 @@
                                         <div class="form-group">
                                             <label class="text-nowrap">施教組別名稱：</label>
                                             <p><?= $preview_group_name ?></p>
-
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="text-nowrap">學階：</label>
+                                            <p><?= $preview_level ?></p>
                                         </div>
                                     </div>
                                     <div class="col-lg-12">

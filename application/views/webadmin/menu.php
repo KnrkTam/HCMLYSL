@@ -163,8 +163,8 @@
                 ),
                 array(
                     'main_menu' => __('年度教學大綱 - 檢視'),
-                    'url' => 'Bk_teach_outline',
-                    'access' => 'view_news',
+                    'url' => 'Bk_annual_teaching_outline',
+                    'access' => 'view_annual_teaching_outline',
                     'icon' => 'fa-calendar-o',
                 ),
                 array(

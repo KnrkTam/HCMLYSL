@@ -63,36 +63,27 @@
                                     <div class="col-lg-3">
                                         <div class="form-group ">
                                             <label class="text-nowrap">年度： </label>
-                                            <select class="form-control">
-                                                <option hidden>請選擇...</option>
-                                                <option value="19/20">2019/2020</option>
-                                                <option value="20/21">2021/2022</option>
-
-
-                                            </select>
+                                            <?php form_list_type('year_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' => $year_id, 'data-placeholder' => '請選擇...', 'enable_value' => $years_list, 'form_validation_rules' => 'trim|required']) ?>
                                         </div>
                                     </div>
                                     <div class="col-lg-5">
                                         <div class="form-group ">
                                             <label class="text-nowrap">科目： </label>
-                                            <select class="form-control">
-                                                <option hidden>請選擇...</option>
-                                                <option value="語文科1234">語文科1234</option>
-                                                <option value="語文科1234">語文科1234</option>
+                                            <?php form_list_type('subject_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' => $subject_id, 'data-placeholder' => '請選擇...', 'enable_value' => $subjects_list, 'form_validation_rules' => 'trim|required']) ?>
 
-
-                                            </select>
                                         </div>
                                     </div>
                                     <div class="col-lg-1">
-                                        <button type="button" class="btn btn-success mt-25 w-100 mb-4 searchBtn">搜 尋</button>
+                                        <button type="submit" class="btn btn-success mt-25 w-100 mb-4 searchBtn">搜 尋</button>
                                     </div>
 
                                 </div>
 
 
-                                <div class="tableWrap hidenWrap">
-                                    <table class="table table-bordered table-striped w-100" id="outlineTable">
+                                <div class="">
+                                    <table class="table table-bordered table-striped w-100" id="mainTable">
+                                    </table>
+                                    <!-- <table class="table table-bordered table-striped w-100" id="outlineTable">
                                         <thead>
                                             <tr class="bg-light-blue color-palette">
 
@@ -149,7 +140,7 @@
                                             </tr>
 
                                         </tbody>
-                                    </table>
+                                    </table> -->
                                 </div>
                             </div>
                             <!-- /.box-body -->
@@ -293,239 +284,275 @@
 
 
 
-            var data = [{
-                    "id": "1",
-                    "year": "19/20",
-                    "degree": "學階一",
-                    "date": "2/9/2019 - 8/11/2019",
-                    "week": "1-10",
-                    "evaluation01": "9/10/2019",
-                    "evaluation02": "9/11/2019",
-                },
-                {
-                    "id": "1",
-                    "year": "19/20",
-                    "degree": "學階一",
-                    "date": "11/11/2019 - 7/2/2020",
-                    "week": "11-23",
-                    "evaluation01": "15/11/2019",
-                    "evaluation02": "5/1/2020",
-                }, {
-                    "id": "1",
-                    "year": "19/20",
-                    "degree": "學階一",
-                    "date": "10/2/2020 - 24/4/2020",
-                    "week": "1-11",
-                    "evaluation01": "1/3/2020",
-                    "evaluation02": "1/4/2020",
-                },
-                {
-                    "id": "1",
-                    "year": "19/20",
-                    "degree": "學階一",
-                    "date": "27/4/2020 - 17/11/2020",
-                    "week": "12-23",
-                    "evaluation01": "1/5/2020",
-                    "evaluation02": "1/7/2020",
-                },
-                {
-                    "id": "2",
-                    "year": "19/20",
-                    "degree": "學階二",
-                    "date": "2/9/2019 - 8/11/2019",
-                    "week": "1-10",
-                    "evaluation01": "9/10/2019",
-                    "evaluation02": "9/11/2019",
-                },
-                {
-                    "id": "2",
-                    "year": "19/20",
-                    "degree": "學階二",
-                    "date": "2/9/2019 - 8/11/2019",
-                    "week": "1-10",
-                    "evaluation01": "9/10/2019",
-                    "evaluation02": "9/11/2019",
-                }, {
-                    "id": "3",
-                    "year": "19/20",
-                    "degree": "學階二",
-                    "date": "2/9/2019 - 8/11/2019",
-                    "week": "1-10",
-                    "evaluation01": "9/10/2019",
-                    "evaluation02": "9/11/2019",
-                }, {
-                    "id": "3",
-                    "year": "19/20",
-                    "degree": "學階二",
-                    "date": "2/9/2019 - 8/11/2019",
-                    "week": "1-10",
-                    "evaluation01": "9/10/2019",
-                    "evaluation02": "9/11/2019",
-                }, {
-                    "id": "3",
-                    "year": "19/20",
-                    "degree": "學階二",
-                    "date": "2/9/2019 - 8/11/2019",
-                    "week": "1-10",
-                    "evaluation01": "9/10/2019",
-                    "evaluation02": "9/11/2019",
-                }, {
-                    "id": "4",
-                    "year": "19/20",
-                    "degree": "學階二",
-                    "date": "2/9/2019 - 8/11/2019",
-                    "week": "1-10",
-                    "evaluation01": "9/10/2019",
-                    "evaluation02": "9/11/2019",
-                },
-            ];
+            // var data = [{
+            //         "id": "1",
+            //         "year": "19/20",
+            //         "degree": "學階一",
+            //         "date": "2/9/2019 - 8/11/2019",
+            //         "week": "1-10",
+            //         "evaluation01": "9/10/2019",
+            //         "evaluation02": "9/11/2019",
+            //     },
+            //     {
+            //         "id": "1",
+            //         "year": "19/20",
+            //         "degree": "學階一",
+            //         "date": "11/11/2019 - 7/2/2020",
+            //         "week": "11-23",
+            //         "evaluation01": "15/11/2019",
+            //         "evaluation02": "5/1/2020",
+            //     }, {
+            //         "id": "1",
+            //         "year": "19/20",
+            //         "degree": "學階一",
+            //         "date": "10/2/2020 - 24/4/2020",
+            //         "week": "1-11",
+            //         "evaluation01": "1/3/2020",
+            //         "evaluation02": "1/4/2020",
+            //     },
+            //     {
+            //         "id": "1",
+            //         "year": "19/20",
+            //         "degree": "學階一",
+            //         "date": "27/4/2020 - 17/11/2020",
+            //         "week": "12-23",
+            //         "evaluation01": "1/5/2020",
+            //         "evaluation02": "1/7/2020",
+            //     },
+            //     {
+            //         "id": "2",
+            //         "year": "19/20",
+            //         "degree": "學階二",
+            //         "date": "2/9/2019 - 8/11/2019",
+            //         "week": "1-10",
+            //         "evaluation01": "9/10/2019",
+            //         "evaluation02": "9/11/2019",
+            //     },
+            //     {
+            //         "id": "2",
+            //         "year": "19/20",
+            //         "degree": "學階二",
+            //         "date": "2/9/2019 - 8/11/2019",
+            //         "week": "1-10",
+            //         "evaluation01": "9/10/2019",
+            //         "evaluation02": "9/11/2019",
+            //     }, {
+            //         "id": "3",
+            //         "year": "19/20",
+            //         "degree": "學階二",
+            //         "date": "2/9/2019 - 8/11/2019",
+            //         "week": "1-10",
+            //         "evaluation01": "9/10/2019",
+            //         "evaluation02": "9/11/2019",
+            //     }, {
+            //         "id": "3",
+            //         "year": "19/20",
+            //         "degree": "學階二",
+            //         "date": "2/9/2019 - 8/11/2019",
+            //         "week": "1-10",
+            //         "evaluation01": "9/10/2019",
+            //         "evaluation02": "9/11/2019",
+            //     }, {
+            //         "id": "3",
+            //         "year": "19/20",
+            //         "degree": "學階二",
+            //         "date": "2/9/2019 - 8/11/2019",
+            //         "week": "1-10",
+            //         "evaluation01": "9/10/2019",
+            //         "evaluation02": "9/11/2019",
+            //     }, {
+            //         "id": "4",
+            //         "year": "19/20",
+            //         "degree": "學階二",
+            //         "date": "2/9/2019 - 8/11/2019",
+            //         "week": "1-10",
+            //         "evaluation01": "9/10/2019",
+            //         "evaluation02": "9/11/2019",
+            //     },
+            // ];
 
 
 
-            var columnDefs = [{
-                    render: function(data, type, row) {
-                        // alert(row.id);
-                        // data: null,
-                        // title: "操作",
-                        // defaultContent:
-                        // '<a href="#"  class="editor_edit"  data-toggle="modal" data-id="editId" data-target="#itemEdit">Edit</a> / <a href="#" class="editor_remove" rdata-toggle="modal" data-target=".bd-example-modal-lg">Delete</a>'
-                        // defaultContent: '<a href="#" class="button moreBtn" data-toggle="modal" data-target=".bd-example-modal-lg">Edit Btn</a>'
-                        var result = '<a class="editLinkBtn" href="../webadmin/Bk_study_unit/edit" data-id="' + row
-                            .id + '"><i class="fa fa-edit"></i></a>';
-                        return result;
+            // var columnDefs = [{
+            //         render: function(data, type, row) {
+            //             // alert(row.id);
+            //             // data: null,
+            //             // title: "操作",
+            //             // defaultContent:
+            //             // '<a href="#"  class="editor_edit"  data-toggle="modal" data-id="editId" data-target="#itemEdit">Edit</a> / <a href="#" class="editor_remove" rdata-toggle="modal" data-target=".bd-example-modal-lg">Delete</a>'
+            //             // defaultContent: '<a href="#" class="button moreBtn" data-toggle="modal" data-target=".bd-example-modal-lg">Edit Btn</a>'
+            //             var result = '<a class="editLinkBtn" href="../webadmin/Bk_study_unit/edit" data-id="' + row
+            //                 .id + '"><i class="fa fa-edit"></i></a>';
+            //             return result;
 
-                    },
-                    data: "id",
-                    name: 'zore',
-                    title: "",
-                    class: "no-sort"
-                },
+            //         },
+            //         data: "id",
+            //         name: 'zore',
+            //         title: "",
+            //         class: "no-sort"
+            //     },
+            //     {
+            //         name: 'first',
+            //         data: "year",
+            //         title: "年度",
+            //         class: ""
+            //     },
+            //     {
+            //         name: 'first',
+            //         data: "degree",
+            //         title: "學階",
+            //         class: "",
+            //     },
+            //     {
+
+            //         data: "date",
+            //         title: "日期",
+            //         class: ""
+            //     },
+            //     {
+
+            //         data: "week",
+            //         title: "週次",
+            //         class: ""
+            //     },
+            //     {
+
+            //         data: "evaluation01",
+            //         title: "評估日期1",
+            //         class: ""
+            //     },
+            //     {
+
+            //         data: "evaluation02",
+            //         title: "評估日期2",
+            //         class: ""
+            //     }
+            // ];
+
+            let columnDefs = [
                 {
-                    name: 'first',
+                    class: 'col',
                     data: "year",
                     title: "年度",
-                    class: ""
-                },
-                {
                     name: 'first',
-                    data: "degree",
-                    title: "學階",
-                    class: "",
-                },
+                },               
                 {
-
-                    data: "date",
-                    title: "日期",
-                    class: ""
-                },
+                    class: 'col',
+                    data: "subject",
+                    title: "科目/服務",
+                    name: 'first',
+                },         
                 {
-
-                    data: "week",
-                    title: "週次",
-                    class: ""
-                },
+                    width: '60px',
+                    data: "group",
+                    title: "施教組別名稱",
+                    name: 'first',
+                },  
                 {
-
-                    data: "evaluation01",
-                    title: "評估日期1",
-                    class: ""
-                },
+                    width: '60px',
+                    data: "module",
+                    title: "單元",
+                    name: 'first',
+                },         
                 {
+                    width: '60px',
+                    data: "annual_module",
+                    title: "年度學習單元",
+                    name: 'first',
+                },         
+                {
+                    width: '60px',
+                    data: "annual_teaching_outline",
+                    title: "年度學習單元",
+                    name: 'first',
+                },         
+            ]
 
-                    data: "evaluation02",
-                    title: "評估日期2",
-                    class: ""
+
+            let mainTable = $('#mainTable').DataTable({
+            // rowsGroup: [
+            //     'first:name',
+            // ],
+            scrollX: true,
+            "language": {
+                "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/Chinese-traditional.json') ?>",
+            },
+            dom: 'Bfrtip',
+            "buttons": [{
+                extend: 'colvis',
+                text: '選擇顯示項目',
+                columns: ':not(.noVis)',
+                columnText: function ( dt, idx, title ) {
+                    return title;
                 }
-            ];
+            }],
+            "order": [],
+            'autoWidth': false,
+            "bSort": true,
+            "info": false,
+            "bPaginate": true,
+            "pageLength": 10,
+            "pagingType": "input",
+            "bProcessing": true,
+            "processing": true,
+            "serverSide": false,
+            'searching': false,
+            "ordering": true,
+            "columns": columnDefs,   
+            "ajax": {
+                "url": "<?= admin_url($page_setting['controller'] . '/ajax') ?>",
+                "method": "get",
+                "timeout": "30000",
+                "data": function(d) {
+                    let year_id = $('#year_id').val();
+                    d.year_id = year_id
+                },
 
-
-
-
-
+            },
+            }); 
 
 
             //  table.columns.adjust();
 
-            $(".searchBtn").click(function() {
+                // $('#settingTable').DataTable({
+                //     scrollX: true,
+                //     scrollCollapse: true,
+                //     bFilter: false,
+                //     bInfo: true,
+                //     sScrollXInner: "100%",
+                //     bLengthChange: true,
+                //     columnDefs: [{
+                //         targets: 'no-sort',
+                //         orderable: false,
 
-                $(".tableWrap").fadeIn();
-
-
-                $('#settingTable').DataTable({
-                    scrollX: true,
-                    scrollCollapse: true,
-                    bFilter: false,
-                    bInfo: true,
-                    sScrollXInner: "100%",
-                    bLengthChange: true,
-                    columnDefs: [{
-                        targets: 'no-sort',
-                        orderable: false,
-
-                    }]
+                //     }]
 
 
-                }).columns.adjust();
+                // }).columns.adjust();
 
 
 
-                $('#settingTable').DataTable({
-                    scrollX: true,
-                    scrollCollapse: true,
-                    bFilter: false,
-                    bInfo: true,
-                    sScrollXInner: "100%",
-                    bLengthChange: true,
-                    columnDefs: [{
-                        targets: 'no-sort',
-                        orderable: false,
+                // $('#settingTable').DataTable({
+                //     scrollX: true,
+                //     scrollCollapse: true,
+                //     bFilter: false,
+                //     bInfo: true,
+                //     sScrollXInner: "100%",
+                //     bLengthChange: true,
+                //     columnDefs: [{
+                //         targets: 'no-sort',
+                //         orderable: false,
 
-                    }]
+                //     }]
 
 
-                }).columns.adjust();
+                // }).columns.adjust();
 
-            });
 
         });
 
 
 
-        function submit_form(_this) {
-            //form checking
-            var valid_data = true;
-            //.form checking
-            if (!valid_data) {
-                //alert('Invalid Data.');
-            } else {
-                ajax_submit_form(_this);
-            }
-        }
-
-        <?php /*
-    //multiple image upload
-    $("input.multiple_upload").fileinput({
-        language: '<?=get_wlocale()?>',
-        previewFileType: "image",
-        showCaption: false,
-        showUpload: false,
-        maxFileSize: 2048,
-        maxFileCount: 30,
-        maxImageHeight: 2000,
-        maxImageWidth: 2000,
-        overwriteInitial: false,
-        allowedFileExtensions: ['jpg','jpeg','png'],
-        initialPreview: <?=isset($photos_preview) ? $photos_preview : "{}"?>,
-        initialPreviewAsData: true,
-        initialPreviewConfig: <?=isset($photos_json) ? $photos_json : "{}"?>,
-        deleteUrl: "<?=admin_url('bk_news/delete_multiple_upload')?>",
-        // hiddenThumbnailContent: true,
-        // initialPreviewShowDelete: true,
-        // removeFromPreviewOnError: true,
-    }).on('filedeleted', function(event, key, jqXHR, data) {
-        alertify.success("<?=__('Deleted successfully!')?>");
-    });
- */ ?>
     </script>
 
 </body>

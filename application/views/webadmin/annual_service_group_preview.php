@@ -119,6 +119,11 @@
                                             <p><?= $preview_group_name ?></p>
 
                                         </div>
+                                        <div class="form-group">
+                                            <label class="text-nowrap">學階：</label>
+                                            <p><?= $preview_level ?></p>
+
+                                        </div>
                                     </div>
                                     <div class="col-lg-12">
                                         <hr>
@@ -127,7 +132,6 @@
 
                                     </div>
                                 </div>
-
 
                                 <div class="mt-4 d-flex justify-content-end">
                                     <button type="submit" class="btn bg-maroon mw-100 mb-4 mr-4">確 定</button>

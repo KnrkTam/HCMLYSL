@@ -96,12 +96,10 @@
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label class="text-nowrap">施教組別名稱：</label>
-
                                             <div class="d-flex align-items-center">
                                                 <div class="form-check d-flex align-items-center w-100 mr-4">
                                                     <input class="form-check-input" type="radio" name="group_name" value="class" id="group_name_class">
                                                     <div style="flex: 1"><?php form_list_type('class_id', ['type' => 'select', 'class'=> 'form-control select2' , 'enable_value' => $classes_list, 'form_validation_rules' => 'trim|required']) ?></div>
-
                                                 </div>
 
 
@@ -116,11 +114,21 @@
                                     </div>
                                     <div class="col-lg-12 custom_group" style="display:none">
                                         <hr>
-                                        <label class="form-check-label"> 
-                                            自訂組別名稱
-                                            <input class="form-control" type="text" name="custom_group_name" id="custom_group_name">
+                                        <div class="row mb-4">
+                                            <div class="col-lg-6">
+                                                <div class="form-group w-50">
+                                                <label class="form-check-label"> 
+                                                    自訂組別名稱
+                                                    <input class="form-control" type="text" name="custom_group_name" id="custom_group_name">
+                                                </label>
+                                                </div>
+                                                <div class="form-group w-50">
+                                                    <label class="text-nowrap">學階：</label>
+                                                    <div style="flex: 1"><?php form_list_type('level_id', ['type' => 'select', 'class'=> 'form-control select2' , 'data-placeholder' => '請選擇...', 'enable_value' => $level_list, 'form_validation_rules' => 'trim|required']) ?></div>
+                                                </div>
+                                            </div>
+                                        </div>
 
-                                        </label>
                                         <div class="row mb-4">
                                             <div class="col-lg-6">
                                                 <p class="bold text-maroon">選擇學生名單</p>
@@ -256,10 +264,10 @@
             }, 
             success:function(d){
                 $('#select_student_id').select2({
-                    data: d
+                    data: d.list
                 })
                 $('#select_student_id').val(Array.from(added_ids)).trigger('change');
-
+                $('#level_id').val(d.level).trigger('change');
             },
             })
         }

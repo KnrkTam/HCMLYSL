@@ -103,17 +103,15 @@
                                                 <div class="form-check d-flex align-items-center w-100 mr-4">
                                                     <p><?= $group_name?></p>
                                                 </div>
-
-                                                <div class="form-check w-100">
-                                                </div>
                                             </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="text-nowrap">學階：</label>
+                                            <p><?= $level ?></p>
                                         </div>
                                     </div>
                                     <div class="col-lg-12 custom_group" >
                                         <hr>
-                                        <!-- <label class="form-check-label"> 
-                                            自訂組別名稱
-                                        <input class="form-control" type="text" name="custom_group_name" id="custom_group_name"> -->
                                         </label>
                                         <div class="row mb-4">
                                             <div class="col-lg-6">
@@ -144,6 +142,7 @@
                                     <input type="hidden" id="class_id" value=<?= $class_id?> name="class_id"> </input>
                                     <input type="hidden" id="group_name" value=<?= $group_name_option?> name="group_name"> </input>
                                     <input type="hidden" id="custom_group_name" value=<?= $group_name?> name="custom_group_name"> </input>
+                                    <input type="hidden" id="level_id" value=<?= $level_id?> name="level_id"> </input>
 
                                     <button type="button" class="btn btn-default mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller']) ?>';">返 回</button>
                                 </div>
@@ -268,7 +267,7 @@
             }, 
             success:function(d){
                 $('#select_student_id').select2({
-                    data: d
+                    data: d.list
                 })
                 $('#select_student_id').val(Array.from(added_ids)).trigger('change');
 
