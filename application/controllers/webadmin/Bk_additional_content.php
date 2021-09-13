@@ -107,7 +107,6 @@ class Bk_additional_content extends CI_Controller //change this
 
                     foreach ($row['modules'] as $m => $module) {
                         $modules .=  '<button type="button" class="btn-xs btn btn-success badge">' .$module. '</button> &nbsp</br>';
-                        // $add_content_box = Additional_contents_model::content($row['group_id'], $m, $row['subject_lesson_module_id']).'</p>';  
                         $add_content_box[] = $m;
 
                     }
@@ -197,7 +196,7 @@ class Bk_additional_content extends CI_Controller //change this
         // dump($groups);
         // dump($subject_lesson_module->id);
         $list = array();
-
+        dump($add_contents);
 
         if (!empty($add_contents)) {
             foreach ($add_contents as $content) {
@@ -234,8 +233,6 @@ class Bk_additional_content extends CI_Controller //change this
             'view_' . $this->scope
         ), FALSE, TRUE);
 
-       
-
         $subject_lesson_module = Subject_lessons_modules_model::find($id);
 
         if (!$subject_lesson_module || !$id) {
@@ -243,7 +240,6 @@ class Bk_additional_content extends CI_Controller //change this
             redirect(admin_url($data['page_setting']['controller']));
         }
         
-   
         // dump($_POST);
         $subject_lesson = $subject_lesson_module->subject_lesson;
 
@@ -264,8 +260,6 @@ class Bk_additional_content extends CI_Controller //change this
 
         $data['action'] = __('預 覽');
 
-
-
         $this->load->view('webadmin/' . $this->scope . '_preview',  $data);
     }
 
@@ -275,6 +269,7 @@ class Bk_additional_content extends CI_Controller //change this
             'update_' . $this->scope
         ), FALSE, TRUE);
 
+        // dump($_POST);
         foreach ($_POST['module'] as $i => $module_id) {
             // $test_data = array(
             //     'group_id' => $_POST['group'][$i],
@@ -285,26 +280,24 @@ class Bk_additional_content extends CI_Controller //change this
 
             
             // dump($test_data);
-            // // dump($_POST['id']);
-            // $primary_key = Additional_contents_model::where('group_id', $_POST['group'][$i])->where('module_id', $module_id)->where('subject_lessons_module_id', $_POST['id'])->whereNotNull('deleted')->toSQL();
+            // dump($_POST['id']);
             //     dump($primary_key);
             $data = array(
-                'id' => $primary_key,
                 'group_id' => $_POST['group'][$i],
                 'module_id' => $module_id,
                 'subject_lessons_module_id' => $_POST['id'],
 
             );
 
-            if ($_POST['content'][$i]) {
+            if (!empty($_POST['content'][$i])) {
                 $add_content = array(
                     'content' => $_POST['content'][$i],
-                    'deleted' => 0
+                    // 'deleted' => 0
                 );
             } else {
                 $add_content = array(
                     'content' => null,
-                    'deleted' => 1
+                    // 'deleted' => 1
                 );
             }
         

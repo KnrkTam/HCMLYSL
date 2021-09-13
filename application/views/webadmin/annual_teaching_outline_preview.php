@@ -63,20 +63,20 @@
                                     <div class="col-lg-2">
                                         <div class="form-group ">
                                             <label class="text-nowrap">年度： </label>
-                                            <p>2019/2020</p>
+                                            <p><?= $year?></p>
 
                                         </div>
                                     </div>
                                     <div class="col-lg-2">
                                         <div class="form-group ">
                                             <label class="text-nowrap">科目： </label>
-                                            <p>語文科1234</p>
+                                            <p><?= $subject?></p>
                                         </div>
                                     </div>
                                     <div class="col-lg-2">
                                         <div class="form-group ">
                                             <label class="text-nowrap">施教組別名稱： </label>
-                                            <P>忠班,信班</p>
+                                            <p><?= $group_name?></p>
 
                                         </div>
                                     </div>
@@ -84,7 +84,7 @@
 
                                         <div class="form-group w-100">
                                             <label class="text-nowrap">年度學習單元: </label>
-                                            <p>認識自己</p>
+                                            <p><?= $annual_module?></p>
 
                                         </div>
 
@@ -93,14 +93,14 @@
                                     <div class="col-lg-2">
                                         <div class="form-group ">
                                             <label class="text-nowrap">單元： </label>
-                                            <p class="mt-2">單元一</p>
+                                            <p><?= $module ?></p>
 
                                         </div>
                                     </div>
                                     <div class="col-lg-2">
                                         <div class="form-group ">
                                             <label class="text-nowrap">週次： </label>
-                                            <p class="mt-2">1 至 10</p>
+                                            <p class="mt-2"><?= $week_from ?> 至 <?= $week_to ?></p>
 
                                         </div>
                                     </div>

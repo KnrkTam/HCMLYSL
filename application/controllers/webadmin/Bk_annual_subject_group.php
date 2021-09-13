@@ -408,10 +408,10 @@ class Bk_annual_subject_group extends CI_Controller //change this
                 'module_order' => $row,
                 'class_id' => $class_id ? $class_id : null,
                 'group_name' => $group_name ? $group_name: null,
-                'level_id' => $level_id ? $level_id : Classes_model::level($class_id),
 
             );
             $add_content = array (
+                'level_id' => $level_id ? $level_id : Classes_model::level($class_id),
                 'staff1_id' => $staff1_id,
                 'staff2_id' => $staff2_id,
                 'updated_at' => date("Y-m-d"),

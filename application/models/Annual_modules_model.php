@@ -48,4 +48,10 @@
             return $list;
 			
 		}
+
+		public static function module($id){
+            $result = Annual_modules_model::find($id);
+
+            return $result;
+        }
 	}

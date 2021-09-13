@@ -87,7 +87,6 @@ class Lessons_model extends BaseModel
             }
         }
 
-        // $list = $l;
         return $list;
         
     }
