@@ -65,16 +65,11 @@ class Bk_additional_content extends CI_Controller //change this
         $year_id = Years_model::orderBy('year_to', 'DESC')->first()->id;
         $subject_id = $_GET['subject_search'];
         $module_id = $_GET['module_search'];
-        // dump($_GET);
 
         $intended_learning_outline = array();
 
-        if ($module_id) {
-            $intended_learning_outline = Subject_lessons_modules_model::search($year_id, $subject_id, $module_id, null, null);
-        } else {
-            $intended_learning_outline = Subject_lessons_modules_model::search($year_id, $subject_id, $module_id, null, null);
-
-        }
+        $intended_learning_outline = Subject_lessons_modules_model::search($year_id, $subject_id, $module_id, null, null);
+    
 
         if ($intended_learning_outline) {
             foreach ($intended_learning_outline as $y => $subject_lesson_module_id) {
@@ -82,18 +77,14 @@ class Bk_additional_content extends CI_Controller //change this
                 $subject_lesson = $sub_ann_module->subject_lesson;
                 $lesson = $subject_lesson->lesson;
                 $group_count = Lessons_group_model::id_list($lesson->id);
-                // $group_id = $sub_ann_module->group_id;
                 $subject_lesson_id = $subject_lesson->id;
                 $lesson_id = $subject_lesson->lesson_id;
-                // $modules = Subject_lessons_modules_model::moduleList($subject_lesson_id, $year_id);
-                // dump($sub_ann_module);
-                // dump($modules);
+
                 foreach ($group_count as $group_id => $group) {
-                    $lessons_arr[] = array('lesson' => Lessons_model::table_list($lesson_id), 'subject_lesson_id' =>  $subject_lesson_id, 'subject_cat_id' => $subject_lesson->subject_category_id, 'subject_id' => $subject_lesson->subject_id, 'count' => $y, 'modules' =>  Subject_lessons_modules_model::moduleList($subject_lesson_id, $year_id), 'remarks' => Lessons_remarks_model::id_list($subject_lesson_id), 'group_id' => $group_id, 'additional_content' => $add_content, 'subject_lesson_module_id' => $subject_lesson_module_id);
+                    $lessons_arr[] = array('id' => $subject_lesson_module_id, 'lesson' => Lessons_model::table_list($lesson_id), 'subject_lesson_id' =>  $subject_lesson_id, 'subject_cat_id' => $subject_lesson->subject_category_id, 'subject_id' => $subject_lesson->subject_id, 'count' => $y, 'modules' =>  Subject_lessons_modules_model::moduleList($subject_lesson_id, $year_id), 'remarks' => Lessons_remarks_model::id_list($subject_lesson_id), 'group_id' => $group_id, 'additional_content' => $add_content);
                 }
             }
         }
-        // dump($lessons_arr);
 
         $result_count = count($lessons_arr);
         $data = array();
@@ -124,9 +115,9 @@ class Bk_additional_content extends CI_Controller //change this
                     $data[$num]['expected_outcome'] = $row['lesson']['expected_outcome'];
                     $add_box = "";
                     foreach ($add_content_box as $add_content) {
-                        $add_box .= '<p class="text-blue"><strong class="text-black">'.Modules_model::name($add_content). ':</strong> &nbsp  '. Additional_contents_model::content($row['group_id'], $add_content, $row['subject_lesson_module_id']).'</p>';
+                        $add_box .= '<p class="text-blue"><strong class="text-black">'.Modules_model::name($add_content). ':</strong> &nbsp  '. Additional_contents_model::content($row['group_id'], $add_content, $row['id']).'</p>';
                     }
-                    $module_add_content = Additional_contents_model::where('subject_lessons_module_id', $row['subject_lesson_module_id'])->first();
+                    $module_add_content = Additional_contents_model::where('subject_lessons_module_id', $row['id'])->first();
                     $data[$num]['add_content'] =   $module_add_content ? $add_box : null;
                     $data[$num]['performance'] = $foo['performance'];
                     $module_arr = "";
@@ -134,7 +125,7 @@ class Bk_additional_content extends CI_Controller //change this
                         $module_arr .= $myModule. '&nbsp';
                     }
                     $data[$num]['modules'] = $module_arr;
-                    $data[$num]['id'] = $row['subject_lesson_module_id'];
+                    $data[$num]['id'] = $row['id'];
 
                     $num++;
                 }
@@ -196,7 +187,7 @@ class Bk_additional_content extends CI_Controller //change this
         // dump($groups);
         // dump($subject_lesson_module->id);
         $list = array();
-        dump($add_contents);
+        // dump($add_contents);
 
         if (!empty($add_contents)) {
             foreach ($add_contents as $content) {

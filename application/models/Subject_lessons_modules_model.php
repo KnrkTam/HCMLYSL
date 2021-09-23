@@ -40,8 +40,12 @@
             
             if ($subject_id == "0") {
                 $subject_id = null;
-            } else {
+            // } else if (Subject_lessons_model::where('subject_id', $subject_id)->first() == null){
+            //     $list = 'not subject_id';
+            //     return $list;
+            }else {
                 $subject_arr = Subject_lessons_model::where('subject_id', $subject_id)->pluck('id')->toArray();
+                // $list = null;
             }
 
         
@@ -102,13 +106,13 @@
             // $list = call_user_func_array("array_merge", $result);
 
             return $list;
-            // return $result;
-            // return $subject_arr;
-
+ 
         }
  
         public function subject_lesson() 
         {
             return $this->belongsTo('Subject_lessons_model', 'subject_lessons_id');
         }
+
+ 
 	}

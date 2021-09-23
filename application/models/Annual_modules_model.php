@@ -6,24 +6,29 @@
 		protected $table = "annual_modules";
 
 		public static function list($year_id = null) {
-			
-			if ($year_id) {
-				$year_data = Annual_modules_model::where('year_id', $year_id)->get()->groupBy('level_id', 'class_id', 'year_id');
-			} else {
-				$year_data = Annual_modules_model::all()->groupBy('level_id', 'class_id', 'year_id');
-			}
+			$year_data= Annual_modules_model::when($year_id, function($query, $year_id){
+				return $query->where('year_id', $year_id);
+			})
+			->groupBy('year_id','level_id','class_id')
+			->get();
 
-			$y = 0;
-			foreach ($year_data as $i => $group) {
-				$list[] = array_values(array_values((array)$group)[0]);
-				
-				foreach ($list as $j => $module) {
-					$result[$y] = array('year_id' => $year_id, 'level_id' => $module[0]['level_id'], 'class_id'=> $module[0]['class_id'], 'modules' => array(1 => $module[0], 2 => $module[1], 3 => $module[2], 4 => $module[3]));
-				}
-				$y++;
 	
+			foreach ($year_data as $row) {
+				// foreach ($row as $module) {
+					$modules = Annual_modules_model::where('year_id', $year_id)->where('level_id', $row['level_id'])->where('class_id',$row['class_id'])->get();
+					$result[] = array(
+						'year_id' => $year_id, 
+						'level_id' => $row['level_id'], 
+						'class_id'=> $row['class_id'], 
+						'modules'=> array(
+							1 => $modules->where('module_order',1)->first(), 
+							2 => $modules->where('module_order',2)->first(), 
+							3 => $modules->where('module_order',3)->first(), 
+							4 => $modules->where('module_order',4)->first()
+						)
+					);
+
 			}
-			
 			return $result;
 		}
 

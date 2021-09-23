@@ -173,7 +173,7 @@
                     name: 'first',
                 },                
                 {
-                    data: "expected_outcome",
+                    data: "performance",
                     title: "關鍵表現項目",
                     name: 'double',
                 },                

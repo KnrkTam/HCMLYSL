@@ -45,7 +45,7 @@
                                     <div class="col-lg-3">
                                         <div class="form-group ">
                                             <label class="text-nowrap">年度： </label>
-                                            <?php form_list_type('year_id', ['type' => 'select', 'class'=> 'form-control select2' , 'data-placeholder' => '請選擇...', 'enable_value' => $years_list, 'form_validation_rules' => 'trim|required']) ?>
+                                            <?php form_list_type('year_id', ['type' => 'select', 'class'=> 'form-control select2' , 'data-placeholder' => '請選擇...', 'value' => $year_id, 'enable_value' => $years_list, 'form_validation_rules' => 'trim|required']) ?>
                                         </div>
                                     </div>
                                     <div class="col-lg-3">
@@ -166,9 +166,10 @@
                 data:{level_id:level_id},
                 dataType:'json',
                 success:function(d){
+                    console.log(d)
                     let listData = []
                     $('.module_list').empty()
-                    for (const [key, value] of Object.entries(d)) {
+                    for (const [key, value] of Object.entries(d.modules)) {
                         let option = {
                             id: key,
                             text: `${value}`,
@@ -178,6 +179,20 @@
 
                     $('.module_list').select2({
                         data: listData
+                    })
+                    let classData = []
+
+                    $('#class_id').empty()
+                    for (const [key, value] of Object.entries(d.classes)) {
+                        let option = {
+                            id: key,
+                            text: `${value}`,
+                        }; 
+                        classData.push(option)
+                    }
+
+                    $('#class_id').select2({
+                        data: classData
                     })
                     
                 }

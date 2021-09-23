@@ -12,6 +12,12 @@
             return $result;
 		}
 
+		public static function id($group_id, $module_id, $subject_lessons_module_id) {
+			$add = Additional_contents_model::where('group_id', $group_id)->where('module_id', $module_id)->where('subject_lessons_module_id', $subject_lessons_module_id)->first();
+			$result = $add->id;
+            return $result;
+		}
+
 		// public static function year_list($year_id, $all = null) {
 		// 	if ($year_id) {
 		// 		$year_data = Annual_modules_model::where('year_id', $year_id)->pluck('module_id')->unique();

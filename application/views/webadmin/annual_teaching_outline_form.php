@@ -8,8 +8,6 @@
         .addonRow {
             display: none;
         }
-     
-        
     </style>
 </head>
 
@@ -41,7 +39,7 @@
                     <!-- column -->
                     <div class="col-md-12">
                         <!-- form start -->
-                        <?= form_open_multipart($form_action, 'class="form-horizontal"'); ?>
+                        <?= form_open_multipart($form_action, 'id="myForm" class="form-horizontal"'); ?>
 
                         <div class="box box-primary">
                             <!-- /.box-header -->
@@ -98,6 +96,10 @@
                                     </div>
                                 </div>
                                 <h4 class="bold">搜尋單元：</h4>
+                                <div class="alert alert-info alert-dismissible fade in" role="alert" id="alert-add-item" style="display:none">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                    <p> 已選擇 <strong id="item-count"></strong> 個項目</p>
+                                </div>
 
                                 <div class="row mb-4">
                                     <div class="col-lg-8">
@@ -120,8 +122,12 @@
 
                                     <hr>
                                     <div class="mt-4 d-flex justify-content-end">
-                                        <button type="submit" class="btn bg-orange mw-100 mb-4 mr-4" >確 定</button>
+                                        <button type="button" id="createBtn" class="btn bg-orange mw-100 mb-4 mr-4" >確 定</button>
                                         <input type="hidden" value=<?= $function?> name="action"> </input>
+                                        <input type="hidden" id="common_lessons" name="common_lessons[]" value=""></input>
+                                        <input type="hidden" id="selected_lessons" name="selected_lessons[]" value=""></input>
+                                        <input type="hidden" name="action" value="create"></input>
+
 
                                         <button type="button" class="btn btn-default mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller']) ?>';">返 回</button>
 
@@ -160,131 +166,18 @@
 
 
             $(document).on("click", ".showMoreBtn", function() {
-                // $(this).parent().parent().find(".moduleBox").slideToggle('slow', function() {
-                    // $(this).parent().find(".showMoreBtn").toggleClass('active', $(this).is(':visible'));
-                    // $(this).parent().parent().find(".previewBox").remove();
-                    $(this).parent().parent().find(".addonRow").slideToggle('slow', function() {
-                        if ($(this).is(':visible')){
-                            $(this).parent().parent().find(".showMoreText").text("隱藏");
-
-                        // $(this).parent().find(".showMoreBtn i").attr("class", "fa fa-fw fa-minus-square-o");
-                        } else {
-                            // $(this).parent().parent().find(".addonRow").show();
-                            // $(this).parent().parent().find(".addonRow").slideToggle('slow', function() {});
-                            $(this).parent().parent().find(".showMoreText").text("顯示");
-
-
-                            // $(this).parent().parent().find(".showMoreText").text("顯示");
-                            // $(this).parent().find(".showMoreBtn i").attr("class", "fa fa-fw  fa-plus-square-o");
-                        }
-                    });
-
-                    
-                // })
+                $(this).parent().parent().find(".addonRow").slideToggle('slow', function() {
+                    if ($(this).is(':visible')){
+                        $(this).parent().parent().find(".showMoreText").text("隱藏");
+                    } else {
+                        $(this).parent().parent().find(".showMoreText").text("顯示");
+                    }
+                });
             });
-            // var data = [{
-            //         "id": "1",
-            //         "subjct": "語文1234",
-            //         "course": "語文",
-            //         "category": "聆聽",
-            //         "coursepoint": "聽力訓練",
-            //         "element": "技能",
-            //         "group": "初組",
-            //         "addon": "1.1 認識自己：去、坐",
-            //         "studyresults": "能注意聲音的來源，對聲音作出反應",
-            //         "performance": "有意識地留意及回應聲音 (1)",
-            //         "evaluation": "A",
-            //         "coursenum": "MN0155",
-            //         "courserelatenum": "MN0449, MS0002",
-            //         "projectnum": "",
-            //         "remarks": "非華語",
-            //     },
-            //     {
-            //         "id": "1",
-            //         "subjct": "語文1234",
-            //         "course": "語文",
-            //         "category": "聆聽",
-            //         "coursepoint": "聽力訓練",
-            //         "element": "技能",
-            //         "group": "初組",
-            //         "addon": "1.1 認識自己：去、坐",
-            //         "studyresults": "能注意聲音的來源，對聲音作出反應",
-            //         "performance": "有意識地留意及回應聲音 (2)",
-            //         "evaluation": "B",
-            //         "coursenum": "MN0155",
-            //         "courserelatenum": "MN0449, MS0002",
-            //         "projectnum": "",
-            //         "remarks": "非華語",
-            //     },
-            //     {
-            //         "id": "2",
-            //         "subjct": "自理",
-            //         "course": "語文",
-            //         "category": "聆聽",
-            //         "coursepoint": "聽力訓練",
-            //         "element": "技能",
-            //         "group": "中組",
-            //         "addon": "1.1 認識自己：去、坐",
-            //         "studyresults": "能注意聲音的來源，對聲音作出反應",
-            //         "performance": "有意識地留意及回應聲音 (1)",
-            //         "evaluation": "A",
-            //         "coursenum": "MN0155",
-            //         "courserelatenum": "MN0449, MS0002",
-            //         "projectnum": "",
-            //         "remarks": "非華語",
-            //     },
-            //     {
-            //         "id": "2",
-            //         "subjct": "自理",
-            //         "course": "語文",
-            //         "category": "聆聽",
-            //         "coursepoint": "聽力訓練",
-            //         "element": "技能",
-            //         "group": "中組",
-            //         "addon": "1.1 認識自己：去、坐",
-            //         "studyresults": "能注意聲音的來源，對聲音作出反應",
-            //         "performance": "有意識地留意及回應聲音 (2)",
-            //         "evaluation": "B",
-            //         "coursenum": "MN0155",
-            //         "courserelatenum": "MN0449, MS0002",
-            //         "projectnum": "",
-            //         "remarks": "非華語",
-            //     },
-            //     {
-            //         "id": "2",
-            //         "subjct": "自理",
-            //         "course": "語文",
-            //         "category": "聆聽",
-            //         "coursepoint": "聽力訓練",
-            //         "element": "技能",
-            //         "group": "中組",
-            //         "addon": "1.3 我的家：爸爸、媽媽",
-            //         "studyresults": "能注意聲音的來源，對聲音作出反應",
-            //         "performance": "有意識地留意及回應聲音 (3)",
-            //         "evaluation": "c",
-            //         "coursenum": "MN0155",
-            //         "courserelatenum": "MN0449, MS0002",
-            //         "projectnum": "",
-            //         "remarks": "非華語",
-            //     },
-            //     {
-            //         "id": "3",
-            //         "subjct": "生活常規",
-            //         "course": "語文",
-            //         "category": "聆聽",
-            //         "coursepoint": "聽力訓練",
-            //         "element": "技能",
-            //         "group": "初組",
-            //         "addon": "1.3 我的家：爸爸、媽媽",
-            //         "studyresults": "能注意聲音的來源，對聲音作出反應",
-            //         "performance": "有意識地留意及回應聲音 (1)",
-            //         "evaluation": "A",
-            //         "coursenum": "MN0155",
-            //         "courserelatenum": "MN0449, MS0002",
-            //         "projectnum": "",
-            //         "remarks": "非華語",
-            //     }
-            // ];
+            let id = <?= $id ?>;
+            let added_ids = new Set();
+            let common_ids = new Set();
+
 
 
             $(".searchBtn").click(function() {
@@ -294,25 +187,11 @@
             });
 
             var columnDefs = [{
-                // render: function(data, type, row) {
-
-                //     var result = '<input type="checkbox" name="subjectCheck" class="subjectCheck" />';
-                //     return result;
-                //     // alert(row.id);
-                //     // data: null,
-                //     // title: "操作",
-                //     // defaultContent:
-                //     // '<a href="#"  class="editor_edit"  data-toggle="modal" data-id="editId" data-target="#itemEdit">Edit</a> / <a href="#" class="editor_remove" rdata-toggle="modal" data-target=".bd-example-modal-lg">Delete</a>'
-                //     // defaultContent: '<a href="#" class="button moreBtn" data-toggle="modal" data-target=".bd-example-modal-lg">Edit Btn</a>'
-
-                // },
                 data: "id",
                 title: "",
                 class: "no-sort w-10px noVis",
-                // name: 'first',
-
             }, 
-           {
+            {
                 name: 'first',
                 data: "code",
                 title: "課程編號",
@@ -361,7 +240,6 @@
                             let result = '暫無補充內容';
                             return result;
                         } else {
-                            // console.log(row.addon);
                             let result =  '<span class="addonRow">' + data + ' </span><span class="showMoreBtn"><a class="small showMoreText" style="cursor: pointer">顯示</a></span>';
                             return result;
                         }
@@ -389,6 +267,15 @@
                 title: "相關課程編號",
                 class: ""
             }, {
+                render: function(data, type, row) {
+                    if (row.relcode == "" | !row.rel_code) {
+                        let result = '暫無相關項目編號';
+                        return result;
+                    } else {
+                        let result = data;
+                        return result;
+                    }
+                },
                 name: 'first',
                 data: "rel_code",
                 title: "相關項目編號",
@@ -400,6 +287,13 @@
                 class: ""
             }];
 
+            function show_status () {
+                let count = added_ids.size;
+                if (count > 0) {
+                    $('#item-count').html(count);
+                    $('#alert-add-item').fadeIn( 300 ).delay( 1500 ).fadeOut( 400 );
+                }
+            }
 
             let mainTable = $('#subjectTable').DataTable({
                 scrollX: true,
@@ -436,44 +330,31 @@
                     "data": function(d) {
                         let module_id = $('#search_id').val();
                         let year_id = $('#year_id').val();
-                        // let annual_module_id = $('#annual_module_id').val();
-                        // let category_id = $('#subject_category_id').val();
-                        // let sb_obj_id = $('#sb_obj_id').val();
+
+
                         d.module_id = module_id;
                         d.year_id = year_id;
-                        // d.annual_module_search = annual_module_id;
-                        // d.subject_category_search = category_id;
-                        // d.sb_obj_search = sb_obj_id;
-                        // d.subject_search = subject_id;
+
                     },
                     "complete": function(e){
-                        // $('[data-toggle="tooltip"]').tooltip();
-                        // $(".addLesson").change(function(e) {
-                        //     if ($(this).is(':checked')) {
-                        //         added_ids.add(this.value)
-                        //         e.stopPropagation();
+                        $(".addLesson").change(function(e){
+                            if ($(this).is(':checked')) {
+                                added_ids.add(this.dataset.group + '_' + this.dataset.key_performance.toString());
+                            } else {
+                                added_ids.delete(this.dataset.group+ '_' +this.dataset.key_performance.toString());
+                            }
+                            console.log(Array.from(added_ids));
+                            show_status();
 
-                        //         subjectSelectedTable.draw();
-                        //     } else {
-                        //         added_ids.delete(this.value)
-                        //         subjectSelectedTable.draw();
+                        })
+                        let old_arr = Array.from(added_ids)
+                        for (let i = 0; i < old_arr.length; i++) {
+                            // console.log(old_arr[i].split(",")[0]);
+                            // console.log(old_arr[i].split(",")[1]);
+                            $(`input[type=checkbox][class=addLesson][data-group=${old_arr[i].split("_")[0]}][data-key_performance=${old_arr[i].split("_")[1]}]`).prop('checked', true);
+                        }
 
-                        //     }
-                        // });
-
-                        // let old_arr = Array.from(added_ids)
-                        // for (let i = 0; i < old_arr.length; i++) {
-                        //     $(`input[type=checkbox][class=addLesson][value=${old_arr[i]}]`).prop('checked', true)
-                        // }
-
-                        // $(".removeRow").click(function() {
-                        //     added_ids.delete(this.attributes.value.value);
-                        //     subjectSelectedTable.draw();
-                        //     Subject_dataTable.draw();
-
-                        // });
-                        // $('input[id=subject_lessons]').val(Array.from(added_ids));
-
+                        show_status();
                     },
                     "error": function(e) {
                         console.log(e);
@@ -492,10 +373,10 @@
                         return title;
                     }
                 }],
-                // rowsGroup: [
+                rowsGroup: [
                 //     'zore:name',
-                //     'first:name',
-                // ],
+                    'first:name',
+                ],
                 "language": {
                     "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/Chinese-traditional.json') ?>",
                 },
@@ -504,49 +385,33 @@
                 "bPaginate": true,
                 "pageLength": 5,
                 "processing": true,
-                "serverSide": false,
+                "serverSide": true,
                 "ordering": false,
                 "searching": false,
                 "searchDelay": 0,
                 "columns": columnDefs,            
                 "ajax": {
-                    "url": "<?= admin_url($page_setting['controller'] . '/search_ajax') ?>",
+                    "url": "<?= admin_url($page_setting['controller'] . '/search_ajax_common') ?>",
                     "method": "get",
                     "timeout": "30000",
                     "data": function(d) {
-               
-                        // d.annual_module_search = annual_module_id;
-                        // d.subject_category_search = category_id;
-                        // d.sb_obj_search = sb_obj_id;
-                        // // d.subject_search = subject_id;
+                        let year_id = $('#year_id').val();
+                        d.year_id = year_id;
                     },
                     "complete": function(e){
-                        // $('[data-toggle="tooltip"]').tooltip();
-                        // $(".addLesson").change(function(e) {
-                        //     if ($(this).is(':checked')) {
-                        //         added_ids.add(this.value)
-                        //         e.stopPropagation();
-
-                        //         subjectSelectedTable.draw();
-                        //     } else {
-                        //         added_ids.delete(this.value)
-                        //         subjectSelectedTable.draw();
-
-                        //     }
-                        // });
-
-                        // let old_arr = Array.from(added_ids)
-                        // for (let i = 0; i < old_arr.length; i++) {
-                        //     $(`input[type=checkbox][class=addLesson][value=${old_arr[i]}]`).prop('checked', true)
-                        // }
-
-                        // $(".removeRow").click(function() {
-                        //     added_ids.delete(this.attributes.value.value);
-                        //     subjectSelectedTable.draw();
-                        //     Subject_dataTable.draw();
-
-                        // });
-                        // $('input[id=subject_lessons]').val(Array.from(added_ids));
+                        $(".addCommon").change(function(e){
+                            if ($(this).is(':checked')) {
+                                // console.log(this.value)
+                                // console.log(this.dataset.group)
+                                // console.log(this.dataset.key_performance)
+                                common_ids.add(this.dataset.group+ '_' +this.dataset.key_performance.toString());
+                            } else {
+                                common_ids.delete(this.dataset.group+ '_' +this.dataset.key_performance.toString());
+                            //     console.log('unchecked');
+                            //     console.log([this.dataset.group, this.dataset.key_performance])
+                            }
+                            console.log(common_ids);
+                        })
 
                     },
                     "error": function(e) {
@@ -555,6 +420,36 @@
                 },
             });
 
+
+            let createBtn = document.querySelector('#createBtn');
+            createBtn.addEventListener("click",function(){
+                createModule(Array.from(added_ids), Array.from(common_ids) ,id , annual_module_id.value );
+                function createModule(added_ids, common_ids, id, annual_module_id){
+                    $.ajax({
+                    url: '<?= (admin_url($page_setting['controller'])) . '/validate' ?>',
+                    method:'POST',
+                    data:{added_ids:added_ids, common_ids:common_ids, id, annual_module_id: annual_module_id},
+                    dataType:'json',     
+                    beforeSend: function(){
+                        
+                        $('input[id=common_lessons]').val(common_ids);
+                        $('input[id=selected_lessons]').val(added_ids);
+                    },
+                    success:function(data){
+                        if (data.status == 'success') {
+                            document.getElementById('myForm').submit();
+                        } else {
+                            alertify.error(data.status)
+                        }
+                    },
+                    error: function(error){
+                        alert('error');
+                        // alert('duplicated');
+                        // console.log(error);
+                    }
+                    });
+                } 
+            })        
         })
 
     </script>

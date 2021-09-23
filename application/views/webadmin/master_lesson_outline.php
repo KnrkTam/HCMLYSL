@@ -77,7 +77,7 @@
                                     <table class="table table-bordered table-striped" id="Course_datatable">
                                         <thead>
                                             <tr class="bg-light-blue color-palette" style="z-index: -1000;">
-                                                <th class="no-sort" style="min-width: 4px;"></th>
+                                                <th class="no-sort noVis" style="min-width: 4px;"></th>
                                                 <th class="nowrap">課程</th>
                                                 <th class="nowrap">課程範疇</th>
                                                 <th class="nowrap">中央課程學習重點</th>
@@ -129,6 +129,15 @@
                 "language": {
                     "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/Chinese-traditional.json') ?>",
                 },
+                dom: 'Bfrtip',
+                "buttons": [{
+                    extend: 'colvis',
+                    text: '選擇顯示項目',
+                    columns: ':not(.noVis)',
+                    columnText: function ( dt, idx, title ) {
+                        return title;
+                    }
+                }],
                 "order": [],
                 "bSort": false,
                 "pageLength": 10,

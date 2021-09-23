@@ -2,6 +2,11 @@
 <html lang="en">
 
 <head>
+    <style> 
+        .addonRow {
+            display: none;
+        }       
+    </style>
     <?php include_once("head.php"); ?>
 </head>
 
@@ -34,27 +39,7 @@
                     <div class="col-md-12">
                         <!-- form start -->
                         <?= form_open_multipart($form_action, 'class="form-horizontal"'); ?>
-                        <!-- general form elements 
-                    <input type="hidden" name="id" value="<?= $id ?>"/>-->
                         <div class="box box-primary">
-                            <!-- <div class="box-header">
-                            <div class="row col-md-2">
-                                <div class="btn-group" data-spy="affix" data-offset-top="2" style="z-index: 20;">
-                                    <a href="<?= admin_url($page_setting['controller']) ?>" class="btn btn-default">
-                                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
-                                        <?= __('Cancel') ?>
-                                    </a>
-
-                                    <?php if (validate_user_access(['create_news', 'update_news'])) { ?>
-                                        <button type="button" class="btn btn-primary" onclick="submit_form(this);">
-                                            <i class="fa fa-floppy-o" aria-hidden="true"></i> <?= __('Save') ?>
-                                        </button>
-                                    <?php } ?>
-                                </div>
-                            </div>
-                        </div> -->
-                            <!-- /.box-header -->
-
                             <div class="box-body">
                                 <div id="signupalert" class="alert alert-danger margin_bottom_20"></div>
 
@@ -105,8 +90,8 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
-                                        <h4 class="bold">搜尋單元：</h4>
-                                        <table class="table table-bordered table-striped outlineSelectedTable1">
+                                        <h4 class="bold">單元既定大綱內容</h4>
+                                        <table class="table table-bordered table-striped" id="previewTable">
 
                                         </table>
 
@@ -114,16 +99,19 @@
 
                                         <h4 class="bold pt-4">共通能力/價值觀</h4>
 
-                                        <table class="table table-bordered table-striped skillSelectedTable">
+                                        <table class="table table-bordered table-striped" id="previewCommonTable">
 
                                         </table>
 
                                         <hr>
                                         <div class="mt-4 d-flex justify-content-end">
-                                            <button type="button" class="btn bg-maroon mw-100 mb-4 mr-4" onclick="location.href='../Bk_teach_outline/preview';">確 定</button>
-
-                                            <button type="button" class="btn btn-default mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller']) ?>';">返 回</button>
-
+                                            <textarea class="hidden" name="added_id[]"><?php echo json_encode($added_ids)?> </textarea>
+                                            <textarea class="hidden" name="common_id[]"><?php echo json_encode($common_ids)?> </textarea>
+                                            <textarea class="hidden" name="post_data"><?php echo json_encode($post_data)?> </textarea> 
+                                            <input class="hidden" name="annual_module" value="<?= $annual_module?>"></input>
+                                            <button type="submit" class="btn bg-maroon mw-100 mb-4 mr-4">確 定</button>
+                                            <button type="button" class="btn btn-default mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller']) . '/'. $previous. '/'. $id?>';">返 回</button>
+                                            <!-- <button type="button" class="btn btn-default mw-100 mb-4" onclick="history.go(-1)">返 回</button> -->
                                         </div>
                                     </div>
                                 </div>
@@ -155,263 +143,212 @@
     <?php include_once("script.php"); ?>
     <script>
         $(document).ready(function() {
+            $(document).on("click", ".showMoreBtn", function() {
+                $(this).parent().parent().find(".addonRow").slideToggle('slow', function() {
+                    if ($(this).is(':visible')){
+                        $(this).parent().parent().find(".showMoreText").text("隱藏");
+                    } else {
+                        $(this).parent().parent().find(".showMoreText").text("顯示");
+                    }
+                });
+            });
+            let columnDefs = [
+            {
+                name: 'first',
+                data: "code",
+                title: "課程編號",
+                class: ""   
+            }, 
+            {
 
-            var data = [{
-                    "id": "1",
-                    "subjct": "語文1234",
-                    "course": "語文",
-                    "category": "聆聽",
-                    "coursepoint": "聽力訓練",
-                    "element": "技能",
-                    "group": "初組",
-                    "addon": "1.1 認識自己：去、坐",
-                    "studyresults": "能注意聲音的來源，對聲音作出反應",
-                    "performance": "有意識地留意及回應聲音 (1)",
-                    "evaluation": "A",
-                    "coursenum": "MN0155",
-                    "courserelatenum": "MN0449, MS0002",
-                    "projectnum": "",
-                    "remarks": "非華語",
-                },
-                {
-                    "id": "1",
-                    "subjct": "語文1234",
-                    "course": "語文",
-                    "category": "聆聽",
-                    "coursepoint": "聽力訓練",
-                    "element": "技能",
-                    "group": "初組",
-                    "addon": "1.1 認識自己：去、坐",
-                    "studyresults": "能注意聲音的來源，對聲音作出反應",
-                    "performance": "有意識地留意及回應聲音 (2)",
-                    "evaluation": "B",
-                    "coursenum": "MN0155",
-                    "courserelatenum": "MN0449, MS0002",
-                    "projectnum": "",
-                    "remarks": "非華語",
-                },
-                {
-                    "id": "2",
-                    "subjct": "自理",
-                    "course": "語文",
-                    "category": "聆聽",
-                    "coursepoint": "聽力訓練",
-                    "element": "技能",
-                    "group": "中組",
-                    "addon": "1.1 認識自己：去、坐",
-                    "studyresults": "能注意聲音的來源，對聲音作出反應",
-                    "performance": "有意識地留意及回應聲音 (1)",
-                    "evaluation": "A",
-                    "coursenum": "MN0155",
-                    "courserelatenum": "MN0449, MS0002",
-                    "projectnum": "",
-                    "remarks": "非華語",
-                },
-                {
-                    "id": "2",
-                    "subjct": "自理",
-                    "course": "語文",
-                    "category": "聆聽",
-                    "coursepoint": "聽力訓練",
-                    "element": "技能",
-                    "group": "中組",
-                    "addon": "1.1 認識自己：去、坐",
-                    "studyresults": "能注意聲音的來源，對聲音作出反應",
-                    "performance": "有意識地留意及回應聲音 (2)",
-                    "evaluation": "B",
-                    "coursenum": "MN0155",
-                    "courserelatenum": "MN0449, MS0002",
-                    "projectnum": "",
-                    "remarks": "非華語",
-                },
-                {
-                    "id": "2",
-                    "subjct": "自理",
-                    "course": "語文",
-                    "category": "聆聽",
-                    "coursepoint": "聽力訓練",
-                    "element": "技能",
-                    "group": "中組",
-                    "addon": "1.3 我的家：爸爸、媽媽",
-                    "studyresults": "能注意聲音的來源，對聲音作出反應",
-                    "performance": "有意識地留意及回應聲音 (3)",
-                    "evaluation": "c",
-                    "coursenum": "MN0155",
-                    "courserelatenum": "MN0449, MS0002",
-                    "projectnum": "",
-                    "remarks": "非華語",
-                },
-                {
-                    "id": "3",
-                    "subjct": "生活常規",
-                    "course": "語文",
-                    "category": "聆聽",
-                    "coursepoint": "聽力訓練",
-                    "element": "技能",
-                    "group": "初組",
-                    "addon": "1.3 我的家：爸爸、媽媽",
-                    "studyresults": "能注意聲音的來源，對聲音作出反應",
-                    "performance": "有意識地留意及回應聲音 (1)",
-                    "evaluation": "A",
-                    "coursenum": "MN0155",
-                    "courserelatenum": "MN0449, MS0002",
-                    "projectnum": "",
-                    "remarks": "非華語",
-                }
-            ];
+                data: "group",
+                title: "組別",
+                class: "",
+                name: 'first',
 
-
-
-            var columnDefs = [{
-
-                data: "subjct",
+            },
+            {
+                data: "subject",
                 title: "科目",
-                class: ""
-            }, {
+                class: "",
+                width: "120px",
+            }, 
+            {
 
                 data: "course",
                 title: "課程",
                 class: "",
-            }, {
+            },
+            {
 
                 data: "category",
                 title: "範疇",
                 class: ""
-            }, {
+            }, 
+            {
 
-                data: "coursepoint",
+                data: "sb_obj",
                 title: "校本課程學習重點",
                 class: ""
-            }, {
+            }, 
+            {
 
                 data: "element",
                 title: "學習元素",
                 class: ""
-            }, {
+            }, 
+            {
 
-                data: "group",
-                title: "組別",
-                class: ""
-            }, {
-
-                data: "studyresults",
+                data: "expected_outcome",
                 title: "預期學習成果",
                 class: ""
-            }, {
-
-
-                name: 'first',
+            }, 
+            {
+                // render: function(data, type, row) {
+                //         if (row.addon == "" || !row.addon) {
+                //             let result = '<p style="color:gray">暫無補充內容</p>';
+                //             return result;
+                //         } else {
+                //             // console.log(row.addon);
+                //             let result =  '<span class="addonRow">' + data + ' </span><span class="showMoreBtn"><a class="small showMoreText" style="cursor: pointer">顯示</a></span>';
+                //             return result;
+                //         }
+                //     },
+                
                 data: "addon",
                 title: "補充內容",
-                class: "w-90px"
-            }, {
+                class: "w-180px"
+            }, 
+            {
                 data: "performance",
                 title: "關鍵表現項目",
-                class: ""
-            }, {
-                data: "evaluation",
+                class: "",
+                name: 'first',
+            }, 
+            {
+                data: "assessment",
                 title: "評估模式",
-                class: ""
-            }, {
+                class: "",
                 name: 'first',
-                data: "coursenum",
-                title: "課程編號",
-                class: ""
-            }, {
+            },  
+            {
                 name: 'first',
-                data: "courserelatenum",
+                data: "related_lesson",
                 title: "相關課程編號",
                 class: ""
-            }, {
+            }, 
+            {
+                // render: function(data, type, row) {
+                //     if (row.relcode == "" | !row.rel_code) {
+                //         let result = '<p style="color:gray">暫無相關項目編號</p>';
+                //         return result;
+                //     } else {
+                //         let result = data;
+                //         return result;
+                //     }
+                // },
                 name: 'first',
-                data: "projectnum",
+                data: "rel_code",
                 title: "相關項目編號",
                 class: ""
-            }, {
+            }, 
+            {
                 name: 'first',
                 data: "remarks",
                 title: "備註",
                 class: ""
             }];
 
-
-
-            $('.outlineSelectedTable1').DataTable({
-                data: data,
-                columns: columnDefs,
-
-                scrollY: "400px",
-                rowsGroup: [
-
-                    'first:name'
-                ],
+            let subjectTable = $('#previewTable').DataTable({
                 scrollX: true,
-                scrollCollapse: true,
-                columnDefs: [{
-                    targets: 0,
-                    orderable: false,
-
-                }]
-
+                rowsGroup: [
+                    'first:name',
+                ],
+                dom: 'Bfrtip',
+                "buttons": [{
+                    extend: 'colvis',
+                    text: '選擇顯示項目',
+                    columns: ':not(.noVis)',
+                    columnText: function ( dt, idx, title ) {
+                        return title;
+                    }
+                }],
+                "language": {
+                    "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/Chinese-traditional.json') ?>",
+                },
+                "order": [],
+                "bSort": false,
+                "pageLength": 10,
+                "pagingType": "simple",
+                "processing": true,
+                "bProcessing": true,
+                "serverSide": true,
+                "ordering": false,
+                "searching": false,
+                "searchDelay": 0,
+                "columns": columnDefs,            
+                "ajax": {
+                    "url": "<?= admin_url($page_setting['controller'] . '/preview_ajax') ?>",
+                    "method": "get",
+                    "timeout": "30000",
+                    "data": function(d) {
+                        let added_arr = <?= json_encode($added_ids)?>;
+                        let year_id = <?= $year_id ?>;
+                        console.log('ajax')
+                        d.year_id = year_id;
+                        d.added_ids = added_arr;
+                    },
+                    "error": function(e) {
+                        console.log(e);
+                    }
+                },
             });
 
-            $('.skillSelectedTable').DataTable({
-                data: data,
-                columns: columnDefs,
-
-                scrollY: "400px",
-                rowsGroup: [
-
-                    'first:name'
-                ],
+            let commonTable = $('#previewCommonTable').DataTable({
                 scrollX: true,
-                scrollCollapse: true,
-                columnDefs: [{
-                    targets: 0,
-                    orderable: false,
-
-                }]
-
+                rowsGroup: [
+                    'first:name',
+                ],
+                dom: 'Bfrtip',
+                "buttons": [{
+                    extend: 'colvis',
+                    text: '選擇顯示項目',
+                    columns: ':not(.noVis)',
+                    columnText: function ( dt, idx, title ) {
+                        return title;
+                    }
+                }],
+                "language": {
+                    "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/Chinese-traditional.json') ?>",
+                },
+                "order": [],
+                "bSort": false,
+                "pageLength": 10,
+                "pagingType": "simple",
+                "processing": true,
+                "bProcessing": true,
+                "serverSide": true,
+                "ordering": false,
+                "searching": false,
+                "searchDelay": 0,
+                "columns": columnDefs,            
+                "ajax": {
+                    "url": "<?= admin_url($page_setting['controller'] . '/preview_ajax/'. 'common') ?>",
+                    "method": "get",
+                    "timeout": "30000",
+                    "data": function(d) {
+                        let common_arr = <?= json_encode($common_ids)?>;
+                        let year_id = <?= $year_id ?>;
+                        // console.log(typeof(common_arr))
+                        d.common_ids = common_arr;
+                        d.year_id = year_id;
+                    },
+                    "error": function(e) {
+                        console.log(e);
+                    }
+                },
             });
         });
-
-
-
-        function submit_form(_this) {
-            //form checking
-            var valid_data = true;
-            //.form checking
-            if (!valid_data) {
-                //alert('Invalid Data.');
-            } else {
-                ajax_submit_form(_this);
-            }
-        }
-
-        <?php /*
-    //multiple image upload
-    $("input.multiple_upload").fileinput({
-        language: '<?=get_wlocale()?>',
-        previewFileType: "image",
-        showCaption: false,
-        showUpload: false,
-        maxFileSize: 2048,
-        maxFileCount: 30,
-        maxImageHeight: 2000,
-        maxImageWidth: 2000,
-        overwriteInitial: false,
-        allowedFileExtensions: ['jpg','jpeg','png'],
-        initialPreview: <?=isset($photos_preview) ? $photos_preview : "{}"?>,
-        initialPreviewAsData: true,
-        initialPreviewConfig: <?=isset($photos_json) ? $photos_json : "{}"?>,
-        deleteUrl: "<?=admin_url('bk_news/delete_multiple_upload')?>",
-        // hiddenThumbnailContent: true,
-        // initialPreviewShowDelete: true,
-        // removeFromPreviewOnError: true,
-    }).on('filedeleted', function(event, key, jqXHR, data) {
-        alertify.success("<?=__('Deleted successfully!')?>");
-    });
- */ ?>
     </script>
 
 </body>

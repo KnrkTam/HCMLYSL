@@ -59,7 +59,6 @@ class Bk_annual_teaching_outline extends CI_Controller //change this
         $data['page_setting'] = $this->page_setting(array(
             'create_' . $this->scope
         ), FALSE, TRUE);
-
         $asg = Annual_subject_groups_model::find($annual_subject_group_id);
 
         if (!$asg || !$annual_subject_group_id) {
@@ -81,6 +80,8 @@ class Bk_annual_teaching_outline extends CI_Controller //change this
         $data['form_action'] = admin_url($data['page_setting']['controller'] . '/preview/'. $annual_subject_group_id);
 
         $data['function'] = "create";
+        $data['id'] = $annual_subject_group_id;
+
         $data['year_id'] = $asg->year_id;
         $data['years_list'] = Years_model::list();
         $data['year'] = Years_model::annual($asg->year_id);
@@ -109,15 +110,16 @@ class Bk_annual_teaching_outline extends CI_Controller //change this
 
         $result = Annual_subject_groups_model::where('year_id', $year_id)->get();
 
-
         $result_count = count($result);
         // dump($result_count);
         $data = array();
         $num = 0;
-        if (!empty( $result)) {
+        if (!empty($result)) {
             foreach ($result as $key => $row) {
                 $student_list = Annual_subject_groups_students_model::id_list($row['id']);
                 $other_staff_list = Annual_subject_groups_other_staff_model::id_list($row['id']);
+                $annual_teaching_outline = Annual_teaching_outline_model::where('annual_subject_group_id', $row['id'])->first();
+
 
                 $student = "";
                 foreach ($student_list as $student_id) {
@@ -132,15 +134,14 @@ class Bk_annual_teaching_outline extends CI_Controller //change this
                 $data[$num]['subject'] = Subjects_model::name($row['subject_id']);
                 $data[$num]['group'] = $row['group_name'] ? $row['group_name'] : Classes_model::name($row['class_id']);
                 $data[$num]['module'] = '<span class="hidden">'. $row['module_order'].'</span>'. Modules_model::order_list($row['module_order']);
-                $data[$num]['annual_module'] = null;
-                $data[$num]['annual_teaching_outline'] = '<a href="'.admin_url(current_controller() . '/create/'. $row['id'] ).'">新 增</a>';
-                // $data[$num]['students'] = $student;
+                $data[$num]['annual_module'] = $annual_teaching_outline ? $annual_teaching_outline->annual_module : null;
+                $data[$num]['annual_teaching_outline'] = $annual_teaching_outline ? '<a href="'.admin_url(current_controller() . '/view/'. $annual_teaching_outline->id).'">查 閱</a>' : '<a href="'.admin_url(current_controller() . '/create/'. $row['id'] ).'">新 增</a>';
 
                 $num++;
             }
         }
 
-        $return = json_encode(array("draw" => $_GET["draw"], "data" => $data, "get" => $_GET, "recordsTotal" => $result_count, "recordsFiltered" => $result_count));
+        $return = json_encode(array("draw" => $_GET["draw"], "data" => $data, "get" => $_GET, "recordsTotal" => $result_count, "recordsFiltered" => $_GET['length']));
 
         echo $return;
 
@@ -155,11 +156,11 @@ class Bk_annual_teaching_outline extends CI_Controller //change this
 
         $module_id = $_GET['module_id']; 
         $year_id = $_GET['year_id'];
-        // dump($_GET);
+        $offset = (int)$_GET['start'];
+        $pagination = (int)$_GET['length'];
 
         if ($module_id) {
             $intended_learning_outline = Subject_lessons_modules_model::search($year_id, null, $module_id, null, null);
-
             if ($intended_learning_outline) {
                 foreach ($intended_learning_outline as $y => $subject_lesson_module_id) {
                     $sub_ann_module = Subject_lessons_modules_model::find($subject_lesson_module_id);
@@ -171,31 +172,41 @@ class Bk_annual_teaching_outline extends CI_Controller //change this
                     $subject_lesson_id = $subject_lesson->id;
     
                     foreach ($group_count as $group_id => $group) {
-                        $lessons_arr[] = array('lesson' => Lessons_model::table_list($lesson_id), 'subject_lesson_id' =>  $subject_lesson_id, 'subject_cat_id' => $subject_lesson->subject_category_id, 'subject_id' => $subject_lesson->subject_id, 'count' => $y, 'modules' =>  Subject_lessons_modules_model::moduleList($subject_lesson_id, $year_id), 'remarks' => Lessons_remarks_model::id_list($subject_lesson_id), 'group_id' => $group_id, 'additional_content' => $add_content, 'subject_lesson_module_id' => $subject_lesson_module_id);
+                        $lessons_arr[] = array(
+                            'lesson' => Lessons_model::table_list($lesson_id), 
+                            'subject_lesson_id' =>  $subject_lesson_id, 
+                            'subject_cat_id' => $subject_lesson->subject_category_id, 
+                            'subject_id' => $subject_lesson->subject_id, 
+                            'modules' =>  Subject_lessons_modules_model::moduleList($subject_lesson_id, $year_id), 
+                            'remarks' => Lessons_remarks_model::id_list($subject_lesson_id), 
+                            'group_id' => $group_id, 
+                            'additional_content' => $add_content, 
+                            'subject_lesson_module_id' => $subject_lesson_module_id
+                        );
                     }                
                 }
             }
         }
-        // dump(count($lessons_arr));
+        $filtered_lessons = array_slice($lessons_arr, $offset, $pagination);
+
+
         $result_count = count($lessons_arr);
         //rearrange data
         $data = array();
         $num = 0;
         
-        
-        if (!empty( $lessons_arr)) {  
-            // dump($lessons_arr);  
-            foreach ($lessons_arr as $key => $row) {
+        if (!empty( $filtered_lessons)) {  
+            foreach ($filtered_lessons as $key => $row) {
                 $lesson_performance = Key_performances_model::where('subject_lesson_id', $row['subject_lesson_id'])->get();
                 foreach ($lesson_performance as $i => $foo ) {
                     $add_content_box = array();
+                    // dump($row['modules']);
                     foreach ($row['modules'] as $m => $module) {
                         $add_content_box[] = $m;
 
                     }
-                    // $data[$num]['id'] = '<input type="checkbox" class="addLesson" value="'.$row['subject_lesson_id'].'"/>';
-                    // '<a class="editLinkBtn" href="#" data-id="'.$row['id'].'" data-subject_lesson="'.$row['subject_lesson_id'].'"
-                    $data[$num]['id'] = '<input type="checkbox" class="addLesson"s data-group="'.$row['group_id'].'"  data-key_performance="'.$foo['id'].'" value="'.$row['subject_lesson_id'].'"/>';
+                    // dump($add_content_box);
+                    $data[$num]['id'] = '<input type="checkbox" class="addLesson" data-group="'.$row['group_id'].'"  data-key_performance="'.$foo['id'].'" value="'.$row['subject_lesson_id'].'"/>';
                     $data[$num]['subject'] = Subjects_model::name($row['subject_id']);
                     $data[$num]['course'] = $row['lesson']['course'];
                     $data[$num]['category'] = $row['lesson']['category'];
@@ -223,13 +234,158 @@ class Bk_annual_teaching_outline extends CI_Controller //change this
                 }
             }
         }
-        // dump(count($lesson_arr));
+        // dump($result_count);
 
-        $return = json_encode(array("draw" => $_GET["draw"], "data" => $data, "get" => $_GET, "recordsTotal" => $result_count, "recordsFiltered" => $result_count));
+        $return = json_encode(array("draw" => $_GET["draw"], "data" => $data, "start"=> $_GET['start'], "get" => $_GET, "recordsTotal" =>   $result_count, "recordsFiltered" => $result_count));
 
         echo $return;
 
     }
+
+    public function search_ajax_common() 
+    {
+        // $postData = $this->input->post();
+        $data['page_setting'] = $this->page_setting(array(
+            'view_'. $this->scope,
+        ), FALSE, TRUE);
+
+        $year_id = $_GET['year_id'];
+        $offset = (int)$_GET['start'];
+        $pagination = (int)$_GET['length'];
+        $subject_id = Subjects_model::where('name', '共通能力')->first()->id;
+        // dump($subject_id);
+    
+        $searched_lessons = Subject_lessons_modules_model::search($year_id, $subject_id, null, null, null);
+        if ($searched_lessons) {
+            foreach ($searched_lessons as $y => $subject_lesson_module_id) {
+                $sub_ann_module = Subject_lessons_modules_model::find($subject_lesson_module_id);
+                // dump($sub_ann_module);
+
+                $subject_id = $sub_ann_module->subject_id;
+                $subject_lesson = $sub_ann_module->subject_lesson;
+                $lesson = Lessons_model::find($subject_lesson->lesson_id);
+                $lesson_id = $lesson->id;
+                $group_count = Lessons_group_model::id_list($lesson_id);
+                $subject_lesson_id = $subject_lesson->id;
+                // dump($group_count);
+
+                foreach ($group_count as $group_id => $group) {
+                    $lessons_arr[] = array(
+                        'lesson' => Lessons_model::table_list($lesson_id), 
+                        'subject_lesson_id' =>  $subject_lesson_id, 
+                        'subject_cat_id' => $subject_lesson->subject_category_id, 
+                        'subject_id' => $subject_lesson->subject_id, 
+                        'modules' =>  Subject_lessons_modules_model::moduleList($subject_lesson_id, $year_id), 
+                        'remarks' => Lessons_remarks_model::id_list($subject_lesson_id), 
+                        'group_id' => $group_id, 
+                        'additional_content' => $add_content, 
+                        'subject_lesson_module_id' => $subject_lesson_module_id
+                    );
+                }                
+            }
+        }
+    
+        $filtered_lessons = array_slice($lessons_arr, $offset, $pagination);
+ 
+
+        $result_count = count($lessons_arr);
+        // dump($result_count);
+        //rearrange data
+        $data = array();
+        $num = 0;
+        // dump($_GET);
+        
+        if (!empty( $filtered_lessons)) {  
+            foreach ($filtered_lessons as $key => $row) {
+                $lesson_performance = Key_performances_model::where('subject_lesson_id', $row['subject_lesson_id'])->get();
+                foreach ($lesson_performance as $i => $foo ) {
+                    $add_content_box = array();
+                    foreach ($row['modules'] as $m => $module) {
+                        $add_content_box[] = $m;
+
+                    }
+                    $data[$num]['id'] = '<input type="checkbox" class="addCommon" data-group="'.$row['group_id'].'"  data-key_performance="'.$foo['id'].'" value="'.$row['subject_lesson_id'].'"/>';
+                    $data[$num]['subject'] = Subjects_model::name($row['subject_id']);
+                    $data[$num]['course'] = $row['lesson']['course'];
+                    $data[$num]['category'] = $row['lesson']['category'];
+                    $data[$num]['sb_obj'] = $row['lesson']['sb_obj'];
+                    $data[$num]['element'] = $row['lesson']['element'];
+                    $data[$num]['group'] =  Groups_model::name($row['group_id']);
+                    $data[$num]['expected_outcome'] = $row['lesson']['expected_outcome'];
+                    $add_box = "";
+                    foreach ($add_content_box as $add_content) {
+                        $add_box .= '<p class="text-blue"><strong class="text-black">'.Modules_model::name($add_content). ':</strong> &nbsp  '. Additional_contents_model::content($row['group_id'], $add_content, $row['subject_lesson_module_id']).'</p>';
+                    }
+                    $module_add_content = Additional_contents_model::where('subject_lessons_module_id', $row['subject_lesson_module_id'])->first();
+                    $data[$num]['addon'] =   $module_add_content ? $add_box :null;
+                    $data[$num]['performance'] = $foo['performance'];
+                    $data[$num]['assessment'] = Assessments_model::mode($foo['assessment_id']);
+                    $data[$num]['code'] = $row['lesson']['code'];
+                    $data[$num]['related_lesson'] = $row['lesson']['expected_outcome'];
+                    $data[$num]['rel_code'] = $row['lesson']['rel_code'];
+                    $remarks = '';
+                    foreach ($row['remarks'] as $remark) {
+                        $remarks .=  '<button type="button" class="btn-xs btn btn-primary badge">' .Remarks_model::name($remark).'</button> &nbsp';
+                    }
+                    $data[$num]['remarks'] = $remarks;
+                    $num++;
+                }
+            }
+        }
+        // dump($result_count);
+
+        $return = json_encode(array("draw" => $_GET["draw"], "data" => $data, "start"=> $_GET['start'], "get" => $_GET, "recordsTotal" =>   $result_count, "recordsFiltered" => $result_count));
+
+        echo $return;
+    }
+
+    public function validate($id = null)
+    {
+        $data['page_setting'] = $this->page_setting(array(
+            'create_' . $this->scope
+        ), FALSE, TRUE);
+        // $year_id = Years_model::orderBy('year_to', 'DESC')->first()->id;
+        // dump($_POST);
+        $id = $_POST['id'];
+        $annual_module_id = $_POST['annual_module_id'];
+        $raw_added_ids = $_POST['added_ids'];
+        $raw_common_ids = $_POST['common_ids'];
+        
+        switch(true) {
+            case (!$id);
+            $data = array(
+                'status' => 'Error',
+            );
+            break;
+            case (empty($annual_module_id) && $annual_module_id != 0);
+            $data = array(
+                // 'status' => '請選擇年度學習單元',
+                'status' => $annual_module_id,
+
+            );
+            break;
+            case (!$raw_added_ids);
+            $data = array(
+                'status' => '請選擇教學項目',
+            );
+            break;
+            default;
+            $data = array(
+                'status' => 'success',
+            );
+        } 
+
+        foreach ($raw_added_ids as $i => $row) {
+            $lesson_arr[$i] = array('group' => explode(",", $row)[0], 'key_performance' =>  explode(",", $row)[1]);
+        }
+        foreach ($raw_common_ids as $i => $common_id) {
+            $common_arr[$i] = array('group' => explode(",", $common_id)[0], 'key_performance' =>  explode(",", $common_id)[1]);
+        }
+        
+        echo json_encode($data);
+
+    }
+
 
     public function preview($id = null)
     {
@@ -237,8 +393,39 @@ class Bk_annual_teaching_outline extends CI_Controller //change this
             'view_' . $this->scope
         ), FALSE, TRUE);
 
-        $asg = Annual_subject_groups_model::find($id);
+        $GLOBALS["datatable"] = 1;
+        $GLOBALS["select2"] = 1;
 
+        $previous = $_POST['action'];
+
+        $selected_lessons_arr = explode(",", $_POST['selected_lessons'][0]);
+        foreach ($selected_lessons_arr as $row) {
+            $raw = explode("_", $row);
+            $subject_lesson_id = Key_performances_model::find($raw[1])->subject_lesson_id;
+            $selected_lessons[] = array(
+                'group_id' => (int)$raw[0], 
+                "key_performance_id" => (int)$raw[1], 
+                "subject_lesson_id" => $subject_lesson_id
+            );
+        }
+
+        $common_lessons_arr = explode(",", $_POST['common_lessons'][0]);
+        foreach ($common_lessons_arr as $row) {
+            $raw = explode("_", $row);
+            $subject_lesson_id = Key_performances_model::find($raw[1])->subject_lesson_id;
+            $common_lessons[] = array(
+                'group_id' => (int)$raw[0], 
+                "key_performance_id" => (int)$raw[1], 
+                "subject_lesson_id" => $subject_lesson_id
+            );
+        }
+
+        $data['added_ids'] =  $selected_lessons;
+        // dump($selected_lessons);
+
+        $data['common_ids'] =  $common_lessons;
+        $asg = Annual_subject_groups_model::find($id);
+        $data['year_id'] = $asg->year_id;
         $data['year'] = Years_model::annual($asg->year_id);
         $data['subject'] = Subjects_model::name($asg->subject_id);
         $data['group_name'] = $asg->group_name ? $asg->group_name  : Classes_model::name($asg->class_id);
@@ -247,29 +434,22 @@ class Bk_annual_teaching_outline extends CI_Controller //change this
         $data['week_from'] = $module_week['week_from_'.$asg->module_order];
         $data['week_to'] = $module_week['week_to_'.$asg->module_order];
         $data['annual_module'] = $_POST['annual_module_id'] == 0 ? '不適用' : Modules_model::name($_POST['annual_module_id']);
-        // if (!$id) {
-        //     $year_id = $_POST['year_id'];
-        //     $subject_id = $_POST['subject_id'];
-        //     $module_id = $_POST['module_id'];
-        // } else {
-        //     $data['id'] = $id;
-        //     $asg = Annual_subject_groups_model::find($id);
-        //     $year_id = $asg->year_id;
-        //     $subject_id = $asg->subject_id;
-        //     $module_id = array($asg->module_order);
-        // }
-        dump($_POST);
+        $data['previous'] = $previous;
+        $data['post_data'] = $_POST;
+        $data['action'] = __('預 覽');
+        $data['id'] = $id;
 
-        // $staff1_id = $_POST['staff1_id'];
-        // $staff2_id = $_POST['staff2_id'];
-        // $other_staff_id = $_POST['other_staff_id'];
-        // $class_id = $_POST['class_id'];
-        // $custom_group_name = $_POST['custom_group_name'];
-        // $group_name = $_POST['group_name'];
-        // $student_id = $_POST['student_id'];
-        // $level_id = $_POST['level_id'] ? $_POST['level_id']: Classes_model::level($class_id);
 
-        $previous = $_POST['action'];
+        $data['post_data'] = array(
+            'annual_subject_group_id' => $id,
+            'annual_module_id' => $_POST['annual_module_id'],
+            'year' => Years_model::annual($asg->year_id),
+            'subject' => Subjects_model::name($asg->subject_id),
+            'group_name' => $asg->group_name ? $asg->group_name  : Classes_model::name($asg->class_id),
+            'week_from' => $module_week['week_from_'.$asg->module_order],
+            'week_to' => $module_week['week_to_'.$asg->module_order],
+        );
+
         
         foreach ($module_id as $row) {
             $data['preview_modules'] .= '<button type="button" style="margin: 1px;" class="btn btn-success">'. Modules_model::order_list($row) .'</button>';
@@ -279,44 +459,295 @@ class Bk_annual_teaching_outline extends CI_Controller //change this
             $data['preview_other_staff'] .= '<li>'.Staff_model::name($row) .'</li>';
         }
 
-        // $data['preview_year'] = Years_model::annual($year_id);
-        // $data['preview_subject'] =Subjects_model::name($subject_id);
-        // $data['preview_staff1'] = Staff_model::name($staff1_id);
-        // $data['preview_staff2'] = Staff_model::name($staff2_id);
-        // $data['preview_level'] = Levels_model::name($level_id);
-
-        // if ($id) {
-        //     $asg = Annual_subject_groups_model::find($id);
-        //     $data['preview_group_name'] = $asg->group_name?$asg->group_name : Classes_model::name($asg->class_id);
-        //     // $student_result = Students_model::classList($asg->class_id)->pluck('id')->toArray();
-            
-        //     foreach ($student_id as $student) {
-        //         $class_name = Students_model::find($student)->class;
-        //         $data['preview_students'] .= '<li>'. Students_model::name($student).' - '. $class_name. '</li>';
-        //     }
-        // } else {
-        //     if ($group_name == "class") {
-        //         $data['preview_group_name'] = Classes_model::name($class_id);
-        //         $student_result = Students_model::where('class', $data['preview_group_name'])->get();
-        //         foreach ($student_result as $student) {
-        //             $data['preview_students'] .= '<li>'. Students_model::name($student->id).' - '.  $data['preview_group_name']. '</li>';
-    
-        //         }
-        //     } else if ($group_name == 'other'){
-        //         $data['preview_group_name'] = $custom_group_name;
-        //         foreach ($student_id as $student) {
-        //             $data['preview_students'] .= '<li>'. Students_model::name($student).' - '. Students_model::find($student)->class. '</li>';
-        //         } 
-        //     }
-        // }
-    
-        $data['previous'] = $previous;
-        $data['post_data'] = $_POST;
-        $data['action'] = __('預 覽');
 
         $data['form_action'] = admin_url($data['page_setting']['controller'] . '/submit_form/'. $id );
+        dump($data);
 
 
         $this->load->view('webadmin/' . $this->scope . '_preview',  $data);
+    }
+
+    
+
+    public function preview_ajax($common = null) 
+    {
+        $data['page_setting'] = $this->page_setting(array(
+            'view_'. $this->scope,
+        ), FALSE, TRUE);
+
+
+        $offset = (int)$_GET['start'];
+        $pagination = (int)$_GET['length'];
+        $year_id = $_GET['year_id'];
+        if ($common) {
+            $added_ids = $_GET['common_ids'];
+        } else {
+            $added_ids = $_GET['added_ids'];
+        };
+        
+        // dump($_GET);
+
+        if ($added_ids) {
+            foreach ($added_ids as $row) {
+                $key_performance = Key_performances_model::find($row['key_performance_id']);
+                $subject_lesson = Subject_lessons_model::find($key_performance['subject_lesson_id']);
+                $lesson_id = $subject_lesson->lesson_id;
+                $searched_lessons[] = array(
+                    'lesson' => Lessons_model::table_list($lesson_id), 
+                    'key_performance' => $key_performance, 
+                    'group_id' => $row['group_id'], 
+                    'subject_id' => $subject_lesson['subject_id'],
+                    'subject_lesson_id' => $subject_lesson->id, 
+                    'remarks' => Lessons_remarks_model::id_list($subject_lesson->id)
+                );
+            }
+
+            $selected_lessons = array_slice($searched_lessons, $offset, $pagination);
+    
+            $result_count = count($searched_lessons);
+        }
+
+        //rearrange data
+        $data = array();
+        $num = 0;
+        if (!empty($selected_lessons)) {
+            foreach ($selected_lessons as $key => $row) {
+                $modules = Subject_lessons_modules_model::moduleList($row['subject_lesson_id'], $year_id);
+                $subject_lessons_modules_id = Subject_lessons_modules_model::where('year_id', $year_id)->where('subject_lessons_id', $row['subject_lesson_id'])->first()->id;
+                // $data[$num]['id'] = '<input type="checkbox" class="addCommon" data-group="'.$row['group_id'].'"  data-key_performance="'.$foo['id'].'" value="'.$row['subject_lesson_id'].'"/>';
+                $data[$num]['code'] = $row['lesson']['code'];
+                $data[$num]['subject'] = Subjects_model::name($row['subject_id']);
+                $data[$num]['course'] = $row['lesson']['course'];
+                $data[$num]['category'] = $row['lesson']['category'];
+                $data[$num]['sb_obj'] = $row['lesson']['sb_obj'];
+                $data[$num]['element'] = $row['lesson']['element'];
+                $data[$num]['group'] =  Groups_model::name($row['group_id']);
+                $data[$num]['expected_outcome'] = $row['lesson']['expected_outcome'];
+                $add_box = "";
+                foreach ($modules as $module_id => $module_name) {
+                    $add_box .= '<p class="text-blue"><strong class="text-black">'.$module_name.':</strong> &nbsp  '. Additional_contents_model::content((int)$row['group_id'],$module_id, $subject_lessons_modules_id).'</p>';
+                }
+                $module_add_content = Additional_contents_model::where('subject_lessons_module_id', $subject_lessons_modules_id)->first();
+                $data[$num]['addon'] =  $module_add_content ? $add_box : '暫無補充內容';
+
+                $data[$num]['performance'] = $row['key_performance']['performance'];
+                $data[$num]['assessment'] = Assessments_model::mode($row['key_performance']['assessment_id']);
+                $rel_lessons = "";
+
+                foreach ($row['lesson']['rel_lessons'] as $rel) {
+                    $rel_lessons .= '<button type="button" class="btn-xs btn btn-primary badge">' .Lessons_model::code($rel).'</button> &nbsp';
+                }
+                $data[$num]['related_lesson'] = $rel_lessons ? $rel_lessons : '暫無相關課程編號	';
+                $data[$num]['rel_code'] = $row['lesson']['rel_code'] ? $row['lesson']['rel_code'] : '暫無相關項目編號';
+                $remarks = '';
+                foreach ($row['remarks'] as $remark) {
+                    $remarks .=  '<button type="button" class="btn-xs btn btn-primary badge">' .Remarks_model::name($remark).'</button> &nbsp';
+                }
+                $data[$num]['remarks'] = $remarks;
+                $num++;
+            }
+        }
+        $return = json_encode(array("draw" => $_GET["draw"], "data" => $data, "get" => $_GET, "recordsTotal" => $result_count, "recordsFiltered" => $result_count));
+
+        echo $return;
+    }
+
+
+    public function view($annual_teaching_outline_id = null)
+    {
+        $data['page_setting'] = $this->page_setting(array(
+            'view_' . $this->scope
+        ), FALSE, TRUE);
+
+        $GLOBALS["datatable"] = 1;
+        $GLOBALS["select2"] = 1;
+
+        $ato = Annual_teaching_outline_model::find($annual_teaching_outline_id);
+        $data['id'] = $ato->id;
+        $data['year'] = $ato->year;
+        $data['subject'] = $ato->subject;
+        $data['group_name'] = $ato->group_name;
+        $data['annual_module'] = $ato->annual_module;
+        $data['module'] = Modules_model::order_list($ato->module_order);
+        $data['week_from'] = $ato->week_from;
+        $data['week_to'] = $ato->week_to;
+    
+        $data['action'] = __('查 閱');
+
+        $annual_subject_group_id = $ato->annual_subject_group_id;
+
+        $searched_arr = Annual_teaching_outline_model::where('annual_subject_group_id', $annual_subject_group_id)->where('common_value', 0)->get();
+
+        $table_data = array();
+        $num = 0;
+        if (!empty($searched_arr)) {
+            foreach ($searched_arr as $row) {
+                $module_name = explode(';',$row->lesson_module)[1];
+                $table_data[$num]['code'] = $row->lesson_code;
+                $table_data[$num]['subject'] = $row->lesson_subject;
+                $table_data[$num]['course'] = $row->lesson_course;
+                $table_data[$num]['category'] = $row->lesson_category;
+                $table_data[$num]['sb_obj'] = $row->lesson_sb_obj;
+                $table_data[$num]['element'] = $row->lesson_element;
+                $table_data[$num]['group'] =  $row->lesson_group;
+                $table_data[$num]['expected_outcome'] = $row->lesson_expected_outcome;            
+                $table_data[$num]['addon'] =  $row->lesson_additional_content ?  $module_name. ': <a class="small">'.$row->lesson_additional_content.'</span>': $module_name .':';
+                $table_data[$num]['performance'] = $row->lesson_performance;
+                $table_data[$num]['assessment'] = $row->lesson_assessment;
+                $table_data[$num]['related_lesson'] = $row->lesson_relevant_lesson ? $row->lesson_relevant_lesson: '暫無相關課程編號	';
+                $table_data[$num]['rel_code'] = $row->lesson_relevant_code ? $row->lesson_relevant_code : '暫無相關項目編號';
+                $table_data[$num]['remarks'] = $row->lesson_remarks;
+                $num++;
+            }
+        }
+
+        $common_arr = Annual_teaching_outline_model::where('annual_subject_group_id', $annual_subject_group_id)->where('common_value', 1)->get();
+        $common_data = array();
+        $num = 0;
+        if (!empty($common_arr)) {
+            foreach ($common_arr as $row) {
+                $module_name = explode(';',$row->lesson_module)[1];
+                $common_data[$num]['code'] = $row->lesson_code;
+                $common_data[$num]['subject'] = $row->lesson_subject;
+                $common_data[$num]['course'] = $row->lesson_course;
+                $common_data[$num]['category'] = $row->lesson_category;
+                $common_data[$num]['sb_obj'] = $row->lesson_sb_obj;
+                $common_data[$num]['element'] = $row->lesson_element;
+                $common_data[$num]['group'] =  $row->lesson_group;
+                $common_data[$num]['expected_outcome'] = $row->lesson_expected_outcome;            
+                $common_data[$num]['addon'] =  $row->lesson_additional_content ?  $module_name. ': <a class="small">'.$row->lesson_additional_content.'</span>': $module_name .':';
+                $common_data[$num]['performance'] = $row->lesson_performance;
+                $common_data[$num]['assessment'] = $row->lesson_assessment;
+                $common_data[$num]['related_lesson'] = $row->lesson_relevant_lesson ? $row->lesson_relevant_lesson: '暫無相關課程編號	';
+                $common_data[$num]['rel_code'] = $row->lesson_relevant_code ? $row->lesson_relevant_code : '暫無相關項目編號';
+                $common_data[$num]['remarks'] = $row->lesson_remarks;
+                $num++;
+            }
+        }
+   
+        $data['table_data'] = $table_data;
+        $data['common_data'] = $common_data;
+
+        $this->load->view('webadmin/' . $this->scope . '_view',  $data);
+    }
+    public function submit_form($asg_id = null){
+        // dump($_POST);
+        $added_ids = json_decode($_POST['added_id'][0]);
+        $common_ids = json_decode($_POST['common_id'][0]);
+        $post_data = json_decode($_POST['post_data']);
+        $annual_module = $_POST['annual_module'];
+        $annual_module_id = $post_data->annual_module_id;
+        $week_from = $post_data->week_from;
+        $week_to = $post_data->week_to;
+        $asg = Annual_subject_groups_model::find($asg_id); 
+        $year_id = $asg->year_id;
+        // dump($added_ids);
+        // dump((array)$post_data);
+
+        foreach ($added_ids as $added_id) {
+            $key_performance = Key_performances_model::find($added_id->key_performance_id);
+            $subject_lesson = Subject_lessons_model::find($key_performance->subject_lesson_id);
+            $lesson_id = $subject_lesson->lesson_id;
+            $lesson = Lessons_model::table_list($lesson_id);
+            $modules = Subject_lessons_modules_model::moduleList( $subject_lesson->id, $year_id);
+            $subject_lessons_modules_id = Subject_lessons_modules_model::where('year_id', $year_id)->where('subject_lessons_id', $subject_lesson->id)->first()->id;
+            // dump('lesson',$lesson);
+            foreach ($lesson['rel_lessons'] as $rel_les_id) {
+                $rel_les_arr[] = Lessons_model::code($rel_les_id);
+            }
+            foreach ($modules as $module_id => $module_name) {
+                $addon = Additional_contents_model::content($added_id->group_id,$module_id, $subject_lessons_modules_id);
+         
+                $data = array(
+                    'year' => Years_model::annual($year_id),
+                    'subject' => Subjects_model::name($subject_lesson->subject_id),
+                    'group_name' => $post_data->group_name,
+                    'module_order' => $asg->module_order,
+                    'annual_module' => $annual_module,
+                    'lesson_code' => Lessons_model::code($lesson_id), 
+                    'lesson_group' => Groups_model::name($added_id->group_id), 
+                    'lesson_subject' => Subjects_model::name($subject_lesson->subject_id),
+                    'lesson_course' => $lesson['course'],
+                    'lesson_category' => $lesson['category'],
+                    'lesson_sb_obj' => $lesson['sb_obj'],
+                    'lesson_element' => $lesson['element'],
+                    'lesson_expected_outcome' => $lesson['expected_outcome'],
+                    'lesson_performance' => $key_performance->performance,
+                    'lesson_additional_content' => $addon,
+                    'lesson_assessment' => Assessments_model::mode($key_performance->assessment_id), 
+                    'lesson_relevant_code' => $lesson['rel_code'],
+                    'lesson_remarks' => $lesson['lesson_remark'],
+                    'lesson_relevant_lesson' => implode(',', $rel_les_arr),
+                    'lesson_module' =>  $module_id.';'.$module_name, 
+                    'subject_lesson_id' => $subject_lesson->id, 
+                    'key_performance_id' => $key_performance->id,
+                    'group_id' => $added_id->group_id,
+                    'module_id' => $module_id, 
+                    'annual_subject_group_id' => $asg_id,
+                    'common_value' => 0,
+                    'annual_module_id' => $annual_module_id,
+                    'week_from' => $week_from,
+                    'week_to' => $week_to,
+                    'additional_content' => Additional_contents_model::id($added_id->group_id,$module_id, $subject_lessons_modules_id),
+                );
+                Annual_teaching_outline_model::create($data);
+            }
+        }
+
+        foreach ($common_ids as $added_id) {
+            $key_performance = Key_performances_model::find($added_id->key_performance_id);
+            $subject_lesson = Subject_lessons_model::find($key_performance->subject_lesson_id);
+            $lesson_id = $subject_lesson->lesson_id;
+            $lesson = Lessons_model::table_list($lesson_id);
+            $modules = Subject_lessons_modules_model::moduleList( $subject_lesson->id, $year_id);
+            $subject_lessons_modules_id = Subject_lessons_modules_model::where('year_id', $year_id)->where('subject_lessons_id', $subject_lesson->id)->first()->id;
+            // dump('lesson',$lesson);
+            foreach ($lesson['rel_lessons'] as $rel_les_id) {
+                $rel_les_arr[] = Lessons_model::code($rel_les_id);
+            }
+            foreach ($modules as $module_id => $module_name) {
+                $addon = Additional_contents_model::content($added_id->group_id,$module_id, $subject_lessons_modules_id);
+         
+                $data = array(
+                    'year' => Years_model::annual($year_id),
+                    'subject' => Subjects_model::name($subject_lesson->subject_id),
+                    'group_name' => $post_data->group_name,
+                    'module_order' => $asg->module_order,
+                    'annual_module' => $annual_module,
+                    'lesson_code' => Lessons_model::code($lesson_id), 
+                    'lesson_group' => Groups_model::name($added_id->group_id), 
+                    'lesson_subject' => Subjects_model::name($subject_lesson->subject_id),
+                    'lesson_course' => $lesson['course'],
+                    'lesson_category' => $lesson['category'],
+                    'lesson_sb_obj' => $lesson['sb_obj'],
+                    'lesson_element' => $lesson['element'],
+                    'lesson_expected_outcome' => $lesson['expected_outcome'],
+                    'lesson_performance' => $key_performance->performance,
+                    'lesson_additional_content' => $addon,
+                    'lesson_assessment' => Assessments_model::mode($key_performance->assessment_id), 
+                    'lesson_relevant_code' => $lesson['rel_code'],
+                    'lesson_remarks' => $lesson['lesson_remark'],
+                    'lesson_relevant_lesson' => implode(',', $rel_les_arr),
+                    'lesson_module' =>  $module_id.';'.$module_name, 
+                    'subject_lesson_id' => $subject_lesson->id, 
+                    'key_performance_id' => $key_performance->id,
+                    'group_id' => $added_id->group_id,
+                    'module_id' => $module_id, 
+                    'annual_subject_group_id' => $asg_id,
+                    'common_value' => 1,
+                    'annual_module_id' => $annual_module_id,
+                    'week_from' => $week_from,
+                    'week_to' => $week_to,
+                    'additional_content' => Additional_contents_model::id($added_id->group_id,$module_id, $subject_lessons_modules_id),
+                    
+                );
+                Annual_teaching_outline_model::create($data);
+            }
+        }
+
+        
+        $_SESSION['success_msg'] = __('儲存年度教學大綱成功');
+        redirect(admin_url('bk_'.$this->scope));
+
     }
 }

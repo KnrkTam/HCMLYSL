@@ -120,54 +120,14 @@
                                             </div>
                                             <h5 class="text-purple"><b>選擇項目：</b></h5>
                                             <table class="table table-bordered table-striped" id="subjectTable">
-                                                <!-- <thead> -->
-                                                    <!-- <tr class="bg-light-blue color-palette">
-                                                        <th class="no-sort"></th>
-                                                        <th class="nowrap">課程</th>
-                                                        <th class="nowrap">範疇</th>
-                                                        <th class="nowrap">中央課程學習重點</th>
-                                                        <th class="nowrap">校本課程學習重點</th>
-                                                        <th class="nowrap">學習元素</th>
-                                                        <th class="nowrap">組別</th>
-                                                        <th class="nowrap">LPF(基礎)</th>
-                                                        <th class="nowrap">LPF(高中)</th>
-                                                        <th class="nowrap">POAS</th>
-                                                        <th class="nowrap">Key Skill</th>
-                                                        <th class="nowrap">前備技能</th>
-                                                        <th class="nowrap">課程編號</th>
-                                                        <th class="nowrap">預期學習成果</th>
-                                                        <th class="nowrap">相關項目編號</th>
-                                                    </tr> -->
-                                                <!-- </thead> -->
                                                 <tbody>
                                                 </tbody>
                                             </table>
-
-                                           
                                             <hr>
                                         </div>
                                         <div class="col-lg-12">
                                             <h5 class="text-yellow"><b>已選項目：</b></h5>
                                             <table class="table table-bordered table-striped" id="subjectSelectedTable">
-                                                <!-- <thead> -->
-                                                    <!-- <tr class="bg-light-blue color-palette">
-                                                        <th class="no-sort" style="min-width: 10px;"></th>
-                                                        <th class="nowrap">課程</th>
-                                                        <th class="nowrap">範疇</th>
-                                                        <th class="nowrap">中央課程學習重點</th>
-                                                        <th class="nowrap">校本課程學習重點</th>
-                                                        <th class="nowrap">學習元素</th>
-                                                        <th class="nowrap">組別</th>
-                                                        <th class="nowrap">LPF(基礎)</th>
-                                                        <th class="nowrap">LPF(高中) </th>
-                                                        <th class="nowrap">POAS</th>
-                                                        <th class="nowrap">Key Skill</th>
-                                                        <th class="nowrap">前備技能</th>
-                                                        <th class="nowrap">預期學習成果</th>
-                                                        <th class="nowrap">課程編號</th>
-                                                        <th class="nowrap">相關項目編號</th>
-                                                    </tr> -->
-                                                <!-- </thead> -->
                                                 <tbody>
                                                 </tbody>
                                             </table> 
@@ -175,7 +135,7 @@
                                             <div class="mt-4 d-flex justify-content-end">
                                                 <input type="hidden" id="subject_lessons" name="subject_lessons[]" value=""></input>
                                                 <input type="hidden" value=<?= $function?> name="action"> </input>
-
+                                                
                                                 <button type="submit" class="btn bg-maroon mw-100 mr-4">下一步</button>
                                                 <button type="button" class="btn btn-default mw-100" onclick="location.href='<?= (admin_url($page_setting['controller'])) ?>';">返 回</button>
                                             </div>
@@ -320,16 +280,13 @@
                 },
                 "order": [],
                 "bInfo": true,
-                // "bSort": false,
                 "bPaginate": true,
-                // "paging": true,
                 "pageLength": 10,
                 "processing": true,
                 "serverSide": true,
                 "ordering": false,
                 "searching": false,
                 "columns": columnDefs,   
-
                 "searchDelay": 0,
                 "ajax": {
                     "url": "<?= admin_url($page_setting['controller'] . '/search_ajax') ?>",
@@ -465,9 +422,11 @@
             }
 
             function show_status () {
-                let count = added_ids.size;
-                $('#item-count').html(count);
-                $('#alert-add-item').fadeIn( 300 ).delay( 1500 ).fadeOut( 400 );
+                if (count > 0) {
+                    let count = added_ids.size;
+                    $('#item-count').html(count);
+                    $('#alert-add-item').fadeIn( 300 ).delay( 1500 ).fadeOut( 400 );
+                }
             }
 
             $("#subject_id").change(function() {

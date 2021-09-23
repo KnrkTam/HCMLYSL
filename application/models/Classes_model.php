@@ -5,13 +5,13 @@
 	{
 		protected $table = "classes";
 
-        public static function list($id = null)
+        public static function list($level_id = null)
 		{   
-            // if (!$id) {
-                $result = Classes_model::orderBy('id', 'asc')->get();
-            // } else {
-            //     $result = Classes_model::where('id', '!=', 5)->get();
-            // }
+            $result = Classes_model::orderBy('id', 'asc')->get();
+
+            if ($level_id) {
+                $result = Classes_model::orderBy('id', 'asc')->where('level_id', $level_id)->get();
+            } 
             
             foreach($result as $row){
                 $list[$row['id']] = $row["name"];
@@ -31,4 +31,6 @@
 
             return $result;
         }
+
+
 	}

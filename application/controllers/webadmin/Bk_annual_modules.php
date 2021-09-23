@@ -48,12 +48,12 @@ class Bk_annual_modules extends CI_Controller //change this
 
         $GLOBALS["select2"] = 1;
         $GLOBALS["datatable"] = 1;
-
         $data['years_list'] = Years_model::list();
         $year_id = Years_model::orderBy('year_from', 'DESC')->first()->id;
         $data['year_id'] = $year_id; 
 
         $data['form_action'] = admin_url($data['page_setting']['controller']);
+        // dump($data);
 
         $this->load->view('webadmin/' . $this->scope . '', $data);
     }
@@ -63,6 +63,7 @@ class Bk_annual_modules extends CI_Controller //change this
             'view_'. $this->scope,
         ), FALSE, TRUE);
         $year_id = $_GET['year_search'];
+        // dump($year_id);
 
         $result = Annual_modules_model::list($year_id);
         
@@ -73,7 +74,6 @@ class Bk_annual_modules extends CI_Controller //change this
         $num = 0;
 
         foreach ($result as $i => $row) {
-            // dump($row);
                 $data[$num][] = '<a class="editLinkBtn" href="'.admin_url(current_controller() . '/edit/'. $row['modules'][1]['id'] ).'"><i class="fa fa-edit"></i></a>';
                 $data[$num][] = Levels_model::name($row['level_id']);
                 $data[$num][] = Classes_model::name($row['class_id']);
@@ -98,8 +98,9 @@ class Bk_annual_modules extends CI_Controller //change this
     public function select_level()
     {
         $postData = $this->input->post();
+        // dump($postData);
 
-        $data = Modules_model::list($postData['level_id']);
+        $data = array('modules' => Modules_model::list($postData['level_id']), 'classes' => Classes_model::list($postData['level_id']));
 
 
         echo json_encode($data);
@@ -118,13 +119,11 @@ class Bk_annual_modules extends CI_Controller //change this
         $GLOBALS["datatable"] = 1;
 
         $data['action'] = __('新 增');
+        $year_id = Years_model::orderBy('year_from', 'DESC')->first()->id;
+        $data['year_id'] = $year_id;
         $data['years_list'] = Years_model::list();
         $data['levels_list'] = Levels_model::list();
-        $data['classes_list'] = Classes_model::list();
-        // $data['modules_list'] = Modules_model::list();
-        
-
-
+        $data['classes_list'] = Classes_model::list();        
 
         $data['form_action'] = admin_url($data['page_setting']['controller'] . '/preview');
 
@@ -151,7 +150,6 @@ class Bk_annual_modules extends CI_Controller //change this
         $data['modules_list'] = Modules_model::list($annual_module1->level_id);
 
         $annual_module_data = Annual_modules_model::where('year_id', $annual_module1->year_id)->where('class_id', $annual_module1->class_id)->where('level_id', $annual_module1->level_id)->get();
-        // dump($annual_module_data);
 
         $data['year_id'] = $annual_module1->year_id;
         $data['level_id'] = $annual_module1->level_id;
@@ -280,7 +278,6 @@ class Bk_annual_modules extends CI_Controller //change this
     public function submit_form($first_module_id = null){
         $postForm = $this->input->post();
         $postData = (array)json_decode($postForm['post_data']);
-
         foreach ($postData['module_id'] as $i => $module_id) {
             $annual_module_data = array(
                 'year_id' => $postData['year_id'],
@@ -303,12 +300,6 @@ class Bk_annual_modules extends CI_Controller //change this
         } else if ($updated_id){
             $_SESSION['success_msg'] = __('修改各級年度學習單元成功');
             redirect(admin_url('bk_'.$this->scope));
-        } else {
-            $_SESSION['error_msg'] = __('Error');
-
-        }
-
-
+        } 
     }
-
 }
