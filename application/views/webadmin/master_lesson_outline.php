@@ -23,7 +23,7 @@
                 </h1>
                 <ol class="breadcrumb">
                     <li><a href="<?= admin_url('') ?>"><?= __('Home') ?></a></li>
-                    <li class="active"><?= ($page_setting['scope']) ?></li>
+                    <li class="active"><a href="<?=admin_url($page_setting['controller'])?>"><?= ($page_setting['scope']) ?></a></li>
                 </ol>
             </section>
 
@@ -129,7 +129,7 @@
                 "language": {
                     "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/Chinese-traditional.json') ?>",
                 },
-                dom: 'Bfrtip',
+                dom: '<"row"<"col-sm-10"B><"col-sm-2"l>>"tifrp',
                 "buttons": [{
                     extend: 'colvis',
                     text: '選擇顯示項目',

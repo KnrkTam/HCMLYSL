@@ -23,7 +23,7 @@
                 </h1>
                 <ol class="breadcrumb">
                     <li><a href="<?= admin_url('') ?>"><?= __('Home') ?></a></li>
-                    <li class="active"><?= ($page_setting['scope']) ?></li>
+                    <li class="active"><a href="<?=admin_url($page_setting['controller'])?>"><?= ($page_setting['scope']) ?></a></li>
                 </ol>
             </section>
 
@@ -34,27 +34,7 @@
                     <div class="col-md-12">
                         <!-- form start -->
                         <?= form_open_multipart($form_action, 'class="form-horizontal"'); ?>
-                        <!-- general form elements 
-                    <input type="hidden" name="id" value="<?= $id ?>"/>-->
                         <div class="box box-primary">
-                            <!-- <div class="box-header">
-                            <div class="row col-md-2">
-                                <div class="btn-group" data-spy="affix" data-offset-top="2" style="z-index: 20;">
-                                    <a href="<?= admin_url($page_setting['controller']) ?>" class="btn btn-default">
-                                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
-                                        <?= __('Cancel') ?>
-                                    </a>
-
-                                    <?php if (validate_user_access(['create_news', 'update_news'])) { ?>
-                                        <button type="button" class="btn btn-primary" onclick="submit_form(this);">
-                                            <i class="fa fa-floppy-o" aria-hidden="true"></i> <?= __('Save') ?>
-                                        </button>
-                                    <?php } ?>
-                                </div>
-                            </div>
-                        </div> -->
-                            <!-- /.box-header -->
-
                             <div class="box-body">
                                 <div id="signupalert" class="alert alert-danger margin_bottom_20"></div>
 
@@ -109,7 +89,6 @@
         $(document).ready(function() {
             let columnDefs = [
                 {
-                    class: 'col',
                     data: "year",
                     title: "年度",
                     name: 'first',
@@ -148,16 +127,15 @@
 
 
             let mainTable = $('#mainTable').DataTable({
-            // rowsGroup: [
-            //     'first:name',
-            // ],
+  
             scrollX: true,
             "language": {
                 "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/Chinese-traditional.json') ?>",
             },
-            dom: 'Bfrtip',
+            dom: '<"row"<"col-sm-10"B><"col-sm-2"l>>"tifrp',
             "buttons": [{
                 extend: 'colvis',
+                stateSave: true,
                 text: '選擇顯示項目',
                 columns: ':not(.noVis)',
                 columnText: function ( dt, idx, title ) {
@@ -169,7 +147,7 @@
             "bSort": true,
             "info": false,
             "bPaginate": true,
-            "pageLength": 10,
+            "pageLength": 50,
             "pagingType": "input",
             "bProcessing": true,
             "processing": true,

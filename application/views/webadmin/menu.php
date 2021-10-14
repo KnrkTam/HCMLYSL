@@ -32,8 +32,6 @@
                     'access' => 'view_news',
                     'icon' => 'fa-file-text-o',
                 ),
-
-
                 //has sub menu
                 array(
                     'main_menu' => '科目',

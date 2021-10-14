@@ -28,7 +28,7 @@
                 </h1>
                 <ol class="breadcrumb">
                     <li><a href="<?= admin_url('') ?>"><?= __('Home') ?></a></li>
-                    <li class="active"><?= ($page_setting['scope']) ?></li>
+                    <li class="active"><a href="<?=admin_url($page_setting['controller'])?>"><?= ($page_setting['scope']) ?></a></li>
                 </ol>
             </section>
 
@@ -91,6 +91,8 @@
                                     </div>
                                     <div class="col-lg-12">
                                         <h4 class="bold">單元既定大綱內容</h4>
+                                        <button type="submit" class="btn btn-warning mw-100 mb-4 mr-4"><i class="fa fa-edit"></i>修改補充內容</button>
+
                                         <table class="table table-bordered table-striped" id="viewTable">
                                         </table>
 

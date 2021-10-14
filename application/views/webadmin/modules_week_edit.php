@@ -23,7 +23,7 @@
                 </h1>
                 <ol class="breadcrumb">
                     <li><a href="<?= admin_url('') ?>"><?= __('Home') ?></a></li>
-                    <li class="active"><?= ($page_setting['scope']) ?></li>
+                    <li class="active"><a href="<?=admin_url($page_setting['controller'])?>"><?= ($page_setting['scope']) ?></a></li>
                 </ol>
             </section>
 
@@ -191,8 +191,6 @@
     <script>
         $(document).ready(function() {
 
-
-
             function loopWeek() {
 
                 for (var i = 1; i < 23; i++) {
@@ -216,134 +214,10 @@
 
 
 
-            var columnDefs = [{
-                    render: function(data, type, row) {
-                        // alert(row.id);
-                        // data: null,
-                        // title: "操作",
-                        // defaultContent:
-                        // '<a href="#"  class="editor_edit"  data-toggle="modal" data-id="editId" data-target="#itemEdit">Edit</a> / <a href="#" class="editor_remove" rdata-toggle="modal" data-target=".bd-example-modal-md">Delete</a>'
-                        // defaultContent: '<a href="#" class="button moreBtn" data-toggle="modal" data-target=".bd-example-modal-md">Edit Btn</a>'
-                        var result = '<a class="editLinkBtn" href="../webadmin/Bk_subject_outline/edit" data-id="' + row
-                            .id + '"><i class="fa fa-edit"></i></a>';
-                        return result;
-
-                    },
-                    data: "id",
-                    name: 'zore',
-                    title: "",
-                    class: "no-sort"
-                },
-                {
-                    name: 'first',
-                    data: "year",
-                    title: "年度",
-                    class: ""
-                },
-                {
-                    name: 'first',
-                    data: "degree",
-                    title: "學階",
-                    class: "",
-                },
-                {
-
-                    data: "date",
-                    title: "日期",
-                    class: ""
-                },
-                {
-
-                    data: "week",
-                    title: "週次",
-                    class: ""
-                },
-                {
-
-                    data: "evaluation01",
-                    title: "評估日期1",
-                    class: ""
-                },
-                {
-
-                    data: "evaluation02",
-                    title: "評估日期2",
-                    class: ""
-                }
-            ];
-
-
-
-
-
-
-            $(".searchBtn").click(function() {
-
-                $(".tableWrap").fadeIn();
-                $('#studyUnitTable').DataTable({
-                    data: data,
-                    columns: columnDefs,
-                    rowsGroup: [
-                        'zore:name',
-                        'first:name',
-
-
-                    ],
-                    select: {
-                        style: 'os',
-                        selector: 'td:not(:first-child)'
-                    },
-
-                    scrollX: true,
-                    scrollCollapse: true,
-                    drawCallback: function(settings) {
-                        $('[data-toggle="tooltip"]').tooltip();
-
-                    }
-
-                });
-
-            });
-
         });
 
 
 
-        function submit_form(_this) {
-            //form checking
-            var valid_data = true;
-            //.form checking
-            if (!valid_data) {
-                //alert('Invalid Data.');
-            } else {
-                ajax_submit_form(_this);
-            }
-        }
-
-        <?php /*
-    //multiple image upload
-    $("input.multiple_upload").fileinput({
-        language: '<?=get_wlocale()?>',
-        previewFileType: "image",
-        showCaption: false,
-        showUpload: false,
-        maxFileSize: 2048,
-        maxFileCount: 30,
-        maxImageHeight: 2000,
-        maxImageWidth: 2000,
-        overwriteInitial: false,
-        allowedFileExtensions: ['jpg','jpeg','png'],
-        initialPreview: <?=isset($photos_preview) ? $photos_preview : "{}"?>,
-        initialPreviewAsData: true,
-        initialPreviewConfig: <?=isset($photos_json) ? $photos_json : "{}"?>,
-        deleteUrl: "<?=admin_url('bk_news/delete_multiple_upload')?>",
-        // hiddenThumbnailContent: true,
-        // initialPreviewShowDelete: true,
-        // removeFromPreviewOnError: true,
-    }).on('filedeleted', function(event, key, jqXHR, data) {
-        alertify.success("<?=__('Deleted successfully!')?>");
-    });
- */ ?>
     </script>
 
 </body>

@@ -63,7 +63,6 @@ class Bk_annual_subject_group extends CI_Controller //change this
 
         $result = Annual_subject_groups_model::where('year_id', $year_id)->get();
 
-
         $result_count = count($result);
         // dump($result_count);
         $data = array();
@@ -192,6 +191,17 @@ class Bk_annual_subject_group extends CI_Controller //change this
         $class_id = $_POST['class_id'];
         $custom_group_name = $_POST['custom_group_name'];
         
+        $duplicate = Annual_subject_groups_model::where('year_id', $year_id)
+        ->where('subject_id', $subject_id)
+        ->where('module_order', $module_id)
+        ->where('class_id', $class_id)
+        ->orwhere('year_id', $year_id)
+        ->when($group_name, function($query, $group_name){
+            return $query->where('group_name', $group_name);
+        })
+        ->where('subject_id', $subject_id)
+        ->where('module_order', $module_id)
+        ->first();
          // explode(',', $postData['subject_lessons']);
 
         // foreach ($subject_lessons as $i => $row) {
@@ -223,7 +233,12 @@ class Bk_annual_subject_group extends CI_Controller //change this
         // Create
         if (!$id) {
             switch(true) {
-                case (empty($subject_id));
+                case ($duplicate):
+                    $data = array(
+                        'status' => '已存在年度科目分組 - '. Classes_model::name($duplicate->class_id). '(單元'.$duplicate->module_order.') ('.Subjects_model::name($duplicate->subject_id).')',
+                    );
+                    break;
+                case (empty($subject_id)):
                 $data = array(
                     'status' => '請選擇科目',
                     'id' => $id,

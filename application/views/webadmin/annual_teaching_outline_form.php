@@ -29,7 +29,7 @@
                 </h1>
                 <ol class="breadcrumb">
                     <li><a href="<?= admin_url('') ?>"><?= __('Home') ?></a></li>
-                    <li class="active"><?= ($page_setting['scope']) ?></li>
+                    <li class="active"><a href="<?=admin_url($page_setting['controller'])?>"><?= ($page_setting['scope']) ?></a></li>
                 </ol>
             </section>
 
@@ -49,7 +49,7 @@
 
 
                                 <div class="row mb-4">
-                                    <div class="col-lg-3">
+                                    <div class="col-lg-2">
                                         <div class="form-group ">
                                             <label class="text-nowrap">年度： </label>
                                             <p><?= $year?></p>
@@ -57,16 +57,23 @@
 
                                         </div>
                                     </div>
-                                    <div class="col-lg-2">
+                                    <div class="col-lg-3">
                                         <div class="form-group ">
                                             <label class="text-nowrap">科目： </label>
                                             <p><?= $subject?></p>
                                         </div>
                                     </div>
-                                    <div class="col-lg-7">
+                                    <div class="col-lg-3">
                                         <div class="form-group ">
                                             <label class="text-nowrap">施教組別名稱： </label>
                                             <p><?= $group_name?></p>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group ">
+                                            <label class="text-nowrap">共同施教組別： </label>
+                                            <?php form_list_type('mutual_group_id[]', ['type' => 'select', 'class'=> 'form-control select2' , 'data-placeholder' => '請選擇...', 'enable_value' => $group_list, 'form_validation_rules' => 'trim|required', 'multiple' => 1]) ?>
+                                            <span class="text-red small">*共同施教組別只適用於相同年度，科目，學階，單元的班別。以複製年度教學大綱</span>
                                         </div>
                                     </div>
                                 </div>
@@ -297,7 +304,7 @@
 
             let mainTable = $('#subjectTable').DataTable({
                 scrollX: true,
-                dom: 'Bfrtip',
+                dom: '<"row"<"col-sm-10"B><"col-sm-2"l>>"tifrp',
                 "buttons": [{
                     extend: 'colvis',
                     text: '選擇顯示項目',
@@ -307,7 +314,6 @@
                     }
                 }],
                 rowsGroup: [
-                    // 'zore:name',
                     'first:name',
                 ],
                 "language": {
@@ -316,7 +322,7 @@
                 "order": [],
                 "bInfo": true,
                 "bPaginate": true,
-                "pageLength": 5,
+                "pageLength": 10,
                 "processing": true,
                 "serverSide": true,
                 "ordering": false,
@@ -330,8 +336,6 @@
                     "data": function(d) {
                         let module_id = $('#search_id').val();
                         let year_id = $('#year_id').val();
-
-
                         d.module_id = module_id;
                         d.year_id = year_id;
 
@@ -349,8 +353,7 @@
                         })
                         let old_arr = Array.from(added_ids)
                         for (let i = 0; i < old_arr.length; i++) {
-                            // console.log(old_arr[i].split(",")[0]);
-                            // console.log(old_arr[i].split(",")[1]);
+                
                             $(`input[type=checkbox][class=addLesson][data-group=${old_arr[i].split("_")[0]}][data-key_performance=${old_arr[i].split("_")[1]}]`).prop('checked', true);
                         }
 
@@ -364,7 +367,7 @@
 
             let commonSubjectTable = $('#commonSubjectTable').DataTable({
                 scrollX: true,
-                dom: 'Bfrtip',
+                dom: '<"row"<"col-sm-10"B><"col-sm-2"l>>"tifrp',
                 "buttons": [{
                     extend: 'colvis',
                     text: '選擇顯示項目',
@@ -374,7 +377,6 @@
                     }
                 }],
                 rowsGroup: [
-                //     'zore:name',
                     'first:name',
                 ],
                 "language": {
@@ -383,9 +385,9 @@
                 "order": [],
                 "bInfo": true,
                 "bPaginate": true,
-                "pageLength": 5,
+                "pageLength": 10,
                 "processing": true,
-                "serverSide": true,
+                "serverSide": false,
                 "ordering": false,
                 "searching": false,
                 "searchDelay": 0,
@@ -401,14 +403,9 @@
                     "complete": function(e){
                         $(".addCommon").change(function(e){
                             if ($(this).is(':checked')) {
-                                // console.log(this.value)
-                                // console.log(this.dataset.group)
-                                // console.log(this.dataset.key_performance)
                                 common_ids.add(this.dataset.group+ '_' +this.dataset.key_performance.toString());
                             } else {
                                 common_ids.delete(this.dataset.group+ '_' +this.dataset.key_performance.toString());
-                            //     console.log('unchecked');
-                            //     console.log([this.dataset.group, this.dataset.key_performance])
                             }
                             console.log(common_ids);
                         })

@@ -63,7 +63,7 @@
                 </h1>
                 <ol class="breadcrumb">
                     <li><a href="<?= admin_url('') ?>"><?= __('Home') ?></a></li>
-                    <li class="active"><?= ($page_setting['scope']) ?></li>
+                    <li class="active"><a href="<?=admin_url($page_setting['controller'])?>"><?= ($page_setting['scope']) ?></a></li>
                 </ol>
             </section>
 
@@ -382,13 +382,13 @@
             "bSort": false,
             "info": false,
             "bPaginate": true,
-            "pageLength": 10,
+            "pageLength": 5,
             "pagingType": "input",
             "bProcessing": true,
             "processing": true,
             "serverSide": true,
             'searching': false,
-            "ordering": false,
+            "ordering": true,
             "columns": columnDefs,   
             "ajax": {
                 "url": "<?= admin_url($page_setting['controller'] . '/ajax') ?>",
@@ -408,19 +408,6 @@
                 "complete" : function(){
                     $('[data-toggle="tooltip"]').tooltip();
 
-                    // $(document).ready(function() {
-                    //     $('#mainTable').DataTable( {
-                    //         dom: 'Bfrtip',
-                    //         buttons: [
-                    //             'colvis'
-                    //         ]
-                    //     });
-                    // });
-
-                    // setTimeout(() => {
-                    // $($.fn.dataTable.tables(true)).DataTable()
-                    //     .columns.adjust()
-                    // }, 500);
                 },
             },
             }); 

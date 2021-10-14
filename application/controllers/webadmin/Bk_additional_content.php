@@ -214,7 +214,8 @@ class Bk_additional_content extends CI_Controller //change this
         $data['form_action'] = admin_url($data['page_setting']['controller'] . '/preview/'. $subject_lessons_modules_id  );
         $data['num'] = 0;
         $data['action'] = __('修 改');
-
+        // dump($data['key_performance']);
+        // dump($data['groups']);
         $this->load->view('webadmin/' . $this->scope . '_edit',  $data);
     }
 

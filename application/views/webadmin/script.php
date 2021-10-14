@@ -29,6 +29,11 @@
 
 <?php } ?>
 
+<script>
+$(function () {
+    $('body').prepend('<div style="width: 100%; height: 30px; background-color: #D46A6A; text-align: center; color: #fff; font-size: 20px;">UAT</div><div style="clear: both;"></div>');
+})
+</script>
 
 <?php if ($GLOBALS["datatable"] == 1) { ?>
     <!-- DataTables 
@@ -548,6 +553,7 @@
             }
         });
     <?php } ?>
+
 
     //.ajax function list
     $(function() {

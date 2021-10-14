@@ -23,7 +23,7 @@
                 </h1>
                 <ol class="breadcrumb">
                     <li><a href="<?= admin_url('') ?>"><?= __('Home') ?></a></li>
-                    <li class="active"><?= ($page_setting['scope']) ?></li>
+                    <li class="active"><a href="<?=admin_url($page_setting['controller'])?>"><?= ($page_setting['scope']) ?></a></li>
                 </ol>
             </section>
 
@@ -263,7 +263,7 @@
                 <div class="col-lg-4">
 
                     <div class="form-group mb-3 w-100">
-                        <input type="text" class="form-control" id="key_performance" name="performance[${countRow}]" value="e.g. 有意識地留意及回應聲音 (${countRow})" required data-required-message="請填寫此資料">
+                        <input type="text" class="form-control" id="key_performance" name="performance[${countRow}]" placeholder="輸入關鍵表現項目" required data-required-message="請填寫此資料">
                     </div>
                 </div>
                 <div class="col-lg-4 d-flex mt-3">

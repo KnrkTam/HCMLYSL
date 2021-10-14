@@ -53,7 +53,6 @@ class Bk_annual_modules extends CI_Controller //change this
         $data['year_id'] = $year_id; 
 
         $data['form_action'] = admin_url($data['page_setting']['controller']);
-        // dump($data);
 
         $this->load->view('webadmin/' . $this->scope . '', $data);
     }
@@ -63,7 +62,6 @@ class Bk_annual_modules extends CI_Controller //change this
             'view_'. $this->scope,
         ), FALSE, TRUE);
         $year_id = $_GET['year_search'];
-        // dump($year_id);
 
         $result = Annual_modules_model::list($year_id);
         
@@ -86,7 +84,6 @@ class Bk_annual_modules extends CI_Controller //change this
                 $data[$num][] = Modules_model::name($row['modules'][4]['module_id']);
                 $data[$num][] = $row['modules'][4]['remark'];
                 $num++; 
-
         }  
 
         $return = json_encode(array("draw" => $_GET["draw"], "data" => $data, "get" => $_GET, "recordsTotal" => $result_count, "recordsFiltered" => $result_count));
@@ -98,8 +95,6 @@ class Bk_annual_modules extends CI_Controller //change this
     public function select_level()
     {
         $postData = $this->input->post();
-        // dump($postData);
-
         $data = array('modules' => Modules_model::list($postData['level_id']), 'classes' => Classes_model::list($postData['level_id']));
 
 

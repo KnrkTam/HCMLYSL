@@ -23,7 +23,7 @@
                 </h1>
                 <ol class="breadcrumb">
                     <li><a href="<?= admin_url('') ?>"><?= __('Home') ?></a></li>
-                    <li class="active"><?= ($page_setting['scope']) ?></li>
+                    <li class="active"><a href="<?=admin_url($page_setting['controller'])?>"><?= ($page_setting['scope']) ?></a></li>
                 </ol>
             </section>
 
@@ -113,7 +113,7 @@
             let AnnualModuleTable = $('#annualModuleTable').DataTable({
                 scrollX: true,
                 "language": {
-                   "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/Chinese-traditional.json') ?>",
+                    "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/Chinese-traditional.json') ?>",
                 },
                 "order": [],
                 "bSort": false,
@@ -130,7 +130,6 @@
                 "searching": false,
                 dom: "rtiS",
                 deferRender: true,
-
                 // "drawType": 'none',
                 "searchDelay": 0,     
                 "ajax": {
@@ -139,23 +138,15 @@
                     "timeout": "30000",
                     "data": function(d) {
                         let year_id = $('#year_id').val();
-
                         d.year_search = year_id;
-
                     },
                     "complete" : function(){
                         $('[data-toggle="tooltip"]').tooltip();
-
                     },
                     "error": function(e) {
-                        // console.log(e);
                     },
-               
                 },
                 });
-
-
-
         });
     </script>
 

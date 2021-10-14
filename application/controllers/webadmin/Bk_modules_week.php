@@ -133,7 +133,7 @@ class Bk_modules_week extends CI_Controller //change this
         $data['form_action'] = admin_url($data['page_setting']['controller'] . '/preview');
         $data['action'] = __('新 增');
         $data['years_list'] = Years_model::list();
-        $data['levels_list'] = Levels_model::list(1234);
+        $data['levels_list'] = Levels_model::list();
         $data['modules_list'] = array(
             '1' => '單元一',
             '2' => '單元二',
@@ -159,6 +159,7 @@ class Bk_modules_week extends CI_Controller //change this
         ), FALSE, TRUE);
 
         $postData = $this->input->post();
+        // dump($_POST);
 
         switch(true) {
             case (!$postData['year_id']);
@@ -232,6 +233,8 @@ class Bk_modules_week extends CI_Controller //change this
         ), FALSE, TRUE);
 
         $postData = $this->input->post();
+    
+        // $dat
         $previous = $postData['action'];
 
 
@@ -298,30 +301,29 @@ class Bk_modules_week extends CI_Controller //change this
                 $module_week_data['first_assessment_'.$i.''] = date('Y-m-d', strtotime(str_replace('/', '-',$postData->assessment1->$i)));
                 $module_week_data['second_assessment_'.$i.''] = date('Y-m-d', strtotime(str_replace('/', '-',$postData->assessment2->$i)));
             }
-
-        // );
         
-        // dump($module_week_data);
-    
+            
+            // dump($id);
+            // dump($module_week_data);
         if (!$id) {
-
-            $created_id = Modules_week_model::create($module_week_data)->id;
-        
+            Modules_week_model::create($module_week_data);
+            $_SESSION['success_msg'] = __('設定各級年度學習單元成功');
+            redirect(admin_url('bk_'.$this->scope));
         } else {
-            $created_id = Modules_week_model::find($id)->update($module_week_data);
-
+            Modules_week_model::find($id)->update($module_week_data);
             $_SESSION['success_msg'] = __('修改各級年度學習單元成功');
             redirect(admin_url('bk_'.$this->scope));
 
         };
 
-        if ($created_id) {
-            $_SESSION['success_msg'] = __('設定各級年度學習單元成功');
-            redirect(admin_url('bk_'.$this->scope));
-        } else {
-            $_SESSION['error_msg'] = __('Error');
+        // if ($created_id) {
+        //     $_SESSION['success_msg'] = __('設定各級年度學習單元成功');
+        //     redirect(admin_url('bk_'.$this->scope));
+        // } else {
+        //     $_SESSION['error_msg'] = __('Error');
+        //     redirect(admin_url('bk_'.$this->scope));
 
-        }
+        // }
 
 
     }

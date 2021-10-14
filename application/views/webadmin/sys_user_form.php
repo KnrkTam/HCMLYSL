@@ -43,7 +43,7 @@ $GLOBALS["aes_js"] = 1;
 			</h1>
 			<ol class="breadcrumb">
 				<li><a href="<?= admin_url('') ?>"><?= __('Home') ?></a></li>
-				<li class="active"><?= ($page_setting['scope']) ?></li>
+				<li class="active"><a href="<?=admin_url($page_setting['controller'])?>"><?= ($page_setting['scope']) ?></a></li>
 			</ol>
 		</section>
 

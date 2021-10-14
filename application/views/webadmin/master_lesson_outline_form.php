@@ -43,7 +43,7 @@
                 </h1>
                 <ol class="breadcrumb">
                     <li><a href="<?= admin_url('') ?>"><?= __('Home') ?></a></li>
-                    <li class="active"><?= ($page_setting['scope']) ?></li>
+                    <li class="active"><a href="<?=admin_url($page_setting['controller'])?>"><?= ($page_setting['scope']) ?></a></li>
                 </ol>
             </section>
 
@@ -189,6 +189,12 @@
                                             <textarea class="form-control" name="expected_outcome" rows="3" placeholder="" ><?= $expected_outcome?></textarea>
                                         </div>
                                     </div>
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label class="bold ">Expected Study Result：</label>
+                                            <textarea class="form-control" name="expected_outcome_eng" rows="3" placeholder="" ><?= $expected_outcome_eng?></textarea>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="mt-4 d-flex justify-content-end">
                                     <!-- <button type="button" class="btn bg-orange mw-100 mb-4 mr-4" id="save-btn">儲存</button> -->
@@ -211,11 +217,8 @@
             </section>
             <!-- /.content -->
         </div>
-
         <!-- /.content-wrapper -->
-
         <?php include_once("footer.php"); ?>
-
     </div>
     <!-- ./wrapper -->
     <?php include_once("script.php"); ?>

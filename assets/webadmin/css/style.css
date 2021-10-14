@@ -162,6 +162,10 @@ table.dataTable thead .no-sort.sorting_asc {
     display: none;
 }
 
+select {
+  cursor: pointer;
+}
+
 select.select2 {
     min-width: auto!important;
 }

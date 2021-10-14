@@ -43,7 +43,7 @@
                 </h1>
                 <ol class="breadcrumb">
                     <li><a href="<?= admin_url('') ?>"><?= __('Home') ?></a></li>
-                    <li class="active"><?= ($page_setting['scope']) ?></li>
+                    <li class="active"><a href="<?=admin_url($page_setting['controller'])?>"><?= ($page_setting['scope']) ?></a></li>
                 </ol>
             </section>
 
@@ -187,6 +187,12 @@
                                         <div class="form-group">
                                             <label class="required">預期學習成果：</label>
                                             <textarea class="form-control" name="expected_outcome" rows="3" placeholder="" ><?= $expected_outcome?></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label class="bold ">Expected Study Result：</label>
+                                            <textarea class="form-control" name="expected_outcome_eng" rows="3" placeholder="" ><?= $expected_outcome_eng?></textarea>
                                         </div>
                                     </div>
                                 </div>

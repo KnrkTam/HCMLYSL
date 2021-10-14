@@ -23,7 +23,7 @@
                 </h1>
                 <ol class="breadcrumb">
                     <li><a href="<?= admin_url('') ?>"><?= __('Home') ?></a></li>
-                    <li class="active"><?= ($page_setting['scope']) ?></li>
+                    <li class="active"><a href="<?=admin_url($page_setting['controller'])?>"><?= ($page_setting['scope']) ?></a></li>
                 </ol>
             </section>
 
@@ -37,24 +37,6 @@
                         <!-- general form elements 
                     <input type="hidden" name="id" value="<?= $id ?>"/>-->
                         <div class="box box-primary">
-                            <!-- <div class="box-header">
-                            <div class="row col-md-2">
-                                <div class="btn-group" data-spy="affix" data-offset-top="2" style="z-index: 20;">
-                                    <a href="<?= admin_url($page_setting['controller']) ?>" class="btn btn-default">
-                                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
-                                        <?= __('Cancel') ?>
-                                    </a>
-
-                                    <?php if (validate_user_access(['create_news', 'update_news'])) { ?>
-                                        <button type="button" class="btn btn-primary" onclick="submit_form(this);">
-                                            <i class="fa fa-floppy-o" aria-hidden="true"></i> <?= __('Save') ?>
-                                        </button>
-                                    <?php } ?>
-                                </div>
-                            </div>
-                        </div> -->
-                            <!-- /.box-header -->
-
                             <div class="box-body">
                                 <div id="signupalert" class="alert alert-danger margin_bottom_20"></div>
 
@@ -99,14 +81,14 @@
                                                         <div class="input-group-addon">
                                                             <i class="fa fa-calendar"></i>
                                                         </div>
-                                                        <input type="text" class="form-control pull-right datepicker"  name="moduleFrom[<?=$i?>]">
+                                                        <input type="text" class="form-control pull-right datepicker"  name="moduleFrom[<?=$i?>]" required data-required-message="請填寫此資料">
                                                     </div>
                                                     <span class="ml-2 mr-2">至</span>
                                                     <div class="input-group date w-100">
                                                         <div class="input-group-addon">
                                                             <i class="fa fa-calendar"></i>
                                                         </div>
-                                                        <input type="text" class="form-control pull-right datepicker" name="moduleTo[<?=$i?>]">
+                                                        <input type="text" class="form-control pull-right datepicker" name="moduleTo[<?=$i?>]" required data-required-message="請填寫此資料">
                                                     </div>
                                                 </div>
 
@@ -130,7 +112,7 @@
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </div>
-                                            <input type="text" class="form-control pull-right datepicker" name="assessment1[<?=$i?>]">
+                                            <input required type="text" class="form-control pull-right datepicker" name="assessment1[<?=$i?>]"  data-required-message="請填寫此資料">
                                         </div>
                                     </div>
                                     <div class="col-md-2 bold">
@@ -138,7 +120,7 @@
                                             <div class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                             </div>
-                                            <input type="text" class="form-control pull-right datepicker" name="assessment2[<?=$i?>]">
+                                            <input type="text" class="form-control pull-right datepicker" name="assessment2[<?=$i?>]" required data-required-message="請填寫此資料">
                                         </div>
                                     </div>
                                 </div>
@@ -150,7 +132,7 @@
                                 <div class="mt-4 d-flex justify-content-end">
                                     <input type="hidden" name="action" value="create"/>
 
-                                    <button type="button" id="createBtn" class="btn bg-orange mw-100 mb-4 mr-4">確 定</button>
+                                    <button type="submit" id="createBtn" class="btn bg-orange mw-100 mb-4 mr-4">確 定</button>
 
                                     <button type="button" class="btn btn-default mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller']) ?>';">返 回</button>
 
@@ -186,11 +168,12 @@
     <?php include_once("script.php"); ?>
     <script>
         $(document).ready(function() {
-            $('.select2').select2();
-            $('#weekNumFrom[2]').select2().select2('val', 5);
-            // $('.select2').change(function(){
-            //     console.log('myId', this.id)
-            // })
+            $('input[required]').on('change invalid', function() {
+            this.setCustomValidity('');
+            if (!this.validity.valid) {
+                this.setCustomValidity($(this).data("required-message"));
+            }
+        });
 
 
             // $('#range').daterangepicker()
@@ -206,61 +189,61 @@
 
 
 
-            var columnDefs = [{
-                    render: function(data, type, row) {
-                        // alert(row.id);
-                        // data: null,
-                        // title: "操作",
-                        // defaultContent:
-                        // '<a href="#"  class="editor_edit"  data-toggle="modal" data-id="editId" data-target="#itemEdit">Edit</a> / <a href="#" class="editor_remove" rdata-toggle="modal" data-target=".bd-example-modal-md">Delete</a>'
-                        // defaultContent: '<a href="#" class="button moreBtn" data-toggle="modal" data-target=".bd-example-modal-md">Edit Btn</a>'
-                        var result = '<a class="editLinkBtn" href="../webadmin/Bk_subject_outline/edit" data-id="' + row
-                            .id + '"><i class="fa fa-edit"></i></a>';
-                        return result;
+            // var columnDefs = [{
+            //         render: function(data, type, row) {
+            //             // alert(row.id);
+            //             // data: null,
+            //             // title: "操作",
+            //             // defaultContent:
+            //             // '<a href="#"  class="editor_edit"  data-toggle="modal" data-id="editId" data-target="#itemEdit">Edit</a> / <a href="#" class="editor_remove" rdata-toggle="modal" data-target=".bd-example-modal-md">Delete</a>'
+            //             // defaultContent: '<a href="#" class="button moreBtn" data-toggle="modal" data-target=".bd-example-modal-md">Edit Btn</a>'
+            //             var result = '<a class="editLinkBtn" href="../webadmin/Bk_subject_outline/edit" data-id="' + row
+            //                 .id + '"><i class="fa fa-edit"></i></a>';
+            //             return result;
 
-                    },
-                    data: "id",
-                    name: 'zore',
-                    title: "",
-                    class: "no-sort"
-                },
-                {
-                    name: 'first',
-                    data: "year",
-                    title: "年度",
-                    class: ""
-                },
-                {
-                    name: 'first',
-                    data: "degree",
-                    title: "學階",
-                    class: "",
-                },
-                {
+            //         },
+            //         data: "id",
+            //         name: 'zore',
+            //         title: "",
+            //         class: "no-sort"
+            //     },
+            //     {
+            //         name: 'first',
+            //         data: "year",
+            //         title: "年度",
+            //         class: ""
+            //     },
+            //     {
+            //         name: 'first',
+            //         data: "degree",
+            //         title: "學階",
+            //         class: "",
+            //     },
+            //     {
 
-                    data: "date",
-                    title: "日期",
-                    class: ""
-                },
-                {
+            //         data: "date",
+            //         title: "日期",
+            //         class: ""
+            //     },
+            //     {
 
-                    data: "week",
-                    title: "週次",
-                    class: ""
-                },
-                {
+            //         data: "week",
+            //         title: "週次",
+            //         class: ""
+            //     },
+            //     {
 
-                    data: "evaluation01",
-                    title: "評估日期1",
-                    class: ""
-                },
-                {
+            //         data: "evaluation01",
+            //         title: "評估日期1",
+            //         class: ""
+            //     },
+            //     {
 
-                    data: "evaluation02",
-                    title: "評估日期2",
-                    class: ""
-                }
-            ];
+            //         data: "evaluation02",
+            //         title: "評估日期2",
+            //         class: ""
+            //     }
+            // ];
 
 
 
@@ -299,6 +282,7 @@
 
         let createBtn = document.querySelector('#createBtn');
             createBtn.addEventListener("click",function(){
+                // alert($('#moduleFrom').val())
                 createModule(year_id.value, level_id.value);
                 function createModule(year_id, level_id){
                     $.ajax({
@@ -308,7 +292,15 @@
                     dataType:'json',     
                     success:function(data){
                         if (data.status == 'success') {
-                            document.getElementById('myForm').submit();
+                            $('input[required]').on('submit invalid', function() {
+                                this.setCustomValidity('');
+                                if (!this.validity.valid) {
+                                    this.setCustomValidity($(this).data("required-message"));
+                                } else {
+
+                                    document.getElementById('myForm').submit();
+                                }
+                            });
                         } else {
                             alertify.error(data.status)
                         }

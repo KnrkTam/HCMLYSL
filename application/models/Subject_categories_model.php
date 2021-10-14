@@ -54,16 +54,13 @@
             $num = 1;
             foreach ($subjects as $j => $subject) {
                 foreach($subject->cat as $i => $row){
-                    // $children_list[$subject->id][0] = array('text' => 'something');
                     $children_list[$subject->id][$i] = array('id' => $row['id'], 'text' => $row['name']);
-            
                     $list[$num] = array('text' => $subject->name, 'children' => $children_list[$subject->id]); 
+                }
+                if (count($subject->cat)) {
+                    $num ++;
+                }
             }
-            if (count($subject->cat)) {
-                // dump($subject->cat);
-                $num ++;
-            }
-        }
 
             return $list;
         }

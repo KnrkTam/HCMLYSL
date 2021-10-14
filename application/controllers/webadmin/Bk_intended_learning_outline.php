@@ -55,7 +55,6 @@ class Bk_intended_learning_outline extends CI_Controller //change this
         $data['remarks_list'] = Remarks_model::list();
         $data['subject_categories_list'] = json_encode(Subject_categories_model::optionList('All')); 
 
-
         if ($_POST) {
             $sub_cat= Subject_categories_model::where('subject_id', $_POST['subject_id'])->get();
             $list[0] = '所有科目範疇';
@@ -87,6 +86,10 @@ class Bk_intended_learning_outline extends CI_Controller //change this
         $category_id = $_GET['category_search'];
         $remark_ids = $_GET['remark_search'];
 
+        $offset = (int)$_GET['start'];
+        $pagination = (int)$_GET['length'];
+
+
         if ($category_id == 'undefined') {
             $category_id = null;
         }
@@ -109,11 +112,14 @@ class Bk_intended_learning_outline extends CI_Controller //change this
         }
         // dump($lessons_arr);
         $result_count = count($lessons_arr);
+
+        $paginated_result = array_slice($lessons_arr, $offset, $pagination, true);
+
         // dump($result_count);
         $data = array();
         $num = 0;
         if (!empty( $lessons_arr)) {
-            foreach ($lessons_arr as $key => $row) {
+            foreach ($paginated_result as $key => $row) {
                 $lesson_performance = Key_performances_model::where('subject_lesson_id', $row['subject_lesson_id'])->get();
                 foreach ($lesson_performance as $foo ) {
                     $modules_arr = Subject_lessons_modules_model::where('subject_lessons_id', $row['subject_lesson_id'])->where('year_id', $year_id)->pluck('module_id')->toArray();

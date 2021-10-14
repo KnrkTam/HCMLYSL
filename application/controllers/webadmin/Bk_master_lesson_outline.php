@@ -52,6 +52,7 @@ class Bk_master_lesson_outline extends CI_Controller //change this
         $data['central_obj_list'] = Central_obj_model::list();
         $data['sb_obj_list'] = Sb_obj_model::list();
         $data['elements_list'] = Elements_model::list();
+        
         $lesson_data = Lessons_model::list();
         foreach ($lesson_data as $row) {
             $lessons_list[$row['id']] = $row['code']; 
@@ -80,7 +81,6 @@ class Bk_master_lesson_outline extends CI_Controller //change this
         $sb_obj_id = $_GET['sb_obj_search'];
         $lesson_id = $_GET['lesson_search'];
 
-        // dump($_GET);
         $filtered_lessons = Lessons_model::list($course_id, $category_id, $sb_obj_id, $lesson_id);
         $lessons_arr = array();
         foreach ($filtered_lessons as $i =>$row) {
@@ -239,6 +239,8 @@ class Bk_master_lesson_outline extends CI_Controller //change this
             $data['poas_id'] = $sessionData['poas_id'];
             $data['preliminary_skills'] = $sessionData['preliminary_skills'];
             $data['expected_outcome'] = $sessionData['expected_outcome'];
+            $data['expected_outcome_eng'] = $sessionData['expected_outcome_eng'];
+
             $data['group_id'] = $sessionData['group_id'];
             $data['skills_ids'] = $sessionData['skills_id'];
         }
@@ -309,6 +311,8 @@ class Bk_master_lesson_outline extends CI_Controller //change this
             $data['poas_id'] = $sessionData['poas_id'];
             $data['preliminary_skills'] = $sessionData['preliminary_skills'];
             $data['expected_outcome'] = $sessionData['expected_outcome'];
+            $data['expected_outcome_eng'] = $sessionData['expected_outcome_eng'];
+
             $data['group_ids'] = $sessionData['group_id'];
             $data['skills_ids'] = $sessionData['skills_id'];
 
@@ -326,6 +330,7 @@ class Bk_master_lesson_outline extends CI_Controller //change this
             $data['rel_code'] = $lesson['rel_code'];
             $data['preliminary_skills'] = $lesson['preliminary_skills'];
             $data['expected_outcome'] = $lesson['expected_outcome'];
+            $data['expected_outcome_eng'] = $lesson['expected_outcome_eng'];
             $data['group_ids'] = Lessons_group_model::id_list($id);
             $data['skills_ids'] = Lessons_skill_model::id_list($id);
             $data['rel_lessons'] = Lessons_relevant_model::id_list($id);
@@ -434,7 +439,9 @@ class Bk_master_lesson_outline extends CI_Controller //change this
             "pv_skills_id" => implode(',', $skill_arr),
             'pv_rel_lessons' => implode(',', $rel_lesson_arr),
             "pv_preliminary_skills" => $postData['preliminary_skills'],
-            'pv_expected_outcome' => $postData['expected_outcome']
+            'pv_expected_outcome' => $postData['expected_outcome'],
+            'pv_expected_outcome_eng' => $postData['expected_outcome_eng']
+
         );
     
         $data['page_setting'] = $this->page_setting(array(
@@ -473,6 +480,7 @@ class Bk_master_lesson_outline extends CI_Controller //change this
             'rel_code' => $data['rel_code'],
             'preliminary_skills' => $data['preliminary_skills'],
             'expected_outcome' => $data['expected_outcome'],
+            'expected_outcome_eng' => $data['expected_outcome_eng'],
             'created_by' => $_SESSION["sys_user_id"],
             'created_at' => date("Y-m-d H:i:s"),
         );

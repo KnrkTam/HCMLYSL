@@ -194,6 +194,17 @@ class Bk_annual_service_group extends CI_Controller //change this
         $class_id = $_POST['class_id'];
         $custom_group_name = $_POST['custom_group_name'];
         
+        $duplicate = Annual_service_groups_model::where('year_id', $year_id)
+        ->where('subject_id', $subject_id)
+        ->where('module_order', $module_id)
+        ->where('class_id', $class_id)
+        ->orwhere('year_id', $year_id)
+        ->when($group_name, function($query, $group_name){
+            return $query->where('group_name', $group_name);
+        })
+        ->where('subject_id', $subject_id)
+        ->where('module_order', $module_id)
+        ->first();
 
         switch(true) {
             case (empty($staff1_id) || empty($staff2_id));
@@ -217,6 +228,11 @@ class Bk_annual_service_group extends CI_Controller //change this
             // dump(empty($service_id));
             // dump($id);
             switch(true) {
+                case ($duplicate):
+                    $data = array(
+                        'status' => '已存在年度科目分組 - '. Classes_model::name($duplicate->class_id). '(單元'.$duplicate->module_order.') ('.Subjects_model::name($duplicate->subject_id).')',
+                    );
+                    break;
                 case (empty($service_id));
                 $data = array(
                     'status' => '請選擇服務',

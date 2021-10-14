@@ -132,4 +132,3 @@ if (DEBUG && isset($debugbarRenderer)) {
 <link href="<?= assets_url('webadmin/admin_lte/dist/css/google_fonts.css') ?>" rel="stylesheet">
 
 <link href="<?= assets_url('webadmin/css/style.css') ?>" rel="stylesheet">
-

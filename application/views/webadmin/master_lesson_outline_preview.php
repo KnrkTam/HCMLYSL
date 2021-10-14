@@ -31,7 +31,7 @@
                 </h1>
                 <ol class="breadcrumb">
                     <li><a href="<?= admin_url('') ?>"><?= __('Home') ?></a></li>
-                    <li class="active"><?= ($page_setting['scope']) ?></li>
+                    <li class="active"><a href="<?=admin_url($page_setting['controller'])?>"><?= ($page_setting['scope']) ?></a></li>
                 </ol>
             </section>
 
@@ -149,21 +149,31 @@
 
                                     </div>
                                     <div class="col-lg-4">
-
                                         <p class="mb-2 bold">前備技能</p>
                                         <? if ($pv_preliminary_skills == "1") { ?>
                                             <p><span class="text-green"><i class="fa fa-check"></i></span></p>
                                         <? } else {?>
                                             <p><span class="text-red"><i class="fa fa-close"></i></span></p>
                                         <? }?>
-
                                     </div>
-                                    <div class="col-lg-12">
+                                    
+                                  
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
                                         <div class="form-group">
                                             <label class="required">預期學習成果：</label>
                                             <p><?= $pv_expected_outcome?></p>
                                         </div>
+                                    </div> 
+                                    <?php if ($pv_expected_outcome_eng) {?>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label>Expected Study Result：</label>
+                                            <p><?= $pv_expected_outcome_eng?></p>
+                                        </div>
                                     </div>
+                                    <?}?>
                                 </div>
                                 <div class="mt-4 d-flex justify-content-end">
                                 <? foreach ($postData as $i => $row) { ?>
