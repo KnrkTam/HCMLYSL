@@ -55,7 +55,7 @@ if (DEBUG && isset($debugbarRenderer)) {
 
 
 <link href="<?= assets_url('webadmin/admin_lte/bower_components/boostrap-datatable/css/jquery.dataTables.min.css') ?>" rel="stylesheet">
-
+<link href="<?= assets_url('webadmin/admin_lte/bower_components/boostrap-datatable/css/rowReorder.dataTables.min.css') ?>" rel="stylesheet">
 <link href="<?= assets_url('webadmin/admin_lte/bower_components/boostrap-datatable/css/select.dataTables.min.css') ?>" rel="stylesheet">
 <link href="<?= assets_url('libraries/alertify/alertify.core.css') ?>" rel="stylesheet">
 <link href="<?= assets_url('libraries/alertify/alertify.bootstrap.css') ?>" rel="stylesheet">

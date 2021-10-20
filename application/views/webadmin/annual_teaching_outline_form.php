@@ -244,7 +244,7 @@
             }, {
                 render: function(data, type, row) {
                         if (row.addon == "" || !row.addon) {
-                            let result = '暫無補充內容';
+                            let result = null;
                             return result;
                         } else {
                             let result =  '<span class="addonRow">' + data + ' </span><span class="showMoreBtn"><a class="small showMoreText" style="cursor: pointer">顯示</a></span>';
@@ -441,8 +441,6 @@
                     },
                     error: function(error){
                         alert('error');
-                        // alert('duplicated');
-                        // console.log(error);
                     }
                     });
                 } 

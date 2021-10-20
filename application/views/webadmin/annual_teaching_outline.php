@@ -120,7 +120,7 @@
                 {
                     width: '60px',
                     data: "annual_teaching_outline",
-                    title: "年度學習單元",
+                    title: "年度教學大綱",
                     name: 'first',
                 },         
             ]
@@ -154,6 +154,7 @@
             "serverSide": false,
             'searching': false,
             "ordering": true,
+            stateSave: true,
             "columns": columnDefs,   
             "ajax": {
                 "url": "<?= admin_url($page_setting['controller'] . '/ajax') ?>",
@@ -161,7 +162,11 @@
                 "timeout": "30000",
                 "data": function(d) {
                     let year_id = $('#year_id').val();
+                    let subject_id = $('#subject_id').val();
+
+                    d.subject_id = subject_id
                     d.year_id = year_id
+
                 },
 
             },

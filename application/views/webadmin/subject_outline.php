@@ -228,7 +228,7 @@
                         'zore:name',
                         'first:name',
                     ],
-                dom: 'Bfrtip',
+                dom: 'Bftrip',
                     "buttons": [ {
                     extend: 'colvis',
                     text: '選擇顯示項目',
@@ -251,6 +251,7 @@
                 "ordering": true,
                 // "searching": true,
                 // "drawType": 'none',
+                stateSave: true,
                 "searchDelay": 0,     
                 "columns": columnDefs,            
                 "ajax": {

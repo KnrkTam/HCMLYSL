@@ -5,8 +5,12 @@
 	{
 		protected $table = "staff";
 
-        public static function list()
+        public static function list($all = null)
 		{
+            if($all) {
+                $list[0] = '所有教師';
+            }
+            
             $result = Staff_model::where('status', 1)->get();
             foreach($result as $row){
                 $list[$row['id']] =  $row["name"];

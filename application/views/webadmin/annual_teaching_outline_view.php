@@ -285,8 +285,6 @@
                 class: ""
             }];
 
-       
-
             let subjectTable = $('#viewTable').DataTable({
                 scrollX: true,
                 rowsGroup: [

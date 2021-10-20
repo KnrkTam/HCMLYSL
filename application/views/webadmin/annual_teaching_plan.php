@@ -34,25 +34,9 @@
                     <div class="col-md-12">
                         <!-- form start -->
                         <?= form_open_multipart($form_action, 'class="form-horizontal"'); ?>
-                        <!-- general form elements 
-                    <input type="hidden" name="id" value="<?= $id ?>"/>-->
+                        <!-- general form elements  -->
+                        <!-- <input type="hidden" name="id" value="<?= $id ?>"/> -->
                         <div class="box box-primary">
-                            <!-- <div class="box-header">
-                            <div class="row col-md-2">
-                                <div class="btn-group" data-spy="affix" data-offset-top="2" style="z-index: 20;">
-                                    <a href="<?= admin_url($page_setting['controller']) ?>" class="btn btn-default">
-                                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
-                                        <?= __('Cancel') ?>
-                                    </a>
-
-                                    <?php if (validate_user_access(['create_news', 'update_news'])) { ?>
-                                        <button type="button" class="btn btn-primary" onclick="submit_form(this);">
-                                            <i class="fa fa-floppy-o" aria-hidden="true"></i> <?= __('Save') ?>
-                                        </button>
-                                    <?php } ?>
-                                </div>
-                            </div>
-                        </div> -->
                             <!-- /.box-header -->
 
                             <div class="box-body">
@@ -63,75 +47,52 @@
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label class="text-nowrap">年度： </label>
-                                            <select class="form-control">
-                                                <option hidden>請選擇...</option>
-                                                <option value="全部">全部</option>
-                                                <option value="19/20">2019/2020</option>
-                                                <option value="20/21">2021/2022</option>
-                                            </select>
+                                            <?php form_list_type('year_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' => $year_id, 'data-placeholder' => '請選擇...', 'enable_value' => $years_list, 'form_validation_rules' => 'trim|required']) ?>
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label class="text-nowrap">科目： </label>
-                                            <select class="form-control select2" multiple="" data-placeholder="請選擇...">
-                                                <option hidden>請選擇...</option>
-                                                <option value="全部">全部</option>
-                                                <option value="xxx">xxx</option>
-                                                <option value="xxx">xxx</option>
-                                                <option value="xxx">xxx</option>
-                                                <option value="xxx">xxx</option>
-                                                <option value="xxx">xxx</option>
-                                            </select>
+                                            <?php form_list_type('subject_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' => $subject_id, 'data-placeholder' => '請選擇...', 'enable_value' => $subjects_list, 'form_validation_rules' => 'trim|required']) ?>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row mb-4">
                                     <div class="col-lg-3">
                                         <div class="form-group">
-                                            <label class="text-nowrap">年度： </label>
-                                            <select class="form-control">
-                                                <option hidden>請選擇...</option>
-                                                <option value="全部">全部</option>
-                                                <option value="19/20">2019/2020</option>
-                                                <option value="20/21">2021/2022</option>
-                                            </select>
+                                            <label class="text-nowrap">教職員：
+                                            </label>
+                                            <?php form_list_type('staff_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' => $staff_id, 'data-placeholder' => '請選擇...', 'enable_value' => $staff_list, 'form_validation_rules' => 'trim|required']) ?>
+
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="form-group">
                                             <label class="text-nowrap">單元： </label>
-                                            <select class="form-control">
-                                                <option hidden>請選擇...</option>
-                                                <option value="全部">全部</option>
-                                                <option value="19/20">2019/2020</option>
-                                                <option value="20/21">2021/2022</option>
-                                            </select>
+                                            <?php form_list_type('module_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' => $module_id, 'data-placeholder' => '請選擇...', 'enable_value' => $module_list, 'form_validation_rules' => 'trim|required']) ?>
+
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="form-group">
                                             <label class="text-nowrap">教案狀態：
                                             </label>
-                                            <select class="form-control">
-                                                <option hidden>請選擇...</option>
-                                                <option value="全部">全部</option>
-                                                <option value="已提交">已提交</option>
-                                                <option value="未提交">未提交</option>
-                                                <option value="已審批">已審批</option>
-                                            </select>
+                                            <?php form_list_type('status_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' => $status_id, 'data-placeholder' => '請選擇...', 'enable_value' => $status_list, 'form_validation_rules' => 'trim|required']) ?>
+
                                         </div>
                                     </div>
                                     <div class="col-lg-1">
-                                        <button type="button" class="btn btn-success mt-25 w-100 mb-4 searchBtn">搜 尋</button>
+                                        <button type="submit" class="btn btn-success mt-25 w-100 mb-4 searchBtn">搜 尋</button>
                                     </div>
                                 </div>
 
 
 
 
-                                <div class="tableWrap hidenWrap">
-                                    <table class="table table-bordered table-striped w-100" id="outlineTable">
+                                <div class="">
+                                    <table class="table table-bordered table-striped w-100" id="mainTable">
+                                    </table>
+                                    <!-- <table class="table table-bordered table-striped w-100" id="outlineTable">
                                         <thead>
                                             <tr class="bg-light-blue color-palette">
 
@@ -208,7 +169,7 @@
                                             </tr>
 
                                         </tbody>
-                                    </table>
+                                    </table> -->
                                 </div>
                             </div>
                             <!-- /.box-body -->
@@ -237,94 +198,120 @@
     <script>
         $(document).ready(function() {
 
+            let columnDefs = [
+                {
+                    data: "year",
+                    title: "年度",
+                    name: 'first',
+                },               
+                {
+                    width: 100,
+                    // class: 'col',
+                    data: "subject",
+                    title: "科目",
+                    name: 'first',
+                },         
+                {
+                    // width: '60px',
+                    data: "group",
+                    title: "施教組別名稱",
+                    name: 'first',
+                },  
+                {
+                    width: '60px',
+                    data: "module",
+                    title: "單元",
+                    name: 'first',
+                },         
+                {
+                    // width: '60px',
+                    data: "staff",
+                    title: "主要任教",
+                    name: 'first',
+                },    
+                {
+                    // width: '60px',
+                    data: "created_by",
+                    title: "編寫教案",
+                    name: 'first',
+                },    
+                {
+                    // width: '60px',
+                    data: "annual_module",
+                    title: "年度學習單元",
+                    name: 'first',
+                },         
+                {
+                    // width: '60px',
+                    data: "annual_teaching_outline",
+                    title: "年度教學大綱",
+                    name: 'first',
+                },   
+                {
+                    // width: '60px',
+                    data: "annual_teaching_plan",
+                    title: "教學計劃(教案)",
+                    name: 'first',
+                },       
+                {
+                    // width: '60px',
+                    data: "file",
+                    title: "下載Word",
+                    name: 'first',
+                },               
+            ]
 
+            let mainTable = $('#mainTable').DataTable({
+            scrollX: true,
+            "language": {
+                "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/Chinese-traditional.json') ?>",
+            },
+            dom: '<"row"<"col-sm-10"B><"col-sm-2"l>>"tifrp',
+            "buttons": [{
+                extend: 'colvis',
+                stateSave: true,
+                text: '選擇顯示項目',
+                columns: ':not(.noVis)',
+                columnText: function ( dt, idx, title ) {
+                    return title;
+                }
+            }],
+            "order": [],
+            'autoWidth': false,
+            "bSort": true,
+            "info": false,
+            "bPaginate": true,
+            "pageLength": 50,
+            "pagingType": "input",
+            "bProcessing": true,
+            "processing": true,
+            "serverSide": false,
+            'searching': false,
+            "ordering": true,
+            "columns": columnDefs,   
+            "ajax": {
+                "url": "<?= admin_url($page_setting['controller'] . '/ajax') ?>",
+                "method": "get",
+                "timeout": "30000",
+                "data": function(d) {
+                    let year_id = $('#year_id').val();
+                    let subject_id = $('#subject_id').val();
+                    let module_id = $('#module_id').val();
+                    let staff_id = $('#staff_id').val();
 
+                    d.subject_id = subject_id;
+                    d.module_id = module_id;
+                    d.year_id = year_id;
+                    d.staff_id = staff_id;
+                },
 
+            },
+            // 'completed': function(e){
+            //     columns.adjust()
+            // },
+            }); 
 
-
-
-            //  table.columns.adjust();
-
-            $(".searchBtn").click(function() {
-
-                $(".tableWrap").fadeIn();
-
-
-                $('#settingTable').DataTable({
-                    scrollX: true,
-                    scrollCollapse: true,
-                    bFilter: false,
-                    bInfo: true,
-                    sScrollXInner: "100%",
-                    bLengthChange: true,
-                    columnDefs: [{
-                        targets: 'no-sort',
-                        orderable: false,
-
-                    }]
-
-
-                }).columns.adjust();
-
-
-
-                $('#settingTable').DataTable({
-                    scrollX: true,
-                    scrollCollapse: true,
-                    bFilter: false,
-                    bInfo: true,
-                    sScrollXInner: "100%",
-                    bLengthChange: true,
-                    columnDefs: [{
-                        targets: 'no-sort',
-                        orderable: false,
-
-                    }]
-
-
-                }).columns.adjust();
-
-            });
-
-        });
-
-
-
-        function submit_form(_this) {
-            //form checking
-            var valid_data = true;
-            //.form checking
-            if (!valid_data) {
-                //alert('Invalid Data.');
-            } else {
-                ajax_submit_form(_this);
-            }
-        }
-
-        <?php /*
-    //multiple image upload
-    $("input.multiple_upload").fileinput({
-        language: '<?=get_wlocale()?>',
-        previewFileType: "image",
-        showCaption: false,
-        showUpload: false,
-        maxFileSize: 2048,
-        maxFileCount: 30,
-        maxImageHeight: 2000,
-        maxImageWidth: 2000,
-        overwriteInitial: false,
-        allowedFileExtensions: ['jpg','jpeg','png'],
-        initialPreview: <?=isset($photos_preview) ? $photos_preview : "{}"?>,
-        initialPreviewAsData: true,
-        initialPreviewConfig: <?=isset($photos_json) ? $photos_json : "{}"?>,
-        deleteUrl: "<?=admin_url('bk_news/delete_multiple_upload')?>",
-        // hiddenThumbnailContent: true,
-        // initialPreviewShowDelete: true,
-        // removeFromPreviewOnError: true,
-    }).on('filedeleted', function(event, key, jqXHR, data) {
-        alertify.success("<?=__('Deleted successfully!')?>");
-    });
- */ ?>
+        })
     </script>
 
 </body>

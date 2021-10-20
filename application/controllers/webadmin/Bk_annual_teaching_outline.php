@@ -45,7 +45,7 @@ class Bk_annual_teaching_outline extends CI_Controller //change this
         ), FALSE, TRUE);
 
         $data['years_list'] = Years_model::list();
-        $data['subjects_list'] = Subjects_model::list();
+        $data['subjects_list'] = Subjects_model::list('all');
         $year_id = Years_model::orderBy('year_from', 'DESC')->first()->id;
         $data['year_id'] = $year_id; 
         
@@ -221,9 +221,13 @@ class Bk_annual_teaching_outline extends CI_Controller //change this
             'view_'. $this->scope,
         ), FALSE, TRUE);
         $year_id = $_GET['year_id'];
-
-        $result = Annual_subject_groups_model::where('year_id', $year_id)->get();
-
+        $subject_id = $_GET['subject_id'];
+        $result = Annual_subject_groups_model::where('year_id', $year_id)
+        ->when($subject_id, function($query, $subject_id){
+            return $query->where('subject_id', $subject_id);
+        })
+        ->get();
+        // dump($_GET);
         $result_count = count($result);
         // dump($result_count);
         $data = array();
@@ -361,13 +365,11 @@ class Bk_annual_teaching_outline extends CI_Controller //change this
         $offset = (int)$_GET['start'];
         $pagination = (int)$_GET['length'];
         $subject_id = Subjects_model::where('name', '共通能力')->first()->id;
-        // dump($subject_id);
     
         $searched_lessons = Subject_lessons_modules_model::search($year_id, $subject_id, null, null, null);
         if ($searched_lessons) {
             foreach ($searched_lessons as $y => $subject_lesson_module_id) {
                 $sub_ann_module = Subject_lessons_modules_model::find($subject_lesson_module_id);
-                // dump($sub_ann_module);
 
                 $subject_id = $sub_ann_module->subject_id;
                 $subject_lesson = $sub_ann_module->subject_lesson;
@@ -375,7 +377,6 @@ class Bk_annual_teaching_outline extends CI_Controller //change this
                 $lesson_id = $lesson->id;
                 $group_count = Lessons_group_model::id_list($lesson_id);
                 $subject_lesson_id = $subject_lesson->id;
-                // dump($group_count);
 
                 foreach ($group_count as $group_id => $group) {
                     $lessons_arr[] = array(
@@ -648,7 +649,7 @@ class Bk_annual_teaching_outline extends CI_Controller //change this
                     $add_box .= '<p class="text-blue"><strong class="text-black">'.$module_name.':</strong> &nbsp  '. Additional_contents_model::content((int)$row['group_id'],$module_id, $subject_lessons_modules_id).'</p>';
                 }
                 $module_add_content = Additional_contents_model::where('subject_lessons_module_id', $subject_lessons_modules_id)->first();
-                $data[$num]['addon'] =  $module_add_content ? $add_box : '暫無補充內容';
+                $data[$num]['addon'] =  $module_add_content ? $add_box : null;
 
                 $data[$num]['performance'] = $row['key_performance']['performance'];
                 $data[$num]['assessment'] = Assessments_model::mode($row['key_performance']['assessment_id']);
@@ -657,7 +658,7 @@ class Bk_annual_teaching_outline extends CI_Controller //change this
                 foreach ($row['lesson']['rel_lessons'] as $rel) {
                     $rel_lessons .= '<button type="button" class="btn-xs btn btn-primary badge">' .Lessons_model::code($rel).'</button> &nbsp';
                 }
-                $data[$num]['related_lesson'] = $rel_lessons ? $rel_lessons : '暫無相關課程編號	';
+                $data[$num]['related_lesson'] = $rel_lessons ? $rel_lessons : 'null';
                 $data[$num]['rel_code'] = $row['lesson']['rel_code'] ? $row['lesson']['rel_code'] : '暫無相關項目編號';
                 $remarks = '';
                 foreach ($row['remarks'] as $remark) {
@@ -751,6 +752,8 @@ class Bk_annual_teaching_outline extends CI_Controller //change this
 
         $this->load->view('webadmin/' . $this->scope . '_view',  $data);
     }
+
+
     public function submit_form($asg_id = null){
         $added_ids = json_decode($_POST['added_id'][0]);
         $group_ids = json_decode($_POST['group_ids'][0]);
