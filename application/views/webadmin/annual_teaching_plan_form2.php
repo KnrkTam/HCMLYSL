@@ -42,7 +42,7 @@
                     <!-- column -->
                     <div class="col-md-12">
                         <!-- form start -->
-                        <?= form_open_multipart($form_action, 'class="form-horizontal"'); ?>
+                        <?= form_open_multipart($form_action, 'class="form-horizontal" id="myForm"'); ?>
                         <!-- Modal box -->
                         <div class="modal fade in" tabindex="-1" role="dialog" id="studentModal">
                             <div class="modal-dialog modal-lg modal-dialog-centered w-25" role="document">
@@ -184,14 +184,12 @@
                                 <div class="mt-4 d-flex justify-content-end">
 
                                     <!-- <button type="button" class="btn bg-primary mw-100 mb-4 mr-4">下 載 至 Word</button> -->
-                                    <button type="submit" class="btn bg-purple mw-100 mb-4 mr-4">下 一 步</button>
+                                    <button type="button" id="submitBtn" class="btn bg-purple mw-100 mb-4 mr-4">下 一 步</button>
                                     <!-- <button type="button" class="btn bg-maroon mw-100 mb-4 mr-4">提 交</button> -->
                                     <button type="button" class="btn btn-default mw-100 mb-4" onclick="location.href='<?= admin_url($page_setting['controller']) ?>';">返 回</button>
                                     <input class="hidden" name="asg_id" value=<?= $asg_id ?> />
                                     <input class="hidden" name="ato_id" value=<?= $id ?> />
                                     <input class="hidden" name="event_count" value=<?= json_encode($event_count) ?> />
-                                   
-
                                 </div>
 
                             </div>
@@ -245,8 +243,9 @@
                 title: "次序項目",
                 class: "no-sort mouseover",
                 name :"first",
-                orderable: "false",
-                targets: 0,
+                orderable: false,
+                // orderable: "false",
+                // targets: 0,
             }, 
             {
                 // render: function(data, type, row) {
@@ -272,6 +271,7 @@
                 title: "範疇",
                 orderable: false,
                 name:"first",
+                class: "mouseover"
             }, 
             {
                 data: "sb_obj",
@@ -343,12 +343,14 @@
             },
             {
                 render: function(data, type, row, index) {
-                    let result = `<input type="checkbox" name="partStudentCheck[${data}]" class="partCheck" value="${data}" />
-                                <select class="form-control" name="level[${data}]" >
-                                    <option value="1">低</option>
-                                    <option value="2">中</option>
-                                    <option value="3">高</option>
-                                </select>`;
+                    let result = `<div style="display:flex; align-items: center"><input type="checkbox" name="partStudentCheck[${data}]" class="partCheck" value="${data}" multiple="multiple"/>
+                                <select class="form-control select2 level" id="level_${data}" name="level[${data}]">
+                                    <option value="1">L</option>
+                                    <option value="2">LM</option>
+                                    <option value="3">M</option>
+                                    <option value="4">MH</option>
+                                    <option value="5">H</option>
+                                </select></div>`;
                     return result;
 
                 //     // data: null,
@@ -366,10 +368,14 @@
 
             let table = $('#mainTable').DataTable({
                 scrollX: true,
-                rowReorder: {dataSrc: 'order'},
-                rowsGroup: [
-                    'first:name',
-                ],
+                rowReorder: {
+                    dataSrc: 'order',
+                    selector: 'tr'
+                },
+                // rowReorder: true,
+                // rowsGroup: [
+                //     'first:name',
+                // ],
                 dom: 'frtip',
                 // "buttons": [{
                 //     extend: 'colvis',
@@ -384,7 +390,7 @@
                 "language": {
                     "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/Chinese-traditional.json') ?>",
                 },
-                "order": [[1]],
+                "order": [1],
                 "data-sort": true,
                 "bSort": false,
                 // "sorting": false,
@@ -415,99 +421,53 @@
                 method:'POST',
                 data:{asg_id: asg_id},
                 dataType:'json',
-                // beforeSend:function(){
-                //     $('#groups').html(
-                //         `<div class="col-3 bold">
-                //             <button type="button" class="btn btn-warning mw-100 mb-4 mr-4" data-toggle="modal" data-target="#editModal"><i class="fa fa-edit"></i>修 改</button>
-                //         </div>`
-                //     )        
-                //     $('#edit-groups').html(
-                //         `<div class="col-3 bold">
-                //         </div>`
-                //     )               
-                // },
                 success:function(d){
-                    // let student_list = Object.values(d);
-                    // let student_ids = Object.keys(d);
-                    // console.log(student_ids);
-                    // // let myKeyPerformance = Object.values(d.list)
-                    // // let myGroup = Object.values(d.groups)
-                    // // let myModule = Object.values(d.modules)
-                    
-                    // let text = "";
-                    // for (i = 0; i < student_list.length; i++) {
-                    //     text +=  '<div class="col-6 bold mb-2"> <label style="white-space:nowrap">'
-                    //             + student_list[i] + 
-                    //             `: &nbsp</label><select  class="form-control" name="studentLevel[${student_ids[i]}]" >
-                    //                 <option value="1">低</option>
-                    //                 <option value="2">中</option>
-                    //                 <option value="3">高</option>
-                    //             </select>`+ 
-                    //             '</div>' 
-                    // }
-                    // // let add_content = Object.values(d.add_content);
-
-                    // let groups = "";
-                    // for(i = 0; i < myGroup.length; i++) {
-                    //     groups += '<div class="col-3 bold">'
-                    //             + myGroup[i]+       
-                    //             '</div>'  
-                    // }
-
-                    // let add_content = "";
-                    // let j = 0;
-                    // for(i = 0; i < myModule.length; i++) {
-                    //     add_content += 
-                    //             `<div class="row mb-4">
-                    //                 <div class="col-lg-3 bold">
-                    //                     <p class="mt-2">`+ myModule[i] + `</p>
-                    //                 </div>`
-                    //                 for(y = 0; y < myGroup.length; y++) {
-                    //                     let x = j + (myModule.length * y);
-                    //                     add_content += 
-                    //                         `<div class="col-lg-3 bold lowLevel d-flex nowrap align-items-center">
-                    //                         <input type="text" class="form-control add-content" name="content[]" value="${myKeys[x]['lesson_additional_content'] ? myKeys[x]['lesson_additional_content'] : "" }" data-id="${myKeys[x]['id']}" disabled placeholder=""></input>
-                    //                         <input type="hidden" name="id[]" value="${ myKeys[x]['id']}"></input>
-                    //                         <input type="hidden" name="group[]" value="${y}"></input>
-                    //                         <input type="hidden" name="module[]" value="${i}"></input>
-                    //                         </div>
-                    //                         `
-                    //                 }
-                    //                 add_content += `</div>`;
-
-                    //                 j++;
-
-                    // }
-                    // $('#key_performances').html(text)
-                    // $('#add_content').html(add_content)
-                    // $('#edit-body').html(text)
-
+                    $('.select2').select2();
                     $('.partCheck').on('change', function() {
+                        let value = this.value;
+
                         $(`.allCheck[value=${this.value}]`).prop("checked",false);
+                        $(`#level_${value}`).prop("disabled",false);
+
                     });
                     $('.allCheck').on('change', function() {
-                        $(`.partCheck[value=${this.value}]`).prop("checked",false);
+                        let value = this.value;
+                        $(`.partCheck[value=${value}]`).prop("checked",false);
+                        $(`#level_${value}`).prop("disabled", true);
                     });   
-                    // $('#edit-body input').prop("disabled", false);
-                    // $('#edit-groups').append(groups)
-                    // $('#groups').append(groups)
-
-
-
-                    // if (d.common_value == 1) {
-                    //     $('#common_value').html('(共通能力)'); 
-                    // } else {
-                    //     $('#common_value').html(''); 
-
-                    // }
-                    // let countSelect = new Set();
-                    // countSelect.add(count)
-                    // count++;
-                    // console.log(d);
                 },
                 })
             }     
         });
+
+        
+            let submitBtn = document.querySelector('#submitBtn');
+            submitBtn.addEventListener("click",function(){
+
+                let myForm = document.getElementById('myForm');
+                let formData = $('#myForm').serializeJSON();
+
+                passStage(formData);
+                function passStage(formData){
+                    $.ajax({
+                    url: '<?= (admin_url($page_setting['controller'])) . '/validate' ?>',
+                    method:'POST',
+                    data:{form: formData},
+                    dataType:'json',     
+                    
+                    success:function(data){
+                        if (data.status == 'success') {
+                            document.getElementById('myForm').submit();
+                        } else {
+                            alertify.error(data.status)
+                        }
+                    },
+                    error: function(error){
+                        alert('error');
+                    }
+                    });
+                } 
+            })  
 
     </script>
 

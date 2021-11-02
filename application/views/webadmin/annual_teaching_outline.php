@@ -60,6 +60,7 @@
                                 </div>
 
 
+                             
                                 <div class="">
                                     <table class="table table-bordered table-striped w-100" id="mainTable">
                                     </table>
@@ -92,12 +93,14 @@
                     data: "year",
                     title: "年度",
                     name: 'first',
+                    width: 10,
                 },               
                 {
                     class: 'col',
                     data: "subject",
                     title: "科目",
                     name: 'first',
+                    width: 20
                 },         
                 {
                     width: '60px',

@@ -17,6 +17,8 @@
 <script src="<?= assets_url('webadmin/admin_lte/plugins/input-mask/jquery.inputmask.js') ?>"></script>
 <script src="<?= assets_url('webadmin/admin_lte/plugins/input-mask/jquery.inputmask.date.extensions.js') ?>"></script>
 <script src="<?= assets_url('webadmin/admin_lte/plugins/input-mask/jquery.inputmask.extensions.js')?>"></script>
+<!-- Serial JSON -->
+<script src="<?= assets_url('webadmin/js/serialize_json.js') ?>"></script>
 <script type="text/javascript">
     $(":input").inputmask(); 
 </script>

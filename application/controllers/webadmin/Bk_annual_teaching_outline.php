@@ -131,7 +131,6 @@ class Bk_annual_teaching_outline extends CI_Controller //change this
             'view_' . $this->scope
         ), FALSE, TRUE);
 
-        // $first_entry = Subject_lessons_modules_model::find($subject_lessons_modules_id);
         $GLOBALS["select2"] = 1;
 
         $result = Annual_teaching_outline_model::find($id);
@@ -148,10 +147,10 @@ class Bk_annual_teaching_outline extends CI_Controller //change this
         $data['id'] = $id;
         $data['expected_outcome'] = $list;
         $data['key_performances'] = $key_performances;
-
+        $data['group_name'] = $result->group_name;
         $data['form_action'] = admin_url($data['page_setting']['controller'] . '/save_edit');
         $data['action'] = __('修 改');
-
+        // dump($data);
         $this->load->view('webadmin/' . $this->scope . '_edit',  $data);
     }
 
@@ -251,7 +250,7 @@ class Bk_annual_teaching_outline extends CI_Controller //change this
                 $data[$num]['group'] = $row['group_name'] ? $row['group_name'] : Classes_model::name($row['class_id']);
                 $data[$num]['module'] = '<span class="hidden">'. $row['module_order'].'</span>'. Modules_model::order_list($row['module_order']);
                 $data[$num]['annual_module'] = $annual_teaching_outline ? $annual_teaching_outline->annual_module : null;
-                $data[$num]['annual_teaching_outline'] = $annual_teaching_outline ? '<a href="'.admin_url(current_controller() . '/view/'. $annual_teaching_outline->id).'">查 閱</a>' : '<a href="'.admin_url(current_controller() . '/create/'. $row['id'] ).'">新 增</a>';
+                $data[$num]['annual_teaching_outline'] = $annual_teaching_outline ? '   <ul class="colorMapList inlinelist"><li class="text-green bold"> <a href="'.admin_url(current_controller() . '/view/'. $annual_teaching_outline->id).'">查 閱</a></li></ul>' : ' <ul class="colorMapList inlinelist"><li class="text-orange bold"><a href="'.admin_url(current_controller() . '/create/'. $row['id'] ).'">新 增</a></li></ul>';
                 $num++;
             }
         }

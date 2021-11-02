@@ -305,9 +305,11 @@ class Bk_annual_teaching_plan extends CI_Controller //change this
         $data['staff'] = $asg->staff2_id ? Staff_model::name($asg->staff1_id).','.  Staff_model::name($asg->staff2_id) :  Staff_model::name($asg->staff1_id);$asg->staff1_id;
         $data['staff_list'] = Staff_model::list();
         $data['level_list'] = array(
-            1 => '低',
-            2 => '中',
-            3 => '高'
+            1 => 'L',
+            2 => 'ML',
+            3 => 'M',
+            4 => 'HM',
+            5 => 'H',
         );
         $data['action'] = __('新 增 (Step 2)');
 
@@ -385,7 +387,7 @@ class Bk_annual_teaching_plan extends CI_Controller //change this
         }
         $asg_id = $_POST['asg_id'];
         $data['today'] = date("Y-m-d ");
-
+        dump($_POST);
         $ato = Annual_teaching_outline_model::find($ato_id);
         $asg = Annual_subject_groups_model::find($asg_id);
         $module_date = Modules_week_model::date($asg->year_id, $asg->level_id, $ato->module_order);
@@ -470,6 +472,52 @@ class Bk_annual_teaching_plan extends CI_Controller //change this
         $this->load->view('webadmin/' . $this->scope . '_form3',  $data);
     }
 
+    public function validate($id = null)
+    {
+        $data['page_setting'] = $this->page_setting(array(
+            'create_' . $this->scope
+        ), FALSE, TRUE);
+        // $year_id = Years_model::orderBy('year_to', 'DESC')->first()->id;
+        dump($_POST);
+        $id = $_POST['id'];
+        // $annual_module_id = $_POST['annual_module_id'];
+        // $raw_added_ids = $_POST['added_ids'];
+        // $raw_common_ids = $_POST['common_ids'];
+        
+        // switch(true) {
+        //     case (!$id);
+        //     $data = array(
+        //         'status' => 'Error',
+        //     );
+        //     break;
+        //     case (empty($annual_module_id) && $annual_module_id != 0);
+        //     $data = array(
+        //         // 'status' => '請選擇年度學習單元',
+        //         'status' => $annual_module_id,
+
+        //     );
+        //     break;
+        //     case (!$raw_added_ids);
+        //     $data = array(
+        //         'status' => '請選擇教學項目',
+        //     );
+        //     break;
+        //     default;
+        //     $data = array(
+        //         'status' => 'success',
+        //     );
+        // } 
+
+        // foreach ($raw_added_ids as $i => $row) {
+        //     $lesson_arr[$i] = array('group' => explode(",", $row)[0], 'key_performance' =>  explode(",", $row)[1]);
+        // }
+        // foreach ($raw_common_ids as $i => $common_id) {
+        //     $common_arr[$i] = array('group' => explode(",", $common_id)[0], 'key_performance' =>  explode(",", $common_id)[1]);
+        // }
+        
+        echo json_encode($data);
+
+    }
 
     public function preview($ato_id = null)
     {
@@ -553,6 +601,13 @@ class Bk_annual_teaching_plan extends CI_Controller //change this
 
         $data['form_action'] = admin_url($data['page_setting']['controller'] . '/submit_form');
         $data['action'] = __('新 增(Step 2)');
+        $data['ability_list'] = array(
+            1 => 'L',
+            2 => 'ML',
+            3 => 'M',
+            4 => 'HM',
+            5 => 'H',
+        );
 
         $GLOBALS["datatable"] = 1;
         $GLOBALS["select2"] = 1;
@@ -613,5 +668,6 @@ class Bk_annual_teaching_plan extends CI_Controller //change this
 
         $this->load->view('webadmin/' . $this->scope . '_step3_edit',  $data);
     }
+
 
 }

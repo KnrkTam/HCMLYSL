@@ -46,7 +46,8 @@
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="form-group mb-0">
-                                     
+                                            <label class="text-nowrap">組別名稱：</label>
+                                            <p><?= $group_name?></p>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
