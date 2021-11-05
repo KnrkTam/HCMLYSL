@@ -86,8 +86,7 @@
                                     <div class="col-lg-2">
                                         <div class="form-group ">
                                             <label class="text-nowrap">週次： </label>
-                                            <p class="mt-2"><?= $week_from ?> 至 <?= $week_to ?></p>
-
+                                            <p class="mt-2"><?= $week_from ? $week_from .' 至 '. $week_to : 'NA' ?></p>
                                         </div>
                                     </div>
                                     <div class="col-lg-12">

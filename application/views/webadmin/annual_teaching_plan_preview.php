@@ -44,16 +44,16 @@
                                 <div class="d-flex mt-2">
                                     <p class="mb-0 bold">審批狀態：</p>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                        <label class="form-check-label" for="inlineRadio1">確定</label>
+                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" disabled>
+                                        <label class="form-check-label" for="inlineRadio1">己確定</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option1">
-                                        <label class="form-check-label" for="inlineRadio2">拒絕</label>
+                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option1" disabled>
+                                        <label class="form-check-label" for="inlineRadio2">已提交</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option1" checked>
-                                        <label class="form-check-label" for="inlineRadio2">待定</label>
+                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option1" checked >
+                                        <label class="form-check-label" for="inlineRadio2">未提交</label>
                                     </div>
                                 </div>
                                 <hr>
@@ -148,7 +148,7 @@
                                     <h4 class="bold pt-4">學習活動 :</h4>
                                     <table class="table table-bordered table-striped width100p" id="eventTable">
                                     </table> 
-                                        <button type="button" id="add-btn" class="btn btn-warning mw-100 mb-4 mr-4">增 加</button>
+                                    <button type="button" id="add-btn" class="btn btn-warning mw-100 mb-4 mr-4">增 加</button>
                                     </div>
                                 </div> 
                                 <div class="mt-4 d-flex justify-content-end">
@@ -243,11 +243,6 @@
                 {
                     data: "activity",
                     title: "學習活動",
-                    name:"first",
-                },
-                {
-                    data: "action",
-                    title: "動作",
                     name:"first",
                 }
             ]

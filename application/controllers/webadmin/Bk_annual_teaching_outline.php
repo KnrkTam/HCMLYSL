@@ -134,23 +134,25 @@ class Bk_annual_teaching_outline extends CI_Controller //change this
         $GLOBALS["select2"] = 1;
 
         $result = Annual_teaching_outline_model::find($id);
-        $data['subject'] = $result['subject'];
+        $asg = Annual_subject_groups_model::find($result->annual_subject_group_id);
+        $data['subject'] = Subjects_model::name($asg->subject_id);
 
-        $asg_id = $result->annual_subject_group_id;
-        $asg_result = Annual_teaching_outline_model::where('annual_subject_group_id', $asg_id);
-        $key_performances =  $asg_result->select('id','lesson_expected_outcome','lesson_performance')->get()->toArray();
+        $asg_result = Annual_teaching_outline_model::where('annual_subject_group_id', $asg->id);
+        $key_performances = $asg_result->select('id','lesson_expected_outcome','lesson_performance')->get()->toArray();
         $expected_outcomes = $asg_result->pluck('lesson_expected_outcome')->unique()->toArray();
+        // dump($asg_id);
+        // dump($asg_result);
         foreach ($expected_outcomes as $row){
             $list[$row] = $row;
         }
-        $data['asg_id'] = $asg_id;
+        $data['asg_id'] = $asg->id;
         $data['id'] = $id;
         $data['expected_outcome'] = $list;
         $data['key_performances'] = $key_performances;
         $data['group_name'] = $result->group_name;
         $data['form_action'] = admin_url($data['page_setting']['controller'] . '/save_edit');
         $data['action'] = __('修 改');
-        // dump($data);
+
         $this->load->view('webadmin/' . $this->scope . '_edit',  $data);
     }
 
@@ -685,7 +687,8 @@ class Bk_annual_teaching_outline extends CI_Controller //change this
         $ato = Annual_teaching_outline_model::find($annual_teaching_outline_id);
         $data['id'] = $ato->id;
         $data['year'] = $ato->year;
-        $data['subject'] = $ato->subject;
+        $asg = Annual_subject_groups_model::find($ato->annual_subject_group_id);
+        $data['subject'] = Subjects_model::name($asg->subject_id);        
         $data['group_name'] = $ato->group_name;
         $data['annual_module'] = $ato->annual_module;
         $data['module'] = Modules_model::order_list($ato->module_order);

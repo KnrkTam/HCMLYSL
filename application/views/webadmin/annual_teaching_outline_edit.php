@@ -166,6 +166,7 @@
                     )               
                 },
                 success:function(d){
+                    console.log(d)
                     let myKeys = Object.values(d.add_content)
                     let myKeyPerformance = Object.values(d.list)
                     let myGroup = Object.values(d.groups)

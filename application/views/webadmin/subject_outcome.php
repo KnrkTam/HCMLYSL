@@ -14,7 +14,7 @@
 
         }
         table {
-            table-layout:fixed;
+            /* table-layout:fixed; */
         } 
         .highlight{
             position:absolute;
@@ -108,9 +108,7 @@
                                     <h5 class="text-red"><b>搜尋結果：</b></h5>
                                 <!-- </div> -->
                                 <div class="tableWrap">
-                                    <table class="table table-bordered table-striped dataTable" id="courseOutlineTable">
-                                        <tbody>
-                                        </tbody>
+                                    <table class="table table-bordered table-striped" style="width: 100% !important" id="courseOutlineTable">
                                     </table>
                                 </div>
                             </div>
@@ -145,6 +143,25 @@
 
         $(".searchBtn").click(function() {
             Course_table.draw();
+        })
+
+        $('#subject_category_id').change(function() {
+            console.log(this.value)
+            ajax_choose(this.value)
+            function ajax_choose(subject_cat_id) {
+                $.ajax({
+                url: '<?= (admin_url($page_setting['controller'])) . '/select_subject_cat' ?>',
+                method:'POST',
+                data:{id:subject_cat_id},
+                dataType:'json',
+                success:function(data){
+                    console.log('daar',data)
+                    if (data) {
+                        $('#subject_id').val(data).trigger('change');
+                    }
+                }
+                })
+            }
         })
 
         let columnDefs = [{
@@ -253,7 +270,8 @@
         "ordering": true,
         "searching": true,
         "columns": columnDefs,   
-        "searchDelay": 0,                    
+        "searchDelay": 0, 
+        autoWidth: true,                   
         "ajax": {
             "url": "<?= admin_url($page_setting['controller'] . '/ajax') ?>",
             "method": "get",
@@ -282,7 +300,7 @@
         },
         });
 
-
+        Course_table.draw();
         let data =  <?php echo $subject_categories_list?>;
 
         $('#subject_category_id').select2({

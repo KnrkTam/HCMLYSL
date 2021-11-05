@@ -343,6 +343,15 @@ class Bk_subject_outcome extends CI_Controller //change this
         $data = $list;
         echo json_encode($data);
     }
+    
+    public function select_subject_cat()
+    {
+        $id = $_POST['id'];
+        $subject_id = Subject_categories_model::find($id)->subject_id;
+        $data = $subject_id;
+
+        echo json_encode($data);
+    }
 
 
     public function create()

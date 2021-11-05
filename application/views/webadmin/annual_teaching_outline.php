@@ -56,11 +56,7 @@
                                     <div class="col-lg-1">
                                         <button type="submit" class="btn btn-success mt-25 w-100 mb-4 searchBtn">搜 尋</button>
                                     </div>
-
                                 </div>
-
-
-                             
                                 <div class="">
                                     <table class="table table-bordered table-striped w-100" id="mainTable">
                                     </table>

@@ -27,7 +27,7 @@
                     'icon' => 'fa-file-text',
                 ),
                 array(
-                    'main_menu' => __('校本課程大綱 - 檢視'),
+                    'main_menu' => __('校本課程大綱'),
                     'url' => 'Bk_master_lesson_outline',
                     'access' => 'view_news',
                     'icon' => 'fa-file-text-o',
@@ -40,13 +40,13 @@
                     'icon' => 'fa fa-list-alt',
                     'sub_menu' => array(
                         array(
-                            'title' => __('科目預期學習成果 - 檢視'),
+                            'title' => __('科目預期學習成果'),
                             'url' => 'Bk_subject_outcome',
                             'access' => 'view_subject_outcome',
                             'icon' => 'fa-list-alt',
                         ),
                         array(
-                            'title' => __('科目課程大綱 - 檢視'),
+                            'title' => __('科目課程大綱'),
                             'url' => 'Bk_subject_outline',
                             'access' => 'view_subject_outline',
                             'icon' => 'fa-list-alt',
@@ -54,13 +54,13 @@
                     )
                 ),
                 array(
-                    'main_menu' => __('設定各級年度學習單元 - 檢視'),
+                    'main_menu' => __('設定各級年度學習單元'),
                     'url' => 'Bk_annual_modules',
                     'access' => 'view_annual_modules',
                     'icon' => 'fa-sticky-note-o',
                 ),
                 array(
-                    'main_menu' => __('全校學習單元週次 - 檢視'),
+                    'main_menu' => __('全校學習單元週次'),
                     'url' => 'Bk_modules_week',
                     'access' => 'view_modules_week',
                     'icon' => 'fa-clipboard',
@@ -85,19 +85,19 @@
                     'icon' => 'fa fa-mortar-board',
                     'sub_menu' => array(
                         array(
-                            'title' => __('設定年度教職員 - 檢視'),
+                            'title' => __('設定年度教職員'),
                             'url' => 'Bk_annual_staff_list',
                             'access' => 'view_annual_staff_list',
                             'icon' => 'fa-mortar-board',
                         ),
                         array(
-                            'title' => __('設定年度科長 - 檢視'),
+                            'title' => __('設定年度科長'),
                             'url' => 'Bk_annual_subject_monitor',
                             'access' => 'view_annual_subject_monitor',
                             'icon' => 'fa-mortar-board',
                         ),
                         array(
-                            'title' => __('設定年度支援/個別化學習負責人 - 檢視'),
+                            'title' => __('設定年度支援/個別化學習負責人'),
                             'url' => 'Bk_annual_sen_support',
                             'access' => 'view_annual_sen_support',
                             'icon' => 'fa-mortar-board',
@@ -109,31 +109,31 @@
 
                 /*
                 array(
-                    'main_menu' => __('設定年度教職員 - 檢視'),
+                    'main_menu' => __('設定年度教職員'),
                     'url' => 'Bk_setting_teacher',
                     'access' => 'view_news',
                     'icon' => ' fa-mortar-board',
                 ),
                 array(
-                    'main_menu' => __('設定年度科長 - 檢視'),
+                    'main_menu' => __('設定年度科長'),
                     'url' => 'Bk_setting_subject_teacher',
                     'access' => 'view_news',
                     'icon' => 'fa-mortar-board',
                 ),
                 array(
-                    'main_menu' => __('設定年度支援/個別化學習負責人 - 檢視'),
+                    'main_menu' => __('設定年度支援/個別化學習負責人'),
                     'url' => 'Bk_setting_support',
                     'access' => 'view_news',
                     'icon' => 'fa-mortar-board',
                 ),*/
                 array(
-                    'main_menu' => __('設定單元既定教學大綱 - 檢視'),
+                    'main_menu' => __('設定單元既定教學大綱'),
                     'url' => 'Bk_intended_learning_outline',
                     'access' => 'view_intended_learning_outline',
                     'icon' => 'fa-file',
                 ),
                 array(
-                    'main_menu' => __('補充內容 - 檢視'),
+                    'main_menu' => __('補充內容'),
                     'url' => 'Bk_additional_content',
                     'access' => 'view_additional_content',
                     'icon' => 'fa-plus',
@@ -146,13 +146,13 @@
                     'icon' => 'fa fa-users',
                     'sub_menu' => array(
                         array(
-                            'title' => __('年度科目分組 - 檢視'),
+                            'title' => __('年度科目分組'),
                             'url' => 'Bk_annual_subject_group',
                             'access' => 'view_annual_subject_group',
                             'icon' => 'fa-users',
                         ),
                         array(
-                            'title' => __('年度服務分組 - 檢視'),
+                            'title' => __('年度服務分組'),
                             'url' => 'Bk_annual_service_group',
                             'access' => 'view_annual_service_group',
                             'icon' => 'fa-users',
@@ -160,25 +160,25 @@
                     )
                 ),
                 array(
-                    'main_menu' => __('年度教學大綱 - 檢視'),
+                    'main_menu' => __('年度教學大綱'),
                     'url' => 'Bk_annual_teaching_outline',
                     'access' => 'view_annual_teaching_outline',
                     'icon' => 'fa-calendar-o',
                 ),
                 array(
-                    'main_menu' => __('年度教案 - 檢視 (全部)'),
+                    'main_menu' => __('年度教案'),
                     'url' => 'Bk_annual_teaching_plan',
                     'access' => 'view_annual_teaching_plan',
                     'icon' => 'fa-file-o',
                 ),
                 array(
-                    'main_menu' => __('教學計劃評分 - 檢視'),
+                    'main_menu' => __('教學計劃評分'),
                     'url' => 'Bk_plan_score',
                     'access' => 'view_news',
                     'icon' => 'fa-pencil',
                 ),
                 array(
-                    'main_menu' => __('年度學生支援服務評語 - 檢視'),
+                    'main_menu' => __('年度學生支援服務評語'),
                     'url' => 'Bk_support_eva',
                     'access' => 'view_news',
                     'icon' => 'fa-edit',
@@ -191,19 +191,19 @@
                     'icon' => 'fa fa-book',
                     'sub_menu' => array(
                         array(
-                            'title' => __('單元評估表 - 檢視'),
+                            'title' => __('單元評估表'),
                             'url' => 'Bk_unit_eva',
                             'access' => 'view_news',
                             'icon' => 'fa-book',
                         ),
                         array(
-                            'title' => __('單元學行行為表現 - 檢視'),
+                            'title' => __('單元學行行為表現'),
                             'url' => 'Bk_unit_perform',
                             'access' => 'view_news',
                             'icon' => 'fa-book',
                         ),
                         array(
-                            'title' => __('單元出席紀錄 - 檢視'),
+                            'title' => __('單元出席紀錄'),
                             'url' => 'Bk_unit_attendance',
                             'access' => 'view_news',
                             'icon' => 'fa-book',
@@ -211,7 +211,7 @@
                     )
                 ),
                 array(
-                    'main_menu' => __('全年學行評語 - 檢視'),
+                    'main_menu' => __('全年學行評語'),
                     'url' => 'Bk_year_comments',
                     'access' => 'view_news',
                     'icon' => 'fa-commenting-o',

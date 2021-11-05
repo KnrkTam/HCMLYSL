@@ -168,7 +168,7 @@ class Bk_subject_outline extends CI_Controller //change this
         $data['subject'] = Subjects_model::name($subject_id);
         $GLOBALS["select2"] = 1;
         $GLOBALS["datatable"] = 1;
-
+        // dump($_SESSION);
         $this->load->view('webadmin/' . $this->scope . '_form',  $data);
     }
 
@@ -191,7 +191,14 @@ class Bk_subject_outline extends CI_Controller //change this
         echo json_encode($data);
 
     }
-    
+    public function select_subject_cat_index()
+    {
+        $id = $_POST['id'];
+        $subject_id = Subject_categories_model::find($id)->subject_id;
+        $data = $subject_id;
+
+        echo json_encode($data);
+    }
 
     public function edit($subject_lesson_id)
     {
@@ -317,7 +324,7 @@ class Bk_subject_outline extends CI_Controller //change this
         $data['id'] = $id;
         $data['form_action'] = admin_url($data['page_setting']['controller'] . '/submit_form/'. $id);
         $_SESSION['post_data'] = $postData;
-
+        
         $this->load->view('webadmin/' . $this->scope . '_preview',  $data);
     }
 

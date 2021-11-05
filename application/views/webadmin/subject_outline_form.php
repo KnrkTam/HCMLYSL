@@ -85,30 +85,30 @@
                                     </div>
                                     <div class="col-lg-12 ">
                                         <div class="key_performance_item_group ">
-                                        <div class="row align-items-center key_performance_item">
-                                        <div class="col-lg-4">
-                                            <div class="form-group mb-3 w-100">
-                                                <input type="text" class="form-control" id="key_performance" name="performance[0]" placeholder="輸入關鍵表現項目" value="" required data-required-message="請填寫此資料">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-4 d-flex mt-3">
-                                            <?php foreach ($assessments_list as $i => $row) { ?>
-                                                <div class="form-check nowrap mr-3">
-                                                    <label class="form-check-label" <?= $row['mode']?>><input class="form-check-input" type="radio" name="assessment_id[0]" id="ass_0"  data-set="0" value="<?= $i?>" required data-required-message="請填寫此資料"><?= $row['mode']?></label>
+                                            <div class="row align-items-center key_performance_item">
+                                            <div class="col-lg-4">
+                                                <div class="form-group mb-3 w-100">
+                                                    <input type="text" class="form-control" id="key_performance" name="performance[0]" placeholder="輸入關鍵表現項目" value="" required data-required-message="請填寫此資料">
                                                 </div>
-                                            <?}?>
-                                        </div>
-                                        <div class="col-lg-3">
-                                            <div class="form-check w-100  d-flex align-items-center mb-3">
-                                                <label class="form-check-label nowrap mr-4"> 
-                                                    <input class="form-check-input radio" type="radio" name="assessment_id[0]" value="0"  id="ass_0" data-set="0" required >
-                                                    其他
-                                                </label>
-                                                <input type="text" class="form-control" name="assessment_other_field[0]" id="other_0" data-required-message="請填寫此資料">
                                             </div>
-                                        </div>
-                                        <div class="col-lg-1"> <button type="button" style="margin-top: 25%" class="btn bg-navy deleteBtn w-100" disabled><i class="fa fa-trash-o"></i></button></div>
-                                        </div >
+                                            <div class="col-lg-4 d-flex mt-3">
+                                                <?php foreach ($assessments_list as $i => $row) { ?>
+                                                    <div class="form-check nowrap mr-3">
+                                                        <label class="form-check-label" <?= $row['mode']?>><input class="form-check-input" type="radio" name="assessment_id[0]" id="ass_0"  data-set="0" value="<?= $i?>" required data-required-message="請填寫此資料"><?= $row['mode']?></label>
+                                                    </div>
+                                                <?}?>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <div class="form-check w-100  d-flex align-items-center mb-3">
+                                                    <label class="form-check-label nowrap mr-4"> 
+                                                        <input class="form-check-input radio" type="radio" name="assessment_id[0]" value="0"  id="ass_0" data-set="0" required >
+                                                        其他
+                                                    </label>
+                                                    <input type="text" class="form-control" name="assessment_other_field[0]" id="other_0" data-required-message="請填寫此資料">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-1"> <button type="button" style="margin-top: 25%" class="btn bg-navy deleteBtn w-100" disabled><i class="fa fa-trash-o"></i></button></div>
+                                            </div >
                                         </div >
 
                                         <button type="button" class="btn btn-info addBtn"><i class="fa fa-fw fa-plus"></i>增加關鍵表現項目</button>
@@ -169,6 +169,12 @@
 
         <?php if ($_SESSION['post_data']){ ?>
             let session_data = <?= json_encode($_SESSION['post_data'])?>;
+  
+            let performance = Object.values(session_data['performance']);
+            let assessment_id = Object.values(session_data['assessment_id']);
+            let assessment_other_field = Object.values(session_data['assessment_other_field']);
+
+
             $('#subject_cat_id').val(session_data['subject_cat_id']).select2();   
             subject_cat_change(session_data['subject_cat_id'])
  
@@ -177,41 +183,45 @@
                 $('#lesson_id').val(session_data['lesson_id']).select2();   
 
             }, 500);
-            console.log('asdf', session_data['performance'][0]);
             let loop_data = '';
 
-            for (i = 0; i < Object.keys(session_data['assessment_id']).length ; i++) {
+            for (i = 0; i < performance.length ; i++) {
                 loop_data += `
                     <div class="row align-items-center key_performance_item">
                     <div class="col-lg-4">
 
                         <div class="form-group mb-3 w-100">
-                            <input type="text" class="form-control" id="key_performance" name="performance[${i}]" value="${session_data['performance'][i]}" required data-required-message="請填寫此資料">
+                            <input type="text" class="form-control" id="key_performance" name="performance[${i}]" value="${performance[i]}" required data-required-message="請填寫此資料">
                         </div>
                     </div>
                     <div class="col-lg-4 d-flex mt-3">
                         <?php foreach ($assessments_list as $i => $row) { ?>
                             <div class="form-check nowrap mr-3">
-                                <label class="form-check-label" <?= $row['mode']?>><input class="form-check-input" id="ass_${i}" data-set="${i}" type="radio"  name="assessment_id[${i}]"  value="<?= $i?>" required data-required-message="請填寫此資料"><?= $row['mode']?></label>
+                                <label class="form-check-label" <?= $row['mode']?>><input class="form-check-input" id="ass_${i}" data-set="${i}" type="radio"  name="assessment_id[${i}]"  value=<?= $i?> required data-required-message="請填寫此資料"><?= $row['mode']?></label>
                             </div>
-                        <?}?>
+                        <?php }?>
                     </div>
                         <div class="col-lg-3">
                             <div class="form-check w-100  d-flex align-items-center mb-3">
                                 <label class="form-check-label nowrap mr-4"> 
-                                    <input class="form-check-input radio" type="radio" name="assessment_id[${i}]" value="0" data-set="${i}" id="ass_${i}">
+                                    <input class="form-check-input radio" type="radio" name="assessment_id[${i}]" value=0 data-set="${i}" id="ass_${i}">
                                     其他
                                 </label>
-                                <input type="text" class="form-control" name="assessment_other_field[${i}]" id="other_${i}" data-required-message="請填寫此資料">
+                                <input type="text" class="form-control" name="assessment_other_field[${i}]" value="${assessment_other_field[i]}"id="other_${i}" data-required-message="請填寫此資料">
 
                             </div>
                         </div>
                         <div class="col-lg-1"> <button type="button" style="margin-top: 8px" class="btn bg-navy deleteBtn w-100"><i class="fa fa-trash-o"></i></button></div>
-                    </div>`
-                $('.key_performance_item_group').html(loop_data);         
+                    </div>`;
+                $('.key_performance_item_group').html(loop_data);   
             }
 
-            let countRow = Object.keys(session_data['assessment_id']).length;
+            for (i = 0; i < performance.length ; i++) {
+                $(`input[type=radio][name="assessment_id[${i}]"][value=${assessment_id[i]}]`).prop('checked', true);
+            }
+
+            let countRow = performance.length;
+
         <?} else {?>
             let countRow = 0;
 
@@ -258,7 +268,7 @@
 
         $('.addBtn').click(function() {
             countRow++;
-            $('.key_performance_item:first').before(`
+            $('.key_performance_item_group').append(`
                 <div class="row align-items-center key_performance_item">
                 <div class="col-lg-4">
 

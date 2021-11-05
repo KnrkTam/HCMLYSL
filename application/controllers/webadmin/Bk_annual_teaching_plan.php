@@ -113,6 +113,12 @@ class Bk_annual_teaching_plan extends CI_Controller //change this
                 $student_list = Annual_subject_groups_students_model::id_list($row['id']);
                 $other_staff_list = Annual_subject_groups_other_staff_model::id_list($row['id']);
                 $annual_teaching_outline = Annual_teaching_outline_model::where('annual_subject_group_id', $row['id'])->first();
+                if ($annual_teaching_outline) {
+                    $atp = Annual_teaching_plan_model::where('annual_subject_group_id', $row['id'])->first();
+                    $annual_teaching_plan = $atp ?  ' <ul class="colorMapList inlinelist"><li class="text-green bold"><a href="'.admin_url(current_controller() . '/view/'. $atp->id).'">查 閱</a></li></ul>' : ' <ul class="colorMapList inlinelist"><li class="text-yellow bold"><a href="'.admin_url(current_controller() . '/create/'. $annual_teaching_outline->id).'">新 增</a></li></ul>' ;
+                } else {
+                    $annual_teaching_plan = null;
+                }
                 $student = "";
                 foreach ($student_list as $student_id) {
                     $class_name = Students_model::find($student_id)->class;
@@ -129,10 +135,12 @@ class Bk_annual_teaching_plan extends CI_Controller //change this
                 $data[$num]['annual_module'] = $annual_teaching_outline ? $annual_teaching_outline->annual_module : null;
                 // $data[$num]['staff'] = $row['staff1_isd'];
                 $data[$num]['staff'] = $row['staff2_id'] ? Staff_model::name($row['staff1_id']).','.  Staff_model::name($row['staff2_id']) :  Staff_model::name($row['staff1_id']);
-                $data[$num]['created_by'] = $annual_teaching_plan ? $annual_teaching_outline->annual_module : null;
-                $data[$num]['annual_teaching_outline'] = $annual_teaching_outline ? '<a href="'.admin_url('Bk_annual_teaching_outline' . '/view/'. $annual_teaching_outline->id).'">查 閱</a>' : '<a href="'.admin_url('Bk_annual_teaching_outline' . '/create/'.$annual_teaching_outline->id).'">新 增</a>';
-                $data[$num]['annual_teaching_plan'] = $annual_teaching_outline ? '<a href="'.admin_url(current_controller() . '/create/'. $annual_teaching_outline->id).'">新 增</a>' : null;
-                $data[$num]['file'] = $annual_teaching_plan ? '<a href="'.admin_url(current_controller()  . '/exportWord/'. $annual_teaching_outline->id).'">下 載</a>': null;
+                $data[$num]['created_by'] = $atp ? Staff_model::name($atp->edited_by) : null;
+                $data[$num]['annual_teaching_outline'] = $annual_teaching_outline ? ' <ul class="colorMapList inlinelist"><li class="text-green bold"><a href="'.admin_url('Bk_annual_teaching_outline' . '/view/'. $annual_teaching_outline->id).'">查 閱</a></li></ul>' : '<ul class="colorMapList inlinelist"><li class="text-yellow bold"><a href="'.admin_url('Bk_annual_teaching_outline' . '/create/'.$annual_teaching_outline->id).'">新 增</a></li></ul>';
+                $data[$num]['annual_teaching_plan'] = $annual_teaching_plan ? $annual_teaching_plan : null;
+                // $data[$num]['file'] = $atp ? '<a href="'.admin_url(current_controller()  . '/exportWord/'. $annual_teaching_outline->id).'">下 載</a>': null;
+                $data[$num]['file'] = $atp ? '<a href="#" onclick="TBA()">下 載</a>': null;
+
 
                 $num++;
             }
@@ -142,6 +150,21 @@ class Bk_annual_teaching_plan extends CI_Controller //change this
 
         echo $return;
 
+    }
+
+
+
+    public function fetch_student_list(){
+        $asg_id = $_POST['asg_id'];
+
+        $data = Annual_subject_groups_students_model::where('annual_subject_group_id', $asg_id)->get()->toArray();
+
+        $student_list = array();
+        foreach ($data as $row) {
+            $student_list[$row['id']] = Students_model::name($row['student_id']);
+        }
+        
+        echo json_encode($student_list);
     }
 
 
@@ -192,7 +215,7 @@ class Bk_annual_teaching_plan extends CI_Controller //change this
         $data['asg_id'] = $asg->id;
         $data['year_id'] = $asg->year_id;
         $data['year'] = $ato->year;
-        $data['subject'] = $ato->subject;
+        $data['subject'] = Subjects_model::name($asg->subject_id);        
         $data['group_name'] = $ato->group_name;
         $data['annual_module'] = $ato->annual_module;
         $data['module'] = Modules_model::order_list($ato->module_order);
@@ -271,7 +294,7 @@ class Bk_annual_teaching_plan extends CI_Controller //change this
         ), FALSE, TRUE);
         $GLOBALS["datatable"] = 1;
         $GLOBALS["select2"] = 1;
-        $data['form_action'] = admin_url($data['page_setting']['controller'] . '/create3/'. $ato_id);
+        $data['form_action'] = admin_url($data['page_setting']['controller'] . '/preview/'. $ato_id);
 
         if ($ato_id != $_POST['ato_id'] || !count($_POST['subjectCheck'])) {
             $_SESSION['error_msg'] = __('找不到頁面');
@@ -312,8 +335,6 @@ class Bk_annual_teaching_plan extends CI_Controller //change this
             5 => 'H',
         );
         $data['action'] = __('新 增 (Step 2)');
-
-
         $student_data = Annual_subject_groups_students_model::where('annual_subject_group_id', $asg_id)->get()->toArray();
 
         $student_list = array();
@@ -351,35 +372,21 @@ class Bk_annual_teaching_plan extends CI_Controller //change this
                 $num++;
             }
         }
-        // dump($data);
         $data['table_data'] = $lesson_data;
 
         $this->load->view('webadmin/' . $this->scope . '_form2',  $data);
     }
 
 
-    public function fetch_student_list(){
-        $asg_id = $_POST['asg_id'];
 
-        $data = Annual_subject_groups_students_model::where('annual_subject_group_id', $asg_id)->get()->toArray();
-
-        $student_list = array();
-        foreach ($data as $row) {
-            $student_list[$row['id']] = Students_model::name($row['student_id']);
-        }
-        
-        echo json_encode($student_list);
-    }
-
-
-    public function create3($ato_id = null)
+    public function preview($ato_id = null)
     {
         $data['page_setting'] = $this->page_setting(array(
             'create_' . $this->scope
         ), FALSE, TRUE);
         $GLOBALS["datatable"] = 1;
         $GLOBALS["select2"] = 1;
-        $data['form_action'] = admin_url($data['page_setting']['controller'] . '/preview/'. $ato_id);
+        $data['form_action'] = admin_url($data['page_setting']['controller'] . '/submit_form/'. $ato_id);
         // dump($_POST);
         if ($ato_id != $_POST['ato_id'] ) {
             $_SESSION['error_msg'] = __('找不到頁面');
@@ -387,7 +394,6 @@ class Bk_annual_teaching_plan extends CI_Controller //change this
         }
         $asg_id = $_POST['asg_id'];
         $data['today'] = date("Y-m-d ");
-        dump($_POST);
         $ato = Annual_teaching_outline_model::find($ato_id);
         $asg = Annual_subject_groups_model::find($asg_id);
         $module_date = Modules_week_model::date($asg->year_id, $asg->level_id, $ato->module_order);
@@ -406,14 +412,25 @@ class Bk_annual_teaching_plan extends CI_Controller //change this
         $data['current_user'] = $_SESSION['login_name'];
         $data['staff'] = $asg->staff2_id ? Staff_model::name($asg->staff1_id).','.  Staff_model::name($asg->staff2_id) :  Staff_model::name($asg->staff1_id);$asg->staff1_id;
         $data['staff_list'] = Staff_model::list();
-        $data['i'] = 1;
+        $data['student_level'] = $_POST['studentLevel'];
+        $student_data = Annual_subject_groups_students_model::where('annual_subject_group_id', $asg_id)->get()->toArray();
+        // $atp_data = json_decode($_POST['atp_data']);
+        $data['session'] = $_POST['session_count'];
+        $data['created_by'] = Staff_model::name($_POST['created_by']);
+        $data['topic'] = $_POST['topic'];
+        $data['remark'] = $_POST['remark'];
 
+        $student_list = array();
+        foreach ($student_data as $row) {
+            $student_list[$row['id']] = Students_model::name($row['student_id']);
+        }
+        $data['student_list'] = $student_list;
         $data['atp_data'] = array(
             'annual_subject_group_id' => $asg_id,
             'topic' => $_POST['topic'],
             'remarks' => $_POST['remark'],
             'lesson_session' => $_POST['session_count'],
-            'created_by' => $_POST['created_by'],
+            'edited_by' => $_POST['created_by'],
         );
 
         foreach ($_POST['order'] as $i => $row) {
@@ -425,9 +442,14 @@ class Bk_annual_teaching_plan extends CI_Controller //change this
                 'level_id' => $_POST['level'][$row], 
             );
         } 
-        
-        $data['action'] = __('新 增 (Step 3)');
-
+        $data['level_list'] = array(
+            1 => 'L',
+            2 => 'ML',
+            3 => 'M',
+            4 => 'HM',
+            5 => 'H',
+        );
+        $data['action'] = __('預 覽');
 
         foreach ($_POST['studentLevel'] as $i => $row) {
             $student_level = array(
@@ -435,133 +457,49 @@ class Bk_annual_teaching_plan extends CI_Controller //change this
             );
             Annual_subject_groups_students_model::where('id', $i)->update($student_level);
         } 
-        // $lesson_arr = Annual_teaching_outline_model::whereIn('id', $_POST['subjectCheck'])->get();
-        // $lesson_data = array();
-        // $num = 0;
-        // if (!empty($lesson_arr)) {
-        //     foreach ($lesson_arr as $row) {
-        //         $module_name = explode(';',$row->lesson_module)[1];
 
-        //         $lesson_data[$num]['common_value'] = $row->common_value;
-        //         $lesson_data[$num]['order'] = '#'.($num+1);
+        $lesson_arr = Annual_teaching_outline_model::whereIn('id', $_POST['order'])->get();
+        $lesson_data = array();
+        $num = 0;
+        if (!empty($lesson_arr)) {
+            foreach ($lesson_arr as $i => $row) {
+                if (in_array($row->id, $_POST['allStudentCheck'])) {
+                    $all_select = array('id'=> $row->id, 'checked' => 1);
+                } else {
+                    $all_select = array('id'=> $row->id, 'checked' => 0);
+                }
+                if (in_array($row->id, $_POST['partStudentCheck'])) {
+                    $part_select = array('id'=> $row->id, 'checked' => 1, 'level' => $_POST['level'][$row->id]);
+                } else {
+                    $part_select = array('id'=> $row->id, 'checked' => 0);
+                }
 
-        //         $lesson_data[$num]['id'] = $row->id;
-        //         $lesson_data[$num]['code'] = $row->lesson_code;
-        //         // $lesson_data[$num]['subject'] = $row->lesson_subject;
-        //         // $lesson_data[$num]['course'] = $row->lesson_course;
-        //         $lesson_data[$num]['category'] = $row->lesson_category;
-        //         $lesson_data[$num]['sb_obj'] = $row->lesson_sb_obj;
-        //         $lesson_data[$num]['element'] = $row->lesson_element;
-        //         $lesson_data[$num]['group'] =  $row->lesson_group;
-        //         $lesson_data[$num]['expected_outcome'] = $row->lesson_expected_outcome;            
-        //         $lesson_data[$num]['addon'] =  $row->lesson_additional_content ?  $module_name. ': <a class="small">'.$row->lesson_additional_content.'</span>': $module_name .':';
-        //         $lesson_data[$num]['performance'] = $row->lesson_performance;
-        //         $lesson_data[$num]['assessment'] = $row->lesson_assessment;
-        //         $lesson_data[$num]['all_select'] = $row->id;
-        //         $lesson_data[$num]['part_select'] = $row->id;
-        //         // $lesson_data[$num]['related_lesson'] = $row->lesson_relevant_lesson ? $row->lesson_relevant_lesson: '暫無相關課程編號	';
-        //         // $lesson_data[$num]['rel_code'] = $row->lesson_relevant_code ? $row->lesson_relevant_code : '暫無相關項目編號';
-        //         $lesson_data[$num]['remarks'] = $row->lesson_remarks;
-        //         $num++;
-        //     }
-        // }
-        // $data['table_data'] = $lesson_data;
-        $data['event_count'] = json_decode($_POST['event_count']);
-        // dump()
-        // dump($data);
-        $this->load->view('webadmin/' . $this->scope . '_form3',  $data);
-    }
-
-    public function validate($id = null)
-    {
-        $data['page_setting'] = $this->page_setting(array(
-            'create_' . $this->scope
-        ), FALSE, TRUE);
-        // $year_id = Years_model::orderBy('year_to', 'DESC')->first()->id;
-        dump($_POST);
-        $id = $_POST['id'];
-        // $annual_module_id = $_POST['annual_module_id'];
-        // $raw_added_ids = $_POST['added_ids'];
-        // $raw_common_ids = $_POST['common_ids'];
-        
-        // switch(true) {
-        //     case (!$id);
-        //     $data = array(
-        //         'status' => 'Error',
-        //     );
-        //     break;
-        //     case (empty($annual_module_id) && $annual_module_id != 0);
-        //     $data = array(
-        //         // 'status' => '請選擇年度學習單元',
-        //         'status' => $annual_module_id,
-
-        //     );
-        //     break;
-        //     case (!$raw_added_ids);
-        //     $data = array(
-        //         'status' => '請選擇教學項目',
-        //     );
-        //     break;
-        //     default;
-        //     $data = array(
-        //         'status' => 'success',
-        //     );
-        // } 
-
-        // foreach ($raw_added_ids as $i => $row) {
-        //     $lesson_arr[$i] = array('group' => explode(",", $row)[0], 'key_performance' =>  explode(",", $row)[1]);
-        // }
-        // foreach ($raw_common_ids as $i => $common_id) {
-        //     $common_arr[$i] = array('group' => explode(",", $common_id)[0], 'key_performance' =>  explode(",", $common_id)[1]);
-        // }
-        
-        echo json_encode($data);
-
-    }
-
-    public function preview($ato_id = null)
-    {
-        $data['page_setting'] = $this->page_setting(array(
-            'view_'. $this->scope,
-        ), FALSE, TRUE);
+                $module_name = explode(';',$row->lesson_module)[1];
+                $lesson_data[$num]['common_value'] = $row->common_value;
+                $lesson_data[$num]['order'] = array_search ($row->id, $_POST['order']);
+                $lesson_data[$num]['id'] = $row->id;
+                $lesson_data[$num]['code'] = $row->lesson_code;
+                $lesson_data[$num]['category'] = $row->lesson_category;
+                $lesson_data[$num]['sb_obj'] = $row->lesson_sb_obj;
+                $lesson_data[$num]['element'] = $row->lesson_element;
+                $lesson_data[$num]['group'] =  $row->lesson_group;
+                $lesson_data[$num]['expected_outcome'] = $row->lesson_expected_outcome;            
+                $lesson_data[$num]['addon'] =  $row->lesson_additional_content ?  $module_name. ': <a class="small">'.$row->lesson_additional_content.'</span>': $module_name .':';
+                $lesson_data[$num]['performance'] = $row->lesson_performance;
+                $lesson_data[$num]['assessment'] = $row->lesson_assessment;
+                $lesson_data[$num]['all_select'] = $all_select;
+                $lesson_data[$num]['part_select'] = $part_select;
+                $lesson_data[$num]['remarks'] = $row->lesson_remarks;
+                $num++;
+            }
+        }
+        $data['table_data'] = $lesson_data;
         // dump($_POST);
-        $data['action'] = __('預 覽');
-        $GLOBALS["select2"] = 1;
-        $GLOBALS["datatable"] = 1;
-        $asg_id = $_POST['asg_id'];
-        $data['today'] = date("Y-m-d ");
-
-        $ato = Annual_teaching_outline_model::find($ato_id);
-        $asg = Annual_subject_groups_model::find($asg_id);
-        $module_date = Modules_week_model::date($asg->year_id, $asg->level_id, $ato->module_order);
-        $data['id'] = $ato->id;
-        $data['asg_id'] = $asg->id;
-        $data['year_id'] = $asg->year_id;
-        $data['year'] = $ato->year;
-        $data['subject'] = $ato->subject;
-        $data['group_name'] = $ato->group_name;
-        $data['annual_module'] = $ato->annual_module;
-        $data['module'] = Modules_model::order_list($ato->module_order);
-        $data['week_from'] = $ato->week_from;
-        $data['week_to'] = $ato->week_to;
-        $data['date_from'] = $module_date['date_from'];
-        $data['date_to'] = $module_date['date_to'];
-        $data['current_user'] = $_SESSION['login_name'];
-        $data['staff'] = $asg->staff2_id ? Staff_model::name($asg->staff1_id).','.  Staff_model::name($asg->staff2_id) :  Staff_model::name($asg->staff1_id);$asg->staff1_id;
-        $data['staff_list'] = Staff_model::list();
-        $data['i'] = 1;
-        $atp_data = json_decode($_POST['atp_data']);
-        $data['session'] = $atp_data->lesson_session;
-        $data['created_by'] = Staff_model::name($atp_data->created_by);
-        $data['topic'] = $atp_data->topic;
-
-
-        // $lesson_arr = Annual_teaching_outline_model::whereIn('id', $_POST['subjectCheck'])->get();
         $event_arr = $_POST['activity_event'];
         $activity_name = $_POST['activity_name'];
         $activity_content = $_POST['activity_content'];
         $activity_materials = $_POST['materials'];
-
+        $data['activity_count'] = $_POST['activity_name'];
         $event_data = array();
         $num = 0;
         if (!empty($event_arr)) {
@@ -572,62 +510,108 @@ class Bk_annual_teaching_plan extends CI_Controller //change this
                     array_push($event_num, $event_id);
 
                 }
-                $material_list = array();
-                foreach ($activity_materials[$j] as $row) {
-                    array_push($material_list, Materials_model::name($row));
-                }
+                // $material_list = array();
+                // foreach ($activity_materials[$j] as $row) {
+                //     array_push($material_list, Materials_model::name($row));
+                // }
                 $event_data[$num]['event'] = implode(',', $event_num);
                 $event_data[$num]['name'] = $activity_name[$j];
-                $event_data[$num]['material'] = implode(',', $material_list);
+                $event_data[$num]['material'] = $activity_materials[$j];
                 $event_data[$num]['activity'] = $activity_content[$j];
-                // $event_data[$num]['photo'] = '尚';
-                $event_data[$num]['action'] = '<a class="editBtn" href="#"> 修改 </a>';
+                $event_data[$num]['photos'] = $j;
+
                 $num++;
             }
         }
-        // dump($data);
-        $data['table_data'] = $event_data;
+        $data['activity_data'] = $event_data;
 
-
-        $this->load->view('webadmin/' . $this->scope . '_preview',  $data);
+        $data['event_count'] = json_decode($_POST['event_count']);
+    
+        $this->load->view('webadmin/' . $this->scope . '_form3',  $data);
     }
 
-
-    public function create02()
+    public function validate($id = null)
     {
         $data['page_setting'] = $this->page_setting(array(
-            'view_news'
+            'create_' . $this->scope
         ), FALSE, TRUE);
 
-        $data['form_action'] = admin_url($data['page_setting']['controller'] . '/submit_form');
-        $data['action'] = __('新 增(Step 2)');
-        $data['ability_list'] = array(
-            1 => 'L',
-            2 => 'ML',
-            3 => 'M',
-            4 => 'HM',
-            5 => 'H',
-        );
+        $id = $_POST['id'];
+        $form = $_POST['form'];
+        $lessons_list = array_values($form['order']);
+        $checked_list = array_merge($form['partStudentCheck'], $form['allStudentCheck']);
+        $partStudentKeys = array_keys($form['partStudentCheck']);
+        $levelKeys = array_keys($form['level']);
+        // dump($form['activity_event']);
+        // dump($form['activity_name']);
 
-        $GLOBALS["datatable"] = 1;
-        $GLOBALS["select2"] = 1;
-        $GLOBALS["jquery19"] = 1;
-        $this->load->view('webadmin/' . $this->scope . '_step2',  $data);
-    }
 
-    public function create03()
-    {
-        $data['page_setting'] = $this->page_setting(array(
-            'view_news'
-        ), FALSE, TRUE);
+        foreach ($form['activity_name'] as $i => $row) {
+            switch (true) {
+                case (!$form['activity_event'][$i]):
+                    $data = array(
+                        'status' => '請輸入項目',
+                    );
+                    echo json_encode($data);
+                    exit;
+                    break;
+                case (!$row):
+                    $data = array(
+                        'status' => '請輸入活動名稱',
+                    );
+                    echo json_encode($data);
+                    exit;
+                    break;
+                case (!$form['activity_content'][$i]):
+                    $data = array(
+                        'status' => '請輸入學習活動',
+                    );
+                    echo json_encode($data);
+                    exit;
+                break;
+                default:
+                break;
+            }
+            
+        }
+        switch(true) {
+            case (!$form['created_by']);
+            $data = array(
+                'status' => '請選擇編寫教師',
+            );
+            break;
+            case (count($lessons_list) !== count($checked_list) && count($lessons_list) !== count(array_values($form['allStudentCheck']) ));
+            $data = array(
+                'status' => '請檢查所有學生選項',
+                'list1' => $lessons_list,
+                'list2' => $checked_list,
+                'allcheck' => array_values($form['allStudentCheck']),
+                'validate' => count($lessons_list) !== count($checked_list),
+            );
+            break;
+            case (count($partStudentKeys) !== count($levelKeys));
+            $data = array(
+                'status' => '請選擇課程學生能力程度',
+            );
+            break;
+            case (empty($form['topic']));
+            $data = array(
+                'status' => '請填寫課題',
+            );
+            break;
+            case (empty($form['session_count']));
+            $data = array(
+                'status' => '請填寫節數',
+            );
+            break;
+            default;
+            $data = array(
+                'status' => 'success',
+            );
+        } 
+        
+        echo json_encode($data);
 
-        $data['form_action'] = admin_url($data['page_setting']['controller'] . '/submit_form');
-        $data['action'] = __('學習活動 新 增');
-
-        $GLOBALS["datatable"] = 1;
-        $GLOBALS["select2"] = 1;
-
-        $this->load->view('webadmin/' . $this->scope . '_step3',  $data);
     }
 
 
@@ -645,17 +629,116 @@ class Bk_annual_teaching_plan extends CI_Controller //change this
 
         $this->load->view('webadmin/' . $this->scope . '_approve',  $data);
     }
-    public function edit()
+
+    public function view($atp_id)
     {
         $data['page_setting'] = $this->page_setting(array(
-            'view_news'
+            'view_' . $this->scope
         ), FALSE, TRUE);
 
+        $data['form_action'] = admin_url($data['page_setting']['controller'] . '/preview/'. $ato_id);
+
+        $atp = Annual_teaching_plan_model::find($atp_id);
+        if (!$atp) {
+            $_SESSION['error_msg'] = __('找不到頁面');
+            redirect(admin_url('bk_'.$this->scope));
+        }
+        $asg_id = $atp->annual_subject_group_id;
+        $ato_id = Annual_teaching_plan_lesson_model::where('atp_id', $atp_id)->first()->ato_id;
+        $data['today'] = date("Y-m-d ");
+    
+        $ato = Annual_teaching_outline_model::find($ato_id);
+        $asg = Annual_subject_groups_model::find($asg_id);
+        $module_date = Modules_week_model::date($asg->year_id, $asg->level_id, $ato->module_order);
+        $data['id'] = $atp->id;
+        $data['asg_id'] = $asg->id;
+        $data['level_id'] = $asg->level_id;
+        $data['event_count'] = $order_list;
+        $data['year_id'] = $asg->year_id;
+        $data['year'] = $ato->year;
+        $data['subject'] = $ato->subject;
+        $data['group_name'] = $ato->group_name;
+        $data['session'] = $atp->lesson_session;
+        $data['edited_by'] = Staff_model::name($atp->edited_by);
+        $data['topic'] = $atp->topic;
+        $data['remarks'] = $atp->remarks;
+        $data['annual_module'] = $ato->annual_module;
+        $data['module'] = Modules_model::order_list($ato->module_order);
+        $data['week_from'] = $ato->week_from;
+        $data['week_to'] = $ato->week_to;
+        $data['date_from'] = $module_date['date_from'];
+        $data['date_to'] = $module_date['date_to'];
+        $data['current_user'] = $_SESSION['login_name'];
+        $data['staff'] = $asg->staff2_id ? Staff_model::name($asg->staff1_id).','.  Staff_model::name($asg->staff2_id) :  Staff_model::name($asg->staff1_id);$asg->staff1_id;
+        $data['staff_list'] = Staff_model::list();
+        $data['level_list'] = array(
+            1 => 'L',
+            2 => 'ML',
+            3 => 'M',
+            4 => 'HM',
+            5 => 'H',
+        );
+        dump($data);
         $data['action'] = __('修 改');
         $GLOBALS["select2"] = 1;
 
         $GLOBALS["datatable"] = 1;
-        $this->load->view('webadmin/' . $this->scope . '_step2_edit',  $data);
+        $this->load->view('webadmin/' . $this->scope . '_view',  $data);
+    }
+
+    public function edit($atp_id)
+    {
+        $data['page_setting'] = $this->page_setting(array(
+            'create_' . $this->scope
+        ), FALSE, TRUE);
+
+        $data['form_action'] = admin_url($data['page_setting']['controller'] . '/preview/'. $ato_id);
+
+        $atp = Annual_teaching_plan_model::find($atp_id);
+        if (!$atp) {
+            $_SESSION['error_msg'] = __('找不到頁面');
+            redirect(admin_url('bk_'.$this->scope));
+        }
+        $asg_id = $atp->annual_subject_group_id;
+        $ato_id = Annual_teaching_plan_lesson_model::where('atp_id', $atp_id)->first()->ato_id;
+        $data['today'] = date("Y-m-d ");
+        $order_list = array();
+
+        foreach ($_POST['subjectCheck'] as $i => $row) {
+            $order_list[($i+1)] = '#'. ($i+1);
+        }
+        $ato = Annual_teaching_outline_model::find($ato_id);
+        $asg = Annual_subject_groups_model::find($asg_id);
+        $module_date = Modules_week_model::date($asg->year_id, $asg->level_id, $ato->module_order);
+        $data['id'] = $atp->id;
+        $data['asg_id'] = $asg->id;
+        $data['level_id'] = $asg->level_id;
+        $data['event_count'] = $order_list;
+        $data['year_id'] = $asg->year_id;
+        $data['year'] = $ato->year;
+        $data['subject'] = $ato->subject;
+        $data['group_name'] = $ato->group_name;
+        $data['annual_module'] = $ato->annual_module;
+        $data['module'] = Modules_model::order_list($ato->module_order);
+        $data['week_from'] = $ato->week_from;
+        $data['week_to'] = $ato->week_to;
+        $data['date_from'] = $module_date['date_from'];
+        $data['date_to'] = $module_date['date_to'];
+        $data['current_user'] = $_SESSION['login_name'];
+        $data['staff'] = $asg->staff2_id ? Staff_model::name($asg->staff1_id).','.  Staff_model::name($asg->staff2_id) :  Staff_model::name($asg->staff1_id);$asg->staff1_id;
+        $data['staff_list'] = Staff_model::list();
+        $data['level_list'] = array(
+            1 => 'L',
+            2 => 'ML',
+            3 => 'M',
+            4 => 'HM',
+            5 => 'H',
+        );
+        $data['action'] = __('修 改');
+        $GLOBALS["select2"] = 1;
+
+        $GLOBALS["datatable"] = 1;
+        $this->load->view('webadmin/' . $this->scope . '_edit',  $data);
     }
     public function editEvent()
     {
@@ -669,5 +752,68 @@ class Bk_annual_teaching_plan extends CI_Controller //change this
         $this->load->view('webadmin/' . $this->scope . '_step3_edit',  $data);
     }
 
+
+    public function submit_form()
+    {
+        $data['page_setting'] = $this->page_setting(array(
+            'update_'. $this->scope
+        ), FALSE, TRUE);
+
+        dump($_POST);
+        $ato_atp = (array)json_decode($_POST['atp_ato']);
+        $atp_data =  (array)json_decode($_POST['atp_data']);
+        $student_list = (array)json_decode($_POST['studentLevel']);
+        $activities = (array)json_decode($_POST['activity']);
+        dump('lesson_relationship', $ato_atp);
+        dump('atp_data', (array)json_decode($_POST['atp_data']));
+        dump('individual student level',$student_list);
+        dump('activity', $activities);
+
+
+        // $atp_id = Annual_teaching_plan_model::create($atp_data);
+        // $atp_id = 1;
+        foreach ($ato_atp as $ato_id => $lesson_arr) {
+            $atp_lesson = array(
+                'atp_id' => $atp_id,
+                'ato_id' => $ato_id,
+                'order' => $lesson_arr->order,
+                'all_check' => $lesson_arr->allCheck,
+                'part_check' => $lesson_arr->partCheck,
+                'level_id' => implode(';',$lesson_arr->level_id),
+            );
+            // Annual_teaching_plan_lesson_model::create($atp_lesson);
+
+        }
+
+        foreach ($student_level as $id => $level) {
+            $data = array(
+                'student_level_id' => $level,
+            );
+            Annual_subject_groups_students_model::find($id)->update($data);
+        }
+
+        foreach ($activities as $row) {
+            $data = array (
+                'atp_id' => $atp_id,
+                'event' => $row->event,
+                'name' => $row->name,
+                'material' => $row->material,
+                'activity' => $row->activity,
+                'img_name1' => $row->img_name1,
+                'img_name2' => $row->img_name2,
+                'img_name3' => $row->img_name3,
+            );
+            Atp_activity_model::create($data);
+
+            // dump($data);
+        }
+
+        $atp_activity;
+        
+        // $data['action'] = __('學習活動 修 改');
+        // $GLOBALS["select2"] = 1;
+
+        // $this->load->view('webadmin/' . $this->scope . '_step3_edit',  $data);
+    }
 
 }

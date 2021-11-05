@@ -3,15 +3,7 @@
 
 <head>
     <?php include_once("head.php"); ?>
-    <style>
-        .mouseover{
-            cursor:grab;
-        }
 
-        .mouseover:active{
-            cursor:grabbing;
-        }
-    </style>
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini">
@@ -22,8 +14,7 @@
         <?php include_once("menu.php"); ?>
 
         <!-- Content Wrapper. Contains page content -->
-
-        <div class="content-wrapper" style="min-height: 946px;">
+            <div class="content-wrapper" style="min-height: 946px;">
             <!-- Content Header (Page header) -->
             <section class="content-header">
                 <h1>
@@ -264,16 +255,19 @@
             </section>
             <!-- /.content -->
         </div>
+
         <!-- /.content-wrapper -->
 
         <?php include_once("footer.php"); ?>
 
 
-     
+
 
     </div>
 
-    <?= form_close() ?>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
 
 
 
@@ -281,397 +275,73 @@
     <?php include_once("script.php"); ?>
 
 
-
-
     <script>
-
-        let loadFile = function(event,index, item) {
-            let reader = new FileReader();
-            reader.onload = function(){
-                console.log('reader', reader);
-                console.log('file', event.target.files[0])
-                let file = event.target.files[0];
-                let output = document.getElementById(`output[${index}][${item}]`);
-                if (file.size < 100000) {
-                    localStorage.setItem(`activity[${index}]_image[${item}]`, reader.result)
-                    output.src = reader.result;
-
-                } else {
-                    alert('Error: Size of image cannot be larger than 100 kb')
-                }
-            };
-
-            reader.readAsDataURL(event.target.files[0]);
-        };
-// Setitem
-            // document.querySelector('#testFile').addEventListener('change', function () {
-            //     let reader = new FileReader();
-            //     reader.onload = function(){
-            //         localStorage.setItem('recent-image', reader.result)
-            //         console.log(reader.result);
-            //     };
-            //     reader.readAsDataURL(this.files[0]);
-            // });
-// Get item
-            let j_arr = [0, 1, 2];
-            document.addEventListener("DOMContentLoaded", () => {
-                for (i = 0; i < j_arr.length; i++) {
-                    let img1 = localStorage.getItem(`activity[${i}]_image[1]`);                    
-                    let img2 = localStorage.getItem(`activity[${i}]_image[2]`);
-                    let img3 = localStorage.getItem(`activity[${i}]_image[3]`);
-
-                    if (img1) {
-                        document.getElementById(`output[${i}][1]`).setAttribute("src", img1);
-                    }
-                    if (img2) {
-                        document.getElementById(`output[${i}][2]`).setAttribute("src", img2);
-                    }
-                    if (img3) {
-                        document.getElementById(`output[${i}][3]`).setAttribute("src", img3);
-                    }
-                }
-            });
-
-
         $(document).ready(function() {
-            let year_id = <?= $year_id ?>;
-            let asg_id = <?= $asg_id?>; 
-            let data = <?php echo json_encode($table_data)?>;
 
-            let columnDefs = [
-            {
-                render: function(data, type, row, index) {
-                    let result = `#${data}<input name="order[${data}]" hidden value="${row['id']}"></input>  `;
-                    return result;
-                },
-                data: "order",
-                title: "項目次序",
-                class: "no-sort mouseover",
-                orderable: false,
-                name :"first",
-            }, 
-            {
-                data: "id",
-                title: "",
-                class: "no-sort w-10px hidden"
-            }, 
-            {
-                data: "common_value",
-                class: "hidden",
-            }, 
-            {
 
-                data: "category",
-                title: "範疇",
-                orderable: false,
-                name:"first",
-                class: "mouseover"
-            }, 
-            {
-                data: "sb_obj",
-                title: "校本課程學習重點",
-                class: "no-sort mouseover",
-                orderable: false,
-                name:"first"
-            }, 
-            {
-                data: "element",
-                title: "學習元素",
-                class: "mouseover",
-                orderable: false,
-                name:"first"
 
-            }, 
-            {
-                data: "group",
-                title: "組別",
-                class: "mouseover",
-                orderable: false,
-                name:"first"
-            }, 
-            {
-                data: "expected_outcome",
-                title: "預期學習成果",
-                class: "no-sort mouseover",
-                name:"first",
-                orderable: false,
 
-            }, 
-            {
-                data: "addon",
-                title: "補充內容",
-                class: "w-90px no-sort mouseover",
-                name:"first",
-                orderable: false,
+            $('.teachTable').DataTable({
+                scrollCollapse: true,
 
-            }, 
-            {
-                data: "performance",
-                title: "關鍵表現項目",
-                class: "no-sort mouseover",
-                name:"first",
-                orderable: false,
 
-            }, 
-            {
-                data: "assessment",
-                title: "評估模式",
-                class: "no-sort mouseover",
-                orderable: false,
-
-            },
-            {
-                render: function(data, type, row, index) {
-                    let result = `<input type="checkbox" name="allStudentCheck[${data}]" class="allCheck" value="${data}" />`;
-                    return result;
-                },
-                data: "all_select",
-                title: " <input type='checkbox'  class='allCheckAll'>全選</input>",
-                class: "no-sort",
-                orderable: false,
-            },
-            {
-                render: function(data, type, row, index) {
-                    let result = `<div style="display:flex; align-items: center"><input type="checkbox" name="partStudentCheck[${data}]" class="partCheck" value="${data}" multiple="multiple"/>
-                                <select class="form-control select2 level" id="level_${data}" name="level[${data}][]" multiple="multiple" required>
-                                    <option value="1">L</option>
-                                    <option value="2">LM</option>
-                                    <option value="3">M</option>
-                                    <option value="4">MH</option>
-                                    <option value="5">H</option>
-                                </select></div>`;
-                    return result;
-
-                },
-                data: "part_select",
-                title: " <button type='button' class='btn bg-yellow' data-toggle='modal' data-target='#studentModal'><i class='fa fa-plus' id='studentModalBtn'/>部分學生</button> ",
-                class: "no-sort",
-                orderable: false,
-            },
-        ];
-
-            let table = $('#mainTable').DataTable({
-                scrollX: true,
-                rowReorder: {
-                    dataSrc: 'order',
-                    selector: 'td.mouseover'
-                },
-                dom: 'frtip',
-                // "buttons": [{
-                //     extend: 'colvis',
-                //     text: '選擇顯示項目',
-                //     columns: ':not(.noVis)',
-                //     columnText: function ( dt, idx, title ) {
-                //         return title;
-                //     }
-                // }],
-                data: data,
-                stateSave:true,
-                "language": {
-                    "url": "<?= assets_url('webadmin/admin_lte/bower_components/datatables.net/Chinese-traditional.json') ?>",
-                },
-                "order": [[0, 'asc']],
-                "data-sort": true,
-                "bSort": false,
-                "pageLength": 10,
-                "pagingType": "simple",
-                "processing": true,
-                "bProcessing": true,
-                "serverSide": false,
-                "ordering": true,
-                "searching": false,
-                "searchDelay": 0,
-                "columns": columnDefs,  
-                "drawCallback": function(d) {
-                    $('.allCheckAll').click(function(){
-                    if (this.checked == true) {
-                        $('.allCheck').prop('checked', true);
-                        $('.partCheck').prop('checked', false);
-                        $(`.level`).prop("disabled", true);
-                    } else {
-                        $('.allCheck').prop('checked', false);
-                        $(`.level`).prop("disabled", false);
-
-                    }
-                    })
-                },
-            
             });
 
-        
+            $('.eventTable').DataTable({
+                scrollY: "400px",
 
-            $('#event_count').val(table.data().count())
-
-
-            $('.allCheckAll').click(function(){
-                alert('allcheck!');
-                $('.allCheck').props('checked', 'checked');
-            })
+                scrollX: true,
+                sScrollXInner: "100%",
+                scrollCollapse: true,
 
 
-            ajax_choose(asg_id)
-            function ajax_choose(asg_id) {
-                $.ajax({
-                url: '<?= (admin_url($page_setting['controller'])) . '/fetch_student_list' ?>',
-                method:'POST',
-                data:{asg_id: asg_id},
-                dataType:'json',
-                success:function(d){
-                    $('.select2').select2();
-                    $('.partCheck').on('change', function() {
-                        let value = this.value;
-                        $('.allCheckAll').prop('checked', false);
+            });
+            $('.teachTable').dragtable({
+                dragaccept: '.accept'
+            });
 
-                        $(`.allCheck[value=${this.value}]`).prop("checked",false);
-                        $(`#level_${value}`).prop("disabled",false);
+            //  table.columns.adjust();
 
-                    });
-                    $('.allCheck').on('change', function() {
-                        let value = this.value;
-                        $(`.partCheck[value=${value}]`).prop("checked",false);
-                        $(`#level_${value}`).prop("disabled", true);
-                    });   
-                },
-                })
-            }     
+
         });
 
-        var _lsTotal = 0,
-            _xLen, _x;
-        for (_x in localStorage) {
-            if (!localStorage.hasOwnProperty(_x)) {
-                continue;
+
+
+        function submit_form(_this) {
+            //form checking
+            var valid_data = true;
+            //.form checking
+            if (!valid_data) {
+                //alert('Invalid Data.');
+            } else {
+                ajax_submit_form(_this);
             }
-            _xLen = ((localStorage[_x].length + _x.length) * 2);
-            _lsTotal += _xLen;
-            console.log(_x.substr(0, 50) + " = " + (_xLen / 1024).toFixed(2) + " KB")
-        };
-        console.log("Total = " + (_lsTotal / 1024).toFixed(2) + " KB");
+        }
 
-
-  
-
-        let j = 1;
-        $('#add-btn').click(function() {
-
-            let content = `
-            <div class="row mb-4 list-item activity">
-                <div class="col-lg-11">
-                 <label class="content-nowrap text-green">活動 ${(j+1)}： </label>
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <div class="form-group ">
-                                <label class="content-nowrap required">項目#： </label>
-                                <select class="form-control select2"  name="activity_event[${j}][]" multiple="multiple" required>
-                                <? foreach ($event_count as $k => $row) {?>
-                                    <option value="<?= $k ?>"><?= $row?></option>
-                                <? } ?>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="form-group">
-                                <label class="text-nowrap required" for="eventName">活動名稱：
-                                </label>
-                                <input type="text" class="form-control" name="activity_name[${j}]" placeholder="請填寫活動名稱 ">
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="form-group">
-                                <label class="text-nowrap">教材/教具：
-                                </label>
-                                <input type="text" class="form-control" name="materials[${j}]" placeholder="請填寫活動教材/教具 ">
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="form-group">
-                        <label class="text-nowrap required" >學習活動： </label>
-                        <textarea class="form-control" name="activity_content[${j}]" rows="3" required></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>上載檔案：</label>
-                        <div class="row">
-                            <div class="col-lg-4">
-                                <input type="file" class="form-control-file mb-2" accept="image/*" onchange="loadFile(event, ${j},1)">
-                                <img id="output[${j}][1]" class="w-75"/>
-                            </div>
-                            <div class="col-lg-4">
-                                <input type="file" class="form-control-file mb-2" accept="image/*" onchange="loadFile(event,${j}, 2)">
-                                <img id="output[${j}][2]" class="w-75"/>
-
-                            </div>
-                            <div class="col-lg-4">
-                                <input type="file" class="form-control-file mb-2" accept="image/*" onchange="loadFile(event,${j}, 3)">
-                                <img id="output[${j}][3]" class="w-75"/>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-                </div>
-                <div class="col-lg-1 text-right">
-                    <button type="button" class="btn bg-navy deleteBtn mt-4 mr-4" onclick="delActivity(this)"><i class="fa fa-trash-o"></i></button>
-                </div>
-                <hr>
-
-            </div>
-
-            `;
-            $('#sortable').append(content)
-            j++;
-
-            $('select.select2').select2();
-
-            //     let loadFile = function(event,index, item) {
-            //     let reader = new FileReader();
-            //     reader.onload = function(){
-            //         var output = document.getElementById(`output[${index}][${item}]`);
-            //         output.src = reader.result;
-            //     };
-            //     console.log('reader',reader.result)
-            //     reader.readAsDataURL(event.target.files[0]);
-            // };
-
-        });
-
-        let delActivity = function delActivity(e) {
-            $(e).parents('.activity').remove();
-            j-=1;
-            // $('#activity['+index+']').remove();
-        };
-
-        
-        let submitBtn = document.querySelector('#submitBtn');
-        submitBtn.addEventListener("click",function(){
-
-            let myForm = document.getElementById('myForm');
-            let formData = $('#myForm').serializeJSON();
-
-            passStage(formData);
-            function passStage(formData){
-                $.ajax({
-                url: '<?= (admin_url($page_setting['controller'])) . '/validate' ?>',
-                method:'POST',
-                data:{form: formData},
-                dataType:'json',     
-                
-                success:function(data){
-                    if (data.status == 'success') {
-                        document.getElementById('myForm').submit();
-                    } else {
-                        alertify.error(data.status)
-                    }
-                },
-                error: function(error){
-                    alert('error');
-                }
-                });
-            } 
-        })  
-
-
+        <?php /*
+    //multiple image upload
+    $("input.multiple_upload").fileinput({
+        language: '<?=get_wlocale()?>',
+        previewFileType: "image",
+        showCaption: false,
+        showUpload: false,
+        maxFileSize: 2048,
+        maxFileCount: 30,
+        maxImageHeight: 2000,
+        maxImageWidth: 2000,
+        overwriteInitial: false,
+        allowedFileExtensions: ['jpg','jpeg','png'],
+        initialPreview: <?=isset($photos_preview) ? $photos_preview : "{}"?>,
+        initialPreviewAsData: true,
+        initialPreviewConfig: <?=isset($photos_json) ? $photos_json : "{}"?>,
+        deleteUrl: "<?=admin_url('bk_news/delete_multiple_upload')?>",
+        // hiddenThumbnailContent: true,
+        // initialPreviewShowDelete: true,
+        // removeFromPreviewOnError: true,
+    }).on('filedeleted', function(event, key, jqXHR, data) {
+        alertify.success("<?=__('Deleted successfully!')?>");
+    });
+ */ ?>
     </script>
 
 </body>

@@ -123,6 +123,27 @@
                 })
             }
         })
+
+
+        $('#subject_category_id').change(function() {
+            console.log(this.value)
+            ajax_choose(this.value)
+            function ajax_choose(subject_cat_id) {
+                $.ajax({
+                url: '<?= (admin_url($page_setting['controller'])) . '/select_subject_cat_index' ?>',
+                method:'POST',
+                data:{id:subject_cat_id},
+                dataType:'json',
+                success:function(data){
+                    console.log('daar',data)
+                    if (data) {
+                        $('#subject_id').val(data).trigger('change');
+                    }
+                }
+                })
+            }
+        })
+
         $('[data-toggle="tooltip"]').tooltip();
 
 

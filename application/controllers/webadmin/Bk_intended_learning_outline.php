@@ -50,8 +50,8 @@ class Bk_intended_learning_outline extends CI_Controller //change this
         $GLOBALS["datatable"] = 1;
         $year_id = Years_model::orderBy('year_to', 'DESC')->first()->id;
         $data['subject_list'] = Subjects_model::list('all');
-        $data['annual_modules_list'] = Annual_modules_model::year_list($year_id, 'all');
-        $data['select_list'] = Annual_modules_model::year_list($year_id);
+        $data['modules_list'] = Modules_model::list();
+        $data['select_list'] = Modules_model::list();
         $data['remarks_list'] = Remarks_model::list();
         $data['subject_categories_list'] = json_encode(Subject_categories_model::optionList('All')); 
 

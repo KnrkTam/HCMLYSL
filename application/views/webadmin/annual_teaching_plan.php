@@ -197,6 +197,7 @@
     <?php include_once("script.php"); ?>
     <script>
         $(document).ready(function() {
+            localStorage.clear();
 
             let columnDefs = [
                 {

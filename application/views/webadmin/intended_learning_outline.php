@@ -87,8 +87,8 @@
                                     </div>
                                     <div class="col-lg-3">
                                         <div class="form-group">
-                                            <label class="text-nowrap"><span class="text-red">*</span>年度學習單元：</label>
-                                            <div style="flex: 1"><?php form_list_type('annual_module_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' => $annual_module_id,  'data-placeholder' => '請選擇...', 'enable_value' => $annual_modules_list, 'form_validation_rules' => 'trim|required']) ?></div>
+                                            <label class="text-nowrap"><span class="text-red">*</span>學習單元：</label>
+                                            <div style="flex: 1"><?php form_list_type('annual_module_id', ['type' => 'select', 'class'=> 'form-control select2' , 'value' => $annual_module_id,  'data-placeholder' => '請選擇...', 'enable_value' => $modules_list, 'form_validation_rules' => 'trim|required']) ?></div>
 
                                         </div>
                                     </div>
@@ -145,7 +145,7 @@
                                     <div class="row mb-4">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="text-nowrap">年度學習單元： </label>
+                                                <label class="text-nowrap">學習單元： </label>
                                                 <div style="flex: 1"><?php form_list_type('module_id[]', ['type' => 'select', 'class'=> 'select2 form-control' , 'value' =>'',  'enable_value' => $select_list, 'form_validation_rules' => 'trim|required', 'disable_please_select' => 1, 'multiple' => 1]) ?></div>
                                                 <input type="text" class="form-control hidden"  id="modalId" value="">
                                                 <input type="text" class="form-control hidden"  id="subjectLesson" value="">

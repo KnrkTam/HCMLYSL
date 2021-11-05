@@ -21,6 +21,10 @@
 <script src="<?= assets_url('webadmin/js/serialize_json.js') ?>"></script>
 <script type="text/javascript">
     $(":input").inputmask(); 
+
+    function TBA() {
+        alert("Service not available at the moment, please try again")
+    }
 </script>
 
 <?php if ($GLOBALS["jquery19"] == 1) { ?>
@@ -34,6 +38,8 @@
 <script>
 $(function () {
     $('body').prepend('<div style="width: 100%; height: 30px; background-color: #D46A6A; text-align: center; color: #fff; font-size: 20px;">UAT</div><div style="clear: both;"></div>');
+
+   
 })
 </script>
 

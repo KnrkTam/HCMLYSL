@@ -253,19 +253,19 @@
                 data: "edit",
                 name: 'first',
                 class: 'no-sort',
-            },     
-            {
-                width: '60px',
-                data: "category",
-                title: "課程範疇",
-                name: 'first',
-            },               
+            },   
             {
                 class: 'col',
                 data: "course",
                 title: "課程",
                 name: 'first',
-            },               
+            },       
+            {
+                width: '60px',
+                data: "category",
+                title: "課程範疇",
+                name: 'first',
+            },                       
             {
                 class: 'col',
                 data: "sb_obj",
