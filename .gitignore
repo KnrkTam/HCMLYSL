@@ -6,7 +6,7 @@ application/cache/*
 application/logs/*
 !application/logs/index.html
 
-!application/*/.htaccess
+application/*/.htaccess
 
 composer.lock
 
@@ -28,5 +28,6 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 *.sublime-project
 /tests/tests/
 /tests/results/
-
+.htaccess
 .env.development
+.env.local
