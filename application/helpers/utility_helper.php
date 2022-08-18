@@ -869,11 +869,11 @@ if (!function_exists('send_email')) {
             //$x_mail->Host       = 'localhost';
             //$localhost=0;
             if ($localhost == 0) {
-                $x_mail->Host = 'smtp.sendgrid.net';                 // Specify main and backup server
-                $x_mail->Port = 587;                                    // Set the SMTP port
+                $x_mail->Host = '';                 // Specify main and backup server
+                $x_mail->Port = 3030;                                    // Set the SMTP port
                 $x_mail->SMTPAuth = true;                               // Enable SMTP authentication
-                $x_mail->Username = 'garricklam1';                // SMTP username
-                $x_mail->Password = 'garrick1';                  // SMTP password
+                $x_mail->Username = 'kenricktam';                // SMTP username
+                $x_mail->Password = 'kenricktam1';                  // SMTP password
                 $x_mail->SMTPSecure = 'tls';
             } else {
                 $x_mail->Host = 'localhost';                 // Specify main and backup server
